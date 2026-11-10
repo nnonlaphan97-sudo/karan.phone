@@ -4,419 +4,580 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#11151e">
-<title>KARAN'S PHONE </title>
+<title>KARAN'S PHONE</title>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+}
 html,body{
- margin:0;width:100%;height:100%;overflow:hidden;
- background:#11151e;
- font-family:"SamsungOne","Noto Sans Thai",Arial,sans-serif;
+ margin:0;width:100%;height:100%;
+ overflow:hidden;background:#17191e;
+ font-family:Arial,"Noto Sans Thai",sans-serif;
 }
-body{display:flex;align-items:center;justify-content:center}
-#device{
- width:min(100vw,500px,calc(100dvh * 1248 / 1972));
- aspect-ratio:1248/1972;
+body{
+ display:flex;justify-content:center;align-items:center;
+}
+#phone{
  position:relative;
- background:#05070b;
- border:3px solid #252933;
- border-radius:23px;
+ width:min(100vw,480px,calc(100dvh * 390 / 616));
+ aspect-ratio:390/616;
  overflow:hidden;
- box-shadow:0 16px 55px #0009;
+ background:#e9e9ef;
+ border:3px solid #272831;
+ border-radius:15px;
 }
-#display{width:100%;height:100%;display:block;touch-action:none}
-svg text{user-select:none;-webkit-user-select:none}
-.tap{cursor:pointer}
-@media(max-width:600px){
- #device{border-radius:17px;border-width:2px}
+#display{
+ width:100%;height:100%;
+ display:block;touch-action:none;
 }
+svg text{user-select:none}
+.clickable{cursor:pointer}
 </style>
 </head>
+
 <body>
-<div id="device">
-<svg id="display" xmlns="http://www.w3.org/2000/svg"
- viewBox="0 0 390 616" preserveAspectRatio="xMidYMid meet">
-<defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-  <stop offset="0" stop-color="#17253b"/>
-  <stop offset=".42" stop-color="#4c6589"/>
-  <stop offset=".72" stop-color="#a2a2bc"/>
-  <stop offset="1" stop-color="#d2b4b9"/>
- </linearGradient>
- <radialGradient id="glow">
-  <stop stop-color="#e8d7e6" stop-opacity=".65"/>
-  <stop offset="1" stop-color="#e8d7e6" stop-opacity="0"/>
- </radialGradient>
- <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
-  <stop stop-color="#fff" stop-opacity=".23"/>
-  <stop offset="1" stop-color="#fff" stop-opacity=".09"/>
- </linearGradient>
- <filter id="soft">
-  <feGaussianBlur stdDeviation="23"/>
- </filter>
- <clipPath id="clip">
-  <rect width="390" height="616" rx="14"/>
- </clipPath>
-</defs>
 
-<g clip-path="url(#clip)">
- <!-- Wallpaper -->
- <rect width="390" height="616" fill="url(#bg)"/>
- <ellipse cx="320" cy="375" rx="220" ry="270"
-  fill="url(#glow)"/>
- <path d="M-100 485 C70 280 220 510 480 170"
-  fill="none" stroke="#d6d4ec" stroke-opacity=".17"
-  stroke-width="100" filter="url(#soft)"/>
- <circle cx="320" cy="360" r="185" fill="none"
-  stroke="#fff" stroke-opacity=".12"/>
- <circle cx="320" cy="360" r="235" fill="none"
-  stroke="#fff" stroke-opacity=".08"/>
+<div id="phone">
+ <svg id="display" xmlns="http://www.w3.org/2000/svg"
+ viewBox="0 0 390 616" preserveAspectRatio="none">
+ <defs>
+  <linearGradient id="fallback" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#f8e8ee"/>
+   <stop offset=".55" stop-color="#d2d0ee"/>
+   <stop offset="1" stop-color="#9eb5de"/>
+  </linearGradient>
+  <linearGradient id="musicGlass" x1="0" y1="0" x2="1" y2="1">
+   <stop stop-color="#5a6684" stop-opacity=".91"/>
+   <stop offset="1" stop-color="#434e6d" stop-opacity=".95"/>
+  </linearGradient>
+ </defs>
 
- <!-- Lock screen -->
- <g id="lockScreen">
-  <!-- Clock & date -->
-  <text id="date" x="195" y="107"
-   text-anchor="middle" fill="white"
-   font-size="13" font-weight="400"></text>
+ <g id="lockPage">
+  <rect width="390" height="616" fill="url(#fallback)"/>
+  <image id="wallpaper" x="0" y="0"
+   width="390" height="616"
+   preserveAspectRatio="xMidYMid slice"/>
 
-<text id="clock" x="195" y="177"
- text-anchor="middle" fill="white"
- font-size="70" font-weight="600"
- letter-spacing="-2.5">20:28</text>
-
-<!-- Lock icon under front camera -->
-<g transform="translate(188 46)" fill="none"
- stroke="white" stroke-width="1.6"
- stroke-linecap="round"
- stroke-linejoin="round">
- <rect x="0" y="7" width="14" height="12" rx="3"/>
- <path d="M3 7V4a4 4 0 0 1 8 0v3"/>
- <circle cx="7" cy="12.5" r="1.2"
-  fill="white" stroke="none"/>
-</g>
-
-  <!-- Notification -->
-  <g id="notification" class="tap">
-   <rect x="20" y="291" width="350" height="71"
-    rx="20" fill="url(#glass)" stroke="#ffffff"
-    stroke-opacity=".14"/>
-   <rect x="34" y="305" width="36" height="36"
-    rx="12" fill="#ffffff" fill-opacity=".91"/>
-   <g transform="translate(42 315)" fill="none"
-    stroke="#5b789d" stroke-width="1.8"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 1h18v14H8l-7 5z"/>
-    <path d="M5 6h10M5 10h7"/>
-   </g>
-   <text x="82" y="316" fill="white"
-    font-size="12" font-weight="600">ข้อความ</text>
-   <text x="82" y="334" fill="white"
-    font-size="12">อชิ</text>
-   <text x="82" y="349" fill="white"
-    font-size="11" opacity=".83">คุณการันต์ครับ ว่างคุยไหมครับ</text>
-   <rect x="20" y="291" width="350" height="71"
-    rx="20" fill="transparent"/>
+  <g id="lockIcon" fill="none"
+   stroke="#17191e" stroke-width="2"
+   stroke-linecap="round" stroke-linejoin="round">
+   <path d="M-6 0v-5a6 6 0 0 1 12 0v5"/>
+   <rect x="-9" y="0" width="18" height="14" rx="3"/>
+   <circle cx="0" cy="6" r="1.5" fill="#17191e" stroke="none"/>
   </g>
 
-  <!-- Bottom shortcuts -->
-  <g id="phoneShortcut" class="tap">
-   <circle cx="46" cy="560" r="23"
-    fill="#ffffff" fill-opacity=".16"
-    stroke="#ffffff" stroke-opacity=".17"/>
-   <g fill="none" stroke="white" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path d="M39 551l5 0 2 5-3 3
-     c2 4 4 6 8 8l3-3 5 2v5
-     c-9 3-23-11-20-20z"/>
+  <text id="dateText" text-anchor="middle"
+   fill="#302b35" font-size="14" font-weight="500"></text>
+
+  <text id="timeText" text-anchor="middle"
+   fill="#302b35" font-size="72" font-weight="800"
+   letter-spacing="-3"></text>
+
+  <!-- Music widget -->
+  <g id="music">
+   <rect id="musicBG" x="43" y="470"
+    width="304" height="69" rx="22"
+    fill="url(#musicGlass)"/>
+
+   <rect x="55" y="480" width="47" height="47"
+    rx="13" fill="#c9dbe2"/>
+
+   <!-- SVG album art -->
+   <circle cx="78.5" cy="503.5" r="16"
+    fill="#8baab9"/>
+   <circle cx="78.5" cy="503.5" r="11"
+    fill="#e7e8e2"/>
+   <circle cx="78.5" cy="503.5" r="3"
+    fill="#8baab9"/>
+   <path d="M63 514Q78 503 94 514"
+    stroke="#718e9c" fill="none" stroke-width="2"/>
+
+   <text id="songTitle" x="113" y="498"
+    font-size="12" fill="white"
+    font-weight="700">เพลงของการันต์</text>
+
+   <text id="songArtist" x="113" y="513"
+    font-size="10" fill="#e0e5ed">Music Player</text>
+
+   <!-- Previous -->
+   <g id="previous" class="clickable"
+    transform="translate(225 506)"
+    fill="white">
+    <rect x="-14" y="-11" width="2.5" height="22" rx="1"/>
+    <path d="M-10 0L2-10V10Z"/>
+   </g>
+
+   <!-- Play/Pause -->
+   <g id="playButton" class="clickable"
+    transform="translate(269 506)">
+    <path id="playShape" d="M-6-11L11 0-6 11Z"
+     fill="white"/>
+   </g>
+
+   <!-- Next -->
+   <g id="next" class="clickable"
+    transform="translate(316 506)"
+    fill="white">
+    <path d="M-2-10L10 0-2 10Z"/>
+    <rect x="12" y="-11" width="2.5" height="22" rx="1"/>
    </g>
   </g>
 
-  <g id="cameraShortcut" class="tap">
-   <circle cx="344" cy="560" r="23"
-    fill="#ffffff" fill-opacity=".16"
-    stroke="#ffffff" stroke-opacity=".17"/>
-   <g fill="none" stroke="white" stroke-width="1.8"
-    stroke-linejoin="round">
-    <rect x="331" y="552" width="26" height="18" rx="4"/>
-    <path d="M338 552l2-4h8l2 4"/>
-    <circle cx="344" cy="561" r="5"/>
-   </g>
-  </g>
-
-  <text x="195" y="552" text-anchor="middle"
-   fill="#fff" opacity=".83" font-size="10">
+  <text id="swipeText" x="195" y="562"
+   text-anchor="middle" font-size="11"
+   fill="#41404d" opacity=".8">
    ปัดขึ้นเพื่อปลดล็อก
   </text>
+
+  <!-- Shortcuts -->
+  <g id="phoneShortcut" class="clickable">
+   <circle cx="48" cy="573" r="22"
+    fill="#7e86c8" fill-opacity=".75"/>
+   <path d="M40 565l5-1 2 5-3 2
+    q3 5 7 7l3-3 5 2v5
+    q-7 3-14-5t-5-12z"
+    fill="none" stroke="white" stroke-width="2"
+    stroke-linejoin="round"/>
+  </g>
+
+  <g id="cameraShortcut" class="clickable">
+   <circle cx="342" cy="573" r="22"
+    fill="#7e86c8" fill-opacity=".75"/>
+   <g fill="none" stroke="white"
+    stroke-width="1.8" stroke-linejoin="round">
+    <rect x="329" y="565" width="26" height="18" rx="4"/>
+    <path d="M336 565l2-4h8l2 4"/>
+    <circle cx="342" cy="574" r="5"/>
+   </g>
+  </g>
+
+  <rect id="swipeZone" x="95" y="546"
+   width="200" height="70" fill="transparent"
+   class="clickable"/>
  </g>
 
  <!-- PIN screen -->
- <g id="pinScreen" display="none">
-  <rect width="390" height="616"
-   fill="#172235" fill-opacity=".28"/>
+ <g id="pinPage" display="none">
+  <rect width="390" height="616" fill="#b7b5d4"/>
 
-  <text x="195" y="124" text-anchor="middle"
-   fill="white" font-size="19" font-weight="400">
-   กรอกรหัส PIN
-  </text>
+  <text x="195" y="130" text-anchor="middle"
+   font-size="20" fill="#23232b">กรอกรหัส PIN</text>
 
-  <g id="pinDots" fill="none" stroke="white"
-   stroke-width="1.6">
-   <circle cx="147" cy="156" r="5"/>
-   <circle cx="179" cy="156" r="5"/>
-   <circle cx="211" cy="156" r="5"/>
-   <circle cx="243" cy="156" r="5"/>
+  <g id="pinDots" stroke="#23232b"
+   stroke-width="1.7" fill="none">
+   <circle cx="147" cy="164" r="6"/>
+   <circle cx="179" cy="164" r="6"/>
+   <circle cx="211" cy="164" r="6"/>
+   <circle cx="243" cy="164" r="6"/>
   </g>
 
-  <text id="pinError" x="195" y="185"
-   text-anchor="middle" fill="#fff"
-   font-size="11"></text>
+  <text id="pinError" x="195" y="193"
+   text-anchor="middle" fill="#74384d"
+   font-size="12"></text>
 
   <g id="keypad"></g>
-
-  <g id="cancelPin" class="tap">
-   <rect x="12" y="560" width="100" height="35"
-    fill="transparent"/>
-   <text x="62" y="582" text-anchor="middle"
-    fill="white" font-size="13">ยกเลิก</text>
-  </g>
-  <g id="deletePin" class="tap">
-   <rect x="280" y="560" width="100" height="35"
-    fill="transparent"/>
-   <text x="330" y="582" text-anchor="middle"
-    fill="white" font-size="13">ลบ</text>
-  </g>
  </g>
 
- <!-- Placeholder only -->
- <g id="unlocked" display="none">
-  <rect width="390" height="616" fill="#e9eef5"/>
-  <text x="195" y="285" text-anchor="middle"
-   fill="#526c8b" font-size="22">ปลดล็อกสำเร็จ</text>
-  <text x="195" y="313" text-anchor="middle"
-   fill="#788ba2" font-size="12">
+ <g id="unlockedPage" display="none">
+  <rect width="390" height="616" fill="#e8edf5"/>
+  <text x="195" y="290" text-anchor="middle"
+   font-size="22" fill="#4e6786">ปลดล็อกสำเร็จ</text>
+  <text x="195" y="319" text-anchor="middle"
+   font-size="13" fill="#73849c">
    หน้าหลักจะสร้างในขั้นต่อไป
   </text>
  </g>
 
- <!-- System status -->
+ <!-- Status bar -->
  <g id="statusBar">
-  <text x="18" y="24" fill="white"
-   font-size="11.5" font-weight="600">karan</text>
+  <text id="carrier" x="19" y="22"
+   font-size="11" fill="#252630">karan</text>
 
-  <!-- Signal -->
-  <g stroke="white" stroke-width="2"
-   stroke-linecap="round">
-   <path d="M291 24v-4M296 24v-7M301 24v-10M306 24v-13"/>
+  <!-- Silent mode -->
+  <g id="silentIcon" transform="translate(294 12)"
+   fill="none" stroke="#252630"
+   stroke-width="1.5" stroke-linecap="round">
+   <path d="M2 5h3l5-4v14l-5-4H2z"/>
+   <path d="M13 4l6 8M19 4l-6 8"/>
+  </g>
+
+  <!-- Mobile signal -->
+  <g id="signalIcon" stroke="#252630"
+   stroke-width="1.8" stroke-linecap="round">
+   <path d="M323 25v-4M328 25v-7M333 25v-10M338 25v-13"/>
   </g>
 
   <!-- Wi-Fi -->
-  <g fill="none" stroke="white"
-   stroke-width="1.8" stroke-linecap="round">
-   <path d="M315 16q9-8 18 0"/>
-   <path d="M319 20q5-4 10 0"/>
-   <circle cx="324" cy="24" r="1" fill="white"
-    stroke="none"/>
+  <g id="wifiIcon" stroke="#252630"
+   fill="none" stroke-width="1.5"
+   stroke-linecap="round">
+   <path d="M345 16q7-6 14 0"/>
+   <path d="M349 20q3-3 6 0"/>
+   <circle cx="352" cy="23" r="1" fill="#252630" stroke="none"/>
   </g>
 
-  <!-- Battery capsule -->
-<rect x="343" y="11" width="30" height="17"
- rx="7" fill="white" fill-opacity=".22"
- stroke="white" stroke-opacity=".85"
- stroke-width="1"/>
+  <!-- Battery -->
+  <g id="batteryIcon">
+   <rect x="365" y="12" width="20" height="14"
+    rx="6" fill="none" stroke="#252630"
+    stroke-width="1.2"/>
+   <rect x="385.5" y="16" width="2.5" height="6"
+    rx="1" fill="#252630"/>
+   <text x="375" y="22" text-anchor="middle"
+    fill="#252630" font-size="8"
+    font-weight="700">85</text>
+  </g>
+ </g>
 
-<!-- Battery terminal -->
-<rect x="374" y="16" width="3" height="7"
- rx="1.2" fill="white" fill-opacity=".85"/>
+ <!-- Front camera -->
+ <g id="frontCamera">
+  <circle cx="195" cy="17" r="9" fill="#171922"/>
+  <circle cx="195" cy="17" r="6" fill="#05070c"/>
+  <circle cx="193" cy="15" r="1.5"
+   fill="#53617a" opacity=".55"/>
+ </g>
 
-<text x="358" y="23" fill="white"
- text-anchor="middle" font-size="9"
- font-weight="600">85</text>
-
- <!-- Front camera punch hole -->
- <circle cx="195" cy="16" r="7.8" fill="#10141c"/>
- <circle cx="195" cy="16" r="5.1" fill="#05090e"/>
- <circle cx="193.5" cy="14.5" r="1.4"
-  fill="#52627c" opacity=".65"/>
-
- <!-- Navigation gesture bar -->
- <rect id="gestureBar" x="145" y="603"
+ <!-- Navigation gesture -->
+ <rect id="gestureBar" x="145" y="604"
   width="100" height="4" rx="2"
-  fill="white" class="tap"/>
-</g>
-</svg>
+  fill="#252630"/>
+ </svg>
 </div>
 
 <script>
+/* ========================================
+   CONFIG — ปรับทุกอย่างจากตรงนี้
+======================================== */
+
+const CONFIG = {
+ pin:"1906",
+
+ wallpaper:"https://i.ibb.co/WNR6WWjb/IMG-4394.jpg",
+
+ carrier:"karan",
+
+ lock:{
+  x:195,
+  y:48,
+  scale:0.75
+ },
+
+ date:{
+  x:195,
+  y:104,
+  size:14,
+  color:"#302b35"
+ },
+
+ clock:{
+  x:195,
+  y:179,
+  size:72,
+  weight:800,
+  color:"#302b35"
+ },
+
+ status:{
+  color:"#252630",
+  battery:85,
+  showTerminal:true
+ },
+
+ music:{
+  x:0,
+  y:0,
+  title:"เพลงของการันต์",
+  artist:"Music Player",
+  playing:false
+ }
+};
+
+/* ========================================
+   ELEMENTS
+======================================== */
+
 const NS="http://www.w3.org/2000/svg";
 const svg=document.getElementById("display");
-const lock=document.getElementById("lockScreen");
-const pinView=document.getElementById("pinScreen");
-const unlocked=document.getElementById("unlocked");
-const statusBar=document.getElementById("statusBar");
-const pinDots=[...document.querySelectorAll("#pinDots circle")];
+const lockPage=document.getElementById("lockPage");
+const pinPage=document.getElementById("pinPage");
+const unlockedPage=document.getElementById("unlockedPage");
 
-const PIN="1906";
+let currentPage="lock";
 let typed="";
-let page="lock";
-let touchStart=null;
 let busy=false;
+let startY=null;
+
+/* ========================================
+   APPLY CONFIG
+======================================== */
+
+function setAttrs(id,attrs){
+ const el=document.getElementById(id);
+ if(!el)return;
+ for(const [k,v] of Object.entries(attrs)){
+  el.setAttribute(k,v);
+ }
+}
+
+function applyConfig(){
+ setAttrs("wallpaper",{href:CONFIG.wallpaper});
+
+ document.getElementById("carrier").textContent=CONFIG.carrier;
+
+ setAttrs("lockIcon",{
+  transform:`translate(${CONFIG.lock.x} ${CONFIG.lock.y}) scale(${CONFIG.lock.scale})`
+ });
+
+ setAttrs("dateText",{
+  x:CONFIG.date.x,
+  y:CONFIG.date.y,
+  "font-size":CONFIG.date.size,
+  fill:CONFIG.date.color
+ });
+
+ setAttrs("timeText",{
+  x:CONFIG.clock.x,
+  y:CONFIG.clock.y,
+  "font-size":CONFIG.clock.size,
+  "font-weight":CONFIG.clock.weight,
+  fill:CONFIG.clock.color
+ });
+
+ setAttrs("music",{
+  transform:`translate(${CONFIG.music.x} ${CONFIG.music.y})`
+ });
+
+ document.getElementById("songTitle").textContent=
+  CONFIG.music.title;
+ document.getElementById("songArtist").textContent=
+  CONFIG.music.artist;
+
+ document.querySelector("#batteryIcon text").textContent=
+  CONFIG.status.battery;
+
+ document.querySelector("#batteryIcon rect:nth-child(2)")
+  .setAttribute("display",
+   CONFIG.status.showTerminal?"inline":"none");
+
+ ["carrier","silentIcon","signalIcon","wifiIcon","batteryIcon"]
+ .forEach(id=>{
+  const el=document.getElementById(id);
+  if(id==="carrier")el.setAttribute("fill",CONFIG.status.color);
+  else el.setAttribute("color",CONFIG.status.color);
+ });
+
+ updatePlayIcon();
+}
 
 function updateClock(){
  const now=new Date();
- const time=now.toLocaleTimeString("th-TH",{
-  hour:"2-digit",minute:"2-digit",hour12:false
- });
- const date=now.toLocaleDateString("th-TH",{
-  weekday:"long",day:"numeric",month:"long"
- });
- document.getElementById("clock").textContent=time;
- document.getElementById("date").textContent=date;
-}
-updateClock();
-setInterval(updateClock,1000);
 
-function show(pageName){
- page=pageName;
- lock.setAttribute("display",page==="lock"?"inline":"none");
- pinView.setAttribute("display",page==="pin"?"inline":"none");
- unlocked.setAttribute("display",page==="unlocked"?"inline":"none");
- statusBar.setAttribute("display",page==="unlocked"?"none":"inline");
- document.getElementById("gestureBar")
- .setAttribute("fill",page==="unlocked"?"#526c8b":"white");
+ document.getElementById("timeText").textContent=
+  now.toLocaleTimeString("th-TH",{
+   hour:"2-digit",minute:"2-digit",hour12:false
+  });
+
+ document.getElementById("dateText").textContent=
+  now.toLocaleDateString("th-TH",{
+   weekday:"short",day:"numeric",month:"long"
+  });
 }
 
-function openPin(){
- if(page!=="lock")return;
+/* ========================================
+   MUSIC CONTROLS
+======================================== */
+
+function updatePlayIcon(){
+ document.getElementById("playShape").setAttribute(
+  "d",
+  CONFIG.music.playing
+   ?"M-7-11H-2V11H-7ZM3-11H8V11H3Z"
+   :"M-6-11L11 0-6 11Z"
+ );
+}
+
+document.getElementById("playButton")
+ .addEventListener("click",()=>{
+  CONFIG.music.playing=!CONFIG.music.playing;
+  updatePlayIcon();
+ });
+
+document.getElementById("previous")
+ .addEventListener("click",()=>{
+  CONFIG.music.playing=false;
+  updatePlayIcon();
+ });
+
+document.getElementById("next")
+ .addEventListener("click",()=>{
+  CONFIG.music.playing=false;
+  updatePlayIcon();
+ });
+
+/* ========================================
+   SCREEN NAVIGATION
+======================================== */
+
+function showPage(page){
+ currentPage=page;
+ lockPage.setAttribute("display",page==="lock"?"inline":"none");
+ pinPage.setAttribute("display",page==="pin"?"inline":"none");
+ unlockedPage.setAttribute("display",page==="unlocked"?"inline":"none");
+ document.getElementById("statusBar").setAttribute(
+  "display",page==="unlocked"?"none":"inline"
+ );
+}
+
+function openPIN(){
+ if(currentPage!=="lock")return;
  typed="";
  busy=false;
- document.getElementById("pinError").textContent="";
  updateDots();
- show("pin");
+ document.getElementById("pinError").textContent="";
+ showPage("pin");
 }
 
 function updateDots(){
- pinDots.forEach((dot,i)=>{
-  dot.setAttribute("fill",i<typed.length?"white":"none");
+ document.querySelectorAll("#pinDots circle")
+ .forEach((dot,i)=>{
+  dot.setAttribute("fill",i<typed.length?"#23232b":"none");
  });
 }
 
-function press(value){
- if(page!=="pin"||busy)return;
+function pressPIN(value){
+ if(currentPage!=="pin"||busy)return;
+
+ if(value==="cancel"){
+  showPage("lock");
+  return;
+ }
+
  if(value==="delete"){
   typed=typed.slice(0,-1);
   updateDots();
   return;
  }
- if(value==="cancel"){
-  show("lock");
-  return;
- }
+
  if(typed.length>=4)return;
+
  typed+=value;
  updateDots();
 
  if(typed.length===4){
   busy=true;
-  if(typed===PIN){
+  if(typed===CONFIG.pin){
    setTimeout(()=>{
     busy=false;
-    show("unlocked");
-   },180);
+    showPage("unlocked");
+   },200);
   }else{
-   document.getElementById("pinError")
-    .textContent="รหัส PIN ไม่ถูกต้อง";
+   document.getElementById("pinError").textContent=
+    "รหัส PIN ไม่ถูกต้อง";
    setTimeout(()=>{
     typed="";
     busy=false;
     updateDots();
-   },500);
+   },450);
   }
  }
 }
 
-const positions=[
- ["1",85,265],["2",195,265],["3",305,265],
- ["4",85,353],["5",195,353],["6",305,353],
- ["7",85,441],["8",195,441],["9",305,441],
- ["0",195,529]
+/* ========================================
+   SVG PIN KEYPAD
+======================================== */
+
+const keys=[
+ ["1",85,260],["2",195,260],["3",305,260],
+ ["4",85,346],["5",195,346],["6",305,346],
+ ["7",85,432],["8",195,432],["9",305,432],
+ ["ยกเลิก",85,520],["0",195,520],["ลบ",305,520]
 ];
 
 const keypad=document.getElementById("keypad");
 
-positions.forEach(([value,x,y])=>{
+keys.forEach(([value,x,y])=>{
  const g=document.createElementNS(NS,"g");
- g.setAttribute("class","tap");
+ g.setAttribute("class","clickable");
 
  const circle=document.createElementNS(NS,"circle");
  circle.setAttribute("cx",x);
  circle.setAttribute("cy",y);
  circle.setAttribute("r",38);
  circle.setAttribute("fill","#ffffff");
- circle.setAttribute("fill-opacity",".13");
+ circle.setAttribute("fill-opacity",".3");
 
- const text=document.createElementNS(NS,"text");
- text.setAttribute("x",x);
- text.setAttribute("y",y+9);
- text.setAttribute("text-anchor","middle");
- text.setAttribute("fill","white");
- text.setAttribute("font-size","28");
- text.setAttribute("font-weight","400");
- text.textContent=value;
+ const label=document.createElementNS(NS,"text");
+ label.setAttribute("x",x);
+ label.setAttribute("y",y+(value.length>1?5:10));
+ label.setAttribute("text-anchor","middle");
+ label.setAttribute("fill","#23232b");
+ label.setAttribute("font-size",value.length>1?13:29);
+ label.textContent=value;
 
- g.append(circle,text);
- g.addEventListener("click",()=>press(value));
+ g.append(circle,label);
+
+ g.addEventListener("click",()=>{
+  pressPIN(
+   value==="ยกเลิก"?"cancel":
+   value==="ลบ"?"delete":value
+  );
+ });
+
  keypad.appendChild(g);
 });
 
-document.getElementById("cancelPin")
- .addEventListener("click",()=>press("cancel"));
-document.getElementById("deletePin")
- .addEventListener("click",()=>press("delete"));
+/* ========================================
+   SWIPE
+======================================== */
 
-document.getElementById("notification")
- .addEventListener("click",openPin);
+function screenY(e){
+ const r=svg.getBoundingClientRect();
+ return (e.clientY-r.top)*616/r.height;
+}
+
+svg.addEventListener("pointerdown",e=>{
+ if(currentPage==="lock")startY=screenY(e);
+});
+
+svg.addEventListener("pointerup",e=>{
+ if(currentPage!=="lock"||startY===null)return;
+ const distance=startY-screenY(e);
+ startY=null;
+ if(distance>35)openPIN();
+});
+
+svg.addEventListener("pointercancel",()=>{
+ startY=null;
+});
+
+document.getElementById("swipeZone")
+ .addEventListener("click",openPIN);
 
 document.getElementById("phoneShortcut")
- .addEventListener("click",openPin);
+ .addEventListener("click",openPIN);
 
 document.getElementById("cameraShortcut")
- .addEventListener("click",openPin);
-
-document.getElementById("gestureBar")
- .addEventListener("click",()=>{
-  if(page==="lock")openPin();
- });
-
-function getY(e){
- const rect=svg.getBoundingClientRect();
- return (e.clientY-rect.top)*616/rect.height;
-}
-svg.addEventListener("pointerdown",e=>{
- if(page!=="lock")return;
- touchStart=getY(e);
-});
-svg.addEventListener("pointerup",e=>{
- if(page!=="lock"||touchStart===null)return;
- const diff=touchStart-getY(e);
- touchStart=null;
- if(diff>35)openPin();
-});
-svg.addEventListener("pointercancel",()=>{
- touchStart=null;
-});
+ .addEventListener("click",openPIN);
 
 document.addEventListener("keydown",e=>{
- if(page==="pin"){
-  if(/^[0-9]$/.test(e.key))press(e.key);
-  else if(e.key==="Backspace")press("delete");
-  else if(e.key==="Escape")press("cancel");
- }
- if(page==="lock"&&(e.key==="Enter"||e.key==="ArrowUp")){
-  openPin();
+ if(currentPage==="pin"){
+  if(/^[0-9]$/.test(e.key))pressPIN(e.key);
+  if(e.key==="Backspace")pressPIN("delete");
+  if(e.key==="Escape")pressPIN("cancel");
  }
 });
 
-show("lock");
+/* ========================================
+   START
+======================================== */
+
+applyConfig();
+updateClock();
+setInterval(updateClock,1000);
+showPage("lock");
 </script>
+
 </body>
 </html>

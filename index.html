@@ -46,6 +46,13 @@ svg text{
  -webkit-user-select:none;
 }
 .clickable{cursor:pointer}
+#dateText,
+#timeText {
+  paint-order: stroke fill;
+  stroke: rgba(42, 38, 60, 0.18);
+  stroke-width: 0.7px;
+  filter: drop-shadow(0 1.5px 3px rgba(35,30,55,.32));
+}
 </style>
 </head>
 
@@ -86,19 +93,36 @@ svg text{
   href="https://i.ibb.co/WNR6WWjb/IMG-4394.jpg"/>
 
  <!-- Lock icon -->
- <g id="lockIcon"
-  transform="translate(195 49) scale(.75)"
-  fill="none"
-  stroke="#17191e"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round">
+<!-- Solid black lock -->
+<g id="lockIcon"
+ transform="translate(195 49) scale(.75)"
+ fill="#17171D">
 
-  <path d="M-6 0v-5a6 6 0 0 1 12 0v5"/>
-  <rect x="-9" y="0" width="18" height="14" rx="3"/>
-  <circle cx="0" cy="6" r="1.5"
-   fill="#17191e" stroke="none"/>
- </g>
+ <!-- Shackle -->
+ <path d="
+  M-6 1
+  V-5
+  A6 6 0 0 1 6 -5
+  V1
+  H3
+  V-5
+  A3 3 0 0 0 -3 -5
+  V1
+  Z"/>
+
+ <!-- Lock body -->
+ <rect x="-9" y="0"
+  width="18" height="15"
+  rx="3.2"/>
+
+ <!-- White keyhole -->
+ <circle cx="0" cy="6"
+  r="2"
+  fill="#FFFFFF"/>
+
+ <path d="M-1 7.5H1L1.5 11H-1.5Z"
+  fill="#FFFFFF"/>
+</g>
 
  <!-- Date -->
  <text id="dateText"
@@ -314,27 +338,48 @@ svg text{
    fill="#35313B" stroke="none"/>
  </g>
 
- <!-- Battery with terminal -->
- <g id="batteryIcon">
-  <rect x="365" y="12"
-   width="20" height="14"
-   rx="6"
-   fill="none"
-   stroke="#35313B"
-   stroke-width="1.2"/>
+ <!-- Battery -->
+<g id="batteryIcon">
 
-  <rect id="batteryTerminal"
-   x="385.5" y="16"
-   width="2.5" height="6"
-   rx="1" fill="#35313B"/>
+ <defs>
+  <clipPath id="batteryClip">
+   <rect x="365" y="12"
+    width="20" height="14" rx="6"/>
+  </clipPath>
+ </defs>
 
-  <text id="batteryLevel"
-   x="375" y="22"
-   text-anchor="middle"
-   font-size="8"
-   font-weight="700"
-   fill="#35313B">85</text>
- </g>
+ <!-- Battery outline -->
+ <rect x="365" y="12"
+  width="20" height="14"
+  rx="6"
+  fill="#FFFFFF"
+  fill-opacity=".12"
+  stroke="#24242B"
+  stroke-width="1.4"/>
+
+ <!-- Filled battery level -->
+ <rect id="batteryFill"
+  x="365" y="12"
+  width="17" height="14"
+  fill="#24242B"
+  clip-path="url(#batteryClip)"/>
+
+ <!-- Terminal -->
+ <rect id="batteryTerminal"
+  x="385" y="16"
+  width="3" height="6"
+  rx="1"
+  fill="#24242B"/>
+
+ <!-- Percentage -->
+ <text id="batteryLevel"
+  x="375" y="22"
+  text-anchor="middle"
+  font-size="8"
+  font-weight="800"
+  fill="#FFFFFF">85</text>
+
+</g>
 
 </g>
 
@@ -371,7 +416,7 @@ const CONFIG = {
 
  carrier: "karan",
 
- textColor: "#F5F1F2",
+ textColor: "#F7F4F8",
 
  lock: {
   x: 195,
@@ -528,7 +573,14 @@ function applyConfig() {
    `translate(${rightX-344} ${bottomY-572})`
  });
 
- byId("batteryLevel").textContent=c.battery.level;
+const level = Math.max(0, Math.min(100, c.battery.level));
+
+byId("batteryLevel").textContent = level;
+
+byId("batteryFill").setAttribute(
+  "width",
+  20 * level / 100
+);
  byId("batteryTerminal").setAttribute(
   "display",c.battery.showTerminal?"inline":"none"
  );

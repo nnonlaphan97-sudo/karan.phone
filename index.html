@@ -1,1 +1,1220 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>KARAN'S PHONE</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --ink:#23364b;--muted:#74869a;--line:#e4eaf0;
+ --blue:#718eaf;--pink:#c990a6;--paper:#fff;
+}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+ font-family:Arial,"Noto Sans Thai",sans-serif;
+ background:#152232;color:var(--ink);
+ display:flex;align-items:center;justify-content:center;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+#phone{
+ position:relative;width:min(100vw,430px);
+ height:min(100dvh,920px);overflow:hidden;
+ background:#edf2f8;border-radius:27px;
+ box-shadow:0 18px 65px #0006;
+}
+@media(max-width:500px){#phone{border-radius:0;height:100dvh}}
+#screen{position:absolute;inset:0;overflow:hidden}
+#status{
+ position:absolute;top:0;left:0;right:0;height:37px;
+ z-index:20;display:flex;align-items:center;
+ justify-content:space-between;padding:0 19px;
+ font-size:12px;font-weight:600;pointer-events:none;
+}
+#status.light{color:#fff}
+#status.dark{color:#23364b}
+.status-right{display:flex;align-items:center;gap:8px}
+.status-right svg{width:18px;height:18px}
+#camera{
+ position:absolute;z-index:25;top:9px;left:50%;
+ transform:translateX(-50%);width:12px;height:12px;
+ background:#101820;border:3px solid #354455;
+ border-radius:50%;pointer-events:none;
+}
+#nav{
+ position:absolute;bottom:0;left:0;right:0;
+ height:27px;z-index:20;display:flex;
+ justify-content:center;align-items:center;
+}
+#nav button{
+ width:112px;height:5px;border:0;border-radius:9px;
+ background:#283c50;
+}
+#nav.light button{background:#fff}
+.view{position:absolute;inset:0;overflow:hidden}
+.wallpaper{
+ background:linear-gradient(150deg,#7088aa 0%,#9da9c5 42%,#cbb4c5 75%,#e9d8d2 100%);
+}
+.wallpaper:before{
+ content:"";position:absolute;width:420px;height:420px;
+ border:1px solid #ffffff55;border-radius:50%;
+ top:22%;left:23%;box-shadow:0 0 0 75px #ffffff08,0 0 0 150px #ffffff08;
+}
+.lock-date{position:absolute;top:15%;width:100%;text-align:center;color:white}
+.lock-date .date{font-size:15px}
+.lock-date .time{font-size:75px;font-weight:300;letter-spacing:-4px}
+.lock-note{
+ position:absolute;top:48%;left:6%;right:6%;
+ background:#ffffff32;backdrop-filter:blur(18px);
+ border:1px solid #ffffff45;border-radius:19px;
+ padding:17px;color:#fff;
+}
+.lock-note small{opacity:.8}
+.lock-bottom{
+ position:absolute;bottom:65px;width:100%;
+ text-align:center;color:#fff;font-size:13px;
+}
+.lock-bottom button{
+ border:1px solid #ffffff99;background:#ffffff24;
+ color:#fff;border-radius:25px;padding:11px 24px;
+}
+.pin-view{background:linear-gradient(#8095b6,#d4c2d0)}
+.pin-title{position:absolute;top:17%;width:100%;text-align:center;color:white}
+.pin-title h2{font-weight:400;font-size:22px}
+.dots{display:flex;justify-content:center;gap:16px;margin-top:25px}
+.dot{width:13px;height:13px;border:1.5px solid white;border-radius:50%}
+.dot.filled{background:white}
+.keypad{
+ position:absolute;bottom:13%;left:12%;width:76%;
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:14px 20px;
+}
+.key{
+ border:0;background:#ffffff22;color:white;
+ width:100%;aspect-ratio:1.15;border-radius:50%;
+ font-size:28px;
+}
+.key.sub{font-size:14px}
+.home{background:linear-gradient(160deg,#c6d7e9,#f4e5eb)}
+.home-head{position:absolute;top:10%;left:8%}
+.home-head .temp{font-size:43px;font-weight:300}
+.home-head small{display:block;color:#60758e}
+.app-grid{
+ position:absolute;top:35%;left:6%;right:6%;
+ display:grid;grid-template-columns:repeat(4,1fr);
+ gap:25px 9px;
+}
+.app-button{
+ border:0;background:none;color:#34495f;
+ display:flex;flex-direction:column;align-items:center;gap:7px;
+ font-size:11px;min-width:0;
+}
+.app-icon{
+ width:56px;height:56px;border-radius:17px;
+ display:flex;align-items:center;justify-content:center;
+ background:#fff;box-shadow:0 5px 15px #536a8125;
+}
+.app-icon svg{width:29px;height:29px}
+.dock{
+ position:absolute;bottom:65px;left:7%;right:7%;
+ background:#ffffff80;border-radius:24px;padding:12px;
+ display:flex;justify-content:space-around;
+}
+.app{background:#fff;padding-top:37px;padding-bottom:29px}
+.app-header{
+ height:55px;border-bottom:1px solid var(--line);
+ display:flex;align-items:center;padding:0 15px;gap:13px;
+ font-weight:600;font-size:18px;
+}
+.icon-btn{
+ width:32px;height:32px;border:0;background:transparent;
+ display:grid;place-items:center;color:var(--ink);
+}
+.icon-btn svg{width:23px;height:23px}
+.app-body{
+ height:calc(100% - 55px);overflow-y:auto;
+ padding:17px 16px 45px;
+ scrollbar-width:thin;
+}
+.item{
+ display:flex;gap:12px;align-items:center;
+ border-bottom:1px solid var(--line);
+ padding:14px 2px;background:none;
+ width:100%;text-align:left;color:inherit;
+}
+.item.click{border-left:0;border-right:0;border-top:0;cursor:pointer}
+.avatar{
+ flex:none;width:45px;height:45px;border-radius:50%;
+ display:grid;place-items:center;background:#e1eaf5;
+ color:#536f90;font-size:17px;font-weight:bold;
+}
+.item-main{flex:1;min-width:0}
+.item-title{font-size:15px;font-weight:600}
+.item-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.item-time{font-size:10px;color:var(--muted)}
+.chat{
+ background:#d8e0eb;display:flex;flex-direction:column;
+ height:calc(100% - 55px);
+}
+.chat-scroll{flex:1;overflow:auto;padding:17px 13px}
+.bubble{
+ max-width:83%;padding:11px 13px;border-radius:15px;
+ background:white;font-size:14px;line-height:1.65;
+ margin:9px 0;white-space:pre-wrap;
+}
+.bubble.me{margin-left:auto;background:#c8e8cf}
+.chat-actions{
+ background:#fff;padding:12px;display:flex;
+ flex-direction:column;gap:8px;max-height:45%;
+ overflow:auto;
+}
+.choice{
+ background:#fff;border:1px solid #d9e2eb;border-radius:12px;
+ padding:11px 13px;color:#334b63;text-align:left;
+ font-size:13px;line-height:1.5;
+}
+.choice:active,.choice:hover{background:#eef4fa}
+.primary{
+ background:#718eaf;border:0;color:white;border-radius:12px;
+ padding:12px 17px;font-size:14px;
+}
+.secondary{
+ background:#eef2f7;border:0;color:#536c88;border-radius:12px;
+ padding:12px 17px;font-size:14px;
+}
+.panel{
+ background:#f4f7fa;border:1px solid #e5ebf2;
+ border-radius:16px;padding:16px;margin-bottom:13px;
+ font-size:14px;line-height:1.65;
+}
+.panel h3{margin:0 0 8px;font-size:16px}
+.panel p{margin:6px 0}
+.muted{color:var(--muted);font-size:12px}
+.tag{
+ display:inline-block;border-radius:20px;background:#e5edf7;
+ padding:4px 9px;font-size:11px;color:#5a7392;
+}
+.mail-head{border-bottom:1px solid var(--line);padding-bottom:14px}
+.mail-head h2{font-size:20px;line-height:1.4}
+.mail-content{font-size:14px;line-height:1.9;white-space:pre-wrap}
+.gallery-grid{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:9px;
+}
+.photo{
+ aspect-ratio:1;border-radius:12px;
+ display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:9px;text-align:center;
+ background:linear-gradient(145deg,#d4e2ed,#eadce7);
+ padding:15px;font-size:12px;
+}
+.photo svg{width:52px;height:52px}
+.scene{padding:8px 0 20px}
+.scene h2{font-size:21px;margin:8px 0}
+.scene p{font-size:14px;line-height:1.8}
+.scene-options{display:grid;gap:9px;margin-top:20px}
+.overlay{
+ position:absolute;inset:37px 0 27px;
+ background:#ffffff;z-index:12;
+ display:flex;flex-direction:column;
+}
+.overlay-content{overflow:auto;flex:1;padding:20px}
+.toast{
+ position:absolute;z-index:40;bottom:55px;left:8%;right:8%;
+ background:#273e55;color:white;padding:13px 17px;
+ border-radius:14px;text-align:center;font-size:13px;
+}
+.card-preview{
+ width:100%;aspect-ratio:3/4;
+ padding:22px;display:flex;align-items:center;
+ justify-content:center;position:relative;
+}
+.card-inner{
+ width:100%;height:100%;border:1px solid currentColor;
+ display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:19px;text-align:center;
+ padding:18px;
+}
+.card-names{font-size:30px;font-family:Georgia,serif;line-height:1.3}
+.card-label{font-size:11px;letter-spacing:3px}
+.card-message{font-size:14px;line-height:1.8;white-space:pre-wrap}
+.form-label{font-size:12px;color:#63778c;margin:15px 0 7px}
+.form-input{
+ width:100%;border:1px solid #dce4ec;border-radius:10px;
+ padding:12px;color:#34475a;background:white;
+}
+.swatches{display:flex;gap:10px}
+.swatch{
+ width:36px;height:36px;border-radius:50%;
+ border:2px solid #ffffff;outline:1px solid #ccd6df;
+}
+.swatch.selected{outline:3px solid #5c789a}
+#finalCard{
+ position:absolute;inset:0;z-index:30;
+ display:none;align-items:center;justify-content:center;
+ padding:24px;
+}
+.final-tools{
+ position:absolute;bottom:30px;left:0;right:0;
+ display:flex;justify-content:center;gap:10px;
+}
+.final-tools button{font-size:12px}
+</style>
+</head>
+<body>
+<div id="phone">
+ <div id="screen"></div>
+ <div id="status" class="light"></div>
+ <div id="camera"></div>
+ <div id="nav" class="light">
+  <button onclick="goHome()" aria-label="กลับหน้าหลัก"></button>
+ </div>
+ <div id="finalCard"></div>
+</div>
+
+<script>
+"use strict";
+
+/* SVG ICON SYSTEM — ไม่มี Emoji */
+const paths={
+ back:'<path d="M15 18l-6-6 6-6"/>',
+ home:'<path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/>',
+ message:'<path d="M4 4h16v13H8l-4 4z"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/>',
+ calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',
+ gallery:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="2"/><path d="m4 18 6-6 4 4 3-3 4 5"/>',
+ note:'<path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h5"/>',
+ browser:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-6 5-6 13 0 18M12 3c6 5 6 13 0 18"/>',
+ map:'<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2zM9 3v16M15 5v16"/>',
+ phone:'<path d="M6 3h4l1 5-2 2c1 3 3 5 6 6l2-2 4 1v4c-1 2-4 2-7 1C8 18 4 14 3 8c-1-3 0-5 3-5z"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 3"/>',
+ heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/>',
+ flower:'<circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="6" rx="3" ry="4"/><ellipse cx="12" cy="18" rx="3" ry="4"/><ellipse cx="6" cy="12" rx="4" ry="3"/><ellipse cx="18" cy="12" rx="4" ry="3"/>',
+ ring:'<circle cx="12" cy="14" r="7"/><path d="m8 7 4-5 4 5z"/>',
+ coffee:'<path d="M4 9h13v6a6 6 0 0 1-12 0V9zM17 10h2a3 3 0 0 1 0 6h-2M3 22h16M8 3v3M13 3v3"/>',
+ pen:'<path d="m4 20 5-1 12-12-4-4L5 15zM15 5l4 4M4 20l1-5"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+ check:'<path d="m4 12 5 5L20 6"/>',
+ lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+ wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M9 17a4 4 0 0 1 6 0"/><circle cx="12" cy="21" r="1" fill="currentColor" stroke="none"/>',
+ battery:'<rect x="2" y="6" width="18" height="12" rx="3"/><path d="M22 10v4"/><rect x="5" y="9" width="12" height="6" rx="1" fill="currentColor" stroke="none"/>',
+ signal:'<path d="M3 20v-4M8 20v-8M13 20V8M18 20V4"/>',
+ plane:'<path d="m2 16 20-12-7 17-4-8-9 3z"/>',
+ briefcase:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V4h8v3M3 13h18"/>'
+};
+function icon(name,size=24){
+ return `<svg width="${size}" height="${size}" viewBox="0 0 24 24"
+ fill="none" stroke="currentColor" stroke-width="1.7"
+ stroke-linecap="round" stroke-linejoin="round"
+ aria-hidden="true">${paths[name]||paths.note}</svg>`;
+}
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ })[c]);
+}
+
+const STORAGE="karan_phone_v1";
+const initial={
+ stage:0,step:0,started:0,elapsed:0,datingTime:0,
+ flags:{},history:[],card:{
+  theme:"cream",style:"classic",names:"Karan & Achi",
+  message:"จากวันแรกที่แอบรัก\nสู่วันที่ได้รักกันตลอดไป"
+ },finished:false
+};
+let state;
+try{
+ state=JSON.parse(localStorage.getItem(STORAGE))||structuredClone(initial);
+}catch(e){state=structuredClone(initial)}
+state.flags||={};
+state.history||=[];
+state.card||=structuredClone(initial.card);
+
+let current="lock",pin="",previousApp="home";
+let timerInterval=null;
+const screen=document.getElementById("screen");
+const status=document.getElementById("status");
+const nav=document.getElementById("nav");
+const finalCard=document.getElementById("finalCard");
+
+function save(){localStorage.setItem(STORAGE,JSON.stringify(state))}
+function clockNow(){
+ return new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit",hour12:false});
+}
+function renderStatus(light=false){
+ status.className=light?"light":"dark";
+ status.innerHTML=`<span>karan</span><div class="status-right">
+ ${icon("signal",16)}${icon("wifi",17)}${icon("battery",19)}
+ </div>`;
+ nav.className=light?"light":"";
+}
+function setScreen(html,light=false){
+ screen.innerHTML=html;renderStatus(light);
+}
+function toast(msg){
+ document.querySelector(".toast")?.remove();
+ let el=document.createElement("div");
+ el.className="toast";el.textContent=msg;
+ document.getElementById("phone").appendChild(el);
+ setTimeout(()=>el.remove(),2600);
+}
+function startTimer(){
+ if(!state.started){state.started=Date.now();save()}
+ if(timerInterval)clearInterval(timerInterval);
+ timerInterval=setInterval(()=>{
+  if(state.started&&!state.finished){
+   state.elapsed=Math.floor((Date.now()-state.started)/1000);
+  }
+ },1000);
+}
+function formatTime(sec){
+ let h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
+ return h?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`
+ :`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function renderLock(){
+ current="lock";finalCard.style.display="none";
+ setScreen(`<div class="view wallpaper">
+ <div class="lock-date">
+ <div class="date">${new Date().toLocaleDateString("th-TH",{weekday:"long",day:"numeric",month:"long"})}</div>
+ <div class="time">${clockNow()}</div>
+ ${icon("lock",18)}
+ </div>
+ <div class="lock-note" onclick="renderPin()">
+ <small>LINE · อชิ</small>
+ <div style="margin-top:8px;font-size:14px">คุณการันต์ครับ ว่างคุยไหมครับ</div>
+ </div>
+ <div class="lock-bottom">
+ <button onclick="renderPin()">ปัดขึ้นเพื่อปลดล็อก</button>
+ </div></div>`,true);
+ let y=0;
+ screen.ontouchstart=e=>y=e.touches[0].clientY;
+ screen.ontouchend=e=>{
+  if(y-e.changedTouches[0].clientY>35)renderPin();
+ };
+}
+function renderPin(){
+ current="pin";pin="";screen.ontouchstart=null;screen.ontouchend=null;
+ drawPin();
+}
+function drawPin(){
+ let keys=[1,2,3,4,5,6,7,8,9,"ยกเลิก",0,"ลบ"];
+ setScreen(`<div class="view pin-view">
+ <div class="pin-title">
+ ${icon("lock",26)}
+ <h2>กรอกรหัสผ่าน</h2>
+ <div class="dots">${[0,1,2,3].map(i=>`<div class="dot ${pin.length>i?"filled":""}"></div>`).join("")}</div>
+ </div>
+ <div class="keypad">
+ ${keys.map(k=>`<button class="key ${typeof k==="string"?"sub":""}"
+ onclick="pressPin('${k}')">${k}</button>`).join("")}
+ </div></div>`,true);
+}
+function pressPin(k){
+ if(k==="ยกเลิก"){renderLock();return}
+ if(k==="ลบ"){pin=pin.slice(0,-1);drawPin();return}
+ pin+=k;
+ if(pin.length===4){
+  if(pin==="1906"){startTimer();goHome();return}
+  pin="";drawPin();toast("รหัสผ่านไม่ถูกต้อง");
+  return;
+ }
+ drawPin();
+}
+const apps=[
+ ["LINE","message","#bce6c8"],
+ ["Gmail","mail","#f4d4d8"],
+ ["รูปภาพ","gallery","#d7d5f0"],
+ ["โน้ต","note","#f6e3b5"],
+ ["ปฏิทิน","calendar","#d6e3f3"],
+ ["เบราว์เซอร์","browser","#d0e9ed"],
+ ["แผนที่","map","#d9e9cf"],
+ ["โทรศัพท์","phone","#c9e7d5"],
+ ["นาฬิกา","clock","#e5ddf3"]
+];
+function appTile(a){
+ return `<button class="app-button" onclick="openApp('${a[0]}')">
+ <div class="app-icon" style="background:${a[2]}">${icon(a[1],29)}</div>
+ <span>${a[0]}</span></button>`;
+}
+function goHome(){
+ if(current==="lock"||current==="pin"){renderPin();return}
+ if(state.finished){showFinalCard();return}
+ current="home";
+ setScreen(`<div class="view home">
+ <div class="home-head">
+ ${icon("sun",31)}
+ <div class="temp">29°</div>
+ <small>อากาศแจ่มใส</small><small>กรุงเทพมหานคร</small>
+ </div>
+ <div class="app-grid">${apps.map(appTile).join("")}</div>
+ <div class="dock">${apps.slice(0,4).map(a=>`
+ <button class="app-button" onclick="openApp('${a[0]}')">
+ <div class="app-icon" style="background:${a[2]}">${icon(a[1])}</div>
+ </button>`).join("")}</div>
+ </div>`);
+}
+function appShell(title,body){
+ current=title;
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="goHome()">${icon("back")}</button>
+ <span>${escapeHTML(title)}</span></div>
+ <div class="app-body">${body}</div>
+ </div>`);
+}
+function openApp(name){
+ if(name==="LINE"){renderLine();return}
+ if(name==="Gmail"){renderMail();return}
+ if(name==="รูปภาพ"){renderGallery();return}
+ if(name==="โน้ต"){renderNotes();return}
+ if(name==="ปฏิทิน"){renderCalendar();return}
+ if(name==="เบราว์เซอร์"){renderBrowser();return}
+ if(name==="แผนที่"){renderMaps();return}
+ if(name==="โทรศัพท์"){renderPhone();return}
+ if(name==="นาฬิกา"){renderClock();return}
+}
+
+/* เนื้อเรื่อง — แต่ละเหตุการณ์มีผลต่อตัวเลือกและความทรงจำ */
+const chapters=[
+ {
+ title:"ข้อความที่ยังไม่ได้ตอบ",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ",
+ "ขอบคุณสำหรับวันก่อนนะครับ",
+ "ผมยังไม่รู้จะตอบเรื่องไปกินข้าวยังไงดี"
+ ],
+ choices:[
+ ["ไม่เป็นไรครับ อชิสะดวกเมื่อไหร่ค่อยบอกผมก็ได้","gentle",
+  "ขอบคุณนะครับ งั้นผมขอคิดอีกนิดนะครับ"],
+ ["ผมอยากไปกับอชิจริง ๆ นะครับ","direct",
+  "ผมรู้ครับ ขอบคุณที่บอกตรง ๆ นะครับ"],
+ ["ถ้าอชิไม่สะดวก เราไปวันอื่นก็ได้ครับ","patient",
+  "ได้ครับ ไว้เราค่อยนัดกันนะครับ"]
+ ]
+ },
+ {
+ title:"ความทรงจำเรื่องปากกา",
+ from:"ป่า",
+ incoming:[
+ "มึง ยังไม่นอนอีกเหรอ",
+ "พรุ่งนี้จะชวนอชิไปไหน",
+ "อย่าบอกนะว่ามึงกำลังเปิดดูแผนเดตอีกแล้ว"
+ ],
+ choices:[
+ ["กูอยากให้เขามีความสุข","care",
+  "กูรู้ แต่บางทีมึงก็ต้องปล่อยให้เขาเลือกบ้าง"],
+ ["กูไม่อยากทำอะไรพลาด","worry",
+  "คนเราพลาดกันได้ มึงไม่ได้ขายงานลูกค้าอยู่นะ"],
+ ["กูว่าจะชวนเขาไปร้านที่เคยคุยกัน","memory",
+  "ดีนี่ อย่างน้อยก็เป็นที่ที่พวกมึงอยากไปจริง ๆ"]
+ ]
+ },
+ {
+ title:"คำชวนครั้งสำคัญ",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ",
+ "เรื่องที่คุณเคยชวนผมไปเที่ยว",
+ "ผมคิดดูแล้วนะครับ"
+ ],
+ choices:[
+ ["ผมยังอยากไปกับอชิครับ","date",
+  "งั้นวันเสาร์นี้เราไปด้วยกันนะครับ"],
+ ["ถ้าอชิสะดวก เราไปกันไหมครับ","date",
+  "ครับ ผมว่างวันเสาร์พอดี"],
+ ["อชิอยากไปที่ไหนครับ","date",
+  "ผมอยากไปเดินเล่นกับคุณการันต์ครับ"]
+ ]
+ },
+ {
+ title:"คืนก่อนวันเดต",
+ from:"ป่า",
+ incoming:[
+ "เมล็ดกาแฟจากลำพูนมาถึงแล้วนะมึง",
+ "แต่กูลองชงแล้ว มันเข้มมาก",
+ "มึงแน่ใจนะว่าอชิชอบกาแฟแบบนี้"
+ ],
+ choices:[
+ ["ช่วยปรับสูตรให้อ่อนลงหน่อย","coffeeSoft",
+  "ได้ เดี๋ยวกูเตรียมไว้ให้"],
+ ["กูจะลองถามอชิดูก่อน","coffeeAsk",
+  "เออ แบบนี้ค่อยเข้าท่าหน่อย"],
+ ["ใช้สูตรเดิมก่อน เดี๋ยวกูดูอีกที","coffeeStrong",
+  "ตามใจมึง แต่กูเตือนแล้วนะ"]
+ ]
+ },
+ {
+ title:"แผนเดตที่เปลี่ยนไป",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ",
+ "วันนี้ไม่ต้องพาผมไปที่แพง ๆ ก็ได้นะครับ",
+ "ผมอยากเที่ยวแบบสบาย ๆ มากกว่า"
+ ],
+ choices:[
+ ["ได้ครับ เราเที่ยวแบบสบาย ๆ กัน","simple",
+  "ดีเลยครับ ผมกำลังอยากเดินเล่นพอดี"],
+ ["ผมเตรียมอะไรไว้แล้วนิดหน่อยครับ","surprise",
+  "นิดหน่อยนี่แค่ไหนเหรอครับ"],
+ ["อชิอยากแวะที่ไหนเป็นพิเศษไหมครับ","listen",
+  "มีร้านหนึ่งที่ผมอยากไปครับ"]
+ ]
+ },
+ {
+ title:"ร้านเครื่องเขียน",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ",
+ "ผมอยากซื้อปากกาให้คุณสักด้าม",
+ "ผมเห็นคุณใช้ด้ามเดิมมานานแล้ว"
+ ],
+ choices:[
+ ["ผมยังเก็บปากกาที่อชิเคยให้ไว้อยู่นะครับ","pen",
+  "จริงเหรอครับ ผมดีใจจัง"],
+ ["ขอบคุณครับ แต่เราเลือกด้วยกันดีไหม","together",
+  "ได้ครับ งั้นคุณช่วยผมเลือกนะครับ"],
+ ["แค่ได้มาเดินด้วยกันก็ดีมากแล้วครับ","quiet",
+  "ผมก็เหมือนกันครับ"]
+ ]
+ },
+ {
+ title:"พระอาทิตย์ตก",
+ from:"อชิ",
+ incoming:[
+ "วันนี้สนุกมากเลยนะครับ",
+ "ถึงบางอย่างจะไม่เป็นไปตามแผน",
+ "แต่ผมดีใจที่ได้มาเที่ยวกับคุณการันต์"
+ ],
+ choices:[
+ ["คราวหน้าเราไปเที่ยวด้วยกันอีกไหมครับ","couple",
+  "ครับ ผมก็อยากไปกับคุณอีก"],
+ ["ผมอยากใช้เวลากับอชิแบบนี้อีกครับ","couple",
+  "ผมด้วยครับ"],
+ ["ผมชอบอชินะครับ","couple",
+  "ผมก็ชอบคุณการันต์ครับ"]
+ ]
+ },
+ {
+ title:"ความลับในออฟฟิศ",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ",
+ "พรุ่งนี้ที่บริษัทอย่าเผลอเรียกผมว่าแฟนนะครับ",
+ "แล้วก็อย่ามองผมบ่อยด้วยนะครับ"
+ ],
+ choices:[
+ ["ได้ครับ แต่ข้อหลังอาจจะยากหน่อย","officePlay",
+  "คุณการันต์! ผมพูดจริง ๆ นะครับ"],
+ ["ครับ ผมจะระวัง","officeCare",
+  "ขอบคุณครับ ไว้เจอกันพรุ่งนี้นะครับ"],
+ ["ถ้าเผลอผมจะทำยังไงดีครับ","officeJoke",
+  "ก็ทำเหมือนไม่มีอะไรเกิดขึ้นสิครับ"]
+ ]
+ },
+ {
+ title:"ยอดขายสามล้าน",
+ from:"พี่ดุจ",
+ incoming:[
+ "การันต์ เรื่องยอดขายเดือนนี้",
+ "เป้าหมายที่บริษัทให้มาคือสามล้านบาท",
+ "พี่ส่งรายชื่อลูกค้าและเอกสารให้ในเมลแล้วนะ"
+ ],
+ choices:[
+ ["ผมจะเริ่มตรวจลูกค้าที่ติดต่อค้างไว้ครับ","salesReview",
+  "ดีมาก ถ้ามีอะไรติดขัดมาคุยกับพี่"],
+ ["ผมขอจัดลำดับงานก่อนครับ","salesPlan",
+  "ได้เลย พี่รอแผนจากเรา"],
+ ["ผมอยากคุยเรื่องลูกค้าบางรายเป็นการส่วนตัวครับ","salesSafe",
+  "ได้สิ เข้ามาคุยกับพี่ได้เลย"]
+ ]
+ },
+ {
+ title:"ความลับของอชิ",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ ผมมีเรื่องสำคัญอยากบอก",
+ "ผมเคยอ่านความคิดของคนอื่นได้เวลาสัมผัสตัว",
+ "รวมถึงความคิดของคุณด้วยครับ"
+ ],
+ choices:[
+ ["ขอบคุณที่ไว้ใจเล่าให้ผมฟังนะครับ","mindTrust",
+  "ผมกลัวคุณจะโกรธครับ"],
+ ["แล้วอชิได้ยินเรื่องที่ผมคิดถึงอชิทั้งหมดเลยเหรอครับ","mindFunny",
+  "ก็...เกือบทั้งหมดครับ"],
+ ["เราค่อย ๆ คุยกันก็ได้ครับ","mindTalk",
+  "ครับ ผมอยากอธิบายให้คุณฟัง"]
+ ]
+ },
+ {
+ title:"รักทางไกล",
+ from:"อชิ",
+ incoming:[
+ "วันนี้งานที่นครศรีธรรมราชยุ่งมากเลยครับ",
+ "ขอโทษที่ตอบช้านะครับ",
+ "คุณการันต์เหนื่อยไหมครับ"
+ ],
+ choices:[
+ ["ผมคิดถึงอชิครับ แต่ไม่ต้องรีบตอบนะ","distanceCare",
+  "ผมก็คิดถึงคุณครับ"],
+ ["วันนี้ผมมีเรื่องสนุกจะเล่าให้ฟัง","distanceShare",
+  "จริงเหรอครับ ผมอยากฟัง"],
+ ["คืนนี้เราวิดีโอคอลกันไหมครับ ถ้าอชิไหว","distanceCall",
+  "ได้ครับ ผมจะโทรหาหลังเลิกงาน"]
+ ]
+ },
+ {
+ title:"เรื่องที่อยากถาม",
+ from:"ป่า",
+ incoming:[
+ "มึงไปรับแหวนมาแล้วใช่ไหม",
+ "แล้วจะขออชิแต่งงานวันไหน",
+ "อย่าบอกนะว่ามึงทำตารางไว้สิบหน้าอีกแล้ว"
+ ],
+ choices:[
+ ["กูอยากให้วันนั้นเป็นวันที่เขาสบายใจ","proposalCare",
+  "เออ นั่นแหละสำคัญที่สุด"],
+ ["กูอยากให้เขาประทับใจ","proposalGrand",
+  "มึงนี่นะ อย่าลืมถามใจเขาด้วย"],
+ ["กูอยากให้มันเป็นความทรงจำของเราสองคน","proposalUs",
+  "ดีมากเพื่อน"]
+ ]
+ },
+ {
+ title:"คำตอบของอชิ",
+ from:"อชิ",
+ incoming:[
+ "คุณการันต์ครับ",
+ "ผมอ่านจดหมายที่คุณให้แล้ว",
+ "ขอบคุณที่อยากใช้ชีวิตกับผมนะครับ"
+ ],
+ choices:[
+ ["อชิแต่งงานกับผมนะครับ","marry",
+  "ครับ ผมจะแต่งงานกับคุณ"],
+ ["จากนี้ไปเราดูแลกันและกันนะครับ","marry",
+  "ครับ ผมอยากอยู่กับคุณไปนาน ๆ"],
+ ["ผมรักอชินะครับ","marry",
+  "ผมก็รักคุณการันต์ครับ"]
+ ]
+ }
+];
+const stageNames=[
+ "เริ่มต้น","ความทรงจำ","ชวนเดต","เตรียมเดต",
+ "วันเดต","ร้านเครื่องเขียน","ตกลงเป็นแฟน",
+ "แฟนลับในออฟฟิศ","ยอดขาย","ความลับอ่านใจ",
+ "รักทางไกล","ขอแต่งงาน","ตอบตกลง"
+];
+
+function addHistory(from,text,me=false){
+ state.history.push({from,text,me,at:Date.now()});
+ save();
+}
+function ensureSceneMessages(){
+ let c=chapters[state.stage];
+ if(!c)return;
+ let key="scene_"+state.stage;
+ if(state.flags[key])return;
+ c.incoming.forEach(t=>addHistory(c.from,t));
+ state.flags[key]=true;save();
+}
+function renderLine(){
+ ensureSceneMessages();
+ current="LINE";
+ let c=chapters[state.stage];
+ if(!c){renderChat();return}
+ let contacts=[
+ ["อชิ","ข้อความล่าสุดจากอชิ"],
+ ["ป่า","เพื่อนของการันต์"],
+ ["พี่ดุจ","เพื่อนร่วมงาน"],
+ ["ปาย","หัวหน้าของร็อค"],
+ ["ร็อค","เพื่อนร่วมงาน"],
+ ["การิน","น้องสาวของการันต์"]
+ ];
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="goHome()">${icon("back")}</button>
+ <span>LINE</span>
+ </div>
+ <div class="app-body">
+ <div class="muted" style="margin-bottom:12px">แชต</div>
+ ${contacts.map(([name,desc])=>`
+ <button class="item click" onclick="openContact('${name}')">
+ <div class="avatar">${escapeHTML(name.slice(0,1))}</div>
+ <div class="item-main">
+ <div class="item-title">${name}</div>
+ <div class="item-sub">${desc}</div>
+ </div><span class="item-time">${clockNow()}</span>
+ </button>`).join("")}
+ </div></div>`);
+}
+function openContact(name){
+ let c=chapters[state.stage];
+ if(c&&c.from===name){renderChat();return}
+ const extras={
+ "อชิ":["วันนี้ทำงานเหนื่อยไหมครับ","พักผ่อนด้วยนะครับ"],
+ "ป่า":["มีอะไรก็มาคุยกับกูได้","อย่าคิดมากนักล่ะ"],
+ "พี่ดุจ":["งานเรียบร้อยดีไหม","ถ้ามีปัญหาบอกพี่ได้"],
+ "ปาย":["พรุ่งนี้มีประชุมตอนเช้านะคะ"],
+ "ร็อค":["วันนี้ผมทำงานกับพี่ปายครับ"],
+ "การิน":["พี่การันต์ ดูแลตัวเองด้วยนะ"]
+ };
+ current="chatOther";
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="renderLine()">${icon("back")}</button>${name}</div>
+ <div class="chat">
+ <div class="chat-scroll">
+ ${(extras[name]||[]).map(t=>`<div class="bubble">${escapeHTML(t)}</div>`).join("")}
+ </div>
+ <div class="chat-actions">
+ <button class="choice" onclick="toast('ไว้คุยกันใหม่นะครับ')">ขอบคุณครับ</button>
+ <button class="choice" onclick="renderLine()">กลับไปหน้าแชต</button>
+ </div></div></div>`);
+}
+function renderChat(){
+ ensureSceneMessages();
+ let c=chapters[state.stage];
+ if(!c){renderLine();return}
+ current="chat";
+ let messages=state.history.filter(m=>m.from===c.from||m.from==="การันต์");
+ let recent=messages.slice(-32);
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="renderLine()">${icon("back")}</button>
+ <div class="avatar" style="width:33px;height:33px;font-size:13px">${escapeHTML(c.from[0])}</div>
+ <span>${escapeHTML(c.from)}</span></div>
+ <div class="chat">
+ <div class="chat-scroll" id="chatScroll">
+ ${recent.map(m=>`<div class="bubble ${m.me?"me":""}">${escapeHTML(m.text)}</div>`).join("")}
+ </div>
+ <div class="chat-actions">
+ ${c.choices.map((a,i)=>`
+ <button class="choice" onclick="chooseStory(${i})">${escapeHTML(a[0])}</button>
+ `).join("")}
+ </div></div></div>`);
+ let sc=document.getElementById("chatScroll");
+ if(sc)sc.scrollTop=sc.scrollHeight;
+}
+function chooseStory(i){
+ let c=chapters[state.stage],choice=c.choices[i];
+ addHistory("การันต์",choice[0],true);
+ addHistory(c.from,choice[2]);
+ state.flags[choice[1]]=true;
+ let old=state.stage;
+ state.stage++;
+ if(old===2)state.flags.dateAccepted=true;
+ if(old===6){
+  state.datingTime=state.elapsed||Math.floor((Date.now()-state.started)/1000);
+  state.flags.couple=true;
+ }
+ save();
+ if(old===2){showBookings();return}
+ if(old===6){showDatingSuccess();return}
+ if(old===12){renderCardDesigner();return}
+ showStoryTransition(old);
+}
+function showStoryTransition(old){
+ let next=chapters[state.stage];
+ let extra=old===7?"มีอีเมลเรื่องเป้าหมายยอดขายเข้ามา":
+ old===10?"อชิกลับจากต่างจังหวัดแล้ว":
+ "มีข้อความใหม่เข้ามาใน LINE";
+ current="transition";
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="goHome()">${icon("back")}</button>
+ <span>การแจ้งเตือน</span></div>
+ <div class="app-body">
+ <div class="panel" style="margin-top:25px">
+ <div class="muted">${escapeHTML(extra)}</div>
+ <h3 style="margin-top:12px">${escapeHTML(next?next.title:"")}</h3>
+ <p>${escapeHTML(next?next.from:"")} ส่งข้อความถึงคุณ</p>
+ </div>
+ <button class="primary" style="width:100%" onclick="renderLine()">เปิด LINE</button>
+ <button class="secondary" style="width:100%;margin-top:10px" onclick="goHome()">กลับหน้าหลัก</button>
+ </div></div>`);
+}
+function showBookings(){
+ current="bookings";
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="goHome()">${icon("back")}</button>
+ <span>การแจ้งเตือนใหม่</span></div>
+ <div class="app-body">
+ <div class="panel">
+ ${icon("flower",27)}
+ <h3>ร้านดอกไม้</h3>
+ <p>ยืนยันคำสั่งซื้อช่อดอกบัวสำหรับวันเสาร์แล้วค่ะ</p>
+ </div>
+ <div class="panel">
+ ${icon("coffee",27)}
+ <h3>LINE · ป่า</h3>
+ <p>เมล็ดกาแฟจากลำพูนมาถึงแล้วนะมึง</p>
+ </div>
+ <div class="panel">
+ ${icon("plane",27)}
+ <h3>Helicopter Booking</h3>
+ <p>Your sunset flight reservation has been confirmed.</p>
+ </div>
+ <button class="primary" style="width:100%" onclick="renderLine()">เปิด LINE คุยกับป่า</button>
+ </div></div>`);
+}
+function showDatingSuccess(){
+ current="success";
+ let t=state.datingTime;
+ setScreen(`<div class="view app">
+ <div class="app-body" style="height:100%;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center">
+ <div style="color:#bd8199">${icon("heart",58)}</div>
+ <h2>คุณใช้เวลาจีบอชิสำเร็จแล้ว!</h2>
+ <div style="font-size:43px;color:#a6758e">${formatTime(t)}</div>
+ <p class="muted">อชิและการันต์ตกลงเป็นแฟนกันแล้ว</p>
+ <button class="primary" onclick="renderLine()" style="margin-top:25px">ใช้โทรศัพท์ต่อ</button>
+ </div></div>`);
+}
+
+/* Gmail */
+function mailData(){
+ let data=[
+ ["ร้านดอกไม้","ยืนยันคำสั่งซื้อช่อดอกบัว",
+ "เรียนคุณการันต์\nทางร้านได้รับคำสั่งซื้อช่อดอกบัวเรียบร้อยแล้วค่ะ\nขอบคุณที่ใช้บริการค่ะ",2],
+ ["Helicopter Booking","Booking Confirmation",
+ "Your reservation for the sunset helicopter experience has been confirmed.\nPlease review your schedule before departure.",2],
+ ["ฝ่ายขาย","เอกสารติดตามยอดขาย",
+ "เรียนคุณการันต์\nแนบรายการลูกค้าและเอกสารสำหรับตรวจสอบยอดขายเดือนนี้\nกรุณาตรวจสอบข้อมูลและประสานงานตามขั้นตอนของบริษัท",8],
+ ["Wedding Invitation Studio","เริ่มออกแบบการ์ดแต่งงาน",
+ "เรียนคุณการันต์และคุณอชิ\nทางร้านเปิดระบบออกแบบการ์ดแต่งงานให้แล้วค่ะ\nกรุณาตรวจสอบและยืนยันแบบก่อนดำเนินการพิมพ์",13]
+ ];
+ return data.filter(x=>state.stage>=x[3]);
+}
+function renderMail(){
+ let mails=mailData();
+ appShell("Gmail",mails.length?mails.map((m,i)=>`
+ <button class="item click" onclick="openMail(${i})">
+ <div class="avatar">${icon("mail",21)}</div>
+ <div class="item-main">
+ <div class="item-title">${escapeHTML(m[0])}</div>
+ <div class="item-sub">${escapeHTML(m[1])}</div>
+ </div></button>`).join(""):
+ `<div class="panel">ยังไม่มีอีเมลใหม่</div>`);
+}
+function openMail(i){
+ let m=mailData()[i];if(!m)return;
+ appShell("Gmail",`<div class="mail-head">
+ <div class="muted">${escapeHTML(m[0])}</div>
+ <h2>${escapeHTML(m[1])}</h2></div>
+ <div class="mail-content" style="padding-top:22px">${escapeHTML(m[2])}</div>
+ ${m[3]===13?`<button class="primary" onclick="renderCardDesigner()">เปิดตัวออกแบบการ์ด</button>`:""}
+ <button class="secondary" style="margin-top:15px" onclick="renderMail()">กลับกล่องจดหมาย</button>`);
+}
+
+/* Notes, Gallery, Calendar and other apps */
+function renderNotes(){
+ let notes=[
+ ["สิ่งที่ต้องจำ","09:00 ลิฟต์\nเตรียมน้ำร้อนสำหรับกาแฟ\n16:45 ปิดม่านไม่ให้แดดส่องโต๊ะอชิ"],
+ ["ปากกาด้ามนั้น","วันที่แย่ที่สุดวันหนึ่ง อชิให้ปากกากับผม\nเขาบอกให้กดมันเพื่อทิ้งเรื่องแย่ ๆ ไว้ข้างหลัง\nผมยังเก็บมันไว้อยู่"],
+ ["วันเดต","ดอกบัวสำหรับไหว้พระ\nร้านป่าและกาแฟจากลำพูน\nเที่ยวด้วยกันจนพระอาทิตย์ตก"]
+ ];
+ appShell("โน้ต",notes.map(n=>`
+ <div class="panel"><h3>${n[0]}</h3>
+ <p style="white-space:pre-line">${n[1]}</p></div>`).join(""));
+}
+function renderGallery(){
+ let pics=[
+ ["pen","ปากกาวิเศษ",0],
+ ["coffee","ร้านป่า",3],
+ ["flower","ดอกบัววันเดต",4],
+ ["heart","เดตแรกของเรา",7],
+ ["briefcase","วันทำงาน",8],
+ ["ring","แหวนของเรา",12]
+ ].filter(x=>state.stage>=x[2]);
+ appShell("รูปภาพ",`<div class="gallery-grid">
+ ${pics.map(p=>`<div class="photo">${icon(p[0],48)}<span>${p[1]}</span></div>`).join("")}
+ </div>`);
+}
+function renderCalendar(){
+ let events=[
+ ["09:00","ขึ้นลิฟต์ไปทำงาน"],
+ ["16:45","ปิดม่านตรงโต๊ะอชิ"]
+ ];
+ if(state.stage>=3)events.push(["วันเสาร์ 05:00","ไปรับอชิ"],["วันเสาร์ 17:45","แผนชมพระอาทิตย์ตก"]);
+ if(state.stage>=8)events.push(["วันจันทร์","ประชุมฝ่ายขาย"]);
+ if(state.stage>=10)events.push(["20:00","โทรหาอชิ"]);
+ appShell("ปฏิทิน",events.map(e=>`
+ <div class="panel"><span class="tag">${e[0]}</span>
+ <p>${e[1]}</p></div>`).join(""));
+}
+function renderBrowser(){
+ let links=[
+ ["เว็บไซต์บริษัท","ข้อมูลสินค้าและลูกค้า",()=>renderWork()],
+ ["ร้านดอกไม้","คำสั่งซื้อดอกบัว",()=>renderFlower()],
+ ["Wedding Invitation Studio","ออกแบบการ์ดแต่งงาน",()=>renderCardDesigner()]
+ ];
+ appShell("เบราว์เซอร์",links.filter((x,i)=>i===0||(i===1&&state.stage>=3)||(i===2&&state.stage>=13))
+ .map((x,i)=>`<div class="panel">
+ <h3>${x[0]}</h3><p>${x[1]}</p>
+ <button class="secondary" onclick="browserLink('${x[0]}')">เปิดเว็บไซต์</button>
+ </div>`).join(""));
+}
+function browserLink(name){
+ if(name==="เว็บไซต์บริษัท")renderWork();
+ if(name==="ร้านดอกไม้")renderFlower();
+ if(name==="Wedding Invitation Studio")renderCardDesigner();
+}
+function renderWork(){
+ appShell("ข้อมูลฝ่ายขาย",`<div class="panel">
+ <h3>ระบบงานฝ่ายขาย</h3>
+ <p>การันต์รับผิดชอบการติดต่อลูกค้าและงานขาย</p>
+ <p>อชิทำงานฝ่ายแอดมิน</p>
+ <p>ปายเป็นหัวหน้าของร็อค</p>
+ </div><button class="secondary" onclick="renderBrowser()">ย้อนกลับ</button>`);
+}
+function renderFlower(){
+ appShell("ร้านดอกไม้",`<div class="panel">
+ ${icon("flower",35)}
+ <h3>คำสั่งซื้อดอกบัว</h3>
+ <p>ช่อดอกบัวสำหรับการไปไหว้พระกับอชิ</p>
+ <p class="muted">สถานะ: ยืนยันคำสั่งซื้อแล้ว</p>
+ </div>`);
+}
+function renderMaps(){
+ let places=[
+ ["วัด","ไปไหว้พระในตอนเช้า"],
+ ["ร้านป่า","กาแฟจากเมล็ดลำพูน"],
+ ["ร้านเครื่องเขียน","เลือกปากกาด้วยกัน"],
+ ["จุดชมพระอาทิตย์ตก","แผนช่วงเย็น"]
+ ];
+ appShell("แผนที่",`<div class="panel">
+ <div style="height:150px;background:#e0ebed;border-radius:12px;display:grid;place-items:center">
+ ${icon("map",70)}
+ <span class="muted">แผนสถานที่ในโทรศัพท์</span>
+ </div></div>
+ ${places.map((p,i)=>`<div class="item">
+ <div class="avatar">${i+1}</div>
+ <div class="item-main"><div class="item-title">${p[0]}</div>
+ <div class="item-sub">${p[1]}</div></div></div>`).join("")}`);
+}
+function renderPhone(){
+ appShell("โทรศัพท์",`<div class="panel">
+ <h3>รายการโทรล่าสุด</h3>
+ <p>อชิ</p><p>ป่า</p><p>พี่ดุจ</p>
+ </div>
+ <button class="primary" onclick="toast('กำลังโทรหาอชิ...')">โทรหาอชิ</button>`);
+}
+function renderClock(){
+ appShell("นาฬิกา",`<div class="panel" style="text-align:center">
+ <h3>เวลาปัจจุบัน</h3>
+ <div style="font-size:48px">${clockNow()}</div>
+ </div>
+ <div class="panel">
+ <h3>นาฬิกาปลุก</h3>
+ <p>05:00 — วันเดต</p>
+ <p>09:00 — เวลาเข้างาน</p>
+ </div>
+ <div class="panel"><h3>เวลาที่ใช้ในเกม</h3>
+ <p>${formatTime(state.elapsed)}</p></div>`);
+}
+
+/* WEDDING CARD DESIGNER */
+const palettes={
+ cream:{bg:"#f9f0e5",fg:"#765d4e",line:"#c8aa8e"},
+ pink:{bg:"#fbeaf0",fg:"#8c5b72",line:"#d4a1b6"},
+ blue:{bg:"#eaf2fa",fg:"#536d8d",line:"#9eb8d6"},
+ green:{bg:"#eef3e9",fg:"#536b59",line:"#a7bba5"}
+};
+function cardSVGMarkup(){
+ let c=state.card,p=palettes[c.theme]||palettes.cream;
+ let deco=c.style==="floral"?icon("flower",35):
+ c.style==="minimal"?icon("sun",28):
+ c.style==="memory"?icon("pen",32):icon("heart",30);
+ return `<div class="card-preview" style="background:${p.bg};color:${p.fg}">
+ <div class="card-inner" style="border-color:${p.line}">
+ <div style="color:${p.line}">${deco}</div>
+ <div class="card-label">THE WEDDING OF</div>
+ <div class="card-names">${escapeHTML(c.names)}</div>
+ <div style="width:70px;height:1px;background:${p.line}"></div>
+ <div class="card-message">${escapeHTML(c.message)}</div>
+ <div style="color:${p.line}">${deco}</div>
+ <div class="card-label">WITH LOVE, ALWAYS</div>
+ </div></div>`;
+}
+function renderCardDesigner(){
+ if(state.stage<13){
+  toast("ยังไม่ถึงขั้นตอนออกแบบการ์ดแต่งงาน");
+  renderBrowser();return;
+ }
+ current="designer";
+ let c=state.card;
+ setScreen(`<div class="view app">
+ <div class="app-header">
+ <button class="icon-btn" onclick="goHome()">${icon("back")}</button>
+ <span>Wedding Card Designer</span></div>
+ <div class="app-body">
+ <div id="preview">${cardSVGMarkup()}</div>
+ <div class="form-label">รูปแบบการ์ด</div>
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+ ${[
+ ["classic","คลาสสิก"],["floral","ดอกไม้"],
+ ["minimal","มินิมอล"],["memory","ความทรงจำ"]
+ ].map(([v,t])=>`<button class="${c.style===v?"primary":"secondary"}"
+ onclick="setCardStyle('${v}')">${t}</button>`).join("")}
+ </div>
+ <div class="form-label">สีการ์ด</div>
+ <div class="swatches">
+ ${Object.entries(palettes).map(([k,p])=>`
+ <button class="swatch ${c.theme===k?"selected":""}"
+ style="background:${p.bg}" onclick="setCardTheme('${k}')"
+ aria-label="${k}"></button>`).join("")}
+ </div>
+ <div class="form-label">ชื่อบนการ์ด</div>
+ <input class="form-input" id="cardNames" maxlength="80"
+ value="${escapeHTML(c.names)}" oninput="updateCardText()">
+ <div class="form-label">ข้อความบนการ์ด</div>
+ <textarea class="form-input" id="cardMessage" rows="3"
+ maxlength="240" oninput="updateCardText()">${escapeHTML(c.message)}</textarea>
+ <button class="primary" style="width:100%;margin-top:22px"
+ onclick="confirmWeddingCard()">ยืนยันแบบการ์ดแต่งงาน</button>
+ <p class="muted" style="text-align:center">แบบที่ยืนยันจะเป็นหน้าจอสุดท้ายของเกม</p>
+ </div></div>`);
+}
+function setCardStyle(v){
+ state.card.style=v;save();renderCardDesigner();
+}
+function setCardTheme(v){
+ state.card.theme=v;save();renderCardDesigner();
+}
+function updateCardText(){
+ state.card.names=document.getElementById("cardNames").value;
+ state.card.message=document.getElementById("cardMessage").value;
+ save();
+ document.getElementById("preview").innerHTML=cardSVGMarkup();
+}
+function confirmWeddingCard(){
+ if(!state.card.names.trim()){
+  toast("กรุณากรอกชื่อบนการ์ด");return;
+ }
+ state.finished=true;
+ state.elapsed=Math.floor((Date.now()-state.started)/1000);
+ save();
+ showFinalCard();
+}
+function showFinalCard(){
+ current="final";
+ renderStatus(false);
+ screen.innerHTML="";
+ finalCard.style.display="flex";
+ drawFinalCard();
+}
+function drawFinalCard(){
+ let p=palettes[state.card.theme]||palettes.cream;
+ finalCard.style.background=p.bg;
+ finalCard.innerHTML=`
+ <div style="position:absolute;inset:30px 18px 100px;display:flex;align-items:center">
+ <div style="width:100%">${cardSVGMarkup()}</div>
+ </div>
+ <div class="final-tools">
+ <button class="secondary" onclick="downloadCard()">บันทึกการ์ด</button>
+ <button class="secondary" onclick="shareCard()">แชร์การ์ด</button>
+ <button class="secondary" onclick="editCardAgain()">แก้ไข</button>
+ </div>`;
+}
+function editCardAgain(){
+ state.finished=false;save();
+ finalCard.style.display="none";
+ renderCardDesigner();
+}
+
+/* Export เป็นไฟล์ SVG จริง */
+function svgEscape(s){
+ return String(s).replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;").replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+}
+function wrapSVGText(text,x,y,maxChars=25){
+ let lines=[];
+ String(text).split("\n").forEach(line=>{
+  if(!line){lines.push("");return}
+  while([...line].length>maxChars){
+   let chars=[...line];
+   lines.push(chars.slice(0,maxChars).join(""));
+   line=chars.slice(maxChars).join("");
+  }
+  lines.push(line);
+ });
+ return lines.map((line,i)=>`
+ <text x="${x}" y="${y+i*38}" text-anchor="middle"
+ font-size="23" font-family="Arial,sans-serif">${svgEscape(line)}</text>`).join("");
+}
+function createExportSVG(){
+ let c=state.card,p=palettes[c.theme]||palettes.cream;
+ let decoration={
+ classic:`<path d="M450 195 C410 145 355 210 450 265 C545 210 490 145 450 195Z" fill="none" stroke="${p.line}" stroke-width="4"/>`,
+ floral:`<g fill="none" stroke="${p.line}" stroke-width="4">
+ <circle cx="450" cy="215" r="18"/>
+ <ellipse cx="450" cy="168" rx="22" ry="32"/>
+ <ellipse cx="450" cy="262" rx="22" ry="32"/>
+ <ellipse cx="403" cy="215" rx="32" ry="22"/>
+ <ellipse cx="497" cy="215" rx="32" ry="22"/></g>`,
+ minimal:`<circle cx="450" cy="215" r="30" fill="none" stroke="${p.line}" stroke-width="4"/>
+ <path d="M450 160v-22M450 270v22M395 215h-22M505 215h22"
+ stroke="${p.line}" stroke-width="4"/>`,
+ memory:`<path d="M400 255 L480 175 L505 200 L425 280 L390 290Z"
+ fill="none" stroke="${p.line}" stroke-width="4"/>`
+ }[c.style]||"";
+ let lines=String(c.message).split("\n").flatMap(s=>{
+  let arr=[];let chars=[...s];
+  while(chars.length>26)arr.push(chars.splice(0,26).join(""));
+  arr.push(chars.join(""));return arr;
+ });
+ let message=lines.map((s,i)=>`
+ <text x="450" y="${660+i*41}" text-anchor="middle"
+ font-size="25" fill="${p.fg}"
+ font-family="Arial,sans-serif">${svgEscape(s)}</text>`).join("");
+ return `<svg xmlns="http://www.w3.org/2000/svg"
+ width="900" height="1200" viewBox="0 0 900 1200">
+ <rect width="900" height="1200" fill="${p.bg}"/>
+ <rect x="50" y="50" width="800" height="1100"
+ fill="none" stroke="${p.line}" stroke-width="3"/>
+ ${decoration}
+ <text x="450" y="365" text-anchor="middle"
+ fill="${p.fg}" font-size="22" letter-spacing="6"
+ font-family="Arial,sans-serif">THE WEDDING OF</text>
+ <text x="450" y="490" text-anchor="middle"
+ fill="${p.fg}" font-size="55"
+ font-family="Georgia,serif">${svgEscape(c.names)}</text>
+ <path d="M380 555h140" stroke="${p.line}" stroke-width="3"/>
+ ${message}
+ <text x="450" y="1060" text-anchor="middle"
+ fill="${p.fg}" font-size="19" letter-spacing="5"
+ font-family="Arial,sans-serif">WITH LOVE, ALWAYS</text>
+ </svg>`;
+}
+function downloadCard(){
+ let blob=new Blob([createExportSVG()],{type:"image/svg+xml;charset=utf-8"});
+ let url=URL.createObjectURL(blob);
+ let a=document.createElement("a");
+ a.href=url;a.download="Karan-Achi-Wedding-Card.svg";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function shareCard(){
+ let blob=new Blob([createExportSVG()],{type:"image/svg+xml"});
+ let file=new File([blob],"Karan-Achi-Wedding-Card.svg",{type:"image/svg+xml"});
+ try{
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+   await navigator.share({files:[file],title:"Karan & Achi"});
+  }else{
+   downloadCard();
+   toast("บันทึกการ์ดแล้ว สามารถนำไปแชร์ได้");
+  }
+ }catch(e){
+  if(e.name!=="AbortError")toast("ไม่สามารถแชร์ได้ในอุปกรณ์นี้");
+ }
+}
+
+/* เครื่องมือทดสอบ: เริ่มใหม่ผ่านการล้างข้อมูลเว็บไซต์ */
+renderLock();
+</script>
+</body>
+</html>
+

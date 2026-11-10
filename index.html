@@ -3,7 +3,9 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport"
+ content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#17191e">
 <title>KARAN'S PHONE</title>
 
 <style>
@@ -12,711 +14,637 @@
  -webkit-tap-highlight-color:transparent;
 }
 html,body{
- margin:0;width:100%;height:100%;
- overflow:hidden;background:#17191e;
+ margin:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+ background:#17191e;
  font-family:Arial,"Noto Sans Thai",sans-serif;
 }
 body{
- display:flex;justify-content:center;align-items:center;
+ display:flex;
+ justify-content:center;
+ align-items:center;
 }
 #phone{
  position:relative;
  width:min(100vw,480px,calc(100dvh * 390 / 616));
  aspect-ratio:390/616;
  overflow:hidden;
- background:#e9e9ef;
- border:3px solid #272831;
+ background:#d7d3e8;
+ border:3px solid #292b35;
  border-radius:15px;
 }
 #display{
- width:100%;height:100%;
- display:block;touch-action:none;
+ width:100%;
+ height:100%;
+ display:block;
+ touch-action:none;
 }
-svg text{user-select:none}
+svg text{
+ user-select:none;
+ -webkit-user-select:none;
+}
 .clickable{cursor:pointer}
 </style>
 </head>
 
 <body>
-
 <div id="phone">
- <svg id="display" xmlns="http://www.w3.org/2000/svg"
- viewBox="0 0 390 616" preserveAspectRatio="none">
- <defs>
-  <linearGradient id="fallback" x1="0" y1="0" x2="1" y2="1">
-   <stop offset="0" stop-color="#f8e8ee"/>
-   <stop offset=".55" stop-color="#d2d0ee"/>
-   <stop offset="1" stop-color="#9eb5de"/>
-  </linearGradient>
-  <linearGradient id="musicGlass" x1="0" y1="0" x2="1" y2="1">
-   <stop stop-color="#5a6684" stop-opacity=".91"/>
-   <stop offset="1" stop-color="#434e6d" stop-opacity=".95"/>
-  </linearGradient>
- </defs>
 
- <g id="lockPage">
-  <rect width="390" height="616" fill="url(#fallback)"/>
-  <image id="wallpaper" x="0" y="0"
-   width="390" height="616"
-   preserveAspectRatio="xMidYMid slice"/>
+<svg id="display"
+ xmlns="http://www.w3.org/2000/svg"
+ viewBox="0 0 390 616"
+ preserveAspectRatio="none">
 
-  <g id="lockIcon" fill="none"
-   stroke="#17191e" stroke-width="2"
-   stroke-linecap="round" stroke-linejoin="round">
-   <path d="M-6 0v-5a6 6 0 0 1 12 0v5"/>
-   <rect x="-9" y="0" width="18" height="14" rx="3"/>
-   <circle cx="0" cy="6" r="1.5" fill="#17191e" stroke="none"/>
-  </g>
+<defs>
+ <linearGradient id="fallback" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#f4e6ef"/>
+  <stop offset=".5" stop-color="#dcd7ee"/>
+  <stop offset="1" stop-color="#aebddd"/>
+ </linearGradient>
 
-  <text id="dateText" text-anchor="middle"
-   fill="#302b35" font-size="14" font-weight="500"></text>
+ <linearGradient id="musicGlass" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#7982a7"/>
+  <stop offset="1" stop-color="#626b91"/>
+ </linearGradient>
+</defs>
 
-  <text id="timeText" text-anchor="middle"
-   fill="#302b35" font-size="72" font-weight="800"
-   letter-spacing="-3"></text>
+<!-- ==============================
+     LOCK SCREEN
+============================== -->
 
-  <!-- Music widget -->
-  <g id="music">
-   <rect id="musicBG" x="43" y="470"
-    width="304" height="69" rx="22"
-    fill="url(#musicGlass)"/>
+<g id="lockPage">
 
-   <rect x="55" y="480" width="47" height="47"
-    rx="13" fill="#c9dbe2"/>
+ <rect width="390" height="616" fill="url(#fallback)"/>
 
-   <!-- SVG album art -->
-   <circle cx="78.5" cy="503.5" r="16"
-    fill="#8baab9"/>
-   <circle cx="78.5" cy="503.5" r="11"
-    fill="#e7e8e2"/>
-   <circle cx="78.5" cy="503.5" r="3"
-    fill="#8baab9"/>
-   <path d="M63 514Q78 503 94 514"
-    stroke="#718e9c" fill="none" stroke-width="2"/>
+ <!-- Wallpaper -->
+ <image id="wallpaper"
+  x="0" y="0"
+  width="390" height="616"
+  preserveAspectRatio="xMidYMid slice"
+  href="https://i.ibb.co/WNR6WWjb/IMG-4394.jpg"/>
 
-   <text id="songTitle" x="113" y="498"
-    font-size="12" fill="white"
-    font-weight="700">เพลงของการันต์</text>
+ <!-- Lock icon -->
+ <g id="lockIcon"
+  transform="translate(195 49) scale(.75)"
+  fill="none"
+  stroke="#17191e"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round">
 
-   <text id="songArtist" x="113" y="513"
-    font-size="10" fill="#e0e5ed">Music Player</text>
-
-   <!-- Previous -->
-   <g id="previous" class="clickable"
-    transform="translate(225 506)"
-    fill="white">
-    <rect x="-14" y="-11" width="2.5" height="22" rx="1"/>
-    <path d="M-10 0L2-10V10Z"/>
-   </g>
-
-   <!-- Play/Pause -->
-   <g id="playButton" class="clickable"
-    transform="translate(269 506)">
-    <path id="playShape" d="M-6-11L11 0-6 11Z"
-     fill="white"/>
-   </g>
-
-   <!-- Next -->
-   <g id="next" class="clickable"
-    transform="translate(316 506)"
-    fill="white">
-    <path d="M-2-10L10 0-2 10Z"/>
-    <rect x="12" y="-11" width="2.5" height="22" rx="1"/>
-   </g>
-  </g>
-
-  <text id="swipeText" x="195" y="562"
-   text-anchor="middle" font-size="11"
-   fill="#41404d" opacity=".8">
-   ปัดขึ้นเพื่อปลดล็อก
-  </text>
-
-  <!-- Shortcuts -->
-  <g id="phoneShortcut" class="clickable">
-   <circle cx="48" cy="573" r="22"
-    fill="#7e86c8" fill-opacity=".75"/>
-   <path d="M40 565l5-1 2 5-3 2
-    q3 5 7 7l3-3 5 2v5
-    q-7 3-14-5t-5-12z"
-    fill="none" stroke="white" stroke-width="2"
-    stroke-linejoin="round"/>
-  </g>
-
-  <g id="cameraShortcut" class="clickable">
-   <circle cx="342" cy="573" r="22"
-    fill="#7e86c8" fill-opacity=".75"/>
-   <g fill="none" stroke="white"
-    stroke-width="1.8" stroke-linejoin="round">
-    <rect x="329" y="565" width="26" height="18" rx="4"/>
-    <path d="M336 565l2-4h8l2 4"/>
-    <circle cx="342" cy="574" r="5"/>
-   </g>
-  </g>
-
-  <rect id="swipeZone" x="95" y="546"
-   width="200" height="70" fill="transparent"
-   class="clickable"/>
+  <path d="M-6 0v-5a6 6 0 0 1 12 0v5"/>
+  <rect x="-9" y="0" width="18" height="14" rx="3"/>
+  <circle cx="0" cy="6" r="1.5"
+   fill="#17191e" stroke="none"/>
  </g>
 
- <!-- PIN screen -->
- <g id="pinPage" display="none">
-  <rect width="390" height="616" fill="#b7b5d4"/>
+ <!-- Date -->
+ <text id="dateText"
+  x="195" y="105"
+  text-anchor="middle"
+  font-size="14"
+  font-weight="600"
+  fill="#F5F1F2">วันพุธที่ 11 พฤศจิกายน</text>
 
-  <text x="195" y="130" text-anchor="middle"
-   font-size="20" fill="#23232b">กรอกรหัส PIN</text>
+ <!-- Time -->
+ <text id="timeText"
+  x="195" y="182"
+  text-anchor="middle"
+  font-size="72"
+  font-weight="800"
+  letter-spacing="-3"
+  fill="#F5F1F2">12:00</text>
 
-  <g id="pinDots" stroke="#23232b"
-   stroke-width="1.7" fill="none">
-   <circle cx="147" cy="164" r="6"/>
-   <circle cx="179" cy="164" r="6"/>
-   <circle cx="211" cy="164" r="6"/>
-   <circle cx="243" cy="164" r="6"/>
-  </g>
+ <!-- Bottom shortcuts -->
+ <g id="phoneShortcut" class="clickable">
+  <circle id="phoneCircle"
+   cx="46" cy="572" r="22"
+   fill="#858fca" fill-opacity=".9"/>
 
-  <text id="pinError" x="195" y="193"
-   text-anchor="middle" fill="#74384d"
-   font-size="12"></text>
-
-  <g id="keypad"></g>
+  <path
+   d="M38 564l5-1 3 6-3 3
+      q3 5 8 7l3-3 6 3v5
+      q-8 3-16-5t-6-15z"
+   fill="none"
+   stroke="#F5F1F2"
+   stroke-width="2"
+   stroke-linecap="round"
+   stroke-linejoin="round"/>
  </g>
 
- <g id="unlockedPage" display="none">
-  <rect width="390" height="616" fill="#e8edf5"/>
-  <text x="195" y="290" text-anchor="middle"
-   font-size="22" fill="#4e6786">ปลดล็อกสำเร็จ</text>
-  <text x="195" y="319" text-anchor="middle"
-   font-size="13" fill="#73849c">
-   หน้าหลักจะสร้างในขั้นต่อไป
-  </text>
+ <!-- Music capsule -->
+ <g id="musicWidget">
+
+  <rect id="musicBG"
+   x="83" y="548"
+   width="224" height="49"
+   rx="24.5"
+   fill="url(#musicGlass)"
+   fill-opacity=".94"/>
+
+  <!-- Album artwork -->
+  <g id="albumArt">
+   <circle cx="108" cy="572.5" r="18"
+    fill="#a6d4d4"/>
+   <circle cx="108" cy="572.5" r="13.5"
+    fill="#dceee7"/>
+   <path d="M95 578Q108 567 121 578"
+    fill="none"
+    stroke="#77b4b2"
+    stroke-width="3"
+    stroke-linecap="round"/>
+  </g>
+
+  <text id="songTitle"
+   x="132" y="569"
+   font-size="10.5"
+   font-weight="700"
+   fill="#F5F1F2">เพลงของการันต์</text>
+
+  <text id="songArtist"
+   x="132" y="583"
+   font-size="9"
+   fill="#F5F1F2"
+   opacity=".8">Music Player</text>
+
+  <!-- Previous -->
+  <g id="previous" class="clickable"
+   transform="translate(243 572.5)"
+   fill="#F5F1F2">
+   <path d="M-5 0L3-6V6Z"/>
+   <rect x="-8" y="-6" width="2" height="12" rx="1"/>
+   <rect x="-13" y="-16" width="25" height="32"
+    fill="transparent"/>
+  </g>
+
+  <!-- Play / Pause -->
+  <g id="playButton" class="clickable"
+   transform="translate(268 572.5)">
+   <path id="playShape"
+    d="M-4-7L7 0-4 7Z"
+    fill="#F5F1F2"/>
+   <rect x="-12" y="-16" width="24" height="32"
+    fill="transparent"/>
+  </g>
+
+  <!-- Next -->
+  <g id="next" class="clickable"
+   transform="translate(292 572.5)"
+   fill="#F5F1F2">
+   <path d="M-3-6L5 0-3 6Z"/>
+   <rect x="6" y="-6" width="2" height="12" rx="1"/>
+   <rect x="-12" y="-16" width="24" height="32"
+    fill="transparent"/>
+  </g>
+
  </g>
 
- <!-- Status bar -->
- <g id="statusBar">
-  <text id="carrier" x="19" y="22"
-   font-size="11" fill="#252630">karan</text>
+ <!-- Camera shortcut -->
+ <g id="cameraShortcut" class="clickable">
+  <circle id="cameraCircle"
+   cx="344" cy="572" r="22"
+   fill="#858fca" fill-opacity=".9"/>
 
-  <!-- Silent mode -->
-  <g id="silentIcon" transform="translate(294 12)"
-   fill="none" stroke="#252630"
-   stroke-width="1.5" stroke-linecap="round">
-   <path d="M2 5h3l5-4v14l-5-4H2z"/>
-   <path d="M13 4l6 8M19 4l-6 8"/>
-  </g>
+  <g fill="none"
+   stroke="#F5F1F2"
+   stroke-width="1.8"
+   stroke-linejoin="round">
 
-  <!-- Mobile signal -->
-  <g id="signalIcon" stroke="#252630"
-   stroke-width="1.8" stroke-linecap="round">
-   <path d="M323 25v-4M328 25v-7M333 25v-10M338 25v-13"/>
-  </g>
-
-  <!-- Wi-Fi -->
-  <g id="wifiIcon" stroke="#252630"
-   fill="none" stroke-width="1.5"
-   stroke-linecap="round">
-   <path d="M345 16q7-6 14 0"/>
-   <path d="M349 20q3-3 6 0"/>
-   <circle cx="352" cy="23" r="1" fill="#252630" stroke="none"/>
-  </g>
-
-  <!-- Battery -->
-  <g id="batteryIcon">
-   <rect x="365" y="12" width="20" height="14"
-    rx="6" fill="none" stroke="#252630"
-    stroke-width="1.2"/>
-   <rect x="385.5" y="16" width="2.5" height="6"
-    rx="1" fill="#252630"/>
-   <text x="375" y="22" text-anchor="middle"
-    fill="#252630" font-size="8"
-    font-weight="700">85</text>
+   <rect x="332" y="565"
+    width="24" height="17" rx="4"/>
+   <path d="M338 565l2-4h8l2 4"/>
+   <circle cx="344" cy="573.5" r="5"/>
   </g>
  </g>
 
- <!-- Front camera -->
- <g id="frontCamera">
-  <circle cx="195" cy="17" r="9" fill="#171922"/>
-  <circle cx="195" cy="17" r="6" fill="#05070c"/>
-  <circle cx="193" cy="15" r="1.5"
-   fill="#53617a" opacity=".55"/>
+</g>
+
+<!-- ==============================
+     PIN SCREEN
+============================== -->
+
+<g id="pinPage" display="none">
+
+ <rect width="390" height="616"
+  fill="url(#fallback)"/>
+
+ <text x="195" y="130"
+  text-anchor="middle"
+  font-size="20"
+  fill="#35313b">กรอกรหัส PIN</text>
+
+ <g id="pinDots"
+  stroke="#35313b"
+  stroke-width="1.7"
+  fill="none">
+  <circle cx="147" cy="164" r="6"/>
+  <circle cx="179" cy="164" r="6"/>
+  <circle cx="211" cy="164" r="6"/>
+  <circle cx="243" cy="164" r="6"/>
  </g>
 
- <!-- Navigation gesture -->
- <rect id="gestureBar" x="145" y="604"
-  width="100" height="4" rx="2"
-  fill="#252630"/>
- </svg>
+ <text id="pinError"
+  x="195" y="193"
+  text-anchor="middle"
+  font-size="12"
+  fill="#8a4256"></text>
+
+ <g id="keypad"></g>
+
+</g>
+
+<!-- ==============================
+     TEMPORARY UNLOCK SCREEN
+============================== -->
+
+<g id="unlockedPage" display="none">
+ <rect width="390" height="616" fill="#e8edf5"/>
+
+ <text x="195" y="290"
+  text-anchor="middle"
+  font-size="22"
+  fill="#4e6786">ปลดล็อกสำเร็จ</text>
+
+ <text x="195" y="319"
+  text-anchor="middle"
+  font-size="13"
+  fill="#73849c">
+  หน้าหลักจะสร้างในขั้นต่อไป
+ </text>
+</g>
+
+<!-- ==============================
+     STATUS BAR
+============================== -->
+
+<g id="statusBar" fill="#35313B">
+
+ <text id="carrier"
+  x="19" y="22"
+  font-size="11"
+  fill="#35313B">karan</text>
+
+ <!-- Silent -->
+ <g transform="translate(294 12)"
+  fill="none"
+  stroke="#35313B"
+  stroke-width="1.5"
+  stroke-linecap="round">
+  <path d="M2 5h3l5-4v14l-5-4H2z"/>
+  <path d="M13 4l6 8M19 4l-6 8"/>
+ </g>
+
+ <!-- Signal -->
+ <g stroke="#35313B"
+  stroke-width="1.8"
+  stroke-linecap="round">
+  <path d="M323 25v-4M328 25v-7M333 25v-10M338 25v-13"/>
+ </g>
+
+ <!-- Wi-Fi -->
+ <g stroke="#35313B"
+  stroke-width="1.5"
+  fill="none"
+  stroke-linecap="round">
+  <path d="M345 16q7-6 14 0"/>
+  <path d="M349 20q3-3 6 0"/>
+  <circle cx="352" cy="23" r="1"
+   fill="#35313B" stroke="none"/>
+ </g>
+
+ <!-- Battery with terminal -->
+ <g id="batteryIcon">
+  <rect x="365" y="12"
+   width="20" height="14"
+   rx="6"
+   fill="none"
+   stroke="#35313B"
+   stroke-width="1.2"/>
+
+  <rect id="batteryTerminal"
+   x="385.5" y="16"
+   width="2.5" height="6"
+   rx="1" fill="#35313B"/>
+
+  <text id="batteryLevel"
+   x="375" y="22"
+   text-anchor="middle"
+   font-size="8"
+   font-weight="700"
+   fill="#35313B">85</text>
+ </g>
+
+</g>
+
+<!-- Front camera -->
+<g id="frontCamera">
+ <circle cx="195" cy="17" r="9" fill="#171922"/>
+ <circle cx="195" cy="17" r="6" fill="#05070c"/>
+ <circle cx="193" cy="15" r="1.5"
+  fill="#53617a" opacity=".55"/>
+</g>
+
+<!-- Gesture bar -->
+<rect id="gestureBar"
+ x="145" y="604"
+ width="100" height="4"
+ rx="2" fill="#F5F1F2"/>
+
+</svg>
 </div>
 
 <script>
+"use strict";
+
 /* ==========================================
-   KARAN LOCK SCREEN — DESIGN UPDATE
-   แก้ตำแหน่งและสีจาก CONFIG จุดเดียว
+   MAIN CONFIG
+   ปรับตำแหน่งและหน้าตาจากจุดนี้
 ========================================== */
 
-const LOCK_DESIGN = {
-  textColor: "#F5F1F2",
-  statusColor: "#35313B",
-
-  lock: {
-    x: 195,
-    y: 49,
-    scale: 0.75
-  },
-
-  date: {
-    x: 195,
-    y: 104,
-    size: 14
-  },
-
-  clock: {
-    x: 195,
-    y: 180,
-    size: 72,
-    weight: 800
-  },
-
-  bottom: {
-    y: 572,
-    leftX: 46,
-    rightX: 344,
-    circleRadius: 22
-  },
-
-  music: {
-    x: 83,
-    y: 548,
-    width: 224,
-    height: 49,
-    title: "เพลงของการันต์",
-    artist: "Music Player",
-    background: "#626A91",
-    opacity: 0.88
-  }
-};
-
-(function updateKaranLockDesign() {
-
-  const d = LOCK_DESIGN;
-  const svgNS = "http://www.w3.org/2000/svg";
-
-  /* สีวันที่และเวลา */
-
-  const date = document.getElementById("dateText");
-  const time = document.getElementById("timeText");
-
-  date.setAttribute("x", d.date.x);
-  date.setAttribute("y", d.date.y);
-  date.setAttribute("font-size", d.date.size);
-  date.setAttribute("fill", d.textColor);
-
-  time.setAttribute("x", d.clock.x);
-  time.setAttribute("y", d.clock.y);
-  time.setAttribute("font-size", d.clock.size);
-  time.setAttribute("font-weight", d.clock.weight);
-  time.setAttribute("fill", d.textColor);
-
-  /* ล็อกสีดำ */
-
-  document.getElementById("lockIcon").setAttribute(
-    "transform",
-    `translate(${d.lock.x} ${d.lock.y}) scale(${d.lock.scale})`
-  );
-
-  /* ลบข้อความปัดขึ้น แต่ยังปัดได้ */
-
-  document.getElementById("swipeText")
-    .setAttribute("display", "none");
-
-  /* ย้ายปุ่มลัดมาอยู่ระดับเดียวกับแถบเพลง */
-
-  const phoneButton = document.getElementById("phoneShortcut");
-  const cameraButton = document.getElementById("cameraShortcut");
-
-  phoneButton.setAttribute(
-    "transform",
-    `translate(${d.bottom.leftX - 48} ${d.bottom.y - 573})`
-  );
-
-  cameraButton.setAttribute(
-    "transform",
-    `translate(${d.bottom.rightX - 342} ${d.bottom.y - 573})`
-  );
-
-  /* เปลี่ยนแถบเพลงทั้งชุดให้เป็นทรงแคปซูล */
-
-  const music = document.getElementById("music");
-
-  music.removeAttribute("transform");
-
-  const m = d.music;
-  const centerY = m.y + m.height / 2;
-
-  music.innerHTML = `
-    <rect
-      x="${m.x}"
-      y="${m.y}"
-      width="${m.width}"
-      height="${m.height}"
-      rx="${m.height / 2}"
-      fill="${m.background}"
-      fill-opacity="${m.opacity}"
-      stroke="#FFFFFF"
-      stroke-opacity=".13"
-      stroke-width=".7"
-    />
-
-    <!-- Album artwork -->
-    <circle
-      cx="${m.x + 25}"
-      cy="${centerY}"
-      r="18"
-      fill="#A6D4D4"
-    />
-
-    <circle
-      cx="${m.x + 25}"
-      cy="${centerY}"
-      r="13.5"
-      fill="#DDEDE6"
-    />
-
-    <path
-      d="M${m.x + 12} ${centerY + 5}
-         Q${m.x + 25} ${centerY - 6}
-         ${m.x + 38} ${centerY + 5}"
-      fill="none"
-      stroke="#74B7B3"
-      stroke-width="3"
-      stroke-linecap="round"
-    />
-
-    <!-- Song info -->
-    <text
-      id="newSongTitle"
-      x="${m.x + 48}"
-      y="${centerY - 3}"
-      font-size="10.5"
-      font-weight="700"
-      fill="${d.textColor}"
-    >${m.title}</text>
-
-    <text
-      id="newSongArtist"
-      x="${m.x + 48}"
-      y="${centerY + 11}"
-      font-size="9"
-      fill="${d.textColor}"
-      opacity=".76"
-    >${m.artist}</text>
-
-    <!-- Previous -->
-    <g id="newPrevious"
-       transform="translate(${m.x + 160} ${centerY})"
-       fill="${d.textColor}"
-       style="cursor:pointer">
-      <path d="M-5 0L3-6V6Z"/>
-      <rect x="-8" y="-6" width="2" height="12" rx="1"/>
-      <rect x="-12" y="-13" width="23" height="26"
-       fill="transparent"/>
-    </g>
-
-    <!-- Play / Pause -->
-    <g id="newPlay"
-       transform="translate(${m.x + 185} ${centerY})"
-       style="cursor:pointer">
-      <path id="newPlayShape"
-        d="M-4-7L7 0-4 7Z"
-        fill="${d.textColor}"/>
-      <rect x="-11" y="-15" width="23" height="30"
-        fill="transparent"/>
-    </g>
-
-    <!-- Next -->
-    <g id="newNext"
-       transform="translate(${m.x + 209} ${centerY})"
-       fill="${d.textColor}"
-       style="cursor:pointer">
-      <path d="M-3-6L5 0-3 6Z"/>
-      <rect x="6" y="-6" width="2" height="12" rx="1"/>
-      <rect x="-11" y="-13" width="23" height="26"
-        fill="transparent"/>
-    </g>
-  `;
-
-  /* เพลง: เปลี่ยนสถานะปุ่มกดได้ */
-
-  let isPlaying = false;
-
-  function drawPlay() {
-    const shape = document.getElementById("newPlayShape");
-    shape.setAttribute(
-      "d",
-      isPlaying
-        ? "M-5-7H-1V7H-5ZM2-7H6V7H2Z"
-        : "M-4-7L7 0-4 7Z"
-    );
-  }
-
-  document.getElementById("newPlay")
-    .addEventListener("click", function(event) {
-      event.stopPropagation();
-      isPlaying = !isPlaying;
-      drawPlay();
-    });
-
-  document.getElementById("newPrevious")
-    .addEventListener("click", function(event) {
-      event.stopPropagation();
-      isPlaying = false;
-      drawPlay();
-    });
-
-  document.getElementById("newNext")
-    .addEventListener("click", function(event) {
-      event.stopPropagation();
-      isPlaying = false;
-      drawPlay();
-    });
-
-  /* สีแถบสถานะ */
-
-  const status = document.getElementById("statusBar");
-
-  status.querySelectorAll("text").forEach(el => {
-    el.setAttribute("fill", d.statusColor);
-  });
-
-  status.querySelectorAll("path").forEach(el => {
-    el.setAttribute("stroke", d.statusColor);
-  });
-
-  status.querySelectorAll("rect").forEach(el => {
-    if (el.hasAttribute("stroke")) {
-      el.setAttribute("stroke", d.statusColor);
-    } else {
-      el.setAttribute("fill", d.statusColor);
-    }
-  });
-
-  /* แถบ Gesture */
-  document.getElementById("gestureBar")
-    .setAttribute("fill", d.textColor);
-
-  /* อัปเดตสีตัวหนังสือบนปุ่มลัด */
-  document.querySelectorAll(
-    "#phoneShortcut path, #cameraShortcut path, #cameraShortcut rect, #cameraShortcut circle"
-  ).forEach(el => {
-    if (el.hasAttribute("stroke")) {
-      el.setAttribute("stroke", d.textColor);
-    }
-  });
-
-})();
-</script>
-
-
-<script>
-/* ========================================
-   CONFIG — ปรับทุกอย่างจากตรงนี้
-======================================== */
-
 const CONFIG = {
- pin:"1906",
+ pin: "1906",
 
- wallpaper:"https://i.ibb.co/WNR6WWjb/IMG-4394.jpg",
+ wallpaper:
+  "https://i.ibb.co/WNR6WWjb/IMG-4394.jpg",
 
- carrier:"karan",
+ carrier: "karan",
 
- lock:{
-  x:195,
-  y:48,
-  scale:0.75
+ textColor: "#F5F1F2",
+
+ lock: {
+  x: 195,
+  y: 49,
+  scale: 0.75
  },
 
- date:{
-  x:195,
-  y:104,
-  size:14,
-  color:"#302b35"
+ date: {
+  x: 195,
+  y: 105,
+  size: 14
  },
 
- clock:{
-  x:195,
-  y:179,
-  size:72,
-  weight:800,
-  color:"#302b35"
+ clock: {
+  x: 195,
+  y: 182,
+  size: 72,
+  weight: 800
  },
 
- status:{
-  color:"#252630",
-  battery:85,
-  showTerminal:true
+ bottom: {
+  y: 572,
+  leftX: 46,
+  rightX: 344
  },
 
- music:{
-  x:0,
-  y:0,
-  title:"เพลงของการันต์",
-  artist:"Music Player",
-  playing:false
+ music: {
+  x: 83,
+  y: 548,
+  width: 224,
+  height: 49,
+  background: "#70799d",
+  title: "เพลงของการันต์",
+  artist: "Music Player",
+  playing: false
+ },
+
+ battery: {
+  level: 85,
+  showTerminal: true
  }
 };
 
-/* ========================================
-   ELEMENTS
-======================================== */
+/* ==========================================
+   STATE AND HELPERS
+========================================== */
 
-const NS="http://www.w3.org/2000/svg";
-const svg=document.getElementById("display");
-const lockPage=document.getElementById("lockPage");
-const pinPage=document.getElementById("pinPage");
-const unlockedPage=document.getElementById("unlockedPage");
+const NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById("display");
 
-let currentPage="lock";
-let typed="";
-let busy=false;
-let startY=null;
+let currentPage = "lock";
+let enteredPIN = "";
+let pinBusy = false;
+let swipeStart = null;
 
-/* ========================================
-   APPLY CONFIG
-======================================== */
+const byId = id => document.getElementById(id);
 
-function setAttrs(id,attrs){
- const el=document.getElementById(id);
- if(!el)return;
- for(const [k,v] of Object.entries(attrs)){
-  el.setAttribute(k,v);
- }
+function setAttributes(element, attributes) {
+ if (!element) return;
+ Object.entries(attributes).forEach(([name,value]) => {
+  element.setAttribute(name,String(value));
+ });
 }
 
-function applyConfig(){
- setAttrs("wallpaper",{href:CONFIG.wallpaper});
+/* ==========================================
+   CONFIG RENDER
+========================================== */
 
- document.getElementById("carrier").textContent=CONFIG.carrier;
+function applyConfig() {
+ const c = CONFIG;
 
- setAttrs("lockIcon",{
-  transform:`translate(${CONFIG.lock.x} ${CONFIG.lock.y}) scale(${CONFIG.lock.scale})`
+ byId("wallpaper").setAttribute("href",c.wallpaper);
+ byId("carrier").textContent = c.carrier;
+
+ setAttributes(byId("lockIcon"),{
+  transform:
+   `translate(${c.lock.x} ${c.lock.y}) scale(${c.lock.scale})`
  });
 
- setAttrs("dateText",{
-  x:CONFIG.date.x,
-  y:CONFIG.date.y,
-  "font-size":CONFIG.date.size,
-  fill:CONFIG.date.color
+ setAttributes(byId("dateText"),{
+  x:c.date.x,
+  y:c.date.y,
+  "font-size":c.date.size,
+  fill:c.textColor
  });
 
- setAttrs("timeText",{
-  x:CONFIG.clock.x,
-  y:CONFIG.clock.y,
-  "font-size":CONFIG.clock.size,
-  "font-weight":CONFIG.clock.weight,
-  fill:CONFIG.clock.color
+ setAttributes(byId("timeText"),{
+  x:c.clock.x,
+  y:c.clock.y,
+  "font-size":c.clock.size,
+  "font-weight":c.clock.weight,
+  fill:c.textColor
  });
 
- setAttrs("music",{
-  transform:`translate(${CONFIG.music.x} ${CONFIG.music.y})`
+ byId("songTitle").textContent = c.music.title;
+ byId("songArtist").textContent = c.music.artist;
+
+ const m = c.music;
+ const centerY = m.y + m.height / 2;
+
+ setAttributes(byId("musicBG"),{
+  x:m.x,
+  y:m.y,
+  width:m.width,
+  height:m.height,
+  rx:m.height/2,
+  fill:m.background
  });
 
- document.getElementById("songTitle").textContent=
-  CONFIG.music.title;
- document.getElementById("songArtist").textContent=
-  CONFIG.music.artist;
+ const musicOffsetX = m.x - 83;
+ const musicOffsetY = centerY - 572.5;
 
- document.querySelector("#batteryIcon text").textContent=
-  CONFIG.status.battery;
-
- document.querySelector("#batteryIcon rect:nth-child(2)")
-  .setAttribute("display",
-   CONFIG.status.showTerminal?"inline":"none");
-
- ["carrier","silentIcon","signalIcon","wifiIcon","batteryIcon"]
- .forEach(id=>{
-  const el=document.getElementById(id);
-  if(id==="carrier")el.setAttribute("fill",CONFIG.status.color);
-  else el.setAttribute("color",CONFIG.status.color);
+ setAttributes(byId("albumArt"),{
+  transform:
+   `translate(${musicOffsetX} ${musicOffsetY})`
  });
+
+ setAttributes(byId("songTitle"),{
+  x:132+musicOffsetX,
+  y:569+musicOffsetY
+ });
+
+ setAttributes(byId("songArtist"),{
+  x:132+musicOffsetX,
+  y:583+musicOffsetY
+ });
+
+ setAttributes(byId("previous"),{
+  transform:
+   `translate(${m.x+160} ${centerY})`
+ });
+
+ setAttributes(byId("playButton"),{
+  transform:
+   `translate(${m.x+185} ${centerY})`
+ });
+
+ setAttributes(byId("next"),{
+  transform:
+   `translate(${m.x+209} ${centerY})`
+ });
+
+ const leftX = c.bottom.leftX;
+ const rightX = c.bottom.rightX;
+ const bottomY = c.bottom.y;
+
+ setAttributes(byId("phoneShortcut"),{
+  transform:
+   `translate(${leftX-46} ${bottomY-572})`
+ });
+
+ setAttributes(byId("cameraShortcut"),{
+  transform:
+   `translate(${rightX-344} ${bottomY-572})`
+ });
+
+ byId("batteryLevel").textContent=c.battery.level;
+ byId("batteryTerminal").setAttribute(
+  "display",c.battery.showTerminal?"inline":"none"
+ );
 
  updatePlayIcon();
 }
 
-function updateClock(){
- const now=new Date();
+/* ==========================================
+   CLOCK AND DATE
+========================================== */
 
- document.getElementById("timeText").textContent=
-  now.toLocaleTimeString("th-TH",{
-   hour:"2-digit",minute:"2-digit",hour12:false
-  });
+function updateClock() {
+ const now = new Date();
 
- document.getElementById("dateText").textContent=
-  now.toLocaleDateString("th-TH",{
-   weekday:"short",day:"numeric",month:"long"
-  });
+ const time = now.toLocaleTimeString("th-TH",{
+  hour:"2-digit",
+  minute:"2-digit",
+  hour12:false
+ });
+
+ const date = now.toLocaleDateString("th-TH",{
+  weekday:"long",
+  day:"numeric",
+  month:"long"
+ });
+
+ byId("timeText").textContent=time;
+ byId("dateText").textContent=date;
 }
 
-/* ========================================
-   MUSIC CONTROLS
-======================================== */
+/* ==========================================
+   MUSIC
+========================================== */
 
-function updatePlayIcon(){
- document.getElementById("playShape").setAttribute(
-  "d",
-  CONFIG.music.playing
-   ?"M-7-11H-2V11H-7ZM3-11H8V11H3Z"
-   :"M-6-11L11 0-6 11Z"
- );
+function updatePlayIcon() {
+ const path = byId("playShape");
+
+ if(CONFIG.music.playing){
+  path.setAttribute(
+   "d","M-5-7H-1V7H-5ZM2-7H6V7H2Z"
+  );
+ } else {
+  path.setAttribute(
+   "d","M-4-7L7 0-4 7Z"
+  );
+ }
 }
 
-document.getElementById("playButton")
- .addEventListener("click",()=>{
-  CONFIG.music.playing=!CONFIG.music.playing;
-  updatePlayIcon();
- });
+byId("playButton").addEventListener("click",event=>{
+ event.stopPropagation();
+ CONFIG.music.playing=!CONFIG.music.playing;
+ updatePlayIcon();
+});
 
-document.getElementById("previous")
- .addEventListener("click",()=>{
-  CONFIG.music.playing=false;
-  updatePlayIcon();
- });
+byId("previous").addEventListener("click",event=>{
+ event.stopPropagation();
+ CONFIG.music.playing=false;
+ updatePlayIcon();
+});
 
-document.getElementById("next")
- .addEventListener("click",()=>{
-  CONFIG.music.playing=false;
-  updatePlayIcon();
- });
+byId("next").addEventListener("click",event=>{
+ event.stopPropagation();
+ CONFIG.music.playing=false;
+ updatePlayIcon();
+});
 
-/* ========================================
-   SCREEN NAVIGATION
-======================================== */
+/* ==========================================
+   SCREEN MANAGEMENT
+========================================== */
 
-function showPage(page){
+function showPage(page) {
  currentPage=page;
- lockPage.setAttribute("display",page==="lock"?"inline":"none");
- pinPage.setAttribute("display",page==="pin"?"inline":"none");
- unlockedPage.setAttribute("display",page==="unlocked"?"inline":"none");
- document.getElementById("statusBar").setAttribute(
+
+ byId("lockPage").setAttribute(
+  "display",page==="lock"?"inline":"none"
+ );
+
+ byId("pinPage").setAttribute(
+  "display",page==="pin"?"inline":"none"
+ );
+
+ byId("unlockedPage").setAttribute(
+  "display",page==="unlocked"?"inline":"none"
+ );
+
+ byId("statusBar").setAttribute(
+  "display",page==="unlocked"?"none":"inline"
+ );
+
+ byId("frontCamera").setAttribute(
   "display",page==="unlocked"?"none":"inline"
  );
 }
 
-function openPIN(){
+function openPIN() {
  if(currentPage!=="lock")return;
- typed="";
- busy=false;
+
+ enteredPIN="";
+ pinBusy=false;
+ byId("pinError").textContent="";
  updateDots();
- document.getElementById("pinError").textContent="";
  showPage("pin");
 }
 
-function updateDots(){
+function updateDots() {
  document.querySelectorAll("#pinDots circle")
- .forEach((dot,i)=>{
-  dot.setAttribute("fill",i<typed.length?"#23232b":"none");
- });
+  .forEach((dot,index)=>{
+   dot.setAttribute(
+    "fill",
+    index<enteredPIN.length?"#35313b":"none"
+   );
+  });
 }
 
-function pressPIN(value){
- if(currentPage!=="pin"||busy)return;
+function pressPIN(value) {
+ if(currentPage!=="pin"||pinBusy)return;
 
  if(value==="cancel"){
   showPage("lock");
@@ -724,129 +652,138 @@ function pressPIN(value){
  }
 
  if(value==="delete"){
-  typed=typed.slice(0,-1);
+  enteredPIN=enteredPIN.slice(0,-1);
   updateDots();
   return;
  }
 
- if(typed.length>=4)return;
+ if(enteredPIN.length>=4)return;
 
- typed+=value;
+ enteredPIN+=value;
  updateDots();
 
- if(typed.length===4){
-  busy=true;
-  if(typed===CONFIG.pin){
+ if(enteredPIN.length===4){
+  pinBusy=true;
+
+  if(enteredPIN===CONFIG.pin){
    setTimeout(()=>{
-    busy=false;
+    pinBusy=false;
     showPage("unlocked");
-   },200);
+   },180);
   }else{
-   document.getElementById("pinError").textContent=
+   byId("pinError").textContent=
     "รหัส PIN ไม่ถูกต้อง";
+
    setTimeout(()=>{
-    typed="";
-    busy=false;
+    enteredPIN="";
+    pinBusy=false;
     updateDots();
    },450);
   }
  }
 }
 
-/* ========================================
-   SVG PIN KEYPAD
-======================================== */
+/* ==========================================
+   CREATE SVG PIN KEYPAD
+========================================== */
 
-const keys=[
- ["1",85,260],["2",195,260],["3",305,260],
- ["4",85,346],["5",195,346],["6",305,346],
- ["7",85,432],["8",195,432],["9",305,432],
- ["ยกเลิก",85,520],["0",195,520],["ลบ",305,520]
-];
+function createKeypad() {
+ const keys=[
+  ["1",85,260],["2",195,260],["3",305,260],
+  ["4",85,346],["5",195,346],["6",305,346],
+  ["7",85,432],["8",195,432],["9",305,432],
+  ["ยกเลิก",85,520],["0",195,520],["ลบ",305,520]
+ ];
 
-const keypad=document.getElementById("keypad");
+ const keypad=byId("keypad");
 
-keys.forEach(([value,x,y])=>{
- const g=document.createElementNS(NS,"g");
- g.setAttribute("class","clickable");
+ keys.forEach(([value,x,y])=>{
+  const group=document.createElementNS(NS,"g");
+  group.setAttribute("class","clickable");
 
- const circle=document.createElementNS(NS,"circle");
- circle.setAttribute("cx",x);
- circle.setAttribute("cy",y);
- circle.setAttribute("r",38);
- circle.setAttribute("fill","#ffffff");
- circle.setAttribute("fill-opacity",".3");
+  const circle=document.createElementNS(NS,"circle");
+  setAttributes(circle,{
+   cx:x,cy:y,r:38,
+   fill:"#ffffff",
+   "fill-opacity":".30"
+  });
 
- const label=document.createElementNS(NS,"text");
- label.setAttribute("x",x);
- label.setAttribute("y",y+(value.length>1?5:10));
- label.setAttribute("text-anchor","middle");
- label.setAttribute("fill","#23232b");
- label.setAttribute("font-size",value.length>1?13:29);
- label.textContent=value;
+  const label=document.createElementNS(NS,"text");
+  setAttributes(label,{
+   x:x,
+   y:y+(value.length>1?5:10),
+   "text-anchor":"middle",
+   fill:"#35313b",
+   "font-size":value.length>1?13:29
+  });
 
- g.append(circle,label);
+  label.textContent=value;
+  group.append(circle,label);
 
- g.addEventListener("click",()=>{
-  pressPIN(
-   value==="ยกเลิก"?"cancel":
-   value==="ลบ"?"delete":value
-  );
+  group.addEventListener("click",event=>{
+   event.stopPropagation();
+   pressPIN(
+    value==="ยกเลิก"?"cancel":
+    value==="ลบ"?"delete":value
+   );
+  });
+
+  keypad.appendChild(group);
  });
-
- keypad.appendChild(g);
-});
-
-/* ========================================
-   SWIPE
-======================================== */
-
-function screenY(e){
- const r=svg.getBoundingClientRect();
- return (e.clientY-r.top)*616/r.height;
 }
 
-svg.addEventListener("pointerdown",e=>{
- if(currentPage==="lock")startY=screenY(e);
+/* ==========================================
+   SWIPE TO UNLOCK
+========================================== */
+
+function svgY(event) {
+ const rect=svg.getBoundingClientRect();
+ return (event.clientY-rect.top)*616/rect.height;
+}
+
+svg.addEventListener("pointerdown",event=>{
+ if(currentPage!=="lock")return;
+ swipeStart=svgY(event);
 });
 
-svg.addEventListener("pointerup",e=>{
- if(currentPage!=="lock"||startY===null)return;
- const distance=startY-screenY(e);
- startY=null;
- if(distance>35)openPIN();
-});
+svg.addEventListener("pointerup",event=>{
+ if(currentPage!=="lock"||swipeStart===null)return;
 
-svg.addEventListener("pointercancel",()=>{
- startY=null;
-});
+ const distance=swipeStart-svgY(event);
+ swipeStart=null;
 
-document.getElementById("swipeZone")
- .addEventListener("click",openPIN);
-
-document.getElementById("phoneShortcut")
- .addEventListener("click",openPIN);
-
-document.getElementById("cameraShortcut")
- .addEventListener("click",openPIN);
-
-document.addEventListener("keydown",e=>{
- if(currentPage==="pin"){
-  if(/^[0-9]$/.test(e.key))pressPIN(e.key);
-  if(e.key==="Backspace")pressPIN("delete");
-  if(e.key==="Escape")pressPIN("cancel");
+ if(distance>35){
+  openPIN();
  }
 });
 
-/* ========================================
-   START
-======================================== */
+svg.addEventListener("pointercancel",()=>{
+ swipeStart=null;
+});
 
+byId("phoneShortcut").addEventListener("click",openPIN);
+byId("cameraShortcut").addEventListener("click",openPIN);
+
+document.addEventListener("keydown",event=>{
+ if(currentPage==="pin"){
+  if(/^[0-9]$/.test(event.key))pressPIN(event.key);
+  else if(event.key==="Backspace")pressPIN("delete");
+  else if(event.key==="Escape")pressPIN("cancel");
+ }else if(currentPage==="lock"&&event.key==="ArrowUp"){
+  openPIN();
+ }
+});
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+createKeypad();
 applyConfig();
 updateClock();
 setInterval(updateClock,1000);
 showPage("lock");
-</script>
 
+</script>
 </body>
 </html>

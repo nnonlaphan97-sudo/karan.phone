@@ -247,6 +247,275 @@ svg text{user-select:none}
 </div>
 
 <script>
+/* ==========================================
+   KARAN LOCK SCREEN — DESIGN UPDATE
+   แก้ตำแหน่งและสีจาก CONFIG จุดเดียว
+========================================== */
+
+const LOCK_DESIGN = {
+  textColor: "#F5F1F2",
+  statusColor: "#35313B",
+
+  lock: {
+    x: 195,
+    y: 49,
+    scale: 0.75
+  },
+
+  date: {
+    x: 195,
+    y: 104,
+    size: 14
+  },
+
+  clock: {
+    x: 195,
+    y: 180,
+    size: 72,
+    weight: 800
+  },
+
+  bottom: {
+    y: 572,
+    leftX: 46,
+    rightX: 344,
+    circleRadius: 22
+  },
+
+  music: {
+    x: 83,
+    y: 548,
+    width: 224,
+    height: 49,
+    title: "เพลงของการันต์",
+    artist: "Music Player",
+    background: "#626A91",
+    opacity: 0.88
+  }
+};
+
+(function updateKaranLockDesign() {
+
+  const d = LOCK_DESIGN;
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  /* สีวันที่และเวลา */
+
+  const date = document.getElementById("dateText");
+  const time = document.getElementById("timeText");
+
+  date.setAttribute("x", d.date.x);
+  date.setAttribute("y", d.date.y);
+  date.setAttribute("font-size", d.date.size);
+  date.setAttribute("fill", d.textColor);
+
+  time.setAttribute("x", d.clock.x);
+  time.setAttribute("y", d.clock.y);
+  time.setAttribute("font-size", d.clock.size);
+  time.setAttribute("font-weight", d.clock.weight);
+  time.setAttribute("fill", d.textColor);
+
+  /* ล็อกสีดำ */
+
+  document.getElementById("lockIcon").setAttribute(
+    "transform",
+    `translate(${d.lock.x} ${d.lock.y}) scale(${d.lock.scale})`
+  );
+
+  /* ลบข้อความปัดขึ้น แต่ยังปัดได้ */
+
+  document.getElementById("swipeText")
+    .setAttribute("display", "none");
+
+  /* ย้ายปุ่มลัดมาอยู่ระดับเดียวกับแถบเพลง */
+
+  const phoneButton = document.getElementById("phoneShortcut");
+  const cameraButton = document.getElementById("cameraShortcut");
+
+  phoneButton.setAttribute(
+    "transform",
+    `translate(${d.bottom.leftX - 48} ${d.bottom.y - 573})`
+  );
+
+  cameraButton.setAttribute(
+    "transform",
+    `translate(${d.bottom.rightX - 342} ${d.bottom.y - 573})`
+  );
+
+  /* เปลี่ยนแถบเพลงทั้งชุดให้เป็นทรงแคปซูล */
+
+  const music = document.getElementById("music");
+
+  music.removeAttribute("transform");
+
+  const m = d.music;
+  const centerY = m.y + m.height / 2;
+
+  music.innerHTML = `
+    <rect
+      x="${m.x}"
+      y="${m.y}"
+      width="${m.width}"
+      height="${m.height}"
+      rx="${m.height / 2}"
+      fill="${m.background}"
+      fill-opacity="${m.opacity}"
+      stroke="#FFFFFF"
+      stroke-opacity=".13"
+      stroke-width=".7"
+    />
+
+    <!-- Album artwork -->
+    <circle
+      cx="${m.x + 25}"
+      cy="${centerY}"
+      r="18"
+      fill="#A6D4D4"
+    />
+
+    <circle
+      cx="${m.x + 25}"
+      cy="${centerY}"
+      r="13.5"
+      fill="#DDEDE6"
+    />
+
+    <path
+      d="M${m.x + 12} ${centerY + 5}
+         Q${m.x + 25} ${centerY - 6}
+         ${m.x + 38} ${centerY + 5}"
+      fill="none"
+      stroke="#74B7B3"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+
+    <!-- Song info -->
+    <text
+      id="newSongTitle"
+      x="${m.x + 48}"
+      y="${centerY - 3}"
+      font-size="10.5"
+      font-weight="700"
+      fill="${d.textColor}"
+    >${m.title}</text>
+
+    <text
+      id="newSongArtist"
+      x="${m.x + 48}"
+      y="${centerY + 11}"
+      font-size="9"
+      fill="${d.textColor}"
+      opacity=".76"
+    >${m.artist}</text>
+
+    <!-- Previous -->
+    <g id="newPrevious"
+       transform="translate(${m.x + 160} ${centerY})"
+       fill="${d.textColor}"
+       style="cursor:pointer">
+      <path d="M-5 0L3-6V6Z"/>
+      <rect x="-8" y="-6" width="2" height="12" rx="1"/>
+      <rect x="-12" y="-13" width="23" height="26"
+       fill="transparent"/>
+    </g>
+
+    <!-- Play / Pause -->
+    <g id="newPlay"
+       transform="translate(${m.x + 185} ${centerY})"
+       style="cursor:pointer">
+      <path id="newPlayShape"
+        d="M-4-7L7 0-4 7Z"
+        fill="${d.textColor}"/>
+      <rect x="-11" y="-15" width="23" height="30"
+        fill="transparent"/>
+    </g>
+
+    <!-- Next -->
+    <g id="newNext"
+       transform="translate(${m.x + 209} ${centerY})"
+       fill="${d.textColor}"
+       style="cursor:pointer">
+      <path d="M-3-6L5 0-3 6Z"/>
+      <rect x="6" y="-6" width="2" height="12" rx="1"/>
+      <rect x="-11" y="-13" width="23" height="26"
+        fill="transparent"/>
+    </g>
+  `;
+
+  /* เพลง: เปลี่ยนสถานะปุ่มกดได้ */
+
+  let isPlaying = false;
+
+  function drawPlay() {
+    const shape = document.getElementById("newPlayShape");
+    shape.setAttribute(
+      "d",
+      isPlaying
+        ? "M-5-7H-1V7H-5ZM2-7H6V7H2Z"
+        : "M-4-7L7 0-4 7Z"
+    );
+  }
+
+  document.getElementById("newPlay")
+    .addEventListener("click", function(event) {
+      event.stopPropagation();
+      isPlaying = !isPlaying;
+      drawPlay();
+    });
+
+  document.getElementById("newPrevious")
+    .addEventListener("click", function(event) {
+      event.stopPropagation();
+      isPlaying = false;
+      drawPlay();
+    });
+
+  document.getElementById("newNext")
+    .addEventListener("click", function(event) {
+      event.stopPropagation();
+      isPlaying = false;
+      drawPlay();
+    });
+
+  /* สีแถบสถานะ */
+
+  const status = document.getElementById("statusBar");
+
+  status.querySelectorAll("text").forEach(el => {
+    el.setAttribute("fill", d.statusColor);
+  });
+
+  status.querySelectorAll("path").forEach(el => {
+    el.setAttribute("stroke", d.statusColor);
+  });
+
+  status.querySelectorAll("rect").forEach(el => {
+    if (el.hasAttribute("stroke")) {
+      el.setAttribute("stroke", d.statusColor);
+    } else {
+      el.setAttribute("fill", d.statusColor);
+    }
+  });
+
+  /* แถบ Gesture */
+  document.getElementById("gestureBar")
+    .setAttribute("fill", d.textColor);
+
+  /* อัปเดตสีตัวหนังสือบนปุ่มลัด */
+  document.querySelectorAll(
+    "#phoneShortcut path, #cameraShortcut path, #cameraShortcut rect, #cameraShortcut circle"
+  ).forEach(el => {
+    if (el.hasAttribute("stroke")) {
+      el.setAttribute("stroke", d.textColor);
+    }
+  });
+
+})();
+</script>
+
+
+<script>
 /* ========================================
    CONFIG — ปรับทุกอย่างจากตรงนี้
 ======================================== */

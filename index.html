@@ -18,9 +18,15 @@ button{cursor:pointer}
 .status .right{display:flex;align-items:center;gap:7px}
 .ico{width:22px;height:22px;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .small{width:17px;height:17px}
-.screen{position:absolute;inset:36px 0 22px;overflow-y:auto;scrollbar-width:none}
-.screen::-webkit-scrollbar{display:none}
-.nav{position:absolute;bottom:0;left:0;width:100%;height:22px;z-index:40;display:flex;align-items:center;justify-content:center}
+.screen{
+  position:absolute;
+  inset:0;
+  padding-top:36px;
+  padding-bottom:22px;
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+.screen::-webkit-scrollbar{display:none}.nav{position:absolute;bottom:0;left:0;width:100%;height:22px;z-index:40;display:flex;align-items:center;justify-content:center}
 .nav span{width:105px;height:4px;background:#f6f8fd;border-radius:5px}
 
 .lock{
@@ -35,9 +41,11 @@ button{cursor:pointer}
 
 .lock-wallpaper{
   position:absolute;
-  inset:-36px 0 -22px;
+  inset:0;
   width:100%;
-  height:calc(100% + 58px);
+  height:100%;
+  object-fit:cover;
+  object-position:center;
   z-index:0;
   pointer-events:none;
 }
@@ -298,10 +306,12 @@ if(page==='lock'){
 html=`
 <div class="lock">
 
-  <svg class="lock-wallpaper"
-       viewBox="0 0 440 960"
-       preserveAspectRatio="xMidYMid slice"
-       xmlns="http://www.w3.org/2000/svg">
+ 
+<img
+  class="lock-wallpaper"
+  src="images/IMG-4436.jpg"
+  alt=""
+>
 
     <defs>
       <linearGradient id="foldBg" x1="0" y1="0" x2="0" y2="1">
@@ -400,17 +410,6 @@ html=`
   <div class="hint">
     ปัดขึ้นเพื่อปลดล็อก
   </div>
-
-  <button class="lock-notification" data-go="home">
-    <span class="notification-icon">
-      ${icon('line')}
-    </span>
-    <span>
-      <strong>LINE</strong>
-      <small>ข้อความจากพี่ดุจ</small>
-    </span>
-  </button>
-
 </div>
 `;
 }

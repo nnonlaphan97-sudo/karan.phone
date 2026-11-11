@@ -27,10 +27,9 @@ body{
 }
 #phone{
   position:relative;
-  width:min(100vw,480px);
-  height:100dvh;
-  max-height:900px;
-  aspect-ratio:auto;
+  width:min(100vw,480px,calc(100dvh * 390 / 740));
+  height:auto;
+  aspect-ratio:390/740;
   overflow:hidden;
   background:#d7d3e8;
   border:3px solid #292b35;
@@ -62,8 +61,8 @@ svg text{
 
 <svg id="display"
  xmlns="http://www.w3.org/2000/svg"
- viewBox="0 0 390 616"
- preserveAspectRatio="none">
+ viewBox="0 0 390 740"
+ preserveAspectRatio="xMidYMid meet">
 
 <defs>
  <filter id="pinBlur" x="-20%" y="-20%" width="140%" height="140%">
@@ -87,12 +86,12 @@ svg text{
 
 <g id="lockPage">
 
- <rect width="390" height="616" fill="url(#fallback)"/>
+ <rect width="390" height="740" fill="url(#fallback)"/>
 
  <!-- Wallpaper -->
  <image id="wallpaper"
   x="0" y="0"
-  width="390" height="616"
+  width="390" height="740"
   preserveAspectRatio="xMidYMid slice"
   href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"/>
 
@@ -258,7 +257,7 @@ svg text{
  <!-- Blurred lock-screen wallpaper -->
  <image id="pinWallpaper"
   x="-20" y="-20"
-  width="430" height="656"
+  width="430" height="780"
   preserveAspectRatio="xMidYMid slice"
   href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"
   filter="url(#pinBlur)"/>
@@ -289,7 +288,7 @@ svg text{
   font-size="12"
   fill="#8a4256"></text>
 
- <g id="keypad"></g>
+ <g id="keypad" transform="translate(0 58)"></g>
 
 </g>
 
@@ -298,7 +297,7 @@ svg text{
 ============================== -->
 
 <g id="unlockedPage" display="none">
- <rect width="390" height="616" fill="#e8edf5"/>
+ <rect width="390" height="740" fill="#e8edf5"/>
 
  <text x="195" y="290"
   text-anchor="middle"
@@ -430,7 +429,7 @@ svg text{
 
 <!-- Gesture bar -->
 <rect id="gestureBar"
- x="145" y="604"
+ x="145" y="728"
  width="100" height="4"
  rx="2" fill="#F5F1F2"/>
 

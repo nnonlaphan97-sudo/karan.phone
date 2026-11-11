@@ -1811,21 +1811,6 @@ showPage("lock");
       }, 1800);
     }, 1000);
   });
-    story.stage = "finished";
-    choices.style.display = "none";
-
-    const next = {
-      1:"ถ้าอย่างนั้นผมขอเข้าไปปรึกษาที่โต๊ะคุณการันต์ได้ไหมครับ",
-      2:"เรื่องงานน่ะครับ... คุณการันต์สะดวกให้ผมเข้าไปหาไหมครับ",
-      3:"ขอบคุณครับ เดี๋ยวผมเตรียมเอกสารไว้ให้ครับ"
-    };
-
-    receive(next[story.choice]);
-
-    setTimeout(() => {
-      receive("แล้วเจอกันนะครับ");
-    },750);
-  });
 
   // ติดตามการเปิดและปิดห้องแชต
   const chatObserver = new MutationObserver(updateChoices);

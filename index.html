@@ -8,7 +8,7 @@
 <title>KARAN'S PHONE</title>
 
 <style>
-{
+*{
  box-sizing:border-box;
  -webkit-tap-highlight-color:transparent;
 }
@@ -27,9 +27,8 @@ body{
 }
 #phone{
   position:relative;
-  width:min(100vw,480px,calc(100dvh * 390 / 740));
-  height:auto;
-  aspect-ratio:390/740;
+  width:min(100vw,480px,calc(100dvh * 390 / 616));
+  aspect-ratio:390/616;
   overflow:hidden;
   background:#d7d3e8;
   border:3px solid #292b35;
@@ -61,7 +60,7 @@ svg text{
 
 <svg id="display"
  xmlns="http://www.w3.org/2000/svg"
- viewBox="0 0 390 740"
+ viewBox="0 0 390 616"
  preserveAspectRatio="xMidYMid meet">
 
 <defs>
@@ -86,12 +85,12 @@ svg text{
 
 <g id="lockPage">
 
- <rect width="390" height="740" fill="url(#fallback)"/>
+ <rect width="390" height="616" fill="url(#fallback)"/>
 
  <!-- Wallpaper -->
  <image id="wallpaper"
   x="0" y="0"
-  width="390" height="740"
+  width="390" height="616"
   preserveAspectRatio="xMidYMid slice"
   href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"/>
 
@@ -256,8 +255,8 @@ svg text{
 
  <!-- Blurred lock-screen wallpaper -->
  <image id="pinWallpaper"
-  x="-20" y="-20"
-  width="430" height="780"
+  x="0" y="0"
+  width="390" height="616"
   preserveAspectRatio="xMidYMid slice"
   href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"
   filter="url(#pinBlur)"/>
@@ -288,7 +287,7 @@ svg text{
   font-size="12"
   fill="#8a4256"></text>
 
- <g id="keypad" transform="translate(0 58)"></g>
+ <g id="keypad"></g>
 
 </g>
 
@@ -297,7 +296,7 @@ svg text{
 ============================== -->
 
 <g id="unlockedPage" display="none">
- <rect width="390" height="740" fill="#e8edf5"/>
+ <rect width="390" height="616" fill="#e8edf5"/>
 
  <text x="195" y="290"
   text-anchor="middle"
@@ -429,7 +428,7 @@ svg text{
 
 <!-- Gesture bar -->
 <rect id="gestureBar"
- x="145" y="728"
+ x="145" y="604"
  width="100" height="4"
  rx="2" fill="#F5F1F2"/>
 
@@ -930,706 +929,165 @@ showPage("lock");
 </script>
  
 <!-- KARAN HOME + LINE : ONE-POINT ADDON -->
+
+<style>
+/* Independent One UI mockup shell. Does not modify lock or PIN geometry. */
+#mockShell,#mockShell *{box-sizing:border-box}
+#mockShell{position:absolute;inset:0;z-index:180;display:none;background:#fafafa;color:#171717;font-family:Arial,"Noto Sans Thai",sans-serif;font-size:14px;overflow:hidden}
+#mockShell button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+#mockShell .sysbar{position:absolute;top:0;left:0;right:0;height:35px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;background:transparent;z-index:100;font-size:12px;font-weight:700;pointer-events:none}
+#mockShell .sysbar .sysright{display:flex;align-items:center;gap:7px}
+#mockShell .sysbar svg{width:52px;height:17px}
+#mockShell .appviewport{position:absolute;top:35px;bottom:20px;left:0;right:0;overflow-y:auto;overscroll-behavior:contain}
+#mockShell .gesture{position:absolute;bottom:0;left:0;right:0;height:20px;display:flex;justify-content:center;align-items:center;z-index:100;cursor:pointer}
+#mockShell .gesture:after{content:"";width:105px;height:4px;background:#3337;border-radius:10px}
+#mockShell .home{min-height:100%;padding:27px 15px 85px;background:linear-gradient(#0002,#0003),url('https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg') center/cover;color:white}
+#mockShell .weather{display:flex;gap:12px;align-items:center;margin:13px 0 22px;font-size:46px}
+#mockShell .weather small{font-size:12px;display:block}
+#mockShell .appgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 6px}
+#mockShell .appicon{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;min-width:0;text-align:center;color:inherit}
+#mockShell .iconbox{width:51px;height:51px;border-radius:15px;background:var(--c);color:var(--fg,#fff);display:grid;place-items:center;box-shadow:0 2px 5px #0002}
+#mockShell .iconbox svg{width:29px;height:29px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#mockShell .homedock{position:absolute;bottom:30px;left:12px;right:12px;display:flex;justify-content:space-around;align-items:center}
+#mockShell .homedock .iconbox{width:45px;height:45px}
+#mockShell .apphead{position:sticky;top:0;z-index:10;background:#fafafa;padding:11px 17px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#mockShell .apphead h2{font-size:24px;line-height:1.2;margin:0;font-weight:700}
+#mockShell .apphead .back{font-size:26px;min-width:28px;text-align:left}
+#mockShell .apphead .more{font-size:21px}
+#mockShell .search{display:block;width:calc(100% - 32px);margin:9px 16px 14px;border:0;border-radius:24px;background:#eee;padding:12px 15px;outline:0;font-size:14px}
+#mockShell .tabs{display:flex;gap:8px;padding:5px 15px 13px;overflow-x:auto}
+#mockShell .tabs button{white-space:nowrap;padding:9px 14px;border-radius:22px;background:#ededed;font-size:13px}
+#mockShell .tabs button.on{background:#222;color:white}
+#mockShell .item{width:100%;min-height:65px;display:flex;align-items:center;gap:12px;padding:10px 18px;text-align:left;border-bottom:1px solid #eee!important}
+#mockShell .item .avatar{width:42px;height:42px;border-radius:50%;background:#e4e7ef;display:grid;place-items:center;font-weight:bold;flex-shrink:0;color:#52606c}
+#mockShell .item .info{min-width:0;flex:1}
+#mockShell .item .info b{display:block;font-size:15px}
+#mockShell .item .info small{display:block;color:#888;font-size:12px;margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#mockShell .bottomtabs{position:absolute;bottom:20px;left:0;right:0;height:49px;display:flex;align-items:center;justify-content:space-around;background:#fafafa;border-top:1px solid #eee}
+#mockShell .bottomtabs button{font-size:12px;color:#777}
+#mockShell .bottomtabs button.on{font-weight:700;color:#111}
+#mockShell .sheet{padding:14px 17px}
+#mockShell .muted{color:#888;font-size:12px}
+#mockShell .fab{position:absolute;right:17px;bottom:79px;width:51px;height:51px;border-radius:17px!important;background:#d9e7ff!important;font-size:25px!important;box-shadow:0 4px 12px #0002}
+#mockShell .chatmessages{padding:15px 11px 18px;display:flex;flex-direction:column;gap:12px;min-height:100%;background:#d3d9e6}
+#mockShell .chatrow{display:flex;align-items:flex-start;gap:7px;max-width:90%}
+#mockShell .chatrow.mine{align-self:flex-end;justify-content:flex-end}
+#mockShell .chatrow .avatar{height:30px;width:30px;flex-shrink:0;border-radius:50%;background:#e6e8ed;display:grid;place-items:center;font-weight:bold;font-size:12px}
+#mockShell .bubble{border-radius:15px;padding:9px 12px;background:white;line-height:1.5;max-width:100%;overflow-wrap:anywhere}
+#mockShell .mine .bubble{background:#b5ef8f}
+#mockShell .chatcompose{position:absolute;bottom:20px;left:0;right:0;background:white;display:flex;gap:8px;padding:9px}
+#mockShell .chatcompose input{flex:1;min-width:0;border:0;background:#f1f1f1;border-radius:25px;padding:10px;outline:none}
+#mockShell .chatcompose button{border-radius:22px;background:#06c755;color:white;padding:8px 13px}
+#mockShell .gallerygrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+#mockShell .phototile{aspect-ratio:1;background:linear-gradient(135deg,#e9d9c9,#b8c7d3);display:grid;place-items:center;font-size:25px;color:#777}
+#mockShell .calgrid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:7px;padding:10px}
+#mockShell .calgrid button{height:34px;border-radius:50%}
+#mockShell .calgrid button.today{background:#cfe0ff}
+#mockShell .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 30px;margin:18px auto;max-width:270px;text-align:center}
+#mockShell .keypad button{height:53px;border-radius:50%;background:#f0f0f0;font-size:23px}
+#mockShell .card{background:white;border-radius:17px;margin:10px 15px;padding:16px;box-shadow:0 1px 4px #0001}
+#mockShell .quick{position:absolute;top:35px;left:0;right:0;background:#edf0f7;padding:20px;z-index:101;border-radius:0 0 25px 25px;display:none}
+#mockShell .quick.open{display:block}
+#mockShell .quick button{background:#d5dded;border-radius:18px;padding:10px;margin:5px}
+</style>
 <script>
-(function () {
-  "use strict";
-
-  if (document.getElementById("karanGameAddon")) return;
-
-  const wallpaper = "https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg";
-
-  const contacts = [
-    {id:"achi", name:"อชิ", color:"#d8e8dc",
-     messages:[]},
-    {id:"duj", name:"พี่ดุจ", color:"#e9dfe8",
-     messages:[]},
-    {id:"tanaka", name:"ทานากะซัง", color:"#dce5ee",
-     messages:[{from:"them",text:"สวัสดีครับ คุณการันต์"}]},
-    {id:"pai", name:"พาย", color:"#eee2d5",
-     messages:[{from:"them",text:"เดี๋ยวพายส่งรายละเอียดให้นะคะ"}]},
-    {id:"pa", name:"ป่า", color:"#d9e9dc",
-     messages:[{from:"them",text:"ว่างเมื่อไหร่โทรมาหน่อยนะ"}]},
-    {id:"rock", name:"ร็อก", color:"#e2e4f0",
-     messages:[{from:"them",text:"รับทราบครับพี่การันต์"}]}
-  ];
-
-  const style = document.createElement("style");
-  style.textContent = `
-  #karanGameAddon, #karanGameAddon * {
-    box-sizing:border-box;
-    font-family:Arial,"Noto Sans Thai",sans-serif;
-  }
-  #karanGameAddon {
-    position:absolute;inset:0;z-index:200;
-    display:none;overflow:hidden;background:#fff;
-    color:#171717;
-  }
-  #karanGameAddon button {cursor:pointer;font:inherit}
-  #karanGameAddon .kg-page {
-    position:absolute;inset:0;display:none;
-    flex-direction:column;overflow:hidden;
-  }
-  #karanGameAddon .kg-page.active {display:flex}
-  #karanGameAddon .kg-home {
-    color:white;
-    background:linear-gradient(#00000010,#00000025),
-    url("${wallpaper}") center/cover;
-  }
-  #karanGameAddon .kg-status {
-    height:38px;flex-shrink:0;padding:10px 17px 0;
-    display:flex;align-items:flex-start;
-    justify-content:space-between;
-    font-size:13px;font-weight:700;color:#35313B;
-  }
-  #karanGameAddon .kg-status svg {
-    width:66px;height:18px;display:block;
-  }
-  #karanGameAddon .kg-weather {
-    margin:40px 22px 0;
-    display:flex;align-items:center;gap:12px;
-  }
-  #karanGameAddon .kg-weather svg {
-    width:82px;height:82px;flex-shrink:0;
-  }
-  #karanGameAddon .kg-temp {
-    font-size:53px;line-height:1;font-weight:400;
-  }
-  #karanGameAddon .kg-weather-small {
-    font-size:12px;margin-top:6px;
-  }
-#karanGameAddon .kg-apps {
-  margin:35px 22px 0;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:15px;text-align:center;
+(function(){'use strict';
+const root=document.createElement('div');root.id='mockShell';document.getElementById('phone').appendChild(root);
+const icons={
+line:'<path d="M4 12c0-5 4-8 10-8s10 3 10 8-4 8-10 8h-3l-5 3 1-5c-2-2-3-4-3-6Z"/><path d="M9 12h10"/>',
+phone:'<path d="M7 3h5l2 5-3 3c2 4 4 6 8 8l3-3 4 2v5c-11 3-22-9-19-20Z"/>',
+gallery:'<rect x="3" y="3" width="22" height="22" rx="4"/><circle cx="10" cy="10" r="2"/><path d="m4 21 7-7 5 5 3-3 6 6"/>',
+camera:'<rect x="2" y="7" width="24" height="18" rx="4"/><path d="m9 7 2-3h7l2 3"/><circle cx="14" cy="16" r="5"/>',
+calendar:'<rect x="3" y="5" width="22" height="20" rx="3"/><path d="M8 2v6M20 2v6M3 11h22"/>',
+notes:'<rect x="4" y="3" width="20" height="23" rx="3"/><path d="M9 10h10M9 15h10M9 20h7"/>',
+music:'<path d="M12 6v15a4 4 0 1 1-3-4V7l14-3v14a4 4 0 1 1-3-4V5Z"/>',
+browser:'<circle cx="14" cy="14" r="11"/><path d="M3 14h22M14 3c-7 6-7 16 0 22M14 3c7 6 7 16 0 22"/>',
+instagram:'<rect x="3" y="3" width="22" height="22" rx="6"/><circle cx="14" cy="14" r="5"/><circle cx="21" cy="7" r="1"/>',
+mail:'<rect x="2" y="5" width="24" height="18" rx="3"/><path d="m3 7 11 9L25 7"/>',
+maps:'<path d="M14 26S5 17 5 11a9 9 0 0 1 18 0c0 6-9 15-9 15Z"/><circle cx="14" cy="11" r="3"/>',
+files:'<path d="M2 8V5h9l3 3h12v16H2Z"/>',
+clock:'<circle cx="14" cy="14" r="11"/><path d="M14 7v8l5 3"/>',
+settings:'<circle cx="14" cy="14" r="4"/><path d="M14 2v4M14 22v4M2 14h4M22 14h4M5 5l3 3M20 20l3 3M23 5l-3 3M8 20l-3 3"/>',
+contacts:'<circle cx="14" cy="9" r="5"/><path d="M4 25c0-12 20-12 20 0"/>'};
+const apps=[['line','LINE','#06c755'],['phone','โทรศัพท์','#4db66c'],['gallery','แกลเลอรี','#f3adbe'],['camera','กล้อง','#9daac4'],['calendar','ปฏิทิน','#fff','#d34b50'],['notes','โน้ต','#f6d86b','#5d4e29'],['music','เพลง','#e1a4c8'],['browser','Internet','#8bbfe7'],['instagram','Instagram','#c77bbd'],['mail','Gmail','#fff','#df5555'],['maps','Maps','#9bd2b4'],['files','ไฟล์','#e4bc68'],['clock','นาฬิกา','#d4d8e5','#323842'],['settings','ตั้งค่า','#a9b9d2'],['contacts','รายชื่อ','#c2d8ec','#526784']];
+const people=['อชิ','พี่ดุจ','ทานากะซัง','พาย','ป่า','ร็อก'];
+const chats=Object.fromEntries(people.map(n=>[n,[{who:'them',text:'สวัสดีครับ คุณการันต์'}]]));
+const photos=Array.from({length:18},(_,i)=>({name:'รูปภาพ '+(i+1),date:'11 พฤศจิกายน 2026'}));
+const notes=[{title:'รายการสิ่งที่ต้องทำ',body:'รายการสำหรับวันนี้\n- ตรวจอีเมล\n- นัดประชุม'},{title:'ไอเดีย',body:'จดบันทึกที่นี่'}];
+let screen='home',history=[],tab='แชต',month=10,year=2026,selectedPerson='อชิ',callDigits='',timer=null,timerSec=0;
+const $=id=>document.getElementById(id);
+const icon=id=>'<svg viewBox="0 0 28 28" aria-hidden="true">'+icons[id]+'</svg>';
+const tile=a=>`<button class="appicon" data-app="${a[0]}"><span class="iconbox" style="--c:${a[2]};--fg:${a[3]||'#fff'}">${icon(a[0])}</span><span>${a[1]}</span></button>`;
+const header=(name,extra='')=>`<div class="apphead"><button class="back" data-back>‹</button><h2>${name}</h2><button class="more" data-more>⋮</button></div>${extra}`;
+const list=(items,action='open')=>items.map((n,i)=>`<button class="item" data-${action}="${i}"><span class="avatar">${n[0]}</span><span class="info"><b>${n}</b><small>${action==='person'?'แตะเพื่อดูการสนทนา':'แตะเพื่อเปิด'}</small></span><span>›</span></button>`).join('');
+const home=()=>`<div class="home"><div class="weather"><span>☀</span><div>30°<small>มีเมฆบางส่วน</small><small>กรุงเทพมหานคร</small></div></div><div class="appgrid">${apps.map(tile).join('')}</div></div><div class="homedock">${[apps[1],apps[0],apps[3]].map(tile).join('')}</div>`;
+function view(){
+ let body='',dark=screen==='home';
+ if(screen==='home')body=home();
+ else if(screen==='line'){body=header('LINE')+`<div class="tabs"><button data-tab="แชต" class="${tab==='แชต'?'on':''}">แชต</button><button data-tab="เพื่อน" class="${tab==='เพื่อน'?'on':''}">เพื่อน</button></div><input class="search" id="lineSearch" placeholder="ค้นหา"/>`+list(people,'person')+`<div style="height:70px"></div>`;}
+ else if(screen==='chat'){body=header(selectedPerson)+`<div class="chatmessages" id="chatMessages">${chats[selectedPerson].map(m=>`<div class="chatrow ${m.who==='me'?'mine':''}">${m.who==='them'?`<span class="avatar">${selectedPerson[0]}</span>`:''}<div class="bubble">${escapeHtml(m.text)}</div></div>`).join('')}</div><form class="chatcompose" id="chatForm"><input id="chatInput" placeholder="ข้อความ"/><button>ส่ง</button></form>`;}
+ else if(screen==='phone'){body=header('โทรศัพท์')+`<div class="tabs">${['แป้นกด','ล่าสุด','รายชื่อ'].map(t=>`<button data-ptab="${t}" class="${tab===t?'on':''}">${t}</button>`).join('')}</div>`+(tab==='ล่าสุด'?list(['อชิ','พี่ดุจ','พาย'],'dial'):tab==='รายชื่อ'?list(people,'dial'):`<div style="text-align:center;font-size:28px;margin-top:20px;height:35px">${callDigits}</div><div class="keypad">${['1','2','3','4','5','6','7','8','9','*','0','#'].map(d=>`<button data-digit="${d}">${d}</button>`).join('')}</div><div style="text-align:center"><button data-action="call" style="background:#4db66c;color:white;border-radius:30px;padding:12px 32px">โทร</button></div>`);}
+ else if(screen==='gallery'){body=header('แกลเลอรี')+`<div class="tabs"><button class="on">รูปภาพ</button><button data-action="albums">อัลบั้ม</button></div><div class="gallerygrid">${photos.map((p,i)=>`<button class="phototile" data-photo="${i}">${icon('gallery')}</button>`).join('')}</div>`;}
+ else if(screen==='photo'){body=header('รูปภาพ')+`<div class="card" style="height:65%;display:grid;place-items:center;background:#e4e7ed">${icon('gallery')}<p>ตัวอย่างรูปภาพ</p></div><div class="sheet"><button data-action="favorite">♡ รายการโปรด</button>　<button data-action="deletephoto">ลบ</button></div>`;}
+ else if(screen==='camera'){body=`<div style="background:#17191e;color:white;height:100%;display:flex;flex-direction:column;justify-content:space-between"><div class="apphead" style="background:#17191e"><button data-back>‹</button><b>กล้อง</b><button data-action="flip">↻</button></div><div style="flex:1;display:grid;place-items:center;background:#30343b">${icon('camera')}<small>กล้องจำลอง</small></div><div style="display:flex;justify-content:space-around;align-items:center;height:105px"><button data-app="gallery">▣</button><button data-action="shutter" style="width:62px;height:62px;border-radius:50%;border:5px solid white;background:#ddd"></button><button data-action="flip">↻</button></div></div>`;}
+ else if(screen==='calendar'){let first=new Date(year,month,1).getDay(),days=new Date(year,month+1,0).getDate();body=header('ปฏิทิน')+`<div class="sheet" style="display:flex;justify-content:space-between"><button data-action="prevmonth">‹</button><b>${year} / ${month+1}</b><button data-action="nextmonth">›</button></div><div class="calgrid">${['อา','จ','อ','พ','พฤ','ศ','ส'].map(x=>`<b>${x}</b>`).join('')}${Array.from({length:first},()=>'<span></span>').join('')}${Array.from({length:days},(_,i)=>`<button data-day="${i+1}" class="${i+1===11?'today':''}">${i+1}</button>`).join('')}</div><div class="card"><b>กิจกรรม</b><p class="muted">แตะวันที่เพื่อดูหรือเพิ่มกิจกรรม</p></div>`;}
+ else if(screen==='notes'){body=header('Samsung Notes')+`<input class="search" id="notesSearch" placeholder="ค้นหาโน้ต"/>`+notes.map((n,i)=>`<button class="item" data-note="${i}"><span class="avatar">${icon('notes')}</span><span class="info"><b>${escapeHtml(n.title)}</b><small>${escapeHtml(n.body.slice(0,42))}</small></span></button>`).join('')+`<button class="fab" data-action="newnote">＋</button>`;}
+ else if(screen==='note'){let n=notes[Number(root.dataset.note)||0];body=header('โน้ต')+`<div class="sheet"><input id="noteTitle" value="${escapeAttr(n.title)}" style="border:0;font-size:21px;width:100%;padding:10px"/><textarea id="noteBody" style="width:100%;height:300px;border:0;padding:10px;font:inherit;resize:none">${escapeHtml(n.body)}</textarea><button data-action="savenote" style="background:#dbe6fb;border-radius:18px;padding:12px">บันทึก</button></div>`;}
+ else if(screen==='music'){body=header('Samsung Music')+`<div class="card" style="text-align:center;padding:35px"><div style="font-size:55px">♫</div><h3>เพลงตัวอย่าง</h3><p class="muted">ยังไม่ได้เพิ่มไฟล์เสียง</p><button data-action="musicplay">▶ เล่น / หยุด</button></div><div class="sheet"><b>เพลย์ลิสต์</b><p>เพลงโปรด</p></div>`;}
+ else if(screen==='browser'){body=header('Samsung Internet')+`<form id="webForm" class="sheet"><input class="search" id="webQuery" style="width:100%;margin:0" placeholder="ค้นหาหรือป้อน URL"/></form><div class="card"><b>รายการโปรด</b><p>Samsung Internet</p><p class="muted">หน้าเว็บตัวอย่าง — ไม่เปิดเว็บไซต์ภายนอกโดยอัตโนมัติ</p></div>`;}
+ else if(screen==='instagram'){body=header('Instagram')+`<div class="sheet"><b>karan</b><p class="muted">0 โพสต์ · 0 ผู้ติดตาม · 0 กำลังติดตาม</p><button data-action="follow">แก้ไขโปรไฟล์</button></div><div class="gallerygrid">${photos.slice(0,6).map((p,i)=>`<button class="phototile" data-photo="${i}">${icon('gallery')}</button>`).join('')}</div>`;}
+ else if(screen==='mail'){body=header('Gmail')+`<input class="search" placeholder="ค้นหาในอีเมล"/>`+list(['ยินดีต้อนรับสู่กล่องจดหมาย','ตัวอย่างอีเมลการทำงาน'],'email')+`<button class="fab" data-action="composemail">✎</button>`;}
+ else if(screen==='maps'){body=header('Maps')+`<input class="search" placeholder="ค้นหาสถานที่"/><div style="height:330px;background:repeating-linear-gradient(45deg,#e6eddf,#e6eddf 28px,#d7e6ed 28px,#d7e6ed 55px);display:grid;place-items:center">แผนที่จำลอง</div><div class="card">สถานที่บันทึกไว้<br><small class="muted">ยังไม่มีสถานที่</small></div>`;}
+ else if(screen==='files'){body=header('ไฟล์ส่วนตัว')+`<input class="search" placeholder="ค้นหาไฟล์"/>`+list(['รูปภาพ','ดาวน์โหลด','เอกสาร','เสียง','วิดีโอ'],'folder');}
+ else if(screen==='folder'){body=header(root.dataset.folder||'โฟลเดอร์')+`<div class="sheet muted">ยังไม่มีไฟล์ในโฟลเดอร์นี้</div>`;}
+ else if(screen==='clock'){body=header('นาฬิกา')+`<div class="tabs">${['ปลุก','นาฬิกาโลก','จับเวลา','ตั้งเวลา'].map(t=>`<button data-ctab="${t}" class="${tab===t?'on':''}">${t}</button>`).join('')}</div><div class="card" style="text-align:center;font-size:30px">${tab==='จับเวลา'||tab==='ตั้งเวลา'?timerSec+' วินาที':'07:00'}</div><div class="sheet" style="text-align:center"><button data-action="timerstart">เริ่ม</button>　<button data-action="timerreset">รีเซ็ต</button></div>`;}
+ else if(screen==='settings'){body=header('การตั้งค่า')+list(['การเชื่อมต่อ','เสียงและการสั่น','จอภาพ','วอลเปเปอร์และสไตล์','แบตเตอรี่','เกี่ยวกับโทรศัพท์'],'setting');}
+ else if(screen==='contacts'){body=header('รายชื่อ')+`<input class="search" placeholder="ค้นหารายชื่อ"/>`+list(people,'dial');}
+ else if(screen==='detail'){body=header(root.dataset.detail||'รายละเอียด')+`<div class="card">ตัวอย่างหน้ารายละเอียด<br><p class="muted">ส่วนนี้ยังเป็น Mockup รอข้อมูลจริง</p></div>`;}
+ root.innerHTML=`<div class="sysbar" id="sysbar"><span>karan</span><span class="sysright"><svg viewBox="0 0 52 17"><g fill="currentColor"><rect x="1" y="12" width="4" height="4" rx="1"/><rect x="8" y="9" width="4" height="7" rx="1"/><rect x="15" y="6" width="4" height="10" rx="1"/><rect x="22" y="3" width="4" height="13" rx="1"/></g><path d="M31 7Q39 0 48 7M34 10Q39 6 45 10M38 13h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span style="border:1px solid currentColor;border-radius:5px;padding:1px 3px">85</span></span></div><div class="appviewport" id="appViewport">${body}</div><div class="gesture" data-home title="กลับหน้าหลัก"></div><div class="quick" id="quick"><b>การตั้งค่าด่วน</b><p><button data-action="wifi">Wi-Fi</button><button data-action="sound">เสียง</button><button data-action="brightness">ความสว่าง</button></p><button data-action="quickclose">ปิด</button></div>`;
+ root.querySelector('.sysbar').style.color=dark?'#333':'#333';
+ if(screen==='chat'){const vp=$('appViewport');vp.style.overflow='hidden';vp.style.display='flex';vp.style.flexDirection='column';vp.querySelector('.chatmessages').style.flex='1';vp.querySelector('.chatmessages').style.minHeight='0';vp.querySelector('.chatcompose').style.position='relative';vp.querySelector('.chatcompose').style.bottom='auto';vp.querySelector('.chatmessages').scrollTop=999999;}
 }
-  #karanGameAddon .kg-app {
-    border:0;background:transparent;color:white;
-    display:flex;align-items:center;
-    flex-direction:column;gap:7px;font-size:11px;
-  }
-  #karanGameAddon .kg-line-icon {
-    width:55px;height:55px;border-radius:15px;
-    background:#06c755;display:grid;place-items:center;
-  }
-  #karanGameAddon .kg-line-icon svg {
-    width:43px;height:43px;
-  }
-#karanGameAddon .kg-dock {
-  position:absolute;
-  bottom:30px;
-  left:20px;
-  right:20px;
-  height:45px;
-  background:transparent;
-  border:none;
-  border-radius:0;
-  backdrop-filter:none;
-  display:flex;
-  align-items:center;
-  justify-content:space-evenly;
-}
- #karanGameAddon .kg-dock svg {
-  width:31px;
-  height:31px;
-  stroke:white;
-  fill:none;
-  stroke-width:2;
-}
-  #karanGameAddon .kg-gesture {
-    position:absolute;bottom:0;left:0;right:0;
-    height:35px;border:0;background:transparent;
-    display:grid;place-items:center;z-index:5;
-  }
-  #karanGameAddon .kg-gesture span {
-    width:105px;height:4px;border-radius:8px;
-    background:#ffffff95;
-  }
-  #karanGameAddon .kg-line {
-    background:white;color:#171717;
-  }
-  #karanGameAddon .kg-line-header {
-    padding:12px 16px;
-    display:flex;align-items:center;
-    justify-content:space-between;gap:8px;
-  }
-  #karanGameAddon .kg-tabs {
-    display:flex;gap:3px;background:#f1f1f1;
-    padding:4px;border-radius:28px;
-  }
-  #karanGameAddon .kg-tab {
-    padding:9px 15px;border:0;border-radius:24px;
-    background:transparent;color:#171717;
-    font-size:14px;font-weight:700;
-  }
-  #karanGameAddon .kg-tab.selected {
-    background:#111;color:white;
-  }
-  #karanGameAddon .kg-search {
-    margin:0 17px 8px;padding:12px 15px;
-    background:#f3f3f3;border:0;border-radius:24px;
-    outline:none;font-size:14px;
-  }
-  #karanGameAddon .kg-list {
-    flex:1;overflow-y:auto;padding:0 17px 105px;
-  }
-  #karanGameAddon .kg-person {
-    width:100%;display:flex;align-items:center;
-    gap:12px;min-height:78px;padding:10px 0;
-    background:white;border:0;text-align:left;
-    color:#171717;
-  }
-  #karanGameAddon .kg-avatar {
-    width:53px;height:53px;border-radius:50%;
-    flex-shrink:0;display:grid;place-items:center;
-    font-size:20px;font-weight:700;color:#52675b;
-  }
-  #karanGameAddon .kg-person-info {
-    flex:1;min-width:0;
-  }
-  #karanGameAddon .kg-person-name {
-    font-size:16px;font-weight:700;
-  }
-  #karanGameAddon .kg-preview {
-    font-size:12px;color:#888;margin-top:6px;
-    white-space:nowrap;overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  #karanGameAddon .kg-nav {
-    position:absolute;bottom:38px;
-    left:30px;right:30px;height:49px;
-    background:#f4f4f4;border:1px solid #eee;
-    border-radius:28px;padding:4px;
-    display:flex;z-index:4;
-  }
-  #karanGameAddon .kg-nav button {
-    flex:1;border:0;border-radius:23px;
-    background:transparent;color:#777;font-size:11px;
-  }
-  #karanGameAddon .kg-nav button.selected {
-    background:#111;color:white;
-  }
-  #karanGameAddon .kg-chat {
-    background:#d3d9e6;
-  }
-  #karanGameAddon .kg-chat-head {
-    height:59px;flex-shrink:0;
-    background:white;display:flex;
-    align-items:center;gap:12px;padding:0 14px;
-  }
-  #karanGameAddon .kg-back {
-    border:0;background:transparent;
-    color:#111;font-size:30px;
-  }
-  #karanGameAddon .kg-messages {
-    flex:1;min-height:0;overflow-y:auto;
-    padding:16px 12px;
-    display:flex;flex-direction:column;gap:12px;
-  }
-  #karanGameAddon .kg-bubble {
-    max-width:79%;padding:10px 13px;
-    border-radius:18px;font-size:14px;
-    line-height:1.5;overflow-wrap:anywhere;
-  }
-  #karanGameAddon .kg-bubble.them {
-    align-self:flex-start;background:white;
-  }
-  #karanGameAddon .kg-bubble.me {
-    align-self:flex-end;background:#a9ef81;
-  }
-  #karanGameAddon .kg-compose {
-    background:white;display:flex;
-    gap:8px;align-items:center;
-    padding:10px 10px 37px;
-  }
-  #karanGameAddon .kg-compose input {
-    flex:1;min-width:0;border:0;
-    border-radius:22px;background:#f3f3f3;
-    padding:11px 13px;outline:none;
-  }
-  #karanGameAddon .kg-send {
-    border:0;border-radius:22px;
-    background:#06c755;color:white;
-    padding:10px 14px;
-  }
-  #karanGameAddon .kg-line .kg-gesture span,
-  #karanGameAddon .kg-chat .kg-gesture span {
-    background:#0005;
-  }`;
-  document.head.appendChild(style);
-
-  const root = document.createElement("div");
-  root.id = "karanGameAddon";
-  root.innerHTML = `
-  <section class="kg-page kg-home active" id="kgHome">
-    <div class="kg-status">
-      <span>karan</span>
-      <svg viewBox="0 0 66 18">
-        <g fill="#35313B">
-          <rect x="1" y="11" width="3" height="5" rx="1"/>
-          <rect x="6" y="8" width="3" height="8" rx="1" opacity=".25"/>
-          <rect x="11" y="5" width="3" height="11" rx="1" opacity=".25"/>
-          <rect x="16" y="2" width="3" height="14" rx="1" opacity=".25"/>
-        </g>
-        <path d="M24 6Q32-1 40 6M28 10Q32 6 36 10"
-          fill="none" stroke="#35313B" stroke-width="2"
-          stroke-linecap="round"/>
-        <circle cx="32" cy="14" r="1.5" fill="#35313B"/>
-        <rect x="44" y="3" width="22" height="13" rx="7"
-          fill="#35313B" opacity=".35"/>
-        <rect x="44" y="3" width="12" height="13" rx="7"
-          fill="#35313B"/>
-        <text x="55" y="12" text-anchor="middle"
-          fill="white" font-size="7">50</text>
-      </svg>
-    </div>
-
-    <div class="kg-weather">
-      <svg viewBox="0 0 80 80">
-        <circle cx="30" cy="26" r="14" fill="#ffda73"/>
-        <g stroke="#ffda73" stroke-width="3" stroke-linecap="round">
-          <path d="M30 4v6M30 43v7M7 26h6M47 26h6
-                   M14 10l5 5M46 10l-5 5"/>
-        </g>
-        <path d="M24 59h39a13 13 0 0 0-4-25
-                 19 19 0 0 0-35 5
-                 10 10 0 0 0 0 20"
-          fill="white"/>
-      </svg>
-      <div>
-        <div class="kg-temp">30°</div>
-        <div class="kg-weather-small">มีเมฆบางส่วน</div>
-        <div class="kg-weather-small">กรุงเทพมหานคร</div>
-      </div>
-    </div>
-
-    <div class="kg-apps">
-      <button class="kg-app" id="kgOpenLine">
-        <span class="kg-line-icon">
-          <svg viewBox="0 0 48 48">
-            <path d="M24 6C12 6 4 14 4 24
-                     c0 9 7 15 17 16l-1 5
-                     9-6c9-2 15-8 15-15
-                     C44 14 36 6 24 6Z" fill="white"/>
-            <text x="24" y="28" font-size="10"
-              text-anchor="middle" font-weight="bold"
-              fill="#06c755">LINE</text>
-          </svg>
-        </span>
-        LINE
-      </button>
-    </div>
-
-    <div class="kg-dock">
-      <svg viewBox="0 0 32 32">
-        <path d="M10 4Q4 4 5 11
-                 C7 20 14 27 22 28
-                 Q28 28 28 22L20 18
-                 L16 22Q11 19 9 14L13 11Z"/>
-      </svg>
-      <svg viewBox="0 0 32 32">
-        <rect x="3" y="5" width="26" height="22" rx="5"/>
-        <path d="M7 11h18M7 16h18M7 21h11"/>
-      </svg>
-      <svg viewBox="0 0 32 32">
-        <rect x="3" y="8" width="26" height="20" rx="4"/>
-        <path d="M10 8l3-4h7l3 4"/>
-        <circle cx="16" cy="18" r="6"/>
-      </svg>
-    </div>
-    <button class="kg-gesture" id="kgHomeGesture">
-      <span></span>
-    </button>
-  </section>
-
-  <section class="kg-page kg-line" id="kgLine">
-    <div class="kg-status">
-      <span>karan</span><span>● ▰ 50%</span>
-    </div>
-    <div class="kg-line-header">
-      <div class="kg-tabs">
-        <button class="kg-tab selected" id="kgChatsTab">แชต</button>
-        <button class="kg-tab" id="kgFriendsTab">เพื่อน</button>
-      </div>
-      <span style="font-size:22px">⋮</span>
-    </div>
-    <input class="kg-search" id="kgSearch"
-      placeholder="ค้นหา" autocomplete="off"/>
-    <div class="kg-list" id="kgList"></div>
-    <div class="kg-nav">
-      <button id="kgNavHome">หน้าหลัก</button>
-      <button id="kgNavChats" class="selected">แชต</button>
-      <button id="kgNavFriends">เพื่อน</button>
-    </div>
-    <button class="kg-gesture" id="kgLineGesture">
-      <span></span>
-    </button>
-  </section>
-
-  <section class="kg-page kg-chat" id="kgChat">
-    <div class="kg-status" style="background:white">
-      <span>karan</span><span>● ▰ 50%</span>
-    </div>
-    <div class="kg-chat-head">
-      <button class="kg-back" id="kgBack">‹</button>
-      <strong id="kgChatTitle">อชิ</strong>
-    </div>
-    <div class="kg-messages" id="kgMessages"></div>
-    <form class="kg-compose" id="kgCompose">
-      <input id="kgMessageInput"
-        placeholder="ข้อความ" autocomplete="off"/>
-      <button class="kg-send" type="submit">ส่ง</button>
-    </form>
-    <button class="kg-gesture" id="kgChatGesture">
-      <span></span>
-    </button>
-  </section>`;
-
-  const phone =
-    document.querySelector(".phone") ||
-    document.querySelector("#phone") ||
-    document.querySelector(".phone-frame") ||
-    document.querySelector(".device");
-
-  if (phone) {
-    if (getComputedStyle(phone).position === "static") {
-      phone.style.position = "relative";
-    }
-    phone.appendChild(root);
-  } else {
-    root.style.position = "fixed";
-    document.body.appendChild(root);
-  }
-
-  const $ = id => document.getElementById(id);
-  const pages = {
-    home:$("kgHome"),
-    line:$("kgLine"),
-    chat:$("kgChat")
-  };
-
-  let currentContact = null;
-  let currentTab = "chats";
-
-  function page(name) {
-    Object.keys(pages).forEach(key => {
-      pages[key].classList.toggle("active", key === name);
-    });
-  }
-
-  function openHome() {
-    root.style.display = "block";
-    page("home");
-  }
-
-  function openLine() {
-    root.style.display = "block";
-    setTab("chats");
-  }
-
-  function closeAddon() {
-    root.style.display = "none";
-  }
-
-  function setTab(tab) {
-    currentTab = tab;
-    $("kgChatsTab").classList.toggle("selected",tab==="chats");
-    $("kgFriendsTab").classList.toggle("selected",tab==="friends");
-    $("kgNavChats").classList.toggle("selected",tab==="chats");
-    $("kgNavFriends").classList.toggle("selected",tab==="friends");
-    renderList();
-    page("line");
-  }
-
-  function renderList() {
-    const list = $("kgList");
-    const search = $("kgSearch").value.trim().toLowerCase();
-    list.replaceChildren();
-
-    contacts.filter(c =>
-      c.name.toLowerCase().includes(search)
-    ).forEach(contact => {
-      const button = document.createElement("button");
-      button.className = "kg-person";
-
-      const avatar = document.createElement("span");
-      avatar.className = "kg-avatar";
-      avatar.style.background = contact.color;
-      avatar.textContent = contact.name.charAt(0);
-
-      const info = document.createElement("span");
-      info.className = "kg-person-info";
-
-      const name = document.createElement("div");
-      name.className = "kg-person-name";
-      name.textContent = contact.name;
-
-      const preview = document.createElement("div");
-      preview.className = "kg-preview";
-      const last = contact.messages.at(-1);
-      preview.textContent = last ? last.text : "เริ่มการสนทนา";
-
-      info.append(name,preview);
-      button.append(avatar,info);
-      button.onclick = () => openChat(contact.id);
-      list.appendChild(button);
-    });
-  }
-
-  function openChat(id) {
-    currentContact = contacts.find(c => c.id === id);
-    if (!currentContact) return;
-
-    $("kgChatTitle").textContent = currentContact.name;
-    renderMessages();
-    page("chat");
-  }
-
-  function renderMessages() {
-    const box = $("kgMessages");
-    box.replaceChildren();
-    if (!currentContact) return;
-
-    currentContact.messages.forEach(message => {
-      const bubble = document.createElement("div");
-      bubble.className =
-        "kg-bubble " + (message.from === "me" ? "me" : "them");
-      bubble.textContent = message.text;
-      box.appendChild(bubble);
-    });
-
-    box.scrollTop = box.scrollHeight;
-  }
-
-  $("kgOpenLine").onclick = openLine;
-  $("kgChatsTab").onclick = () => setTab("chats");
-  $("kgFriendsTab").onclick = () => setTab("friends");
-  $("kgNavChats").onclick = () => setTab("chats");
-  $("kgNavFriends").onclick = () => setTab("friends");
-  $("kgNavHome").onclick = openHome;
-  $("kgSearch").oninput = renderList;
-  $("kgBack").onclick = openLine;
-  $("kgLineGesture").onclick = openHome;
-  $("kgChatGesture").onclick = openHome;
-
-  $("kgCompose").onsubmit = function(event) {
-    event.preventDefault();
-    const input = $("kgMessageInput");
-    const value = input.value.trim();
-    if (!value || !currentContact) return;
-
-    currentContact.messages.push({
-      from:"me",
-      text:value
-    });
-    input.value = "";
-    renderMessages();
-    renderList();
-  };
-
-  // ฟังก์ชันสำหรับเชื่อมเนื้อเรื่องเกมในอนาคต
-  window.openKaranHome = openHome;
-  window.openKaranLine = openLine;
-  window.closeKaranHomeLine = closeAddon;
-
-  window.karanLineReceive = function(id,text) {
-    const contact = contacts.find(c => c.id === id);
-    if (!contact) return false;
-
-    contact.messages.push({
-      from:"them",
-      text:String(text)
-    });
-    renderList();
-
-    if (currentContact === contact) renderMessages();
-    return true;
-  };
-
-  // เชื่อมหน้า Home กับระบบปลดล็อกจริงของการันต์
-  const unlockedPage = document.getElementById("unlockedPage");
-
-  if (unlockedPage) {
-    const observer = new MutationObserver(() => {
-      const unlocked =
-        unlockedPage.getAttribute("display") !== "none";
-
-      if (unlocked && root.style.display !== "block") {
-        openHome();
-      }
-    });
-
-    observer.observe(unlockedPage, {
-      attributes: true,
-      attributeFilter: ["display"]
-    });
-
-    if (unlockedPage.getAttribute("display") !== "none") {
-      openHome();
-    }
-  }
-
-  renderList();
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeAttr(v){return escapeHtml(v);}
+function go(name){if(screen!==name)history.push(screen);screen=name;view();}
+function back(){screen=history.pop()||'home';view();}
+function notify(text){const x=document.createElement('div');x.textContent=text;x.style.cssText='position:absolute;z-index:150;top:43px;left:15px;right:15px;background:#fff;border-radius:16px;padding:15px;box-shadow:0 4px 15px #0003';root.append(x);setTimeout(()=>x.remove(),1800)}
+root.addEventListener('click',e=>{
+const el=e.target.closest('button,[data-home]');if(!el)return;
+if(el.hasAttribute('data-home')){history=[];screen='home';view();return;}
+if(el.hasAttribute('data-back')){back();return;}
+if(el.dataset.app){go(el.dataset.app);if(screen==='phone')tab='แป้นกด';view();return;}
+if(el.dataset.person!==undefined){selectedPerson=people[Number(el.dataset.person)];go('chat');return;}
+if(el.dataset.tab){tab=el.dataset.tab;view();return;}
+if(el.dataset.ptab){tab=el.dataset.ptab;view();return;}
+if(el.dataset.ctab){tab=el.dataset.ctab;view();return;}
+if(el.dataset.digit){callDigits+=el.dataset.digit;view();return;}
+if(el.dataset.dial!==undefined){notify('โทรจำลอง: '+people[Number(el.dataset.dial)%people.length]);return;}
+if(el.dataset.photo!==undefined){root.dataset.photo=el.dataset.photo;go('photo');return;}
+if(el.dataset.note!==undefined){root.dataset.note=el.dataset.note;go('note');return;}
+if(el.dataset.folder!==undefined){root.dataset.folder=['รูปภาพ','ดาวน์โหลด','เอกสาร','เสียง','วิดีโอ'][Number(el.dataset.folder)];go('folder');return;}
+if(el.dataset.email!==undefined||el.dataset.setting!==undefined){root.dataset.detail=el.dataset.email!==undefined?'อีเมล':'การตั้งค่า';go('detail');return;}
+if(el.dataset.day){notify('วันที่ '+el.dataset.day+' — ยังไม่มีกิจกรรม');return;}
+const a=el.dataset.action;
+if(a==='prevmonth'||a==='nextmonth'){month+=a==='prevmonth'?-1:1;if(month<0){month=11;year--}if(month>11){month=0;year++}view()}
+else if(a==='newnote'){notes.unshift({title:'โน้ตใหม่',body:''});root.dataset.note='0';go('note')}
+else if(a==='savenote'){const n=notes[Number(root.dataset.note)||0];n.title=$('noteTitle').value;n.body=$('noteBody').value;back();notify('บันทึกโน้ตแล้ว')}
+else if(a==='shutter'){photos.unshift({name:'ภาพใหม่',date:new Date().toLocaleDateString('th-TH')});notify('บันทึกภาพจำลองในแกลเลอรีแล้ว')}
+else if(a==='deletephoto'){photos.splice(Number(root.dataset.photo),1);back()}
+else if(a==='timerstart'){if(timer){clearInterval(timer);timer=null}else{timer=setInterval(()=>{timerSec++;if(screen==='clock')view()},1000)}notify(timer?'เริ่มจับเวลา':'หยุดจับเวลา')}
+else if(a==='timerreset'){clearInterval(timer);timer=null;timerSec=0;view()}
+else if(a==='call')notify('กำลังโทรจำลอง '+callDigits);
+else if(a==='quickclose')$('quick').classList.remove('open');
+else if(a)notify('เปิดฟังก์ชันตัวอย่าง: '+a);
+else if(el.hasAttribute('data-more'))$('quick').classList.toggle('open');
+});
+root.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='chatForm'){const t=$('chatInput').value.trim();if(!t)return;chats[selectedPerson].push({who:'me',text:t});view()}else if(e.target.id==='webForm'){notify('คำค้นหาจำลอง: '+$('webQuery').value)}});
+root.addEventListener('input',e=>{if(e.target.id==='lineSearch'){let q=e.target.value.toLowerCase();root.querySelectorAll('[data-person]').forEach((el,i)=>el.style.display=people[i].toLowerCase().includes(q)?'flex':'none')}});
+let touchY=null;root.addEventListener('touchstart',e=>{if(e.touches[0].clientY<80)touchY=e.touches[0].clientY},{passive:true});root.addEventListener('touchend',e=>{if(touchY!==null&&e.changedTouches[0].clientY-touchY>65){$('quick').classList.add('open')}touchY=null},{passive:true});
+const unlocked=$('unlockedPage');const observer=new MutationObserver(()=>{if(unlocked.getAttribute('display')!=='none'){root.style.display='block';view()}else root.style.display='none'});observer.observe(unlocked,{attributes:true,attributeFilter:['display']});if(unlocked.getAttribute('display')!=='none'){root.style.display='block';view()}
+window.KaranMockup={open:go,home:()=>{screen='home';history=[];view()},apps:apps.map(a=>a[1])};
 })();
 </script>
-<!-- END KARAN HOME + LINE -->
-
-<!-- KARAN COMPLETE STORY : 12 CHAPTERS -->
-<script>
-(function(){
-  "use strict";
-  const $ = id => document.getElementById(id);
-  const chat = $("kgChat"), phone = $("phone");
-  if (!chat || !phone || window.karanFullStory) return;
-  const css = document.createElement("style");
-  css.textContent = `
-    #karanStoryNotify{position:absolute;z-index:280;top:42px;left:12px;right:12px;display:none;align-items:center;gap:10px;border:0;border-radius:16px;padding:12px;background:#f9fafb;box-shadow:0 6px 22px #0003;color:#202124;text-align:left;font-family:inherit;cursor:pointer}
-    #karanStoryNotify .lineLogo{background:#06c755;color:#fff;border-radius:10px;width:38px;height:38px;display:grid;place-items:center;font-size:11px;font-weight:bold;flex-shrink:0}
-    #karanStoryNotify strong{font-size:14px}#karanStoryNotify small{display:block;color:#666;font-size:12px;margin-top:4px}
-    #karanReplySuggestions{display:none;position:absolute;bottom:87px;left:10px;right:10px;z-index:10;flex-direction:column;gap:6px;pointer-events:none}
-    #karanReplySuggestions button{pointer-events:auto;border:1px solid #b8d4ba;border-radius:17px;background:#effbed;color:#235c30;padding:10px 13px;text-align:left;font-size:13px;line-height:1.4;box-shadow:0 2px 8px #0001;cursor:pointer}
-    #karanStoryNotify:active,#karanReplySuggestions button:active{opacity:.8}
-    #karanStoryPhoto{display:none;position:absolute;z-index:15;inset:40px 0 0;background:#fff;overflow:auto;padding:30px 18px 70px;color:#2b303b;text-align:center}
-    #karanStoryPhoto .invite{margin:35px auto;padding:38px 15px;border:1px solid #d5b7a6;background:#fffaf6;max-width:300px;box-shadow:0 3px 15px #0001}
-    #karanStoryPhoto button{border:0;background:#eee;border-radius:15px;padding:12px 20px;margin-top:20px}
-  `;
-  document.head.appendChild(css);
-  const notification=document.createElement('button');
-  notification.id='karanStoryNotify';notification.type='button';
-  notification.innerHTML='<span class="lineLogo">LINE</span><span><strong id="storySender"></strong><small id="storyPreview"></small></span>';
-  phone.appendChild(notification);
-  const replies=document.createElement('div');replies.id='karanReplySuggestions';chat.appendChild(replies);
-  const invite=document.createElement('div');invite.id='karanStoryPhoto';invite.innerHTML='<div class="invite"><div style="font-size:14px;letter-spacing:3px">THE WEDDING OF</div><h2 style="font-weight:400;margin:25px 0">KARAN<br>&amp;<br>ACHI</h2><p>จากวันแรกที่ได้รู้จัก<br>สู่วันที่เราเลือกจะเดินไปด้วยกัน</p><p style="margin-top:30px">ขอบคุณที่อยู่ในเรื่องราวของเรา</p></div><button id="storyCloseInvite">ปิดการ์ด</button>';
-  chat.appendChild(invite);$('storyCloseInvite').onclick=()=>invite.style.display='none';
-  const contacts={achi:'อชิ',duj:'พี่ดุจ',pai:'พาย',tanaka:'ทานากะซัง',pa:'ป่า',rock:'ร็อก'};
-  // Every scene is a real-looking LINE conversation; options appear as suggested replies, not a game screen.
-  const scenes=[
-    {who:'achi',messages:['คุณการันต์ครับ วันนี้พอจะมีเวลาว่างไหมครับ','ผมมีเรื่องงานอยากปรึกษานิดหน่อยครับ'],options:[
-      {text:'ว่างครับ อชิมีอะไรให้ผมช่วยเหรอ',reply:['ขอบคุณครับ คือผมอยากปรึกษาเรื่องเอกสารของลูกค้าน่ะครับ']},
-      {text:'สำหรับอชิ ผมว่างเสมอครับ',reply:['เอ่อ... ขอบคุณนะครับคุณการันต์','คือผมอยากปรึกษาเรื่องเอกสารของลูกค้าน่ะครับ']},
-      {text:'ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก',reply:['ได้ครับ งั้นผมรออยู่ที่โต๊ะนะครับ']}
-    ],after:['ถ้าอย่างนั้นเดี๋ยวผมเตรียมเอกสารไว้ให้นะครับ','แล้วเจอกันนะครับ']},
-    {who:'duj',messages:['คุณการันต์คะ พี่มีเรื่องจะถามหน่อยค่ะ','ช่วงนี้ดูสนิทกับอชิเป็นพิเศษนะคะ'],options:[
-      {text:'ผมก็แค่ช่วยอชิเรื่องงานครับ',reply:['แค่เรื่องงานจริง ๆ เหรอคะ','พี่ทำงานกับคุณการันต์มานาน ดูออกนะคะ']},
-      {text:'ครับ ผมกำลังจีบอชิอยู่',reply:['จริงเหรอคะ! ในที่สุดก็ยอมรับแล้ว','งั้นพี่จะช่วยเชียร์เต็มที่เลยค่ะ']},
-      {text:'พี่ดุจคิดว่ายังไงล่ะครับ',reply:['โอ้โห มีถามกลับด้วยนะคะ','พี่ว่าคุณการันต์ชอบอชิแน่นอนค่ะ']}
-    ],after:['ถ้าจะจีบจริง ๆ ต้องรู้ก่อนนะคะว่าอชิชอบอะไร']},
-    {who:'pai',messages:['คุณการันต์คะ พายมีข้อมูลที่อาจช่วยได้ค่ะ','อชิชอบดอกบัว แล้วก็ชอบกาแฟมาก ๆ','เห็นว่าเคยพูดถึงเมล็ดกาแฟจากลำพูนด้วยค่ะ'],options:[
-      {text:'ขอบคุณครับ ฝากพายช่วยดูร้านกาแฟดี ๆ ให้หน่อย',reply:['ได้เลยค่ะ เดี๋ยวพายส่งร้านที่น่าสนใจให้']},
-      {text:'แล้วอชิชอบดอกบัวสีอะไรครับ',reply:['น่าจะสีชมพูค่ะ แต่ลองถามเจ้าตัวเองก็ดีนะคะ']},
-      {text:'ผมอยากเลือกของให้เขาด้วยตัวเองครับ',reply:['ดีเลยค่ะ อชิต้องดีใจแน่ ๆ']}
-    ],after:['พายเอาใจช่วยนะคะคุณการันต์']},
-    {who:'achi',messages:['คุณการันต์ครับ เรื่องเอกสารเรียบร้อยแล้วนะครับ','ขอบคุณที่ช่วยผมเมื่อวันก่อนด้วยครับ'],options:[
-      {text:'งั้นเลี้ยงกาแฟผมสักแก้วได้ไหมครับ',reply:['ได้สิครับ คุณการันต์สะดวกวันไหนครับ']},
-      {text:'เสาร์นี้อชิว่างไหมครับ ผมอยากชวนไปดื่มกาแฟ',reply:['เสาร์นี้ผมว่างช่วงบ่ายครับ']},
-      {text:'ผมมีร้านกาแฟอยากพาอชิไปลองครับ',reply:['ร้านอะไรเหรอครับ ฟังดูน่าสนใจจัง']}
-    ],after:['งั้นตกลงตามนั้นนะครับ','ผมรอวันเสาร์เลยครับ']},
-    {who:'achi',messages:['วันนี้สนุกมากเลยครับคุณการันต์','ผมไม่คิดว่าคุณจะจำได้ว่าผมชอบดอกบัว'],options:[
-      {text:'ผมตั้งใจเลือกให้อชิครับ',reply:['ขอบคุณมากนะครับ ผมชอบจริง ๆ']},
-      {text:'ดีใจที่อชิชอบครับ',reply:['ผมจะเก็บไว้ดี ๆ เลยครับ']},
-      {text:'คราวหน้าผมอยากพาอชิไปอีกที่หนึ่ง',reply:['มีคราวหน้าด้วยเหรอครับ','งั้นผมจะรอนะครับ']}
-    ],after:['แล้วก็... กาแฟเมล็ดลำพูนที่คุณให้ หอมมากเลยครับ']},
-    {who:'duj',messages:['คุณการันต์คะ ข่าวไปไวมากเลยนะคะ','เห็นว่าไปเดตกับอชิมาแล้วเหรอคะ','แล้วเรื่องเซอร์ไพรส์ที่เตรียมไว้ล่ะคะ'],options:[
-      {text:'ผมอยากให้เขามีวันที่พิเศษครับ',reply:['โรแมนติกมากค่ะคุณการันต์']},
-      {text:'เรื่องเฮลิคอปเตอร์ รบกวนพี่ดุจช่วยประสานด้วยครับ',reply:['ได้ค่ะ แต่ต้องเช็กเรื่องความปลอดภัยกับตารางบินก่อนนะคะ']},
-      {text:'ผมกลัวอชิจะตกใจมากกว่าครับ',reply:['งั้นถามเขาก่อนก็ดีนะคะว่าโอเคกับการขึ้นเฮลิคอปเตอร์ไหม']}
-    ],after:['เอาเป็นว่าพี่ช่วยดูให้ค่ะ ขอให้ทุกอย่างออกมาดีนะคะ']},
-    {who:'achi',messages:['คุณการันต์ครับ วันนี้ผมมีความสุขมากเลย','ขอบคุณที่ถามผมก่อนเรื่องขึ้นเฮลิคอปเตอร์นะครับ','ผมไม่เคยคิดว่าจะมีใครตั้งใจทำอะไรให้ขนาดนี้'],options:[
-      {text:'ผมอยากเป็นคนที่ได้ดูแลอชิครับ',reply:['คุณการันต์...']},
-      {text:'ถ้าผมขอเป็นแฟนอชิ อชิจะว่าอะไรไหมครับ',reply:['ผมก็นึกว่าคุณจะไม่ถามแล้วซะอีกครับ']},
-      {text:'ผมชอบอชินะครับ',reply:['ผมก็ชอบคุณการันต์ครับ']}
-    ],after:['ถ้าอย่างนั้น... เราลองคบกันดูนะครับ','ฝากตัวด้วยนะครับ แฟนของผม']},
-    {who:'rock',messages:['พี่การันต์ครับ ยอดขายเดือนนี้ยังไม่ถึงเป้าเลยครับ','เป้าสามล้านบาทที่ตั้งไว้ เหลือเวลาอีกไม่มาก'],options:[
-      {text:'ส่งตัวเลขล่าสุดมาให้ผมตรวจหน่อยครับ',reply:['ได้ครับ ผมจะสรุปส่งให้ภายในวันนี้']},
-      {text:'พรุ่งนี้เรียกทีมประชุมครับ เราจะช่วยกัน',reply:['รับทราบครับพี่ ผมแจ้งทุกคนเลย']},
-      {text:'อย่าเพิ่งกังวล เราจะทำให้ดีที่สุดครับ',reply:['ขอบคุณครับพี่ ผมจะเร่งติดตามลูกค้า']}
-    ],after:['ส่วนเรื่องอชิ... ยินดีด้วยนะครับพี่!']},
-    {who:'achi',messages:['คุณการันต์ครับ ผมมีเรื่องอยากบอก','บางทีผมก็รู้ว่าคนอื่นกำลังคิดอะไรอยู่','มันฟังดูแปลกใช่ไหมครับ'],options:[
-      {text:'อชิเล่าให้ผมฟังได้ทุกเรื่องครับ',reply:['ขอบคุณนะครับที่ไม่มองว่าผมแปลก']},
-      {text:'ผมเชื่ออชิครับ',reply:['แค่นี้ก็ทำให้ผมโล่งใจแล้วครับ']},
-      {text:'ผมไม่จำเป็นต้องเข้าใจทั้งหมด แต่ผมจะรับฟังครับ',reply:['คุณการันต์ใจดีกับผมเสมอเลย']}
-    ],after:['ขอบคุณที่รับฟังเรื่องที่ผมเก็บไว้คนเดียวมานานนะครับ']},
-    {who:'achi',messages:['คุณการันต์ครับ ผมอาจต้องไปนครศรีธรรมราชสักพัก','มีเรื่องทางบ้านที่ต้องกลับไปจัดการ','ผมกลัวเราจะไม่ค่อยมีเวลาได้เจอกัน'],options:[
-      {text:'เราคุยกันทุกวันก็ได้ครับ ผมรออชิได้',reply:['ขอบคุณนะครับ ผมสบายใจขึ้นเยอะเลย']},
-      {text:'ระยะทางไม่ทำให้ผมเปลี่ยนใจครับ',reply:['ผมก็เหมือนกันครับ']},
-      {text:'ถ้าเหนื่อยเมื่อไหร่ โทรหาผมได้เสมอนะครับ',reply:['ตกลงครับ แล้วคุณก็ต้องดูแลตัวเองด้วยนะ']}
-    ],after:['ผมคิดถึงคุณตั้งแต่ยังไม่ออกเดินทางเลยครับ']},
-    {who:'achi',messages:['ผมกลับกรุงเทพฯ แล้วนะครับ','คุณการันต์มีอะไรจะบอกผมหรือเปล่าครับ','เห็นพี่ดุจทำตัวมีพิรุธมาตั้งแต่เช้าแล้ว'],options:[
-      {text:'ผมมีคำถามสำคัญอยากถามอชิครับ',reply:['ถามมาได้เลยครับ ผมฟังอยู่']},
-      {text:'ผมอยากใช้ชีวิตทุกวันต่อจากนี้กับอชิ',reply:['คุณการันต์... พูดจริงเหรอครับ']},
-      {text:'อชิครับ แต่งงานกับผมนะ',reply:['...','ตกลงครับ ผมจะแต่งงานกับคุณ']}
-    ],after:['ถ้าคุณกำลังขอผมแต่งงานอยู่... คำตอบคือ ตกลงครับ','ผมรักคุณนะครับ การันต์']},
-    {who:'duj',messages:['การ์ดแต่งงานเรียบร้อยแล้วค่ะคุณการันต์','พี่ส่งแบบสุดท้ายให้แล้วนะคะ','อชิยิ้มไม่หุบเลยค่ะ'],options:[
-      {text:'ขอบคุณมากครับพี่ดุจ',reply:['ยินดีมากค่ะ พี่ดีใจกับทั้งสองคนจริง ๆ']},
-      {text:'ผมอยากเห็นการ์ดแล้วครับ',reply:['เปิดดูได้เลยค่ะ พี่ส่งไว้ให้แล้ว']},
-      {text:'ฝากบอกอชิด้วยครับว่าผมรักเขา',reply:['บอกเองเลยดีกว่าค่ะ!']}
-    ],after:['ขอแสดงความยินดีด้วยนะคะ'],final:true}
-  ];
-  const state={index:0,stage:'waiting',started:false,choice:null,done:false};
-  let timers=[];const later=(fn,ms)=>{const t=setTimeout(fn,ms);timers.push(t);return t;};
-  function visibleChat(){return chat.classList.contains('active') && $('karanGameAddon').style.display==='block';}
-  function currentWho(){return $('kgChatTitle').textContent.trim();}
-  function showReplyOptions(){
-    replies.replaceChildren();
-    const scene=scenes[state.index];
-    if(!scene || state.stage!=='choice' || !visibleChat() || currentWho()!==contacts[scene.who]){replies.style.display='none';return;}
-    scene.options.forEach((opt,i)=>{
-      const b=document.createElement('button');b.type='button';b.textContent=opt.text;
-      b.onclick=()=>choose(i);replies.appendChild(b);
-    });
-    replies.style.display='flex';
-  }
-  function message(who,text){window.karanLineReceive(who,text);}
-  function notify(who,text){
-    $('storySender').textContent=contacts[who];$('storyPreview').textContent=text;
-    notification.dataset.who=who;
-    notification.style.display='flex';
-  }
-  function openContact(who){
-    window.openKaranLine();
-    const search=$('kgSearch');search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));
-    const person=[...document.querySelectorAll('#kgList .kg-person')].find(x=>x.querySelector('.kg-person-name')?.textContent.trim()===contacts[who]);
-    person?.click();showReplyOptions();
-  }
-  notification.onclick=()=>{const who=notification.dataset.who;notification.style.display='none';openContact(who);};
-  function send(text){
-    const input=$('kgMessageInput');input.value=text;
-    $('kgCompose').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
-  }
-  function sceneStart(){
-    if(state.index>=scenes.length){state.done=true;state.stage='done';return;}
-    const scene=scenes[state.index];state.stage='incoming';
-    scene.messages.forEach((text,i)=>later(()=>{
-      message(scene.who,text);
-      if(i===0 && (!visibleChat() || currentWho()!==contacts[scene.who]))notify(scene.who,text);
-      if(i===scene.messages.length-1){state.stage='choice';showReplyOptions();}
-    },i*1250+600));
-  }
-  function choose(i){
-    const scene=scenes[state.index];if(!scene || state.stage!=='choice')return;
-    if(!visibleChat() || currentWho()!==contacts[scene.who])return;
-    const opt=scene.options[i];state.choice=i;state.stage='answer';showReplyOptions();send(opt.text);
-    const responses=[...opt.reply,...(scene.after||[])];
-    responses.forEach((text,j)=>later(()=>message(scene.who,text),900+j*1250));
-    later(()=>{
-      if(scene.final){state.stage='done';state.done=true;invite.style.display='block';return;}
-      state.index++;state.stage='waiting';
-      // Next person contacts Karan after a natural pause; never jump to another chat.
-      later(sceneStart,4500);
-    },1200+responses.length*1250);
-  }
-  const observer=new MutationObserver(showReplyOptions);
-  observer.observe(chat,{attributes:true,attributeFilter:['class']});
-  observer.observe($('kgChatTitle'),{childList:true,subtree:true,characterData:true});
-  const unlocked=$('unlockedPage');
-  function start(){if(state.started)return;state.started=true;later(sceneStart,4500);}
-  const unlockObserver=new MutationObserver(()=>{
-    if(unlocked.getAttribute('display')!=='none')start();
-  });
-  unlockObserver.observe(unlocked,{attributes:true,attributeFilter:['display']});
-  if(unlocked.getAttribute('display')!=='none')start();
-  window.karanFullStory={state,scenes,start};
-})();
-</script>
-<!-- END KARAN COMPLETE STORY -->
 </body>
 </html>

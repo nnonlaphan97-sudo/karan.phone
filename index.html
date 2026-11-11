@@ -1,24 +1,485 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>KARAN'S PHONE</title><style>
-:root{font-family:Arial,'Noto Sans Thai',sans-serif;color:#182235;background:#d9dee8}*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center}.device{width:min(100vw,430px);height:min(100dvh,920px);min-height:620px;background:#111827;border:7px solid #182033;border-radius:36px;overflow:hidden;position:relative;box-shadow:0 18px 70px #1c2a4466}.screen{position:absolute;inset:0;background:#f8fafc;overflow:hidden}.wall{background:linear-gradient(150deg,#1b2b4a 0%,#334a70 53%,#8997b8 100%);color:white}.status{height:37px;display:flex;align-items:center;justify-content:space-between;padding:8px 20px 0;font-size:12px;position:relative;z-index:5}.status-right{display:flex;gap:7px;align-items:center}.camera{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:#0c1523;border:2px solid #27364c;z-index:8}.bottom{position:absolute;bottom:0;left:0;right:0;height:31px;display:grid;place-items:center;z-index:7;cursor:pointer}.handle{width:110px;height:4px;border-radius:6px;background:currentColor;opacity:.55}.locktime{padding-top:70px;text-align:center}.locktime .date{font-size:15px;opacity:.85}.locktime .clock{font-size:66px;font-weight:300;letter-spacing:-4px}.lockhint{position:absolute;bottom:85px;text-align:center;width:100%;font-size:13px;opacity:.85}.unlockbtn{border:1px solid #ffffff55;background:#ffffff16;color:white;padding:12px 25px;border-radius:22px;margin-top:20px}.homehead{padding:45px 25px 18px}.homehead h1{font-size:32px;font-weight:350;margin:0}.homehead p{font-size:13px;opacity:.8}.apps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 8px;padding:18px 14px}.app{border:0;background:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:7px;font:inherit;font-size:12px;cursor:pointer}.appicon{width:61px;height:61px;border-radius:19px;background:#ffffff30;display:grid;place-items:center;box-shadow:0 3px 12px #11182718}.app.locked .appicon{background:#18253e85;border:1px solid #ffffff20}.app svg{width:28px;height:28px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.app .name{max-width:100%;white-space:nowrap}.topbar{height:59px;display:flex;align-items:center;gap:13px;padding:0 15px;border-bottom:1px solid #e7ebf1;background:white}.topbar strong{flex:1;font-size:18px}.iconbtn{border:0;background:none;color:#26334b;padding:6px;cursor:pointer;display:grid;place-items:center}.iconbtn svg,.tinyicon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.content{height:calc(100% - 127px);overflow-y:auto;padding:14px}.chatrow{display:flex;gap:13px;padding:15px 4px;border-bottom:1px solid #e9edf2;cursor:pointer}.avatar{height:45px;width:45px;border-radius:50%;background:#e5eaf3;display:grid;place-items:center;color:#5b6c87;flex-shrink:0}.avatar svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8}.chatmain{flex:1;min-width:0}.chatmain .line1{display:flex;justify-content:space-between;gap:5px}.chatmain small{color:#7c8798}.preview{font-size:13px;color:#7b8493;margin-top:7px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.chatbg{background:#d8e1ed}.messages{display:flex;flex-direction:column;gap:13px;padding:17px 13px 100px;min-height:100%}.bubble{max-width:82%;background:white;border-radius:15px 15px 15px 4px;padding:11px 13px;font-size:14px;line-height:1.65;white-space:pre-wrap;box-shadow:0 1px 2px #0000000d}.bubble.mine{align-self:flex-end;background:#b7eb9d;border-radius:15px 15px 4px 15px}.bubble.theirs{align-self:flex-start}.bubble time{display:block;text-align:right;font-size:10px;color:#718096;margin-top:4px}.choices{position:absolute;bottom:31px;left:0;right:0;z-index:6;background:#f8fafc;padding:11px;border-top:1px solid #e2e8f0}.choices button,.action{width:100%;border:1px solid #cdd7e5;background:white;border-radius:12px;padding:12px;margin:5px 0;font:inherit;font-size:13px;text-align:left;color:#25344b;cursor:pointer}.action.primary{background:#234c81;color:white;border:0;text-align:center}.action:disabled{opacity:.45}.panel{background:white;border:1px solid #e5eaf0;border-radius:16px;padding:16px;margin-bottom:13px}.panel h3{margin:0 0 9px;font-size:15px}.panel p{font-size:13px;line-height:1.7;color:#526176}.muted{color:#718096;font-size:12px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.tag{font-size:11px;background:#e8eef6;padding:5px 9px;border-radius:20px}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.day{border:0;background:#edf1f6;border-radius:10px;aspect-ratio:1;display:grid;place-items:center;font:inherit;font-size:13px;color:#384861}.day.special{background:#b8cbe5;font-weight:bold}.day.active{background:#264e84;color:white}.wedding{background:#f5eee2;min-height:355px;border:1px solid #cdbda7;padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#6a594a;position:relative;gap:13px}.wedding:before{content:'';position:absolute;inset:9px;border:1px solid #bda88e;pointer-events:none}.wedding h2{font:normal 34px Georgia,serif;margin:5px}.wedding .amp{font:italic 23px Georgia,serif}.wedding .over{letter-spacing:3px;font-size:10px}.wedding .quote{font-size:12px}.swatches{display:flex;gap:9px;justify-content:center;margin:13px 0}.swatch{width:36px;height:36px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px #a4b1c2;cursor:pointer}.field{display:block;font-size:12px;margin:14px 0 5px}.input{width:100%;padding:12px;border:1px solid #d7dfe8;border-radius:10px;font:inherit}.toast{position:absolute;bottom:42px;left:12%;right:12%;background:#1e293bdc;color:white;border-radius:14px;padding:12px;text-align:center;font-size:12px;z-index:10;pointer-events:none}.smallcard{padding:13px;border-radius:13px;background:#f1f5fa;margin:9px 0}.smallcard strong{font-size:14px}.smallcard p{margin:5px 0 0}.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.photo{height:145px;border-radius:13px;background:linear-gradient(145deg,#b9c8db,#6d85a8);display:grid;place-items:center;color:#fff;text-align:center;padding:14px;font-size:13px;cursor:pointer}.photo:nth-child(2){background:linear-gradient(140deg,#c3ad9b,#677e91)}.photo:nth-child(3){background:linear-gradient(140deg,#b8a8c8,#647b9c)}.photo:nth-child(4){background:linear-gradient(140deg,#b7c9b6,#6c8c7c)}.progress{height:5px;background:#e4eaf2;border-radius:8px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#5079ad;transition:width .2s}.footnote{font-size:11px;color:#78869a;line-height:1.5}.hidden{display:none!important}@media(min-width:500px){body{padding:20px}}@media(max-width:440px){.device{border:0;border-radius:0;width:100vw;height:100dvh;min-height:0}.camera{top:6px}} </style></head><body><div class="device"><div id="screen" class="screen wall"></div><div class="camera"></div></div><script>
-const paths={back:'<path d="m15 18-6-6 6-6"/>',lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',line:'<path d="M20 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-4.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 4 8.5 8.5 0 0 1 20 11.5Z"/>',phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19 19 0 0 1-8.3-3 19 19 0 0 1-6-6 19 19 0 0 1-3-8.4A2 2 0 0 1 4.5 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.8L7.7 10a16 16 0 0 0 6.3 6.3l1.5-1.7a2 2 0 0 1 1.8-.6l3 .5a2 2 0 0 1 1.7 1.8Z"/>',gallery:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',note:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',orders:'<path d="M5 8h14l-1 13H6L5 8ZM9 9V6a3 3 0 0 1 6 0v3"/>',browser:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',files:'<path d="M3 7V5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',wifi:'<path d="M2 8a16 16 0 0 1 20 0M5 12a11 11 0 0 1 14 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/>',signal:'<path d="M4 20v-4M9 20v-8M14 20V8M19 20V4"/>',battery:'<rect x="2" y="6" width="18" height="12" rx="3"/><path d="M22 10v4"/><rect x="5" y="9" width="11" height="6" rx="1" fill="currentColor" stroke="none"/>',check:'<path d="m4 12 5 5L20 6"/>',send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>'};
-const svg=(name,size=24)=>`<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.lock}</svg>`;
-const APPS=[['LINE','line','#06c755'],['โทรศัพท์','phone','#4ba980'],['แกลเลอรี','gallery','#9c86b8'],['ปฏิทิน','calendar','#5c8bc9'],['โน้ต','note','#c8a65c'],['คำสั่งซื้อ','orders','#d58c68'],['เบราว์เซอร์','browser','#598db9'],['นาฬิกา','clock','#8b88bd'],['ไฟล์','files','#879cb5']];
-const key='karan_phone_demo_v1';const fresh=()=>({unlocked:['LINE'],flags:{},choices:{},chapter:1,card:{color:'cream',style:'classic',text:'Together, always.'}});let state;try{state=JSON.parse(localStorage.getItem(key))||fresh()}catch{state=fresh()}let page='lock',thread='พี่ดุจ',toast='',day=30;const save=()=>localStorage.setItem(key,JSON.stringify(state));const flag=k=>{state.flags[k]=true;save()};const has=k=>!!state.flags[k];const unlock=(app)=>{if(!state.unlocked.includes(app)){state.unlocked.push(app);save();notify('แอป '+app+' พร้อมใช้งานแล้ว')}};function notify(s){toast=s;render();setTimeout(()=>{toast='';render()},2200)};
-function status(dark=false){return `<div class="status" style="color:${dark?'#23314a':'white'}"><span>karan</span><span class="status-right">${svg('signal',15)}${svg('wifi',15)}${svg('battery',20)}</span></div>`}function shell(inner,wall=false){return `<div class="screen ${wall?'wall':''}">${status(!wall)}${inner}<div class="bottom" onclick="go('home')"><div class="handle"></div></div>${toast?`<div class="toast">${toast}</div>`:''}</div>`}function top(title,back='home'){return `<div class="topbar"><button class="iconbtn" onclick="go('${back}')" aria-label="กลับ">${svg('back')}</button><strong>${title}</strong></div>`}function go(p){page=p;render()}function app(n){if(!state.unlocked.includes(n)){notify('ยังไม่สามารถเปิดแอปนี้ได้');return}go(n)}
-function render(){let html='';if(page==='lock'){html=shell(`<div class="locktime"><div class="date">KARAN'S PHONE</div><div class="clock">21:36</div><div class="date">ความทรงจำของการันต์และอชิ</div><button class="unlockbtn" onclick="go('home')">เปิดโทรศัพท์</button></div><div class="lockhint">แตะเพื่อสำรวจเรื่องราวย้อนหลัง</div>`,true)}else if(page==='home'){html=shell(`<div class="homehead"><h1>21:36</h1><p>KARAN'S PHONE</p></div><div class="apps">${APPS.map(([n,i,c])=>{let open=state.unlocked.includes(n);return `<button class="app ${open?'':'locked'}" onclick="app('${n}')"><span class="appicon" style="${open?`background:${c}`:''}">${svg(open?i:'lock',28)}</span><span class="name">${n}</span></button>`}).join('')}</div><div style="position:absolute;bottom:49px;width:100%;text-align:center;font-size:11px;opacity:.72">แตะแอปเพื่อสำรวจ</div>`,true)}else if(page==='LINE'){let chats=[['พี่ดุจ','เรื่องเค้กวันเกิดอชิ','28–30 ม.ค.'],['อชิ','ข้อความระหว่างการันต์และอชิ','30 ม.ค.'],['ประสานงานออฟฟิศ','ปาย ร็อค อชิ และทีมงาน','30 ม.ค.'],['ทีมฝ่ายขาย','ข้อมูลการทำงานของการันต์','30 ม.ค.']];html=shell(top('LINE')+`<div class="content">${chats.map(([n,p,t])=>`<div class="chatrow" onclick="openChat('${n}')"><div class="avatar">${svg('user')}</div><div class="chatmain"><div class="line1"><strong>${n}</strong><small>${t}</small></div><div class="preview">${p}</div></div></div>`).join('')}</div>`)}else if(page==='chat'){html=renderChat()}else if(page==='ปฏิทิน'){html=renderCalendar()}else if(page==='คำสั่งซื้อ'){html=renderOrders()}else if(page==='โน้ต'){html=renderNotes()}else if(page==='โทรศัพท์'){html=renderCalls()}else if(page==='แกลเลอรี'){html=renderGallery()}else if(page==='นาฬิกา'){html=shell(top('นาฬิกา')+`<div class="content"><div class="panel"><h3>นาฬิกาปลุก</h3>${['06:30 — วันทำงาน','07:00 — วันทำงาน','07:15 — ปลุกสำรอง'].map(s=>`<div class="smallcard">${s}</div>`).join('')}</div></div>`)}else if(page==='เบราว์เซอร์'){html=shell(top('เบราว์เซอร์')+`<div class="content"><div class="panel"><h3>ประวัติการค้นหา</h3><p>ร้านอาหารใกล้ที่ทำงาน</p><p>การเลือกของขวัญให้คนสำคัญ</p><p>สถานที่สำหรับวันพิเศษ</p><button class="action" onclick="discover('browser')">ดูประวัติการค้นหาเพิ่มเติม</button></div></div>`)}else if(page==='ไฟล์'){html=shell(top('ไฟล์')+`<div class="content"><div class="panel"><h3>เอกสาร</h3><p>รายงานฝ่ายขาย</p><p>เอกสารการประชุม</p><p>รายละเอียดงานแต่งงาน</p><button class="action primary" onclick="go('designer')">เปิดไฟล์การ์ดแต่งงาน</button></div></div>`)}else if(page==='designer'){html=renderDesigner()}document.getElementById('screen').outerHTML=html.replace('<div class="screen','<div id="screen" class="screen');}
-function openChat(n){thread=n;page='chat';if(n==='พี่ดุจ')flag('dujOpened');render()}
-function message(t,mine=false,time=''){return `<div class="bubble ${mine?'mine':'theirs'}">${t}<time>${time}</time></div>`}
-function choose(k,val){state.choices[k]=val;save();if(k==='cake')flag('cakeReply');if(k==='achi')flag('achiReply');if(k==='office')flag('officeReply');if(k==='duj2')flag('duj2Reply');if(has('achiReply')&&has('duj2Reply'))unlock('แกลเลอรี');if(has('cakeReply')&&has('dujOpened'))unlock('ปฏิทิน');render()}
-function renderChat(){let arr=[],choice='';if(thread==='พี่ดุจ'){arr=[message('การันต์ วันที่ 30 เป็นวันเกิดอชิใช่ไหมจ๊ะ','', '28 ม.ค.'),message('ครับ ผมเห็นในปฏิทินบริษัทน่ะครับ',true,'28 ม.ค.'),message('พี่ช่วยเรื่องเค้กได้เลยนะ เดี๋ยวพี่ดูให้','', '28 ม.ค.'),message('ขอบคุณครับ ถ้ามีอะไรให้ผมช่วยเพิ่มเติม บอกได้เลยนะครับ',true,'29 ม.ค.'),message('ร้านยืนยันแล้วจ้ะ พรุ่งนี้พี่จัดการให้'),message('ว่าแต่การันต์อยากให้พี่บอกอชิไหมว่าใครเป็นคนเตรียมเค้ก?')];if(!state.choices.cake)choice=options('cake',['ไม่ต้องบอกก็ได้ครับ ผมแค่อยากให้อชิมีความสุขในวันเกิด','บอกว่าเป็นเค้กจากทุกคนในออฟฟิศก็ได้ครับ','แล้วแต่พี่ดุจสะดวกเลยครับ ผมไม่ติดอะไร']);else{arr.push(message(state.choices.cake,true,'อ่านแล้ว'));arr.push(message('ได้เลยจ้ะ พี่จะจัดการให้เรียบร้อย'));arr.push(message('30 มกราคม — อชิได้รับเค้กแล้วนะ ดูดีใจมากเลย'));if(!state.choices.duj2)choice=options('duj2',['ขอบคุณพี่ดุจมากครับ','ดีแล้วครับ ฝากขอบคุณทุกคนด้วยนะครับ']);else{arr.push(message(state.choices.duj2,true));arr.push(message('ยินดีจ้ะ'));}}}else if(thread==='อชิ'){arr=[message('คุณการันต์ครับ ขอบคุณเรื่องเมื่อวานนะครับ'),message('ยินดีครับอชิ',true),message('ผมเกรงใจจังเลยครับ')];if(!state.choices.achi)choice=options('achi',['ไม่ต้องเกรงใจเลยครับ','ผมยินดีช่วยครับ ถ้ามีอะไรบอกได้เลยนะครับ','พักผ่อนด้วยนะครับ']);else{arr.push(message(state.choices.achi,true));arr.push(message('ขอบคุณครับคุณการันต์'));}}else if(thread==='ประสานงานออฟฟิศ'){arr=[message('ปาย: วันนี้มีน้องใหม่เข้าทีมโปรโมชั่นนะคะ ชื่อร็อคค่ะ'),message('ร็อค: สวัสดีครับ ผมร็อคครับ ฝากเนื้อฝากตัวด้วยนะครับ'),message('อชิ: ยินดีต้อนรับนะครับ ถ้าต้องประสานงานเรื่องเอกสาร ติดต่อผมได้เลยครับ')];if(!state.choices.office)choice=options('office',['ยินดีต้อนรับครับ','ยินดีต้อนรับนะครับร็อค']);else{arr.push(message(state.choices.office,true));arr.push(message('ร็อค: ขอบคุณครับคุณการันต์'));}}else{arr=[message('ฝ่ายขาย: ส่งเอกสารให้ลูกค้าเรียบร้อยแล้วครับ'),message('ขอบคุณครับ ฝากติดตามผลด้วยนะครับ',true),message('ฝ่ายขาย: รับทราบครับ')]}
-return shell(top(thread,'LINE')+`<div class="content chatbg" style="padding:0;${choice?"height:calc(100% - 340px)":""}"><div class="messages">${arr.join('')}</div></div>${choice}`)}
-function options(k,opts){return `<div class="choices"><div class="muted">เลือกข้อความตอบกลับ</div>${opts.map((s,i)=>`<button onclick="choose('${k}',${JSON.stringify(s).replace(/"/g,'&quot;')})">${s}</button>`).join('')}</div>`}
-function renderCalendar(){return shell(top('ปฏิทิน')+`<div class="content"><div class="panel"><h3>มกราคม</h3><div class="calendar-grid">${['อา','จ','อ','พ','พฤ','ศ','ส'].map(x=>`<div class="muted">${x}</div>`).join('')}${Array.from({length:31},(_,i)=>`<button class="day ${i+1===30?'special':''} ${day===i+1?'active':''}" onclick="selectDay(${i+1})">${i+1}</button>`).join('')}</div></div><div class="panel"><h3>${day} มกราคม</h3>${day===30?`<div class="smallcard"><strong>วันเกิดอชิ</strong><p>ปฏิทินบริษัท</p><button class="action" onclick="seeBirthday()">ดูรายละเอียด</button></div><div class="smallcard">09:30 ประชุมฝ่ายขาย</div>`:`<p>รายการงานประจำวันและนัดหมายฝ่ายขาย</p>`}</div></div>`)}function selectDay(n){day=n;render()}function seeBirthday(){flag('birthday');if(has('cakeReply'))unlock('คำสั่งซื้อ');notify('เปิดรายละเอียดวันเกิดอชิแล้ว')}
-function renderOrders(){return shell(top('คำสั่งซื้อ')+`<div class="content"><div class="panel"><h3>ประวัติคำสั่งซื้อ</h3><div class="smallcard"><strong>เค้กวันเกิด</strong><p>สั่งล่วงหน้า 28 มกราคม · รับ 30 มกราคม</p><p>ผู้รับสินค้า: พี่ดุจ</p><button class="action" onclick="inspectOrder('cake')">รายละเอียดคำสั่งซื้อ</button></div><div class="smallcard"><strong>อาหารเย็น 2 ชุด</strong><p>จัดส่งที่อาคารสำนักงาน</p><button class="action" onclick="inspectOrder('food')">รายละเอียดคำสั่งซื้อ</button></div></div></div>`)}function inspectOrder(k){flag(k+'Order');if(k==='cake')unlock('โทรศัพท์');if(k==='food')unlock('โน้ต');notify(k==='cake'?'พบข้อมูลการรับเค้ก':'พบรายละเอียดการจัดส่งอาหาร')}
-function renderNotes(){return shell(top('โน้ต')+`<div class="content"><div class="panel"><h3>งานประจำสัปดาห์</h3><p>ติดตามรายงานฝ่ายขาย<br>ตรวจเอกสารเสนอราคา<br>ยืนยันนัดหมายลูกค้า</p></div><div class="panel"><h3>30 มกราคม</h3><p>เค้ก — พี่ดุจ<br>ตรวจตารางประชุม<br>อาหารเย็น</p><button class="action" onclick="discover('note')">ดูบันทึกเพิ่มเติม</button></div></div>`)}function renderCalls(){return shell(top('โทรศัพท์')+`<div class="content"><div class="panel"><h3>ล่าสุด</h3>${['09:12 — ลูกค้าบริษัท','13:45 — ฝ่ายขาย','18:52 — ร้านอาหาร','19:27 — พนักงานจัดส่ง'].map(s=>`<div class="smallcard">${s}</div>`).join('')}<button class="action" onclick="discover('calls')">ดูรายละเอียดสายโทร</button></div></div>`)}
-function discover(k){flag(k);if(has('note')&&has('calls'))unlock('นาฬิกา');if(has('achiReply')&&has('duj2Reply'))unlock('แกลเลอรี');if(has('note')&&has('calls')&&has('achiReply'))unlock('เบราว์เซอร์');if(has('gallery')&&has('browser'))unlock('ไฟล์');notify('บันทึกการสำรวจแล้ว')}
-function renderGallery(){return shell(top('แกลเลอรี')+`<div class="content"><div class="panel"><h3>รูปภาพ</h3><div class="gallery">${['มุมทำงาน','ท้องฟ้าหลังฝน','กิจกรรมบริษัท','วันสำคัญ'].map(s=>`<div class="photo" onclick="discover('gallery')">${s}</div>`).join('')}</div></div><p class="footnote">ภาพในต้นแบบใช้พื้นหลังจำลอง ไม่ใช่ภาพนิ่งจากซีรีส์</p></div>`)}
-function weddingPreview(){let c=state.card;let colors={cream:['#f5eee2','#6a594a','#bda88e'],pink:['#f8e9ee','#855c6b','#ce9cb1'],blue:['#e6eef8','#4a6687','#8da8cc'],green:['#e9eee5','#556a59','#95a992']};let p=colors[c.color];return `<div id="weddingcard" class="wedding" style="background:${p[0]};color:${p[1]};border-color:${p[2]}"><div class="over">THE WEDDING OF</div><h2>${c.style==='modern'?'KARAN':'Karan'}</h2><div class="amp">&amp;</div><h2>${c.style==='modern'?'ACHI':'Achi'}</h2><div class="over">19 JUNE</div><div class="quote">${escapeHtml(c.text)}</div><div style="font-size:12px;color:${p[2]}">${c.style==='floral'?'Botanical Collection':c.style==='modern'?'Modern Collection':'Classic Collection'}</div></div>`}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function setCard(k,v){state.card[k]=v;save();render()}function renderDesigner(){return shell(top('การ์ดแต่งงาน','ไฟล์')+`<div class="content">${weddingPreview()}<div class="panel" style="margin-top:14px"><h3>ออกแบบการ์ดแต่งงาน</h3><label class="field">เลือกสี</label><div class="swatches">${[['cream','#f5eee2'],['pink','#f8e9ee'],['blue','#e6eef8'],['green','#e9eee5']].map(([n,c])=>`<button class="swatch" style="background:${c};outline:${state.card.color===n?'2px solid #2b527d':'none'}" onclick="setCard('color','${n}')" aria-label="${n}"></button>`).join('')}</div><label class="field">รูปแบบ</label><select class="input" onchange="setCard('style',this.value)"><option value="classic" ${state.card.style==='classic'?'selected':''}>คลาสสิก</option><option value="floral" ${state.card.style==='floral'?'selected':''}>ดอกไม้</option><option value="modern" ${state.card.style==='modern'?'selected':''}>โมเดิร์น</option></select><label class="field">ข้อความ</label><input class="input" maxlength="80" value="${escapeHtml(state.card.text)}" oninput="updateCardText(this.value)"><button class="action primary" onclick="exportCard()">บันทึกการ์ดเป็นภาพ</button><p class="footnote">การ์ดฉบับทดลองสามารถเปลี่ยนสี รูปแบบ และข้อความได้</p></div></div>`)}function updateCardText(s){state.card.text=s;save();document.querySelector('.wedding .quote').textContent=s}
-function exportCard(){let c=state.card,colors={cream:['#f5eee2','#6a594a','#bda88e'],pink:['#f8e9ee','#855c6b','#ce9cb1'],blue:['#e6eef8','#4a6687','#8da8cc'],green:['#e9eee5','#556a59','#95a992']},p=colors[c.color],canvas=document.createElement('canvas');canvas.width=900;canvas.height=1200;let x=canvas.getContext('2d');x.fillStyle=p[0];x.fillRect(0,0,900,1200);x.strokeStyle=p[2];x.lineWidth=3;x.strokeRect(40,40,820,1120);x.fillStyle=p[1];x.textAlign='center';x.font='26px Georgia';x.fillText('THE WEDDING OF',450,330);x.font='100px Georgia';x.fillText('Karan',450,480);x.font='60px Georgia';x.fillText('&',450,575);x.font='100px Georgia';x.fillText('Achi',450,700);x.font='35px Georgia';x.fillText('19 JUNE',450,830);x.font='25px Arial';let words=c.text.split(' '),lines=[''];for(let w of words){let z=lines.length-1;if(x.measureText(lines[z]+' '+w).width>730)lines.push(w);else lines[z]+=(lines[z]?' ':'')+w}lines.slice(0,3).forEach((line,i)=>x.fillText(line,450,900+i*38));let a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='Karan-Achi-Wedding-Card.png';a.click();notify('สร้างภาพการ์ดแต่งงานแล้ว')}
-window.addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Backspace'&&e.target.tagName!=='INPUT'){if(page==='chat')go('LINE');else go('home')}});render();
-</script></body></html>
+
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KARAN'S PHONE</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,'Noto Sans Thai',sans-serif;background:#10182a;color:#fff}
+button,input,select{font:inherit}
+button{cursor:pointer}
+#phone{position:relative;width:100%;max-width:440px;height:100dvh;min-height:550px;margin:auto;overflow:hidden;background:linear-gradient(155deg,#1c304e,#354d75 63%,#8798b5)}
+.camera{position:absolute;z-index:30;top:12px;left:calc(50% - 6px);height:12px;width:12px;background:#081322;border:2px solid #23374e;border-radius:50%;pointer-events:none}
+.status{height:36px;padding:9px 18px 0;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#fff}
+.status .right{display:flex;align-items:center;gap:7px}
+.ico{width:22px;height:22px;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.small{width:17px;height:17px}
+.screen{position:absolute;inset:36px 0 22px;overflow-y:auto;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.nav{position:absolute;bottom:0;left:0;width:100%;height:22px;z-index:40;display:flex;align-items:center;justify-content:center}
+.nav span{width:105px;height:4px;background:#f6f8fd;border-radius:5px}
+.lock{height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:13vh}
+.lock .date{font-size:17px;color:#e4eaf4}
+.lock .clock{font-size:70px;letter-spacing:-4px;font-weight:300;margin:8px 0}
+.lock .hint{margin-top:auto;margin-bottom:58px;font-size:14px;color:#d8e3f5}
+.pill{border:1px solid #ffffff80;background:#ffffff18;color:white;padding:12px 25px;border-radius:28px}
+.home{padding:28px 18px}
+.home .greeting{font-size:28px;font-weight:300;margin:16px 0 8px}
+.home .sub{font-size:13px;color:#e3eafa;margin-bottom:35px}
+.appgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px 8px}
+.appitem{border:0;background:transparent;color:white;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px}
+.appicon{width:62px;height:62px;border-radius:19px;display:grid;place-items:center;box-shadow:0 7px 18px #0002}
+.appicon .ico{width:29px;height:29px}
+.locked{background:#5a6780!important;color:#d2dbe8}
+.app{background:#f6f7fb;color:#172033;min-height:100%;padding-bottom:22px}
+.apphead{height:56px;background:#fff;display:flex;align-items:center;gap:14px;padding:0 15px;border-bottom:1px solid #e9edf2;position:sticky;top:0;z-index:5}
+.back{border:0;background:none;color:#24324a;padding:5px}
+.apphead b{font-size:18px}
+.content{padding:14px}
+.chatlist{background:white}
+.chatrow{display:flex;gap:12px;padding:15px 16px;border-bottom:1px solid #eef0f3;align-items:center;cursor:pointer}
+.avatar{width:43px;height:43px;background:#d7e4f1;color:#425773;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.chatrow .body{min-width:0;flex:1}
+.chatrow .name{font-weight:600;font-size:15px}
+.chatrow .preview{font-size:12px;color:#7c8595;margin-top:5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.chatrow .time{font-size:11px;color:#99a2af}
+.conversation{background:#d8e1ee;min-height:calc(100dvh - 116px);padding:16px 12px 85px}
+.day{text-align:center;font-size:11px;color:#60738c;margin:12px}
+.bubble{max-width:82%;padding:11px 13px;border-radius:15px;font-size:14px;line-height:1.65;margin:8px 0;white-space:pre-wrap}
+.incoming{background:#fff;color:#253043;border-top-left-radius:4px;margin-right:auto}
+.outgoing{background:#b6ec98;color:#213c2b;border-top-right-radius:4px;margin-left:auto}
+.choices{position:sticky;bottom:0;background:#f8fafc;padding:10px;border-top:1px solid #e1e7ef}
+.choice{width:100%;padding:10px 12px;background:white;border:1px solid #d5dfeb;border-radius:12px;margin:4px 0;text-align:left;font-size:13px;color:#27364a}
+.choice:active{background:#dff5df}
+.entry{background:#fff;padding:15px;border-radius:14px;margin:10px 0;border:1px solid #e7ebf1;color:#263347}
+.entry small{color:#788597;display:block;margin-top:6px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.muted{color:#7b879a;font-size:12px}
+.action{border:0;border-radius:12px;background:#273d60;color:white;padding:12px 15px}
+.action:disabled{opacity:.4}
+.notice{padding:11px 14px;background:#eaf4ec;color:#246139;border-radius:12px;font-size:13px;margin:12px 0}
+.footerbtn{width:100%;margin-top:15px}
+.cardeditor{background:#f7f8fb;min-height:100%;padding:15px}
+.invite{max-width:310px;min-height:420px;margin:14px auto;padding:24px 20px;text-align:center;border:1px solid #bca98c;box-shadow:0 8px 26px #0002;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:19px;color:#6e5948;background:#f7efe3}
+.invite .tiny{letter-spacing:3px;font-size:11px}
+.invite .names{font-family:Georgia,serif;font-size:34px;line-height:1.45}
+.invite .line{width:50px;height:1px;background:currentColor}
+.invite .phrase{font-size:13px}
+.controls{display:grid;gap:10px;background:#fff;border-radius:14px;padding:15px}
+.controls label{font-size:13px;font-weight:600}
+.controls select,.controls input{padding:11px;border:1px solid #cbd4df;border-radius:10px;width:100%;color:#263347;background:white}
+.overlay{position:absolute;inset:36px 0 22px;background:#101a2bbd;display:grid;place-items:center;z-index:25;padding:25px}
+.dialog{background:white;color:#20314c;padding:25px;border-radius:20px;width:100%;max-width:320px;text-align:center}
+.dialog p{font-size:14px;line-height:1.6}
+.toolbar{padding:10px 14px;background:#fff;border-top:1px solid #e7eaf0}
+.tinylabel{font-size:11px;color:#8b96a5}
+.homecard{background:#ffffff19;border:1px solid #ffffff25;border-radius:16px;padding:16px;margin-top:35px;font-size:13px;color:#eaf1fa}
+.spacer{height:12px}
+</style>
+</head>
+<body>
+<div id="phone">
+  <div class="camera"></div>
+  <div class="status">
+    <span id="statusTime">21:36</span>
+    <span class="right">
+      <span id="signal"></span>
+      <span id="wifi"></span>
+      <span id="battery"></span>
+    </span>
+  </div>
+  <main id="screen" class="screen"></main>
+  <div class="nav" id="nav"><span></span></div>
+  <div id="modal"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+const paths={
+back:'<path d="m15 18-6-6 6-6"/>',
+lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+line:'<path d="M20 11.5c0 4.4-3.8 8-8.5 8-1 0-2-.15-2.9-.45L4 20l1.3-3.7A7.7 7.7 0 0 1 3 11.5C3 7.1 6.8 3.5 11.5 3.5S20 7.1 20 11.5Z"/>',
+phone:'<path d="M7 3H4a2 2 0 0 0-2 2c0 9.4 7.6 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
+gallery:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/>',
+calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3"/>',
+note:'<path d="M5 3h11l3 3v15H5zM8 10h8M8 14h8M8 18h5"/>',
+bag:'<path d="M4 8h16l-1 13H5L4 8ZM9 9V6a3 3 0 0 1 6 0v3"/>',
+web:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/>',
+file:'<path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9H3z"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+signal:'<path d="M4 20v-4M9 20v-8M14 20V8M19 20V4"/>',
+wifi:'<path d="M2 8a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/>',
+battery:'<rect x="2" y="6" width="18" height="12" rx="3"/><path d="M22 10v4"/><rect x="5" y="9" width="11" height="6" rx="1" fill="currentColor" stroke="none"/>',
+cake:'<path d="M3 12h18v9H3zM3 16h18M7 12V8M12 12V8M17 12V8M7 5v1M12 5v1M17 5v1"/>',
+check:'<path d="m4 12 5 5L20 6"/>',
+send:'<path d="m3 3 18 9-18 9 4-9-4-9ZM7 12h14"/>'
+};
+
+function icon(n,cls=''){
+return '<svg class="ico '+cls+'" viewBox="0 0 24 24" aria-hidden="true">'+(paths[n]||paths.file)+'</svg>';
+}
+
+const appdefs=[
+['LINE','line','#06c755'],
+['โทรศัพท์','phone','#56a97f'],
+['แกลเลอรี','gallery','#a88bc7'],
+['ปฏิทิน','calendar','#6e9bdc'],
+['โน้ต','note','#caa85d'],
+['คำสั่งซื้อ','bag','#d68b64'],
+['เบราว์เซอร์','web','#6d9fc4'],
+['นาฬิกา','clock','#938dcf'],
+['ไฟล์','file','#899cb7']
+];
+
+const key='karan_phone_v2';
+
+let save={
+unlock:['LINE'],
+flags:{},
+replies:{},
+card:{color:'ivory',style:'classic',text:'Together, always.'}
+};
+
+try{
+const old=JSON.parse(localStorage.getItem(key));
+if(old){
+save={
+...save,...old,
+flags:old.flags||{},
+replies:old.replies||{},
+card:{...save.card,...old.card}
+};
+}
+}catch(e){}
+
+let page='lock',chat='';
+const screen=document.getElementById('screen');
+
+function persist(){
+try{localStorage.setItem(key,JSON.stringify(save))}catch(e){}
+}
+
+function unlock(name){
+if(!save.unlock.includes(name)){
+save.unlock.push(name);
+persist();
+}
+}
+
+function header(title){
+return '<div class="apphead"><button class="back" data-go="home" aria-label="ย้อนกลับ">'+icon('back')+'</button><b>'+title+'</b></div>';
+}
+
+function appwrap(title,body){
+return '<div class="app">'+header(title)+body+'</div>';
+}
+
+function render(){
+document.getElementById('signal').innerHTML=icon('signal','small');
+document.getElementById('wifi').innerHTML=icon('wifi','small');
+document.getElementById('battery').innerHTML=icon('battery','small');
+
+let html='';
+
+if(page==='lock'){
+html='<div class="lock"><div class="date">วันพุธที่ 11 พฤศจิกายน</div><div class="clock">21:36</div><div class="hint">โทรศัพท์ของการันต์<br><br><button class="pill" data-go="home">ปัดขึ้นเพื่อปลดล็อก</button></div></div>';
+}
+else if(page==='home'){
+html='<div class="home"><div class="greeting">Karan’s Phone</div><div class="sub">เรื่องราวที่เก็บไว้ในโทรศัพท์เครื่องนี้</div><div class="appgrid">'+appdefs.map(a=>{
+const open=save.unlock.includes(a[0]);
+return '<button class="appitem" data-app="'+a[0]+'"><span class="appicon '+(open?'':'locked')+'" style="'+(open?'background:'+a[2]:'')+'">'+icon(open?a[1]:'lock')+'</span><span>'+a[0]+'</span></button>';
+}).join('')+'</div><div class="homecard">LINE มีข้อความเก่าจากพี่ดุจ<br><span style="opacity:.75">30 มกราคม · วันเกิดอชิ</span></div><button class="pill" style="margin-top:15px;width:100%" data-app="การ์ดแต่งงาน">ทดลองออกแบบการ์ดแต่งงาน</button></div>';
+}
+else if(page==='LINE'){
+html=appwrap('LINE','<div class="chatlist">'+[
+['พี่ดุจ','เรื่องเค้กวันเกิดอชิ','duj'],
+['อชิ','ขอบคุณนะครับคุณการันต์','achi'],
+['ประสานงานออฟฟิศ','ปาย: ยินดีต้อนรับร็อคค่ะ','office'],
+['ทีมฝ่ายขาย','เอกสารลูกค้าเรียบร้อยแล้วครับ','sales']
+].map(c=>'<div class="chatrow" data-chat="'+c[2]+'"><div class="avatar">'+icon('user')+'</div><div class="body"><div class="name">'+c[0]+'</div><div class="preview">'+c[1]+'</div></div><div class="time">30 ม.ค.</div></div>').join('')+'</div>');
+}
+else if(page==='chat'){
+html=renderChat();
+}
+else if(page==='ปฏิทิน'){
+html=appwrap('ปฏิทิน','<div class="content"><div class="entry"><b>30 มกราคม</b><small>วันเกิดอชิ · ปฏิทินบริษัท</small><p>พี่ดุจช่วยดูเรื่องเค้ก</p><button class="action" data-task="calendar">ดูรายละเอียดรายการ</button></div><div class="entry"><b>ประชุมฝ่ายขาย</b><small>09:30 · ห้องประชุม 2</small></div><div class="entry"><b>ตรวจรายงานยอดขาย</b><small>16:00 · งานฝ่ายขาย</small></div></div>');
+}
+else if(page==='คำสั่งซื้อ'){
+html=appwrap('คำสั่งซื้อ','<div class="content"><div class="entry"><b>'+icon('cake')+' เค้กวันเกิด</b><small>สั่งล่วงหน้า · รับ 30 มกราคม</small><p>ผู้รับสินค้า: พี่ดุจ</p><button class="action" data-task="order">ตรวจสอบรายละเอียด</button></div><div class="entry"><b>อาหารเย็น</b><small>30 มกราคม · จัดส่งที่สำนักงาน</small><p>อาหาร 2 ชุด</p><button class="action" data-task="dinner">เปิดรายการอาหาร</button></div></div>');
+}
+else if(page==='โทรศัพท์'){
+html=appwrap('โทรศัพท์','<div class="content"><div class="entry"><b>ประวัติการโทร</b><small>30 มกราคม</small><p>09:12 · ลูกค้าบริษัท · โทรออก</p><p>13:45 · ฝ่ายขาย · สายเข้า</p><p>19:27 · พนักงานจัดส่ง · สายเข้า</p></div></div>');
+}
+else if(page==='โน้ต'){
+html=appwrap('โน้ต','<div class="content"><div class="entry"><b>งานประจำสัปดาห์</b><p>ติดตามรายงานฝ่ายขาย</p><p>ตรวจเอกสารเสนอราคา</p><p>ยืนยันนัดหมายลูกค้า</p></div><div class="entry"><b>30 มกราคม</b><p>เค้ก — พี่ดุจ</p><p>ตรวจตารางประชุม</p><p>อาหารเย็น</p></div></div>');
+}
+else if(page==='การ์ดแต่งงาน'){
+html=renderCard();
+}
+else{
+html=appwrap(page,'<div class="content"><div class="entry">ข้อมูลส่วนนี้จะเปิดเผยในตอนถัดไป</div></div>');
+}
+
+screen.innerHTML=html;
+screen.scrollTop=0;
+}
+
+function bubble(text,out){
+return '<div class="bubble '+(out?'outgoing':'incoming')+'">'+text+'</div>';
+}
+
+function renderChat(){
+const names={duj:'พี่ดุจ',achi:'อชิ',office:'ประสานงานออฟฟิศ',sales:'ทีมฝ่ายขาย'};
+let b='<div class="day">28–30 มกราคม · EP.01</div>';
+let choices='';
+
+if(chat==='duj'){
+b+=bubble('การันต์ เรื่องเค้กวันเกิดอชิ พี่จัดการให้แล้วนะ');
+b+=bubble('ขอบคุณครับ ถ้ามีอะไรให้ผมช่วยเพิ่มเติม บอกได้เลยนะครับ',true);
+b+=bubble('พรุ่งนี้พี่จะดูจังหวะเอาเค้กเข้าไปให้นะ');
+b+=bubble('ว่าแต่การันต์อยากให้พี่บอกอชิไหมว่าใครเตรียมเค้ก?');
+
+const opts=[
+'ไม่ต้องบอกก็ได้ครับ ผมแค่อยากให้อชิมีความสุขในวันเกิด',
+'บอกว่าเป็นเค้กจากทุกคนในออฟฟิศก็ได้ครับ',
+'แล้วแต่พี่ดุจสะดวกเลยครับ ผมไม่ติดอะไร'
+];
+
+if(save.replies.duj){
+b+=bubble(save.replies.duj,true);
+b+=bubble('ได้เลยจ้ะ พี่จัดการให้ ไม่ต้องห่วง');
+b+=bubble('อ้อ วันเกิดอชิอยู่ในปฏิทินบริษัทด้วยนะ');
+}else{
+choices=opts.map((o,i)=>'<button class="choice" data-reply="duj" data-index="'+i+'">'+o+'</button>').join('');
+}
+}
+
+if(chat==='achi'){
+b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
+b+=bubble('ขอบคุณมากนะครับคุณการันต์');
+
+if(save.replies.achi){
+b+=bubble(save.replies.achi,true);
+b+=bubble('ขอบคุณนะครับ',false);
+}else{
+choices=[
+'ยินดีครับ',
+'ขอให้วันนี้เป็นวันที่ดีนะครับ',
+'พักผ่อนด้วยนะครับ'
+].map((o,i)=>'<button class="choice" data-reply="achi" data-index="'+i+'">'+o+'</button>').join('');
+}
+}
+
+if(chat==='office'){
+b+=bubble('ปาย: วันนี้มีน้องใหม่เข้าทีมโปรโมชั่น ชื่อร็อคนะคะ');
+b+=bubble('ร็อค: สวัสดีครับ ฝากเนื้อฝากตัวด้วยนะครับ');
+b+=bubble('อชิ: ยินดีต้อนรับครับ ถ้าต้องประสานงานเอกสารติดต่อผมได้เลยครับ');
+b+=bubble('การันต์: ยินดีต้อนรับครับ',true);
+}
+
+if(chat==='sales'){
+b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ');
+b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
+}
+
+return appwrap(names[chat],'<div class="conversation">'+b+'</div>'+(choices?'<div class="choices"><div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+choices+'</div>':''));
+}
+
+function renderCard(){
+const colors={
+ivory:['#f7efe3','#6d5846'],
+pink:['#f9e8ee','#87596a'],
+blue:['#e7eff9','#526f91'],
+green:['#eaf0e7','#566d5b']
+};
+const c=colors[save.card.color]||colors.ivory;
+
+return appwrap('การ์ดแต่งงาน','<div class="cardeditor"><div class="muted">ต้นแบบกิจกรรม EP.12 · ออกแบบได้ตั้งแต่เวอร์ชันทดลอง</div><div class="invite" id="invite" style="background:'+c[0]+';color:'+c[1]+';border-style:'+(save.card.style==='modern'?'solid':'double')+'"><div class="tiny">THE WEDDING OF</div><div class="line"></div><div class="names">Karan<br>&amp;<br>Achi</div><div class="line"></div><div class="tiny">19 JUNE</div><div class="phrase" id="cardPhrase"></div></div><div class="controls"><label>สีการ์ด</label><select id="cardColor"><option value="ivory">ครีม</option><option value="pink">ชมพู</option><option value="blue">ฟ้า</option><option value="green">เขียว</option></select><label>รูปแบบ</label><select id="cardStyle"><option value="classic">คลาสสิก</option><option value="modern">โมเดิร์น</option></select><label>ข้อความบนการ์ด</label><input id="cardText" maxlength="80" placeholder="ข้อความบนการ์ด"><button class="action" data-task="savecard">บันทึกการ์ดเป็นภาพ</button></div></div>');
+}
+
+function popup(title,msg){
+document.getElementById('modal').innerHTML='<div class="overlay"><div class="dialog"><h3>'+title+'</h3><p>'+msg+'</p><button class="action" data-task="close">ตกลง</button></div></div>';
+}
+
+function goApp(name){
+if(name==='การ์ดแต่งงาน'){
+page=name;
+render();
+syncCard();
+return;
+}
+if(!save.unlock.includes(name)){
+popup('ยังไม่สามารถเปิดได้','สำรวจข้อมูลในแอปที่เปิดอยู่เพื่อเข้าถึงส่วนนี้');
+return;
+}
+page=name;
+render();
+}
+
+function syncCard(){
+const a=document.getElementById('cardColor');
+const b=document.getElementById('cardStyle');
+const c=document.getElementById('cardText');
+const p=document.getElementById('cardPhrase');
+if(a){
+a.value=save.card.color;
+b.value=save.card.style;
+c.value=save.card.text;
+p.textContent=save.card.text;
+}
+}
+
+function saveCard(){
+const c=document.createElement('canvas');
+c.width=900;
+c.height=1200;
+const x=c.getContext('2d');
+const colors={
+ivory:['#f7efe3','#6d5846'],
+pink:['#f9e8ee','#87596a'],
+blue:['#e7eff9','#526f91'],
+green:['#eaf0e7','#566d5b']
+};
+const t=colors[save.card.color]||colors.ivory;
+x.fillStyle=t[0];
+x.fillRect(0,0,900,1200);
+x.strokeStyle=t[1];
+x.lineWidth=3;
+x.strokeRect(35,35,830,1130);
+x.fillStyle=t[1];
+x.textAlign='center';
+x.font='26px Georgia';
+x.fillText('THE WEDDING OF',450,285);
+x.font='95px Georgia';
+x.fillText('Karan',450,470);
+x.font='60px Georgia';
+x.fillText('&',450,570);
+x.font='95px Georgia';
+x.fillText('Achi',450,690);
+x.font='32px Georgia';
+x.fillText('19 JUNE',450,820);
+x.font='26px Arial';
+x.fillText(save.card.text.slice(0,48),450,920);
+
+const link=document.createElement('a');
+link.download='Karan-Achi-Wedding.png';
+link.href=c.toDataURL('image/png');
+link.click();
+}
+
+document.addEventListener('click',function(e){
+const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-task]');
+if(!btn)return;
+
+if(btn.dataset.go){
+page=btn.dataset.go;
+render();
+}
+else if(btn.dataset.app){
+goApp(btn.dataset.app);
+}
+else if(btn.dataset.chat){
+chat=btn.dataset.chat;
+page='chat';
+render();
+}
+else if(btn.dataset.reply){
+const who=btn.dataset.reply;
+const opts=who==='duj'
+?[
+'ไม่ต้องบอกก็ได้ครับ ผมแค่อยากให้อชิมีความสุขในวันเกิด',
+'บอกว่าเป็นเค้กจากทุกคนในออฟฟิศก็ได้ครับ',
+'แล้วแต่พี่ดุจสะดวกเลยครับ ผมไม่ติดอะไร'
+]
+:[
+'ยินดีครับ',
+'ขอให้วันนี้เป็นวันที่ดีนะครับ',
+'พักผ่อนด้วยนะครับ'
+];
+
+save.replies[who]=opts[Number(btn.dataset.index)];
+
+if(who==='duj')unlock('ปฏิทิน');
+persist();
+render();
+}
+else if(btn.dataset.task){
+const task=btn.dataset.task;
+
+if(task==='close'){
+document.getElementById('modal').innerHTML='';
+}
+if(task==='calendar'){
+save.flags.calendar=true;
+unlock('คำสั่งซื้อ');
+popup('รายละเอียดวันเกิด','พี่ดุจช่วยดูเรื่องเค้กแล้ว คุณสามารถตรวจสอบรายการที่เกี่ยวข้องได้');
+}
+if(task==='order'){
+save.flags.order=true;
+unlock('โทรศัพท์');
+popup('รายการเค้ก','คำสั่งซื้อได้รับการยืนยันแล้ว');
+}
+if(task==='dinner'){
+unlock('โน้ต');
+popup('รายการอาหาร','จัดส่งเรียบร้อยแล้ว มีข้อมูลเพิ่มเติมในโน้ต');
+}
+if(task==='savecard'){
+saveCard();
+}
+}
+});
+
+document.addEventListener('change',function(e){
+if(e.target.id==='cardColor')save.card.color=e.target.value;
+if(e.target.id==='cardStyle')save.card.style=e.target.value;
+persist();
+if(page==='การ์ดแต่งงาน'){
+render();
+syncCard();
+}
+});
+
+document.addEventListener('input',function(e){
+if(e.target.id==='cardText'){
+save.card.text=e.target.value;
+persist();
+document.getElementById('cardPhrase').textContent=e.target.value;
+}
+});
+
+document.getElementById('nav').addEventListener('click',function(){
+page='home';
+render();
+});
+
+let touchY=0;
+screen.addEventListener('touchstart',e=>{
+touchY=e.touches[0].clientY;
+},{passive:true});
+
+screen.addEventListener('touchend',e=>{
+if(page==='lock'&&touchY-e.changedTouches[0].clientY>45){
+page='home';
+render();
+}
+},{passive:true});
+
+let hold;
+document.addEventListener('pointerdown',e=>{
+if(e.target.closest('.greeting')){
+hold=setTimeout(()=>goApp('การ์ดแต่งงาน'),900);
+}
+});
+document.addEventListener('pointerup',()=>clearTimeout(hold));
+document.addEventListener('pointercancel',()=>clearTimeout(hold));
+
+render();
+})();
+</script>
+</body>
+</html>

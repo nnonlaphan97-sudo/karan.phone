@@ -1638,9 +1638,14 @@ showPage("lock");
     <button data-choice="3" type="button">
       ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก
     </button>
-    <button id="ksContinue" type="button">
-      ดำเนินเรื่องต่อ
-    </button>
+    } else if (story.stage === "continue") {
+  choices.style.display = "flex";
+
+  choices.querySelectorAll("[data-choice]").forEach(
+    button => button.style.display = "none"
+  );
+
+  $("ksContinue").style.display = "block";
   `;
 
   const chat = $("kgChat");
@@ -1708,15 +1713,8 @@ showPage("lock");
         button => button.style.display = "block"
       );
 
-      $("ksContinue").style.display = "none";
     } else if (story.stage === "continue") {
-      choices.style.display = "flex";
-
-      choices.querySelectorAll("[data-choice]").forEach(
-        button => button.style.display = "none"
-      );
-
-      $("ksContinue").style.display = "block";
+  choices.style.display = "none";
     } else {
       choices.style.display = "none";
     }

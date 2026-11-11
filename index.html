@@ -989,11 +989,23 @@ showPage("lock");
 #mockShell .quick{position:absolute;top:35px;left:0;right:0;background:#edf0f7;padding:20px;z-index:101;border-radius:0 0 25px 25px;display:none}
 #mockShell .quick.open{display:block}
 #mockShell .quick button{background:#d5dded;border-radius:18px;padding:10px;margin:5px}
+
+/* Two swipeable home pages and icon-only dock */
+#mockShell .homepages{min-height:210px}
+#mockShell .pagedots{position:absolute;bottom:93px;left:0;right:0;display:flex;justify-content:center;gap:9px;pointer-events:auto}
+#mockShell .pagedots button{width:7px;height:7px;padding:0;border-radius:50%;background:#ffffff75}
+#mockShell .pagedots button.selected{background:white}
+#mockShell .homedock{bottom:29px;z-index:5}
+#mockShell .homedock .appicon>span:last-child:not(.iconbox){display:none}
+#mockShell .weather-svg svg{width:52px;height:52px;stroke:#fff;fill:none;stroke-width:2}
+#mockShell .home{min-height:100%;height:100%;position:relative}
 </style>
 <script>
 (function(){'use strict';
 const root=document.createElement('div');root.id='mockShell';document.getElementById('phone').appendChild(root);
 const icons={
+facebook:'<path d="M17 26V15h4l1-5h-5V8c0-2 1-2 3-2h2V2h-4c-5 0-7 3-7 7v1H8v5h3v11"/>',
+messages:'<path d="M4 6h20v14H10l-6 5V6Z"/><path d="M8 11h12M8 15h9"/>',
 line:'<path d="M4 12c0-5 4-8 10-8s10 3 10 8-4 8-10 8h-3l-5 3 1-5c-2-2-3-4-3-6Z"/><path d="M9 12h10"/>',
 phone:'<path d="M7 3h5l2 5-3 3c2 4 4 6 8 8l3-3 4 2v5c-11 3-22-9-19-20Z"/>',
 gallery:'<rect x="3" y="3" width="22" height="22" rx="4"/><circle cx="10" cy="10" r="2"/><path d="m4 21 7-7 5 5 3-3 6 6"/>',
@@ -1009,7 +1021,7 @@ files:'<path d="M2 8V5h9l3 3h12v16H2Z"/>',
 clock:'<circle cx="14" cy="14" r="11"/><path d="M14 7v8l5 3"/>',
 settings:'<circle cx="14" cy="14" r="4"/><path d="M14 2v4M14 22v4M2 14h4M22 14h4M5 5l3 3M20 20l3 3M23 5l-3 3M8 20l-3 3"/>',
 contacts:'<circle cx="14" cy="9" r="5"/><path d="M4 25c0-12 20-12 20 0"/>'};
-const apps=[['line','LINE','#06c755'],['phone','โทรศัพท์','#4db66c'],['gallery','แกลเลอรี','#f3adbe'],['camera','กล้อง','#9daac4'],['calendar','ปฏิทิน','#fff','#d34b50'],['notes','โน้ต','#f6d86b','#5d4e29'],['music','เพลง','#e1a4c8'],['browser','Internet','#8bbfe7'],['instagram','Instagram','#c77bbd'],['mail','Gmail','#fff','#df5555'],['maps','Maps','#9bd2b4'],['files','ไฟล์','#e4bc68'],['clock','นาฬิกา','#d4d8e5','#323842'],['settings','ตั้งค่า','#a9b9d2'],['contacts','รายชื่อ','#c2d8ec','#526784']];
+const apps=[['line','LINE','#06c755'],['facebook','Facebook','#1877f2'],['messages','ข้อความ','#4b9eeb'],['phone','โทรศัพท์','#4db66c'],['gallery','แกลเลอรี','#f3adbe'],['camera','กล้อง','#9daac4'],['calendar','ปฏิทิน','#fff','#d34b50'],['notes','โน้ต','#f6d86b','#5d4e29'],['music','เพลง','#e1a4c8'],['browser','Internet','#8bbfe7'],['instagram','Instagram','#c77bbd'],['mail','Gmail','#fff','#df5555'],['maps','Maps','#9bd2b4'],['files','ไฟล์','#e4bc68'],['clock','นาฬิกา','#d4d8e5','#323842'],['settings','ตั้งค่า','#a9b9d2'],['contacts','รายชื่อ','#c2d8ec','#526784']];
 const people=['อชิ','พี่ดุจ','ทานากะซัง','พาย','ป่า','ร็อก'];
 const chats=Object.fromEntries(people.map(n=>[n,[{who:'them',text:'สวัสดีครับ คุณการันต์'}]]));
 const photos=Array.from({length:18},(_,i)=>({name:'รูปภาพ '+(i+1),date:'11 พฤศจิกายน 2026'}));
@@ -1020,7 +1032,12 @@ const icon=id=>'<svg viewBox="0 0 28 28" aria-hidden="true">'+icons[id]+'</svg>'
 const tile=a=>`<button class="appicon" data-app="${a[0]}"><span class="iconbox" style="--c:${a[2]};--fg:${a[3]||'#fff'}">${icon(a[0])}</span><span>${a[1]}</span></button>`;
 const header=(name,extra='')=>`<div class="apphead"><button class="back" data-back>‹</button><h2>${name}</h2><button class="more" data-more>⋮</button></div>${extra}`;
 const list=(items,action='open')=>items.map((n,i)=>`<button class="item" data-${action}="${i}"><span class="avatar">${n[0]}</span><span class="info"><b>${n}</b><small>${action==='person'?'แตะเพื่อดูการสนทนา':'แตะเพื่อเปิด'}</small></span><span>›</span></button>`).join('');
-const home=()=>`<div class="home"><div class="weather"><span>☀</span><div>30°<small>มีเมฆบางส่วน</small><small>กรุงเทพมหานคร</small></div></div><div class="appgrid">${apps.map(tile).join('')}</div></div><div class="homedock">${[apps[1],apps[0],apps[3]].map(tile).join('')}</div>`;
+const homePages=[['line','facebook','instagram','calendar','messages','music','clock','gallery'],['browser','files','maps']];
+const dockApps=['phone','notes','camera'];
+let homePage=0;
+const findApp=id=>apps.find(a=>a[0]===id);
+const homeTile=(id,hideLabel=false)=>{const a=findApp(id);return `<button class="appicon" data-app="${a[0]}" aria-label="${a[1]}"><span class="iconbox" style="--c:${a[2]};--fg:${a[3]||'#fff'}">${icon(a[0])}</span>${hideLabel?'':`<span>${a[1]}</span>`}</button>`;};
+const home=()=>`<div class="home"><div class="weather"><span class="weather-svg">${icon('clock')}</span><div>30°<small>มีเมฆบางส่วน</small><small>กรุงเทพมหานคร</small></div></div><div class="homepages"><div class="appgrid">${homePages[homePage].map(id=>homeTile(id)).join('')}</div></div><div class="pagedots">${homePages.map((_,i)=>`<button data-homepage="${i}" aria-label="หน้าที่ ${i+1}" class="${i===homePage?'selected':''}"></button>`).join('')}</div></div><div class="homedock">${dockApps.map(id=>homeTile(id,true)).join('')}</div>`;
 function view(){
  let body='',dark=screen==='home';
  if(screen==='home')body=home();
@@ -1035,6 +1052,8 @@ function view(){
  else if(screen==='note'){let n=notes[Number(root.dataset.note)||0];body=header('โน้ต')+`<div class="sheet"><input id="noteTitle" value="${escapeAttr(n.title)}" style="border:0;font-size:21px;width:100%;padding:10px"/><textarea id="noteBody" style="width:100%;height:300px;border:0;padding:10px;font:inherit;resize:none">${escapeHtml(n.body)}</textarea><button data-action="savenote" style="background:#dbe6fb;border-radius:18px;padding:12px">บันทึก</button></div>`;}
  else if(screen==='music'){body=header('Samsung Music')+`<div class="card" style="text-align:center;padding:35px"><div style="font-size:55px">♫</div><h3>เพลงตัวอย่าง</h3><p class="muted">ยังไม่ได้เพิ่มไฟล์เสียง</p><button data-action="musicplay">▶ เล่น / หยุด</button></div><div class="sheet"><b>เพลย์ลิสต์</b><p>เพลงโปรด</p></div>`;}
  else if(screen==='browser'){body=header('Samsung Internet')+`<form id="webForm" class="sheet"><input class="search" id="webQuery" style="width:100%;margin:0" placeholder="ค้นหาหรือป้อน URL"/></form><div class="card"><b>รายการโปรด</b><p>Samsung Internet</p><p class="muted">หน้าเว็บตัวอย่าง — ไม่เปิดเว็บไซต์ภายนอกโดยอัตโนมัติ</p></div>`;}
+ else if(screen==='facebook'){body=header('Facebook')+`<div class="sheet"><b>ฟีดข่าว</b><p class="muted">Mockup Facebook สำหรับโทรศัพท์การันต์</p></div>`;}
+ else if(screen==='messages'){body=header('ข้อความ')+list(['อชิ','พี่ดุจ'],'person');}
  else if(screen==='instagram'){body=header('Instagram')+`<div class="sheet"><b>karan</b><p class="muted">0 โพสต์ · 0 ผู้ติดตาม · 0 กำลังติดตาม</p><button data-action="follow">แก้ไขโปรไฟล์</button></div><div class="gallerygrid">${photos.slice(0,6).map((p,i)=>`<button class="phototile" data-photo="${i}">${icon('gallery')}</button>`).join('')}</div>`;}
  else if(screen==='mail'){body=header('Gmail')+`<input class="search" placeholder="ค้นหาในอีเมล"/>`+list(['ยินดีต้อนรับสู่กล่องจดหมาย','ตัวอย่างอีเมลการทำงาน'],'email')+`<button class="fab" data-action="composemail">✎</button>`;}
  else if(screen==='maps'){body=header('Maps')+`<input class="search" placeholder="ค้นหาสถานที่"/><div style="height:330px;background:repeating-linear-gradient(45deg,#e6eddf,#e6eddf 28px,#d7e6ed 28px,#d7e6ed 55px);display:grid;place-items:center">แผนที่จำลอง</div><div class="card">สถานที่บันทึกไว้<br><small class="muted">ยังไม่มีสถานที่</small></div>`;}
@@ -1055,6 +1074,7 @@ function back(){screen=history.pop()||'home';view();}
 function notify(text){const x=document.createElement('div');x.textContent=text;x.style.cssText='position:absolute;z-index:150;top:43px;left:15px;right:15px;background:#fff;border-radius:16px;padding:15px;box-shadow:0 4px 15px #0003';root.append(x);setTimeout(()=>x.remove(),1800)}
 root.addEventListener('click',e=>{
 const el=e.target.closest('button,[data-home]');if(!el)return;
+if(el.dataset.homepage!==undefined){homePage=Number(el.dataset.homepage);view();return;}
 if(el.hasAttribute('data-home')){history=[];screen='home';view();return;}
 if(el.hasAttribute('data-back')){back();return;}
 if(el.dataset.app){go(el.dataset.app);if(screen==='phone')tab='แป้นกด';view();return;}
@@ -1084,6 +1104,7 @@ else if(el.hasAttribute('data-more'))$('quick').classList.toggle('open');
 });
 root.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='chatForm'){const t=$('chatInput').value.trim();if(!t)return;chats[selectedPerson].push({who:'me',text:t});view()}else if(e.target.id==='webForm'){notify('คำค้นหาจำลอง: '+$('webQuery').value)}});
 root.addEventListener('input',e=>{if(e.target.id==='lineSearch'){let q=e.target.value.toLowerCase();root.querySelectorAll('[data-person]').forEach((el,i)=>el.style.display=people[i].toLowerCase().includes(q)?'flex':'none')}});
+let swipeStart=null;root.addEventListener('touchstart',e=>{if(screen==='home')swipeStart={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});root.addEventListener('touchend',e=>{if(screen!=='home'||!swipeStart)return;const dx=e.changedTouches[0].clientX-swipeStart.x;const dy=e.changedTouches[0].clientY-swipeStart.y;swipeStart=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.25){homePage=Math.max(0,Math.min(homePages.length-1,homePage+(dx<0?1:-1)));view();}},{passive:true});
 let touchY=null;root.addEventListener('touchstart',e=>{if(e.touches[0].clientY<80)touchY=e.touches[0].clientY},{passive:true});root.addEventListener('touchend',e=>{if(touchY!==null&&e.changedTouches[0].clientY-touchY>65){$('quick').classList.add('open')}touchY=null},{passive:true});
 const unlocked=$('unlockedPage');const observer=new MutationObserver(()=>{if(unlocked.getAttribute('display')!=='none'){root.style.display='block';view()}else root.style.display='none'});observer.observe(unlocked,{attributes:true,attributeFilter:['display']});if(unlocked.getAttribute('display')!=='none'){root.style.display='block';view()}
 window.KaranMockup={open:go,home:()=>{screen='home';history=[];view()},apps:apps.map(a=>a[1])};

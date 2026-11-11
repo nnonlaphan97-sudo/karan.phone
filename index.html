@@ -1472,5 +1472,403 @@ showPage("lock");
 </script>
 <!-- END KARAN HOME + LINE -->
 
+<!-- KARAN STORY : CHAPTER 1 -->
+<script>
+(function () {
+  "use strict";
+
+  if (document.getElementById("karanStoryChapter1")) return;
+
+  const story = {
+    chapter: 1,
+    stage: "waiting",
+    choice: null,
+    started: false
+  };
+
+  const $ = id => document.getElementById(id);
+
+  const style = document.createElement("style");
+  style.textContent = `
+    #karanStoryChapter1 {
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:260;
+      font-family:Arial,"Noto Sans Thai",sans-serif;
+    }
+
+    #ksNotification {
+      position:absolute;
+      top:42px;
+      left:12px;
+      right:12px;
+      padding:12px;
+      border:0;
+      border-radius:17px;
+      background:rgba(245,246,248,.95);
+      color:#202127;
+      display:none;
+      align-items:center;
+      gap:11px;
+      text-align:left;
+      box-shadow:0 6px 25px #0002;
+      pointer-events:auto;
+      cursor:pointer;
+      animation:ksSlide .35s ease-out;
+    }
+
+    @keyframes ksSlide {
+      from {transform:translateY(-35px);opacity:0}
+      to {transform:translateY(0);opacity:1}
+    }
+
+    #ksNotification .ksIcon {
+      width:38px;
+      height:38px;
+      border-radius:11px;
+      background:#06c755;
+      display:grid;
+      place-items:center;
+      color:white;
+      font-size:11px;
+      font-weight:800;
+      flex-shrink:0;
+    }
+
+    #ksNotification .ksBody {
+      flex:1;
+      min-width:0;
+    }
+
+    #ksNotification .ksName {
+      font-size:14px;
+      font-weight:700;
+    }
+
+    #ksNotification .ksPreview {
+      font-size:12px;
+      margin-top:4px;
+      color:#555;
+    }
+
+    #ksChoices {
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:12px 12px 46px;
+      background:#f8f9fb;
+      border-radius:18px 18px 0 0;
+      box-shadow:0 -4px 18px #0002;
+      display:none;
+      flex-direction:column;
+      gap:8px;
+      pointer-events:auto;
+      z-index:5;
+    }
+
+    #ksChoices .ksHeading {
+      font-size:12px;
+      font-weight:700;
+      color:#6b6d78;
+      margin-bottom:3px;
+    }
+
+    #ksChoices button {
+      border:1px solid #e0e3e9;
+      background:white;
+      color:#222;
+      border-radius:13px;
+      padding:12px;
+      font-size:13px;
+      text-align:left;
+      cursor:pointer;
+      font-family:inherit;
+    }
+
+    #ksChoices button:active {
+      background:#e8f4e9;
+    }
+
+    #ksContinue {
+      display:none;
+      width:100%;
+      border:0;
+      background:#06c755;
+      color:white;
+      border-radius:12px;
+      padding:12px;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+    }
+  `;
+  document.head.appendChild(style);
+
+  const root = document.createElement("div");
+  root.id = "karanStoryChapter1";
+  root.innerHTML = `
+    <button id="ksNotification" type="button">
+      <span class="ksIcon">LINE</span>
+      <span class="ksBody">
+        <span class="ksName">อชิ</span>
+        <div class="ksPreview">
+          คุณการันต์ครับ วันนี้พอจะมีเวลาว่างไหมครับ
+        </div>
+      </span>
+    </button>
+  `;
+
+  const phone = $("phone");
+  if (!phone) return;
+  phone.appendChild(root);
+
+  // ตัวเลือกจะอยู่ภายในห้องแชต LINE
+  const choices = document.createElement("div");
+  choices.id = "ksChoices";
+  choices.innerHTML = `
+    <div class="ksHeading">เลือกคำตอบของการันต์</div>
+    <button data-choice="1" type="button">
+      ว่างครับ อชิมีอะไรให้ผมช่วยเหรอ
+    </button>
+    <button data-choice="2" type="button">
+      สำหรับอชิ ผมว่างเสมอครับ
+    </button>
+    <button data-choice="3" type="button">
+      ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก
+    </button>
+    <button id="ksContinue" type="button">
+      ดำเนินเรื่องต่อ
+    </button>
+  `;
+
+  const chat = $("kgChat");
+  if (!chat) return;
+  chat.appendChild(choices);
+
+  const openingMessage =
+    "คุณการันต์ครับ วันนี้พอจะมีเวลาว่างไหมครับ";
+
+  const secondMessage =
+    "ผมมีเรื่องงานอยากปรึกษานิดหน่อยครับ";
+
+  const routes = {
+    1: {
+      answer:"ว่างครับ อชิมีอะไรให้ผมช่วยเหรอ",
+      reply:"ขอบคุณครับ คือผมอยากปรึกษาเรื่องเอกสารของลูกค้าน่ะครับ"
+    },
+    2: {
+      answer:"สำหรับอชิ ผมว่างเสมอครับ",
+      reply:"เอ่อ... ขอบคุณนะครับคุณการันต์"
+    },
+    3: {
+      answer:"ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก",
+      reply:"ได้ครับ งั้นผมรออยู่ที่โต๊ะนะครับ"
+    }
+  };
+
+  function receive(text) {
+    if (typeof window.karanLineReceive === "function") {
+      window.karanLineReceive("achi",text);
+    }
+  }
+
+  function sendAsKaran(text) {
+    const input = $("kgMessageInput");
+    const form = $("kgCompose");
+
+    if (!input || !form) return;
+
+    input.value = text;
+
+    form.dispatchEvent(new Event("submit",{
+      bubbles:true,
+      cancelable:true
+    }));
+  }
+
+  function isAchiChat() {
+    return chat.classList.contains("active") &&
+      $("kgChatTitle")?.textContent.trim() === "อชิ";
+  }
+
+  function updateChoices() {
+    const visible = isAchiChat();
+
+    if (!visible) {
+      choices.style.display = "none";
+      return;
+    }
+
+    if (story.stage === "choose") {
+      choices.style.display = "flex";
+
+      choices.querySelectorAll("[data-choice]").forEach(
+        button => button.style.display = "block"
+      );
+
+      $("ksContinue").style.display = "none";
+    } else if (story.stage === "continue") {
+      choices.style.display = "flex";
+
+      choices.querySelectorAll("[data-choice]").forEach(
+        button => button.style.display = "none"
+      );
+
+      $("ksContinue").style.display = "block";
+    } else {
+      choices.style.display = "none";
+    }
+  }
+
+  function openAchiChat() {
+    if (typeof window.openKaranLine === "function") {
+      window.openKaranLine();
+    }
+
+    const search = $("kgSearch");
+    if (search) {
+      search.value = "";
+      search.dispatchEvent(new Event("input",{
+        bubbles:true
+      }));
+    }
+
+    const achi = [...document.querySelectorAll(
+      "#kgList .kg-person"
+    )].find(button =>
+      button.querySelector(".kg-person-name")
+        ?.textContent.trim() === "อชิ"
+    );
+
+    if (achi) achi.click();
+
+    updateChoices();
+  }
+
+  function startChapter() {
+    if (story.started) return;
+
+    story.started = true;
+    story.stage = "choose";
+
+    // แทนข้อความตัวอย่างเดิมของอชิ
+    const achi = [...document.querySelectorAll(
+      "#kgList .kg-person"
+    )].find(button =>
+      button.querySelector(".kg-person-name")
+        ?.textContent.trim() === "อชิ"
+    );
+
+    if (achi) {
+      achi.click();
+
+      const messages = $("kgMessages");
+      if (messages) {
+        messages.replaceChildren();
+      }
+    }
+
+    receive(openingMessage);
+    receive(secondMessage);
+
+    // กลับไปหน้า Home เพื่อให้ผู้เล่นกดแจ้งเตือน
+    if (typeof window.openKaranHome === "function") {
+      window.openKaranHome();
+    }
+
+    $("ksNotification").style.display = "flex";
+  }
+
+  $("ksNotification").addEventListener("click", () => {
+    $("ksNotification").style.display = "none";
+    openAchiChat();
+  });
+
+  choices.addEventListener("click", event => {
+    const button = event.target.closest("[data-choice]");
+    if (!button || story.stage !== "choose") return;
+
+    const number = button.dataset.choice;
+    const route = routes[number];
+    if (!route) return;
+
+    story.choice = number;
+    story.stage = "replying";
+
+    choices.style.display = "none";
+    sendAsKaran(route.answer);
+
+    setTimeout(() => {
+      receive(route.reply);
+      story.stage = "continue";
+      updateChoices();
+    },900);
+  });
+
+  $("ksContinue").addEventListener("click", () => {
+    story.stage = "finished";
+    choices.style.display = "none";
+
+    const next = {
+      1:"ถ้าอย่างนั้นผมขอเข้าไปปรึกษาที่โต๊ะคุณการันต์ได้ไหมครับ",
+      2:"เรื่องงานน่ะครับ... คุณการันต์สะดวกให้ผมเข้าไปหาไหมครับ",
+      3:"ขอบคุณครับ เดี๋ยวผมเตรียมเอกสารไว้ให้ครับ"
+    };
+
+    receive(next[story.choice]);
+
+    setTimeout(() => {
+      receive("แล้วเจอกันนะครับ");
+    },750);
+  });
+
+  // ติดตามการเปิดและปิดห้องแชต
+  const chatObserver = new MutationObserver(updateChoices);
+
+  chatObserver.observe(chat,{
+    attributes:true,
+    attributeFilter:["class"]
+  });
+
+  const chatTitle = $("kgChatTitle");
+  if (chatTitle) {
+    new MutationObserver(updateChoices).observe(chatTitle,{
+      childList:true,
+      characterData:true,
+      subtree:true
+    });
+  }
+
+  // เชื่อมกับระบบปลดล็อก PIN 1906 โดยตรง
+  // ไม่เปลี่ยนการทำงานของ showPage เดิม
+  if (typeof showPage === "function") {
+    const originalShowPage = showPage;
+
+    showPage = function(page) {
+      originalShowPage(page);
+
+      if (page === "unlocked") {
+        if (typeof window.openKaranHome === "function") {
+          window.openKaranHome();
+        }
+
+        if (!story.started) {
+          setTimeout(startChapter,500);
+        }
+      }
+    };
+  }
+
+  // สำหรับเรียกจากบทถัดไป
+  window.karanStory = story;
+  window.karanStartChapter1 = startChapter;
+
+})();
+</script>
+<!-- END KARAN STORY : CHAPTER 1 -->
+
+ 
 </body>
 </html>

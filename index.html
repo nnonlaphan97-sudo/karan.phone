@@ -782,49 +782,97 @@ function pressPIN(value) {
    CREATE SVG PIN KEYPAD
 ========================================== */
 
+
 function createKeypad() {
-const keys=[
-  ["1",85,235],["2",195,235],["3",305,235],
-  ["4",85,310],["5",195,310],["6",305,310],
-  ["7",85,385],["8",195,385],["9",305,385],
-  ["ยกเลิก",85,460],["0",195,460],["ลบ",305,460]
-];
+  const keypad = byId("keypad");
+  keypad.replaceChildren();
 
- const keypad=byId("keypad");
+  // ตัวเลข 1–9 และ 0 อยู่ตรงกลางแถวสุดท้าย
+  const keys = [
+    ["1", 95, 255], ["2", 195, 255], ["3", 295, 255],
+    ["4", 95, 337], ["5", 195, 337], ["6", 295, 337],
+    ["7", 95, 419], ["8", 195, 419], ["9", 295, 419],
+    ["0", 195, 501]
+  ];
 
- keys.forEach(([value,x,y])=>{
-  const group=document.createElementNS(NS,"g");
-  group.setAttribute("class","clickable");
+  keys.forEach(([value, x, y]) => {
+    const group = document.createElementNS(NS, "g");
+    group.setAttribute("class", "clickable");
 
-  const circle=document.createElementNS(NS,"circle");
-  setAttributes(circle,{
-   cx:x,cy:y,r:30,
-   fill:"#ffffff",
-   "fill-opacity":".30"
+    const circle = document.createElementNS(NS, "circle");
+    setAttributes(circle, {
+      cx: x,
+      cy: y,
+      r: 32,
+      fill: "#FFFFFF",
+      "fill-opacity": ".24",
+      stroke: "#FFFFFF",
+      "stroke-opacity": ".25",
+      "stroke-width": 1
+    });
+
+    const label = document.createElementNS(NS, "text");
+    setAttributes(label, {
+      x: x,
+      y: y + 10,
+      "text-anchor": "middle",
+      fill: "#35313B",
+      "font-size": 30,
+      "font-weight": 400
+    });
+    label.textContent = value;
+
+    group.append(circle, label);
+    group.addEventListener("click", event => {
+      event.stopPropagation();
+      pressPIN(value);
+    });
+    keypad.appendChild(group);
   });
 
-  const label=document.createElementNS(NS,"text");
-  setAttributes(label,{
-   x:x,
-   y:y+(value.length>1?5:10),
-   "text-anchor":"middle",
-   fill:"#35313b",
-   "font-size":value.length>1?13:29
+  // ปุ่มด้านล่าง แยกจากวงกลมตัวเลข
+  [
+    ["ฉุกเฉิน", 75, 579, "emergency"],
+    ["ยกเลิก", 315, 579, "cancel"]
+  ].forEach(([text, x, y, action]) => {
+    const group = document.createElementNS(NS, "g");
+    group.setAttribute("class", "clickable");
+
+    const hitbox = document.createElementNS(NS, "rect");
+    setAttributes(hitbox, {
+      x: x - 46,
+      y: y - 24,
+      width: 92,
+      height: 40,
+      fill: "transparent"
+    });
+
+    const label = document.createElementNS(NS, "text");
+    setAttributes(label, {
+      x: x,
+      y: y,
+      "text-anchor": "middle",
+      fill: "#35313B",
+      "font-size": 14
+    });
+    label.textContent = text;
+
+    group.append(hitbox, label);
+
+    group.addEventListener("click", event => {
+      event.stopPropagation();
+
+      if (action === "cancel") {
+        pressPIN("cancel");
+      } else {
+        // ยังไม่มีระบบโทรฉุกเฉินในเกม
+        byId("pinError").textContent =
+          "ยังไม่เปิดใช้งานการโทรฉุกเฉิน";
+      }
+    });
+
+    keypad.appendChild(group);
   });
-
-  label.textContent=value;
-  group.append(circle,label);
-
-  group.addEventListener("click",event=>{
-   event.stopPropagation();
-   pressPIN(
-    value==="ยกเลิก"?"cancel":
-    value==="ลบ"?"delete":value
-   );
-  });
-
-  keypad.appendChild(group);
- });
 }
 
 /* ==========================================

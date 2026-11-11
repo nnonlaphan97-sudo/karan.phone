@@ -90,7 +90,7 @@ svg text{
   x="0" y="0"
   width="390" height="616"
   preserveAspectRatio="xMidYMid slice"
-  href="https://i.ibb.co/d03rtc5k/IMG-4408.jpg"/>
+  href="https://i.ibb.co/chSKhbSY/IMG-4432.jpg"/>
 
  <!-- Lock icon -->
 <!-- Solid black lock -->
@@ -303,83 +303,92 @@ svg text{
      STATUS BAR
 ============================== -->
 
-<g id="statusBar" fill="#35313B">
+<g id="statusBar">
 
+ <!-- Carrier -->
  <text id="carrier"
-  x="19" y="22"
-  font-size="11"
-  fill="#35313B">karan</text>
+  x="19" y="23"
+  font-size="12"
+  font-weight="700"
+  fill="#F7F4F8"
+  stroke="#181820"
+  stroke-opacity=".35"
+  stroke-width=".4"
+  paint-order="stroke fill">karan</text>
 
  <!-- Silent -->
- <g transform="translate(294 12)"
+ <g transform="translate(291 12)"
   fill="none"
-  stroke="#35313B"
-  stroke-width="1.5"
-  stroke-linecap="round">
-  <path d="M2 5h3l5-4v14l-5-4H2z"/>
-  <path d="M13 4l6 8M19 4l-6 8"/>
+  stroke="#F7F4F8"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round">
+
+  <path d="M2 5H5L10 1V15L5 11H2Z"/>
+  <path d="M13 4L19 12M19 4L13 12"/>
  </g>
 
- <!-- Signal -->
- <g stroke="#35313B"
-  stroke-width="1.8"
-  stroke-linecap="round">
-  <path d="M323 25v-4M328 25v-7M333 25v-10M338 25v-13"/>
+ <!-- Mobile signal -->
+ <g fill="#F7F4F8">
+  <rect x="321" y="20" width="4" height="6" rx="1.5"/>
+  <rect x="327" y="17" width="4" height="9" rx="1.5"/>
+  <rect x="333" y="14" width="4" height="12" rx="1.5"/>
+  <rect x="339" y="11" width="4" height="15" rx="1.5"/>
  </g>
 
  <!-- Wi-Fi -->
- <g stroke="#35313B"
-  stroke-width="1.5"
-  fill="none"
+ <g fill="none"
+  stroke="#F7F4F8"
+  stroke-width="2"
   stroke-linecap="round">
-  <path d="M345 16q7-6 14 0"/>
-  <path d="M349 20q3-3 6 0"/>
-  <circle cx="352" cy="23" r="1"
-   fill="#35313B" stroke="none"/>
+  <path d="M347 16Q353 11 359 16"/>
+  <path d="M350 20Q353 17 356 20"/>
+  <circle cx="353" cy="23" r="1.4"
+   fill="#F7F4F8" stroke="none"/>
  </g>
 
  <!-- Battery -->
-<g id="batteryIcon">
+ <g id="batteryIcon">
 
- <defs>
-  <clipPath id="batteryClip">
-   <rect x="365" y="12"
-    width="20" height="14" rx="6"/>
-  </clipPath>
- </defs>
+  <defs>
+   <clipPath id="batteryClip">
+    <rect x="365" y="12"
+     width="20" height="14" rx="5"/>
+   </clipPath>
+  </defs>
 
- <!-- Battery outline -->
- <rect x="365" y="12"
-  width="20" height="14"
-  rx="6"
-  fill="#FFFFFF"
-  fill-opacity=".12"
-  stroke="#24242B"
-  stroke-width="1.4"/>
+  <!-- Battery background -->
+  <rect x="365" y="12"
+   width="20" height="14"
+   rx="5"
+   fill="#FFFFFF"
+   fill-opacity=".25"
+   stroke="#F7F4F8"
+   stroke-width="1.3"/>
 
- <!-- Filled battery level -->
- <rect id="batteryFill"
-  x="365" y="12"
-  width="17" height="14"
-  fill="#24242B"
-  clip-path="url(#batteryClip)"/>
+  <!-- Battery fill -->
+  <rect id="batteryFill"
+   x="365" y="12"
+   width="17" height="14"
+   fill="#17171D"
+   clip-path="url(#batteryClip)"/>
 
- <!-- Terminal -->
- <rect id="batteryTerminal"
-  x="385" y="16"
-  width="3" height="6"
-  rx="1"
-  fill="#24242B"/>
+  <!-- Battery terminal -->
+  <rect id="batteryTerminal"
+   x="385" y="16"
+   width="3" height="6"
+   rx="1"
+   fill="#F7F4F8"/>
 
- <!-- Percentage -->
- <text id="batteryLevel"
-  x="375" y="22"
-  text-anchor="middle"
-  font-size="8"
-  font-weight="800"
-  fill="#FFFFFF">85</text>
+  <!-- Battery number -->
+  <text id="batteryLevel"
+   x="375" y="22"
+   text-anchor="middle"
+   font-size="8"
+   font-weight="800"
+   fill="#FFFFFF">85</text>
 
-</g>
+ </g>
 
 </g>
 
@@ -412,7 +421,7 @@ const CONFIG = {
  pin: "1906",
 
  wallpaper:
-  "https://i.ibb.co/d03rtc5k/IMG-4408.jpg",
+  "https://i.ibb.co/chSKhbSY/IMG-4432.jpg",
   
  carrier: "karan",
 
@@ -581,11 +590,18 @@ byId("batteryFill").setAttribute(
   "width",
   20 * level / 100
 );
- byId("batteryTerminal").setAttribute(
-  "display",c.battery.showTerminal?"inline":"none"
- );
 
- updatePlayIcon();
+byId("batteryLevel").setAttribute(
+  "fill",
+  level >= 50 ? "#FFFFFF" : "#17171D"
+);
+
+byId("batteryTerminal").setAttribute(
+  "display",
+  c.battery.showTerminal ? "inline" : "none"
+);
+
+updatePlayIcon();
 }
 
 /* ==========================================

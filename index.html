@@ -65,6 +65,9 @@ svg text{
  preserveAspectRatio="none">
 
 <defs>
+ <filter id="pinBlur" x="-20%" y="-20%" width="140%" height="140%">
+  <feGaussianBlur stdDeviation="12"/>
+ </filter>
  <linearGradient id="fallback" x1="0" y1="0" x2="1" y2="1">
   <stop offset="0" stop-color="#f4e6ef"/>
   <stop offset=".5" stop-color="#dcd7ee"/>
@@ -251,8 +254,18 @@ svg text{
 
 <g id="pinPage" display="none">
 
+ <!-- Blurred lock-screen wallpaper -->
+ <image id="pinWallpaper"
+  x="-20" y="-20"
+  width="430" height="656"
+  preserveAspectRatio="xMidYMid slice"
+  href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"
+  filter="url(#pinBlur)"/>
+
+ <!-- Dark overlay -->
  <rect width="390" height="616"
-  fill="url(#fallback)"/>
+  fill="#17171D"
+  fill-opacity=".25"/>
 
  <text x="195" y="130"
   text-anchor="middle"
@@ -306,11 +319,11 @@ svg text{
 <g id="statusBar">
 
  <!-- Carrier -->
- <text id="carrier"
+<text id="carrier"
   x="19" y="23"
-  font-size="12"
+  font-size="13"
   font-weight="700"
-  fill="#F7F4F8"
+  fill="#35313B"
   stroke="#181820"
   stroke-opacity=".35"
   stroke-width=".4"
@@ -352,7 +365,7 @@ svg text{
 
  <!-- Wi-Fi -->
  <g fill="none"
-  stroke="#F7F4F8"
+  stroke="#35313B"
   stroke-width="1.7"
   stroke-linecap="round">
   <path d="M347 16Q353 11 359 16"/>
@@ -512,6 +525,7 @@ function applyConfig() {
  const c = CONFIG;
 
  byId("wallpaper").setAttribute("href",c.wallpaper);
+byId("pinWallpaper").setAttribute("href",c.wallpaper);
  byId("carrier").textContent = c.carrier;
 
  setAttributes(byId("lockIcon"),{

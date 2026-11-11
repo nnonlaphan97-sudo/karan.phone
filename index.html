@@ -26,13 +26,13 @@ body{
  align-items:center;
 }
 #phone{
- position:relative;
- width:min(100vw,480px,calc(100dvh * 390 / 616));
- aspect-ratio:390/616;
- overflow:hidden;
- background:#d7d3e8;
- border:3px solid #292b35;
- border-radius:15px;
+  position:relative;
+  width:min(100vw,calc(100dvh * 390 / 616));
+  aspect-ratio:390/616;
+  overflow:hidden;
+  background:#d7d3e8;
+  border:3px solid #292b35;
+  border-radius:15px;
 }
 #display{
  width:100%;
@@ -997,7 +997,7 @@ showPage("lock");
     font-size:12px;margin-top:6px;
   }
 #karanGameAddon .kg-apps {
-  margin:65px 22px 0;
+  margin:35px 22px 0;
   display:grid;grid-template-columns:repeat(4,1fr);
   gap:15px;text-align:center;
 }

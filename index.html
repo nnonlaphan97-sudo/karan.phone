@@ -783,12 +783,12 @@ function pressPIN(value) {
 ========================================== */
 
 function createKeypad() {
- const keys=[
-  ["1",85,260],["2",195,260],["3",305,260],
-  ["4",85,346],["5",195,346],["6",305,346],
-  ["7",85,432],["8",195,432],["9",305,432],
-  ["ยกเลิก",85,520],["0",195,520],["ลบ",305,520]
- ];
+const keys=[
+  ["1",85,235],["2",195,235],["3",305,235],
+  ["4",85,310],["5",195,310],["6",305,310],
+  ["7",85,385],["8",195,385],["9",305,385],
+  ["ยกเลิก",85,460],["0",195,460],["ลบ",305,460]
+];
 
  const keypad=byId("keypad");
 
@@ -798,7 +798,7 @@ function createKeypad() {
 
   const circle=document.createElementNS(NS,"circle");
   setAttributes(circle,{
-   cx:x,cy:y,r:38,
+   cx:x,cy:y,r:30,
    fill:"#ffffff",
    "fill-opacity":".30"
   });
@@ -948,11 +948,11 @@ showPage("lock");
   #karanGameAddon .kg-weather-small {
     font-size:12px;margin-top:6px;
   }
-  #karanGameAddon .kg-apps {
-    margin:110px 22px 0;
-    display:grid;grid-template-columns:repeat(4,1fr);
-    gap:15px;text-align:center;
-  }
+#karanGameAddon .kg-apps {
+  margin:65px 22px 0;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:15px;text-align:center;
+}
   #karanGameAddon .kg-app {
     border:0;background:transparent;color:white;
     display:flex;align-items:center;

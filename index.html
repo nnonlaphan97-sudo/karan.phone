@@ -11,7 +11,9 @@ html,body{margin:0;width:100%;height:100%;font-family:Arial,'Noto Sans Thai',san
 button,input,select{font:inherit}
 button{cursor:pointer}
 #phone{position:relative;width:100%;max-width:440px;height:100dvh;min-height:550px;margin:auto;overflow:hidden;background:linear-gradient(155deg,#1c304e,#354d75 63%,#8798b5)}
-.camera{position:absolute;z-index:30;top:12px;left:calc(50% - 6px);height:12px;width:12px;background:#081322;border:2px solid #23374e;border-radius:50%;pointer-events:none}
+#phone:has(.lock){background:#e9ebf9}
+#phone:has(.lock) .status{color:#4b3652}
+#phone:has(.lock) .nav span{background:#fff}.camera{position:absolute;z-index:30;top:12px;left:calc(50% - 6px);height:12px;width:12px;background:#081322;border:2px solid #23374e;border-radius:50%;pointer-events:none}
 .status{height:36px;padding:9px 18px 0;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#fff}
 .status .right{display:flex;align-items:center;gap:7px}
 .ico{width:22px;height:22px;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -20,11 +22,116 @@ button{cursor:pointer}
 .screen::-webkit-scrollbar{display:none}
 .nav{position:absolute;bottom:0;left:0;width:100%;height:22px;z-index:40;display:flex;align-items:center;justify-content:center}
 .nav span{width:105px;height:4px;background:#f6f8fd;border-radius:5px}
-.lock{height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:13vh}
-.lock .date{font-size:17px;color:#e4eaf4}
-.lock .clock{font-size:70px;letter-spacing:-4px;font-weight:300;margin:8px 0}
-.lock .hint{margin-top:auto;margin-bottom:58px;font-size:14px;color:#d8e3f5}
-.pill{border:1px solid #ffffff80;background:#ffffff18;color:white;padding:12px 25px;border-radius:28px}
+
+.lock{
+  position:relative;
+  height:100%;
+  width:100%;
+  overflow:hidden;
+  text-align:center;
+  color:#4c304d;
+  touch-action:pan-y;
+}
+
+.lock-wallpaper{
+  position:absolute;
+  inset:-36px 0 -22px;
+  width:100%;
+  height:calc(100% + 58px);
+  z-index:0;
+  pointer-events:none;
+}
+
+.lock .date{
+  position:absolute;
+  top:11%;
+  left:0;
+  width:100%;
+  font-size:16px;
+  font-weight:500;
+  color:#563c58;
+  z-index:2;
+}
+
+.lock .clock{
+  position:absolute;
+  top:15%;
+  left:0;
+  width:100%;
+  margin:0;
+  font-size:clamp(72px,20vw,102px);
+  line-height:1;
+  letter-spacing:-5px;
+  font-weight:600;
+  color:#482b49;
+  z-index:2;
+}
+
+.lock .hint{
+  position:absolute;
+  bottom:13%;
+  left:0;
+  width:100%;
+  font-size:12px;
+  color:#fff;
+  text-shadow:0 1px 5px #64739b;
+  z-index:2;
+}
+
+.pill{
+  border:1px solid #ffffff80;
+  background:#ffffff18;
+  color:white;
+  padding:12px 25px;
+  border-radius:28px;
+}
+
+.lock-notification{
+  position:absolute;
+  bottom:4%;
+  left:8%;
+  width:84%;
+  min-height:65px;
+  padding:11px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-radius:23px;
+  background:rgba(48,58,98,.68);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  color:#fff;
+  text-align:left;
+  z-index:3;
+  border:0;
+}
+
+.lock-notification .notification-icon{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  background:#06c755;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.lock-notification .notification-icon .ico{
+  width:25px;
+  height:25px;
+}
+
+.lock-notification strong{
+  display:block;
+  font-size:13px;
+}
+
+.lock-notification small{
+  display:block;
+  margin-top:4px;
+  font-size:12px;
+  opacity:.85;
+}
 .home{padding:28px 18px}
 .home .greeting{font-size:28px;font-weight:300;margin:16px 0 8px}
 .home .sub{font-size:13px;color:#e3eafa;margin-bottom:35px}
@@ -186,9 +293,128 @@ document.getElementById('battery').innerHTML=icon('battery','small');
 
 let html='';
 
+
 if(page==='lock'){
-html='<div class="lock"><div class="date">วันพุธที่ 11 พฤศจิกายน</div><div class="clock">21:36</div><div class="hint">โทรศัพท์ของการันต์<br><br><button class="pill" data-go="home">ปัดขึ้นเพื่อปลดล็อก</button></div></div>';
+html=`
+<div class="lock">
+
+  <svg class="lock-wallpaper"
+       viewBox="0 0 440 960"
+       preserveAspectRatio="xMidYMid slice"
+       xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+      <linearGradient id="foldBg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#faf8fc"/>
+        <stop offset="50%" stop-color="#e9ebf9"/>
+        <stop offset="100%" stop-color="#90a5d9"/>
+      </linearGradient>
+
+      <linearGradient id="foldRibbon" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#9879d1"/>
+        <stop offset="28%" stop-color="#e0c8f2"/>
+        <stop offset="52%" stop-color="#91baf1"/>
+        <stop offset="78%" stop-color="#c3afe8"/>
+        <stop offset="100%" stop-color="#718bd0"/>
+      </linearGradient>
+
+      <linearGradient id="foldHighlight" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+        <stop offset="50%" stop-color="#ffffff" stop-opacity=".65"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+
+      <filter id="foldBlur">
+        <feGaussianBlur stdDeviation="15"/>
+      </filter>
+    </defs>
+
+    <rect width="440" height="960" fill="url(#foldBg)"/>
+
+    <ellipse cx="360" cy="430" rx="160" ry="280"
+      fill="#c9a8ed" opacity=".24"
+      filter="url(#foldBlur)"/>
+
+    <ellipse cx="80" cy="760" rx="180" ry="230"
+      fill="#719ce4" opacity=".25"
+      filter="url(#foldBlur)"/>
+
+    <path
+      d="
+        M220 135
+        C95 135 65 290 165 400
+        L280 525
+        C395 650 350 805 220 825
+        C85 805 45 650 160 525
+        L275 400
+        C375 290 345 135 220 135
+      "
+      fill="none"
+      stroke="#8189d8"
+      stroke-width="135"
+      stroke-linecap="round"
+      opacity=".25"
+      filter="url(#foldBlur)"
+    />
+
+    <path
+      d="
+        M220 135
+        C95 135 65 290 165 400
+        L280 525
+        C395 650 350 805 220 825
+        C85 805 45 650 160 525
+        L275 400
+        C375 290 345 135 220 135
+      "
+      fill="none"
+      stroke="url(#foldRibbon)"
+      stroke-width="110"
+      stroke-linecap="round"
+      opacity=".85"
+    />
+
+    <path
+      d="
+        M220 135
+        C95 135 65 290 165 400
+        L280 525
+        C395 650 350 805 220 825
+        C85 805 45 650 160 525
+        L275 400
+        C375 290 345 135 220 135
+      "
+      fill="none"
+      stroke="url(#foldHighlight)"
+      stroke-width="35"
+      stroke-linecap="round"
+      opacity=".5"
+    />
+
+  </svg>
+
+  <div class="date">วันพุธที่ 11 พฤศจิกายน</div>
+
+  <div class="clock">21:36</div>
+
+  <div class="hint">
+    ปัดขึ้นเพื่อปลดล็อก
+  </div>
+
+  <button class="lock-notification" data-go="home">
+    <span class="notification-icon">
+      ${icon('line')}
+    </span>
+    <span>
+      <strong>LINE</strong>
+      <small>ข้อความจากพี่ดุจ</small>
+    </span>
+  </button>
+
+</div>
+`;
 }
+
 else if(page==='home'){
 html='<div class="home"><div class="greeting">Karan’s Phone</div><div class="sub">เรื่องราวที่เก็บไว้ในโทรศัพท์เครื่องนี้</div><div class="appgrid">'+appdefs.map(a=>{
 const open=save.unlock.includes(a[0]);

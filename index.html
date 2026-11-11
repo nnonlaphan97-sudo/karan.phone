@@ -1387,24 +1387,25 @@ showPage("lock");
     return true;
   };
 
-  // เชื่อมกับหน้า Home เดิมเมื่อพบ
-  const oldHome = document.getElementById("homeScreen");
-  if (oldHome) {
-    const observer = new MutationObserver(() => {
-      const visible =
-        getComputedStyle(oldHome).display !== "none";
+  // เชื่อมหน้า Home กับระบบปลดล็อกจริงของการันต์
+  const unlockedPage = document.getElementById("unlockedPage");
 
-      if (visible && root.style.display === "none") {
+  if (unlockedPage) {
+    const observer = new MutationObserver(() => {
+      const unlocked =
+        unlockedPage.getAttribute("display") !== "none";
+
+      if (unlocked && root.style.display !== "block") {
         openHome();
       }
     });
 
-    observer.observe(oldHome,{
-      attributes:true,
-      attributeFilter:["style","class"]
+    observer.observe(unlockedPage, {
+      attributes: true,
+      attributeFilter: ["display"]
     });
 
-    if (getComputedStyle(oldHome).display !== "none") {
+    if (unlockedPage.getAttribute("display") !== "none") {
       openHome();
     }
   }

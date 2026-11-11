@@ -27,9 +27,9 @@ body{
 }
 #phone{
   position:relative;
-  width:min(100vw,480px,calc(100dvh * 390 / 780));
-  height:min(100dvh,960px);
-  aspect-ratio:auto;
+  width:min(100vw,440px,calc(100dvh * 390 / 780));
+  height:auto;
+  aspect-ratio:390 / 780;
   overflow:hidden;
   background:#d7d3e8;
   border:3px solid #292b35;
@@ -61,7 +61,7 @@ svg text{
 
 <svg id="display"
  xmlns="http://www.w3.org/2000/svg"
- viewBox="0 0 390 616"
+ viewBox="0 0 390 780"
  preserveAspectRatio="xMidYMid meet">
 
 <defs>
@@ -86,12 +86,12 @@ svg text{
 
 <g id="lockPage">
 
- <rect width="390" height="616" fill="url(#fallback)"/>
+ <rect width="390" height="780" fill="url(#fallback)"/>
 
  <!-- Wallpaper -->
  <image id="wallpaper"
   x="0" y="0"
-  width="390" height="616"
+  width="390" height="780"
   preserveAspectRatio="xMidYMid slice"
   href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"/>
 
@@ -145,7 +145,7 @@ svg text{
   fill="#F5F1F2">12:00</text>
 
  <!-- Bottom shortcuts -->
- <g id="phoneShortcut" class="clickable">
+ <g id="phoneShortcut" class="clickable" transform="translate(0 164)">
   <circle id="phoneCircle"
    cx="46" cy="572" r="22"
    fill="#858fca" fill-opacity=".9"/>
@@ -162,7 +162,7 @@ svg text{
  </g>
 
  <!-- Music capsule -->
- <g id="musicWidget">
+ <g id="musicWidget" transform="translate(0 164)">
 
   <rect id="musicBG"
    x="83" y="548"
@@ -229,7 +229,7 @@ svg text{
  </g>
 
  <!-- Camera shortcut -->
- <g id="cameraShortcut" class="clickable">
+ <g id="cameraShortcut" class="clickable" transform="translate(0 164)">
   <circle id="cameraCircle"
    cx="344" cy="572" r="22"
    fill="#858fca" fill-opacity=".9"/>
@@ -257,13 +257,13 @@ svg text{
  <!-- Blurred lock-screen wallpaper -->
  <image id="pinWallpaper"
   x="0" y="0"
-  width="390" height="616"
+  width="390" height="780"
   preserveAspectRatio="xMidYMid slice"
   href="https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg"
   filter="url(#pinBlur)"/>
 
  <!-- Dark overlay -->
- <rect width="390" height="616"
+ <rect width="390" height="780"
   fill="#17171D"
   fill-opacity=".25"/>
 
@@ -297,7 +297,7 @@ svg text{
 ============================== -->
 
 <g id="unlockedPage" display="none">
- <rect width="390" height="616" fill="#e8edf5"/>
+ <rect width="390" height="780" fill="#e8edf5"/>
 
  <text x="195" y="290"
   text-anchor="middle"
@@ -429,7 +429,7 @@ svg text{
 
 <!-- Gesture bar -->
 <rect id="gestureBar"
- x="145" y="604"
+ x="145" y="768"
  width="100" height="4"
  rx="2" fill="#F5F1F2"/>
 
@@ -1013,6 +1013,26 @@ showPage("lock");
 #mockShell .pagedots{bottom:112px}
 #mockShell .gesture{height:22px}
 #mockShell .homepages{min-height:180px}
+
+/* Geometry correction: all screen layers use a single 390x780 coordinate system.
+   No independent stretch on the SVG, no status/navigation backgrounds. */
+#phone{width:min(100vw,440px,calc(100dvh * 390 / 780));height:auto;aspect-ratio:390/780}
+#display{width:100%;height:100%;preserveAspectRatio:xMidYMid}
+#mockShell{background:transparent}
+#mockShell .sysbar{background:transparent!important;box-shadow:none!important;border:0!important;z-index:120}
+#mockShell .sysbar .original-status{width:100%;height:32px;display:block}
+#mockShell .gesture{background:transparent!important;box-shadow:none!important;border:0!important}
+#mockShell .appviewport{top:0;bottom:0;background:#fafafa}
+#mockShell .appviewport:has(.home){background:transparent}
+#mockShell .home{height:100%;min-height:100%;padding:66px 15px 130px;background:linear-gradient(#0002,#0003),url('https://i.ibb.co/gMd6pkQ5/IMG-4434.jpg') center center/cover no-repeat}
+#mockShell .home:not(:has(.weather)) .homepages{padding-top:12px}
+#mockShell .homedock{bottom:35px;z-index:5}
+#mockShell .pagedots{bottom:113px}
+#mockShell .appgrid{gap:20px 6px}
+#mockShell .iconbox{width:clamp(46px,12vw,56px);height:clamp(46px,12vw,56px)}
+#mockShell .homedock .iconbox{width:52px;height:52px}
+#mockShell .appviewport:not(:has(.home)){padding-top:32px}
+#mockShell .gesture:after{background:rgba(255,255,255,.8)}
 </style>
 <script>
 (function(){'use strict';

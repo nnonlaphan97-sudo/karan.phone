@@ -225,25 +225,29 @@ button{cursor:pointer}
        xmlns="http://www.w3.org/2000/svg"
        aria-label="ปิดเสียง 5G สัญญาณมือถือ แบตเตอรี่ 45 เปอร์เซ็นต์">
 
-    <!-- ปิดเสียง -->
-    <g transform="translate(1 1)"
-       fill="none"
-       stroke="currentColor"
-       stroke-width="1.7"
-       stroke-linecap="round"
-       stroke-linejoin="round">
-      <path d="M6 8V6a4 4 0 0 1 8 0v2c0 3 2 4 2 6H4c0-2 2-3 2-6Z"/>
-      <path d="M8.5 17h3"/>
-      <path d="M2 2 18 19"/>
-    </g>
+    
+<!-- ปิดเสียง: ลำโพงมีขีดทับ -->
+<g fill="none"
+   stroke="currentColor"
+   stroke-width="1.7"
+   stroke-linecap="round"
+   stroke-linejoin="round">
+  <path d="M3 8H6L11 4V18L6 14H3Z"/>
+  <path d="M15 8L20 14"/>
+  <path d="M20 8L15 14"/>
+</g>
 
-    <!-- 5G -->
-    <text x="24" y="15.5"
-          font-family="Arial,sans-serif"
-          font-size="11"
-          font-weight="600"
-          fill="currentColor">5G</text>
 
+    <!-- 5G ขนาดเล็ก พร้อมจุดด้านล่าง -->
+<text x="24" y="12.5"
+      font-family="Arial,sans-serif"
+      font-size="9"
+      font-weight="700"
+      fill="currentColor">5G</text>
+
+<circle cx="30" cy="17"
+        r="1.2"
+        fill="currentColor"/>
     <!-- สัญญาณมือถือ -->
     <g fill="currentColor">
       <rect x="45" y="13" width="3" height="6" rx="1.5"/>

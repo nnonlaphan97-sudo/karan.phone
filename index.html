@@ -1635,17 +1635,9 @@ showPage("lock");
     <button data-choice="2" type="button">
       สำหรับอชิ ผมว่างเสมอครับ
     </button>
-    <button data-choice="3" type="button">
+       <button data-choice="3" type="button">
       ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก
     </button>
-    } else if (story.stage === "continue") {
-  choices.style.display = "flex";
-
-  choices.querySelectorAll("[data-choice]").forEach(
-    button => button.style.display = "none"
-  );
-
-  $("ksContinue").style.display = "block";
   `;
 
   const chat = $("kgChat");
@@ -1798,14 +1790,27 @@ showPage("lock");
     choices.style.display = "none";
     sendAsKaran(route.answer);
 
-    setTimeout(() => {
+        setTimeout(() => {
       receive(route.reply);
-      story.stage = "continue";
-      updateChoices();
-    },900);
-  });
 
-  $("ksContinue").addEventListener("click", () => {
+      setTimeout(() => {
+        const next = {
+          1: "ถ้าอย่างนั้นผมขอเข้าไปปรึกษาที่โต๊ะคุณการันต์ได้ไหมครับ",
+          2: "เรื่องงานน่ะครับ... คุณการันต์สะดวกให้ผมเข้าไปหาไหมครับ",
+          3: "ขอบคุณครับ เดี๋ยวผมเตรียมเอกสารไว้ให้ครับ"
+        };
+
+        receive(next[story.choice]);
+
+        setTimeout(() => {
+          receive("แล้วเจอกันนะครับ");
+
+          story.stage = "finished";
+          updateChoices();
+        }, 1500);
+      }, 1800);
+    }, 1000);
+  });
     story.stage = "finished";
     choices.style.display = "none";
 
@@ -1853,7 +1858,7 @@ showPage("lock");
         }
 
         if (!story.started) {
-          setTimeout(startChapter,500);
+        setTimeout(startChapter,5000);
         }
       }
     };

@@ -27,8 +27,9 @@ body{
 }
 #phone{
   position:relative;
-  width:min(100vw,calc(100dvh * 390 / 616));
-  aspect-ratio:390/616;
+  width:min(100vw,480px);
+  height:min(100dvh,900px);
+  aspect-ratio:auto;
   overflow:hidden;
   background:#d7d3e8;
   border:3px solid #292b35;
@@ -974,12 +975,15 @@ showPage("lock");
     background:linear-gradient(#00000010,#00000025),
     url("${wallpaper}") center/cover;
   }
-  #karanGameAddon .kg-status {
-    height:38px;flex-shrink:0;padding:10px 17px 0;
-    display:flex;align-items:flex-start;
-    justify-content:space-between;
-    font-size:13px;font-weight:700;color:#35313B;
-  }
+  #karanGameAddon .kg-chat {
+  justify-content:flex-start;
+}
+
+#karanGameAddon .kg-chat .kg-status {
+  height:30px;
+  min-height:30px;
+  padding:7px 17px 0;
+}
   #karanGameAddon .kg-status svg {
     width:66px;height:18px;display:block;
   }
@@ -1111,10 +1115,15 @@ showPage("lock");
     background:#d3d9e6;
   }
   #karanGameAddon .kg-chat-head {
-    height:59px;flex-shrink:0;
-    background:white;display:flex;
-    align-items:center;gap:12px;padding:0 14px;
-  }
+  height:48px;
+  min-height:48px;
+  flex-shrink:0;
+  background:white;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 14px;
+}
   #karanGameAddon .kg-back {
     border:0;background:transparent;
     color:#111;font-size:30px;

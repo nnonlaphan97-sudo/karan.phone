@@ -19,16 +19,16 @@ button{cursor:pointer}
 .status .right{
   display:flex;
   align-items:center;
-  gap:5px;
+  gap:3px;
 }
 
 .status .right .ico{
-  width:18px;
-  height:18px;
+  width:16px;
+  height:16px;
 }
 
 .network-type{
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
   letter-spacing:-.3px;
 }
@@ -36,7 +36,7 @@ button{cursor:pointer}
 #battery{
   display:flex;
   align-items:center;
-  margin-left:2px;
+  margin-left:0;
 }
 
 .ico{width:22px;height:22px;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -332,8 +332,8 @@ document.getElementById('signal').innerHTML=icon('signal','small');
 
 document.getElementById('battery').innerHTML=`
 <svg viewBox="0 0 42 24"
-     width="42"
-     height="24"
+     width="32"
+     height="19"
      aria-label="แบตเตอรี่ 45 เปอร์เซ็นต์">
 
   <rect x="1" y="2" width="37" height="20"

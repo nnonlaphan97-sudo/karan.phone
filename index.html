@@ -16,27 +16,21 @@ button{cursor:pointer}
 #phone:has(.lock) .nav span{background:#fff}.camera{position:absolute;z-index:30;top:12px;left:calc(50% - 6px);height:12px;width:12px;background:#081322;border:2px solid #23374e;border-radius:50%;pointer-events:none}
 .status{height:36px;padding:9px 18px 0;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#4b3652;background:transparent}
 
+
 .status .right{
   display:flex;
   align-items:center;
-  gap:3px;
+  justify-content:flex-end;
+  gap:0;
+  height:22px;
 }
 
-.status .right .ico{
-  width:16px;
-  height:16px;
-}
-
-.network-type{
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:-.3px;
-}
-
-#battery{
-  display:flex;
-  align-items:center;
-  margin-left:0;
+.status-icons{
+  width:108px;
+  height:22px;
+  display:block;
+  color:inherit;
+  flex-shrink:0;
 }
 
 .ico{width:22px;height:22px;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -223,11 +217,60 @@ button{cursor:pointer}
   <div class="camera"></div>
   <div class="status">
     <span id="statusTime">karan</span>
+
+
 <span class="right">
-  <span id="mute"></span>
-  <span class="network-type">5G</span>
-  <span id="signal"></span>
-  <span id="battery"></span>
+  <svg class="status-icons"
+       viewBox="0 0 108 22"
+       xmlns="http://www.w3.org/2000/svg"
+       aria-label="ปิดเสียง 5G สัญญาณมือถือ แบตเตอรี่ 45 เปอร์เซ็นต์">
+
+    <!-- ปิดเสียง -->
+    <g transform="translate(1 1)"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.7"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+      <path d="M6 8V6a4 4 0 0 1 8 0v2c0 3 2 4 2 6H4c0-2 2-3 2-6Z"/>
+      <path d="M8.5 17h3"/>
+      <path d="M2 2 18 19"/>
+    </g>
+
+    <!-- 5G -->
+    <text x="24" y="15.5"
+          font-family="Arial,sans-serif"
+          font-size="11"
+          font-weight="600"
+          fill="currentColor">5G</text>
+
+    <!-- สัญญาณมือถือ -->
+    <g fill="currentColor">
+      <rect x="45" y="13" width="3" height="6" rx="1.5"/>
+      <rect x="50" y="10" width="3" height="9" rx="1.5"/>
+      <rect x="55" y="7" width="3" height="12" rx="1.5"/>
+      <rect x="60" y="4" width="3" height="15" rx="1.5"/>
+    </g>
+
+    <!-- แบตเตอรี่ทรงแคปซูล -->
+    <rect x="70" y="4" width="34" height="15"
+          rx="7.5"
+          fill="currentColor"
+          opacity=".25"/>
+
+    <!-- ระดับแบตเตอรี่ -->
+    <path d="M77.5 4H85.3V19H77.5A7.5 7.5 0 0 1 77.5 4Z"
+          fill="currentColor"
+          opacity=".55"/>
+
+    <!-- เปอร์เซ็นต์แบตเตอรี่ -->
+    <text x="87" y="15.2"
+          text-anchor="middle"
+          font-family="Arial,sans-serif"
+          font-size="11"
+          font-weight="700"
+          fill="#302b42">45</text>
+  </svg>
 </span>
 
   </div>
@@ -327,34 +370,7 @@ return '<div class="app">'+header(title)+body+'</div>';
 
 function render(){
 
-document.getElementById('mute').innerHTML=icon('mute','small');
-document.getElementById('signal').innerHTML=icon('signal','small');
-
-document.getElementById('battery').innerHTML=`
-<svg viewBox="0 0 42 24"
-     width="32"
-     height="19"
-     aria-label="แบตเตอรี่ 45 เปอร์เซ็นต์">
-
-  <rect x="1" y="2" width="37" height="20"
-        rx="10" fill="currentColor" opacity=".28"/>
-
-  <path d="M38 8 Q42 9 42 12 Q42 15 38 16Z"
-        fill="currentColor" opacity=".5"/>
-
-  <path d="M11 2H19V22H11A10 10 0 0 1 11 2Z"
-        fill="currentColor"/>
-
-  <text x="20" y="16.7"
-        font-size="14"
-        font-weight="700"
-        text-anchor="middle"
-        fill="#293044">45</text>
-
-</svg>`;
-
 let html='';
-
 
 if(page==='lock'){
 html=`
@@ -363,96 +379,6 @@ html=`
 <img class="lock-wallpaper"
      src="https://i.ibb.co/5WfPWvbp/IMG-4436.jpg"
      alt="">
-
-    <defs>
-      <linearGradient id="foldBg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#faf8fc"/>
-        <stop offset="50%" stop-color="#e9ebf9"/>
-        <stop offset="100%" stop-color="#90a5d9"/>
-      </linearGradient>
-
-      <linearGradient id="foldRibbon" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#9879d1"/>
-        <stop offset="28%" stop-color="#e0c8f2"/>
-        <stop offset="52%" stop-color="#91baf1"/>
-        <stop offset="78%" stop-color="#c3afe8"/>
-        <stop offset="100%" stop-color="#718bd0"/>
-      </linearGradient>
-
-      <linearGradient id="foldHighlight" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
-        <stop offset="50%" stop-color="#ffffff" stop-opacity=".65"/>
-        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-      </linearGradient>
-
-      <filter id="foldBlur">
-        <feGaussianBlur stdDeviation="15"/>
-      </filter>
-    </defs>
-
-    <rect width="440" height="960" fill="url(#foldBg)"/>
-
-    <ellipse cx="360" cy="430" rx="160" ry="280"
-      fill="#c9a8ed" opacity=".24"
-      filter="url(#foldBlur)"/>
-
-    <ellipse cx="80" cy="760" rx="180" ry="230"
-      fill="#719ce4" opacity=".25"
-      filter="url(#foldBlur)"/>
-
-    <path
-      d="
-        M220 135
-        C95 135 65 290 165 400
-        L280 525
-        C395 650 350 805 220 825
-        C85 805 45 650 160 525
-        L275 400
-        C375 290 345 135 220 135
-      "
-      fill="none"
-      stroke="#8189d8"
-      stroke-width="135"
-      stroke-linecap="round"
-      opacity=".25"
-      filter="url(#foldBlur)"
-    />
-
-    <path
-      d="
-        M220 135
-        C95 135 65 290 165 400
-        L280 525
-        C395 650 350 805 220 825
-        C85 805 45 650 160 525
-        L275 400
-        C375 290 345 135 220 135
-      "
-      fill="none"
-      stroke="url(#foldRibbon)"
-      stroke-width="110"
-      stroke-linecap="round"
-      opacity=".85"
-    />
-
-    <path
-      d="
-        M220 135
-        C95 135 65 290 165 400
-        L280 525
-        C395 650 350 805 220 825
-        C85 805 45 650 160 525
-        L275 400
-        C375 290 345 135 220 135
-      "
-      fill="none"
-      stroke="url(#foldHighlight)"
-      stroke-width="35"
-      stroke-linecap="round"
-      opacity=".5"
-    />
-
-  </svg>
 
   <div class="date">วันพุธที่ 11 พฤศจิกายน</div>
 

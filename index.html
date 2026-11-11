@@ -28,7 +28,8 @@ body{
 #phone{
   position:relative;
   width:min(100vw,480px);
-  height:min(100dvh,900px);
+  height:100dvh;
+  max-height:900px;
   aspect-ratio:auto;
   overflow:hidden;
   background:#d7d3e8;
@@ -940,9 +941,9 @@ showPage("lock");
 
   const contacts = [
     {id:"achi", name:"อชิ", color:"#d8e8dc",
-     messages:[{from:"them",text:"ขอบคุณนะครับคุณการันต์"}]},
+     messages:[]},
     {id:"duj", name:"พี่ดุจ", color:"#e9dfe8",
-     messages:[{from:"them",text:"การันต์ พี่มีเรื่องจะคุยด้วยหน่อย"}]},
+     messages:[]},
     {id:"tanaka", name:"ทานากะซัง", color:"#dce5ee",
      messages:[{from:"them",text:"สวัสดีครับ คุณการันต์"}]},
     {id:"pai", name:"พาย", color:"#eee2d5",
@@ -975,15 +976,12 @@ showPage("lock");
     background:linear-gradient(#00000010,#00000025),
     url("${wallpaper}") center/cover;
   }
-  #karanGameAddon .kg-chat {
-  justify-content:flex-start;
-}
-
-#karanGameAddon .kg-chat .kg-status {
-  height:30px;
-  min-height:30px;
-  padding:7px 17px 0;
-}
+  #karanGameAddon .kg-status {
+    height:38px;flex-shrink:0;padding:10px 17px 0;
+    display:flex;align-items:flex-start;
+    justify-content:space-between;
+    font-size:13px;font-weight:700;color:#35313B;
+  }
   #karanGameAddon .kg-status svg {
     width:66px;height:18px;display:block;
   }
@@ -1115,15 +1113,10 @@ showPage("lock");
     background:#d3d9e6;
   }
   #karanGameAddon .kg-chat-head {
-  height:48px;
-  min-height:48px;
-  flex-shrink:0;
-  background:white;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 14px;
-}
+    height:59px;flex-shrink:0;
+    background:white;display:flex;
+    align-items:center;gap:12px;padding:0 14px;
+  }
   #karanGameAddon .kg-back {
     border:0;background:transparent;
     color:#111;font-size:30px;
@@ -1481,391 +1474,163 @@ showPage("lock");
 </script>
 <!-- END KARAN HOME + LINE -->
 
-<!-- KARAN STORY : CHAPTER 1 -->
+<!-- KARAN COMPLETE STORY : 12 CHAPTERS -->
 <script>
-(function () {
+(function(){
   "use strict";
-
-  if (document.getElementById("karanStoryChapter1")) return;
-
-  const story = {
-    chapter: 1,
-    stage: "waiting",
-    choice: null,
-    started: false
-  };
-
   const $ = id => document.getElementById(id);
-
-  const style = document.createElement("style");
-  style.textContent = `
-    #karanStoryChapter1 {
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      z-index:260;
-      font-family:Arial,"Noto Sans Thai",sans-serif;
-    }
-
-    #ksNotification {
-      position:absolute;
-      top:42px;
-      left:12px;
-      right:12px;
-      padding:12px;
-      border:0;
-      border-radius:17px;
-      background:rgba(245,246,248,.95);
-      color:#202127;
-      display:none;
-      align-items:center;
-      gap:11px;
-      text-align:left;
-      box-shadow:0 6px 25px #0002;
-      pointer-events:auto;
-      cursor:pointer;
-      animation:ksSlide .35s ease-out;
-    }
-
-    @keyframes ksSlide {
-      from {transform:translateY(-35px);opacity:0}
-      to {transform:translateY(0);opacity:1}
-    }
-
-    #ksNotification .ksIcon {
-      width:38px;
-      height:38px;
-      border-radius:11px;
-      background:#06c755;
-      display:grid;
-      place-items:center;
-      color:white;
-      font-size:11px;
-      font-weight:800;
-      flex-shrink:0;
-    }
-
-    #ksNotification .ksBody {
-      flex:1;
-      min-width:0;
-    }
-
-    #ksNotification .ksName {
-      font-size:14px;
-      font-weight:700;
-    }
-
-    #ksNotification .ksPreview {
-      font-size:12px;
-      margin-top:4px;
-      color:#555;
-    }
-
-    #ksChoices {
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      padding:12px 12px 46px;
-      background:#f8f9fb;
-      border-radius:18px 18px 0 0;
-      box-shadow:0 -4px 18px #0002;
-      display:none;
-      flex-direction:column;
-      gap:8px;
-      pointer-events:auto;
-      z-index:5;
-    }
-
-    #ksChoices .ksHeading {
-      font-size:12px;
-      font-weight:700;
-      color:#6b6d78;
-      margin-bottom:3px;
-    }
-
-    #ksChoices button {
-      border:1px solid #e0e3e9;
-      background:white;
-      color:#222;
-      border-radius:13px;
-      padding:12px;
-      font-size:13px;
-      text-align:left;
-      cursor:pointer;
-      font-family:inherit;
-    }
-
-    #ksChoices button:active {
-      background:#e8f4e9;
-    }
-
-    #ksContinue {
-      display:none;
-      width:100%;
-      border:0;
-      background:#06c755;
-      color:white;
-      border-radius:12px;
-      padding:12px;
-      font-size:13px;
-      font-weight:700;
-      cursor:pointer;
-    }
+  const chat = $("kgChat"), phone = $("phone");
+  if (!chat || !phone || window.karanFullStory) return;
+  const css = document.createElement("style");
+  css.textContent = `
+    #karanStoryNotify{position:absolute;z-index:280;top:42px;left:12px;right:12px;display:none;align-items:center;gap:10px;border:0;border-radius:16px;padding:12px;background:#f9fafb;box-shadow:0 6px 22px #0003;color:#202124;text-align:left;font-family:inherit;cursor:pointer}
+    #karanStoryNotify .lineLogo{background:#06c755;color:#fff;border-radius:10px;width:38px;height:38px;display:grid;place-items:center;font-size:11px;font-weight:bold;flex-shrink:0}
+    #karanStoryNotify strong{font-size:14px}#karanStoryNotify small{display:block;color:#666;font-size:12px;margin-top:4px}
+    #karanReplySuggestions{display:none;position:absolute;bottom:87px;left:10px;right:10px;z-index:10;flex-direction:column;gap:6px;pointer-events:none}
+    #karanReplySuggestions button{pointer-events:auto;border:1px solid #b8d4ba;border-radius:17px;background:#effbed;color:#235c30;padding:10px 13px;text-align:left;font-size:13px;line-height:1.4;box-shadow:0 2px 8px #0001;cursor:pointer}
+    #karanStoryNotify:active,#karanReplySuggestions button:active{opacity:.8}
+    #karanStoryPhoto{display:none;position:absolute;z-index:15;inset:40px 0 0;background:#fff;overflow:auto;padding:30px 18px 70px;color:#2b303b;text-align:center}
+    #karanStoryPhoto .invite{margin:35px auto;padding:38px 15px;border:1px solid #d5b7a6;background:#fffaf6;max-width:300px;box-shadow:0 3px 15px #0001}
+    #karanStoryPhoto button{border:0;background:#eee;border-radius:15px;padding:12px 20px;margin-top:20px}
   `;
-  document.head.appendChild(style);
-
-  const root = document.createElement("div");
-  root.id = "karanStoryChapter1";
-  root.innerHTML = `
-    <button id="ksNotification" type="button">
-      <span class="ksIcon">LINE</span>
-      <span class="ksBody">
-        <span class="ksName">อชิ</span>
-        <div class="ksPreview">
-          คุณการันต์ครับ วันนี้พอจะมีเวลาว่างไหมครับ
-        </div>
-      </span>
-    </button>
-  `;
-
-  const phone = $("phone");
-  if (!phone) return;
-  phone.appendChild(root);
-
-  // ตัวเลือกจะอยู่ภายในห้องแชต LINE
-  const choices = document.createElement("div");
-  choices.id = "ksChoices";
-  choices.innerHTML = `
-    <div class="ksHeading">เลือกคำตอบของการันต์</div>
-    <button data-choice="1" type="button">
-      ว่างครับ อชิมีอะไรให้ผมช่วยเหรอ
-    </button>
-    <button data-choice="2" type="button">
-      สำหรับอชิ ผมว่างเสมอครับ
-    </button>
-       <button data-choice="3" type="button">
-      ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก
-    </button>
-  `;
-
-  const chat = $("kgChat");
-  if (!chat) return;
-  chat.appendChild(choices);
-
-  const openingMessage =
-    "คุณการันต์ครับ วันนี้พอจะมีเวลาว่างไหมครับ";
-
-  const secondMessage =
-    "ผมมีเรื่องงานอยากปรึกษานิดหน่อยครับ";
-
-  const routes = {
-    1: {
-      answer:"ว่างครับ อชิมีอะไรให้ผมช่วยเหรอ",
-      reply:"ขอบคุณครับ คือผมอยากปรึกษาเรื่องเอกสารของลูกค้าน่ะครับ"
-    },
-    2: {
-      answer:"สำหรับอชิ ผมว่างเสมอครับ",
-      reply:"เอ่อ... ขอบคุณนะครับคุณการันต์"
-    },
-    3: {
-      answer:"ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก",
-      reply:"ได้ครับ งั้นผมรออยู่ที่โต๊ะนะครับ"
-    }
-  };
-
-  function receive(text) {
-    if (typeof window.karanLineReceive === "function") {
-      window.karanLineReceive("achi",text);
-    }
-  }
-
-  function sendAsKaran(text) {
-    const input = $("kgMessageInput");
-    const form = $("kgCompose");
-
-    if (!input || !form) return;
-
-    input.value = text;
-
-    form.dispatchEvent(new Event("submit",{
-      bubbles:true,
-      cancelable:true
-    }));
-  }
-
-  function isAchiChat() {
-    return chat.classList.contains("active") &&
-      $("kgChatTitle")?.textContent.trim() === "อชิ";
-  }
-
-  function updateChoices() {
-    const visible = isAchiChat();
-
-    if (!visible) {
-      choices.style.display = "none";
-      return;
-    }
-
-    if (story.stage === "choose") {
-      choices.style.display = "flex";
-
-      choices.querySelectorAll("[data-choice]").forEach(
-        button => button.style.display = "block"
-      );
-
-    } else if (story.stage === "continue") {
-  choices.style.display = "none";
-    } else {
-      choices.style.display = "none";
-    }
-  }
-
-  function openAchiChat() {
-    if (typeof window.openKaranLine === "function") {
-      window.openKaranLine();
-    }
-
-    const search = $("kgSearch");
-    if (search) {
-      search.value = "";
-      search.dispatchEvent(new Event("input",{
-        bubbles:true
-      }));
-    }
-
-    const achi = [...document.querySelectorAll(
-      "#kgList .kg-person"
-    )].find(button =>
-      button.querySelector(".kg-person-name")
-        ?.textContent.trim() === "อชิ"
-    );
-
-    if (achi) achi.click();
-
-    updateChoices();
-  }
-
-  function startChapter() {
-    if (story.started) return;
-
-    story.started = true;
-    story.stage = "choose";
-
-    // แทนข้อความตัวอย่างเดิมของอชิ
-    const achi = [...document.querySelectorAll(
-      "#kgList .kg-person"
-    )].find(button =>
-      button.querySelector(".kg-person-name")
-        ?.textContent.trim() === "อชิ"
-    );
-
-    if (achi) {
-      achi.click();
-
-      const messages = $("kgMessages");
-      if (messages) {
-        messages.replaceChildren();
-      }
-    }
-
-    receive(openingMessage);
-    receive(secondMessage);
-
-    // กลับไปหน้า Home เพื่อให้ผู้เล่นกดแจ้งเตือน
-    if (typeof window.openKaranHome === "function") {
-      window.openKaranHome();
-    }
-
-    $("ksNotification").style.display = "flex";
-  }
-
-  $("ksNotification").addEventListener("click", () => {
-    $("ksNotification").style.display = "none";
-    openAchiChat();
-  });
-
-  choices.addEventListener("click", event => {
-    const button = event.target.closest("[data-choice]");
-    if (!button || story.stage !== "choose") return;
-
-    const number = button.dataset.choice;
-    const route = routes[number];
-    if (!route) return;
-
-    story.choice = number;
-    story.stage = "replying";
-
-    choices.style.display = "none";
-    sendAsKaran(route.answer);
-
-        setTimeout(() => {
-      receive(route.reply);
-
-      setTimeout(() => {
-        const next = {
-          1: "ถ้าอย่างนั้นผมขอเข้าไปปรึกษาที่โต๊ะคุณการันต์ได้ไหมครับ",
-          2: "เรื่องงานน่ะครับ... คุณการันต์สะดวกให้ผมเข้าไปหาไหมครับ",
-          3: "ขอบคุณครับ เดี๋ยวผมเตรียมเอกสารไว้ให้ครับ"
-        };
-
-        receive(next[story.choice]);
-
-        setTimeout(() => {
-          receive("แล้วเจอกันนะครับ");
-
-          story.stage = "finished";
-          updateChoices();
-        }, 1500);
-      }, 1800);
-    }, 1000);
-  });
-
-  // ติดตามการเปิดและปิดห้องแชต
-  const chatObserver = new MutationObserver(updateChoices);
-
-  chatObserver.observe(chat,{
-    attributes:true,
-    attributeFilter:["class"]
-  });
-
-  const chatTitle = $("kgChatTitle");
-  if (chatTitle) {
-    new MutationObserver(updateChoices).observe(chatTitle,{
-      childList:true,
-      characterData:true,
-      subtree:true
+  document.head.appendChild(css);
+  const notification=document.createElement('button');
+  notification.id='karanStoryNotify';notification.type='button';
+  notification.innerHTML='<span class="lineLogo">LINE</span><span><strong id="storySender"></strong><small id="storyPreview"></small></span>';
+  phone.appendChild(notification);
+  const replies=document.createElement('div');replies.id='karanReplySuggestions';chat.appendChild(replies);
+  const invite=document.createElement('div');invite.id='karanStoryPhoto';invite.innerHTML='<div class="invite"><div style="font-size:14px;letter-spacing:3px">THE WEDDING OF</div><h2 style="font-weight:400;margin:25px 0">KARAN<br>&amp;<br>ACHI</h2><p>จากวันแรกที่ได้รู้จัก<br>สู่วันที่เราเลือกจะเดินไปด้วยกัน</p><p style="margin-top:30px">ขอบคุณที่อยู่ในเรื่องราวของเรา</p></div><button id="storyCloseInvite">ปิดการ์ด</button>';
+  chat.appendChild(invite);$('storyCloseInvite').onclick=()=>invite.style.display='none';
+  const contacts={achi:'อชิ',duj:'พี่ดุจ',pai:'พาย',tanaka:'ทานากะซัง',pa:'ป่า',rock:'ร็อก'};
+  // Every scene is a real-looking LINE conversation; options appear as suggested replies, not a game screen.
+  const scenes=[
+    {who:'achi',messages:['คุณการันต์ครับ วันนี้พอจะมีเวลาว่างไหมครับ','ผมมีเรื่องงานอยากปรึกษานิดหน่อยครับ'],options:[
+      {text:'ว่างครับ อชิมีอะไรให้ผมช่วยเหรอ',reply:['ขอบคุณครับ คือผมอยากปรึกษาเรื่องเอกสารของลูกค้าน่ะครับ']},
+      {text:'สำหรับอชิ ผมว่างเสมอครับ',reply:['เอ่อ... ขอบคุณนะครับคุณการันต์','คือผมอยากปรึกษาเรื่องเอกสารของลูกค้าน่ะครับ']},
+      {text:'ได้สิครับ เดี๋ยวผมไปหาอชิที่แผนก',reply:['ได้ครับ งั้นผมรออยู่ที่โต๊ะนะครับ']}
+    ],after:['ถ้าอย่างนั้นเดี๋ยวผมเตรียมเอกสารไว้ให้นะครับ','แล้วเจอกันนะครับ']},
+    {who:'duj',messages:['คุณการันต์คะ พี่มีเรื่องจะถามหน่อยค่ะ','ช่วงนี้ดูสนิทกับอชิเป็นพิเศษนะคะ'],options:[
+      {text:'ผมก็แค่ช่วยอชิเรื่องงานครับ',reply:['แค่เรื่องงานจริง ๆ เหรอคะ','พี่ทำงานกับคุณการันต์มานาน ดูออกนะคะ']},
+      {text:'ครับ ผมกำลังจีบอชิอยู่',reply:['จริงเหรอคะ! ในที่สุดก็ยอมรับแล้ว','งั้นพี่จะช่วยเชียร์เต็มที่เลยค่ะ']},
+      {text:'พี่ดุจคิดว่ายังไงล่ะครับ',reply:['โอ้โห มีถามกลับด้วยนะคะ','พี่ว่าคุณการันต์ชอบอชิแน่นอนค่ะ']}
+    ],after:['ถ้าจะจีบจริง ๆ ต้องรู้ก่อนนะคะว่าอชิชอบอะไร']},
+    {who:'pai',messages:['คุณการันต์คะ พายมีข้อมูลที่อาจช่วยได้ค่ะ','อชิชอบดอกบัว แล้วก็ชอบกาแฟมาก ๆ','เห็นว่าเคยพูดถึงเมล็ดกาแฟจากลำพูนด้วยค่ะ'],options:[
+      {text:'ขอบคุณครับ ฝากพายช่วยดูร้านกาแฟดี ๆ ให้หน่อย',reply:['ได้เลยค่ะ เดี๋ยวพายส่งร้านที่น่าสนใจให้']},
+      {text:'แล้วอชิชอบดอกบัวสีอะไรครับ',reply:['น่าจะสีชมพูค่ะ แต่ลองถามเจ้าตัวเองก็ดีนะคะ']},
+      {text:'ผมอยากเลือกของให้เขาด้วยตัวเองครับ',reply:['ดีเลยค่ะ อชิต้องดีใจแน่ ๆ']}
+    ],after:['พายเอาใจช่วยนะคะคุณการันต์']},
+    {who:'achi',messages:['คุณการันต์ครับ เรื่องเอกสารเรียบร้อยแล้วนะครับ','ขอบคุณที่ช่วยผมเมื่อวันก่อนด้วยครับ'],options:[
+      {text:'งั้นเลี้ยงกาแฟผมสักแก้วได้ไหมครับ',reply:['ได้สิครับ คุณการันต์สะดวกวันไหนครับ']},
+      {text:'เสาร์นี้อชิว่างไหมครับ ผมอยากชวนไปดื่มกาแฟ',reply:['เสาร์นี้ผมว่างช่วงบ่ายครับ']},
+      {text:'ผมมีร้านกาแฟอยากพาอชิไปลองครับ',reply:['ร้านอะไรเหรอครับ ฟังดูน่าสนใจจัง']}
+    ],after:['งั้นตกลงตามนั้นนะครับ','ผมรอวันเสาร์เลยครับ']},
+    {who:'achi',messages:['วันนี้สนุกมากเลยครับคุณการันต์','ผมไม่คิดว่าคุณจะจำได้ว่าผมชอบดอกบัว'],options:[
+      {text:'ผมตั้งใจเลือกให้อชิครับ',reply:['ขอบคุณมากนะครับ ผมชอบจริง ๆ']},
+      {text:'ดีใจที่อชิชอบครับ',reply:['ผมจะเก็บไว้ดี ๆ เลยครับ']},
+      {text:'คราวหน้าผมอยากพาอชิไปอีกที่หนึ่ง',reply:['มีคราวหน้าด้วยเหรอครับ','งั้นผมจะรอนะครับ']}
+    ],after:['แล้วก็... กาแฟเมล็ดลำพูนที่คุณให้ หอมมากเลยครับ']},
+    {who:'duj',messages:['คุณการันต์คะ ข่าวไปไวมากเลยนะคะ','เห็นว่าไปเดตกับอชิมาแล้วเหรอคะ','แล้วเรื่องเซอร์ไพรส์ที่เตรียมไว้ล่ะคะ'],options:[
+      {text:'ผมอยากให้เขามีวันที่พิเศษครับ',reply:['โรแมนติกมากค่ะคุณการันต์']},
+      {text:'เรื่องเฮลิคอปเตอร์ รบกวนพี่ดุจช่วยประสานด้วยครับ',reply:['ได้ค่ะ แต่ต้องเช็กเรื่องความปลอดภัยกับตารางบินก่อนนะคะ']},
+      {text:'ผมกลัวอชิจะตกใจมากกว่าครับ',reply:['งั้นถามเขาก่อนก็ดีนะคะว่าโอเคกับการขึ้นเฮลิคอปเตอร์ไหม']}
+    ],after:['เอาเป็นว่าพี่ช่วยดูให้ค่ะ ขอให้ทุกอย่างออกมาดีนะคะ']},
+    {who:'achi',messages:['คุณการันต์ครับ วันนี้ผมมีความสุขมากเลย','ขอบคุณที่ถามผมก่อนเรื่องขึ้นเฮลิคอปเตอร์นะครับ','ผมไม่เคยคิดว่าจะมีใครตั้งใจทำอะไรให้ขนาดนี้'],options:[
+      {text:'ผมอยากเป็นคนที่ได้ดูแลอชิครับ',reply:['คุณการันต์...']},
+      {text:'ถ้าผมขอเป็นแฟนอชิ อชิจะว่าอะไรไหมครับ',reply:['ผมก็นึกว่าคุณจะไม่ถามแล้วซะอีกครับ']},
+      {text:'ผมชอบอชินะครับ',reply:['ผมก็ชอบคุณการันต์ครับ']}
+    ],after:['ถ้าอย่างนั้น... เราลองคบกันดูนะครับ','ฝากตัวด้วยนะครับ แฟนของผม']},
+    {who:'rock',messages:['พี่การันต์ครับ ยอดขายเดือนนี้ยังไม่ถึงเป้าเลยครับ','เป้าสามล้านบาทที่ตั้งไว้ เหลือเวลาอีกไม่มาก'],options:[
+      {text:'ส่งตัวเลขล่าสุดมาให้ผมตรวจหน่อยครับ',reply:['ได้ครับ ผมจะสรุปส่งให้ภายในวันนี้']},
+      {text:'พรุ่งนี้เรียกทีมประชุมครับ เราจะช่วยกัน',reply:['รับทราบครับพี่ ผมแจ้งทุกคนเลย']},
+      {text:'อย่าเพิ่งกังวล เราจะทำให้ดีที่สุดครับ',reply:['ขอบคุณครับพี่ ผมจะเร่งติดตามลูกค้า']}
+    ],after:['ส่วนเรื่องอชิ... ยินดีด้วยนะครับพี่!']},
+    {who:'achi',messages:['คุณการันต์ครับ ผมมีเรื่องอยากบอก','บางทีผมก็รู้ว่าคนอื่นกำลังคิดอะไรอยู่','มันฟังดูแปลกใช่ไหมครับ'],options:[
+      {text:'อชิเล่าให้ผมฟังได้ทุกเรื่องครับ',reply:['ขอบคุณนะครับที่ไม่มองว่าผมแปลก']},
+      {text:'ผมเชื่ออชิครับ',reply:['แค่นี้ก็ทำให้ผมโล่งใจแล้วครับ']},
+      {text:'ผมไม่จำเป็นต้องเข้าใจทั้งหมด แต่ผมจะรับฟังครับ',reply:['คุณการันต์ใจดีกับผมเสมอเลย']}
+    ],after:['ขอบคุณที่รับฟังเรื่องที่ผมเก็บไว้คนเดียวมานานนะครับ']},
+    {who:'achi',messages:['คุณการันต์ครับ ผมอาจต้องไปนครศรีธรรมราชสักพัก','มีเรื่องทางบ้านที่ต้องกลับไปจัดการ','ผมกลัวเราจะไม่ค่อยมีเวลาได้เจอกัน'],options:[
+      {text:'เราคุยกันทุกวันก็ได้ครับ ผมรออชิได้',reply:['ขอบคุณนะครับ ผมสบายใจขึ้นเยอะเลย']},
+      {text:'ระยะทางไม่ทำให้ผมเปลี่ยนใจครับ',reply:['ผมก็เหมือนกันครับ']},
+      {text:'ถ้าเหนื่อยเมื่อไหร่ โทรหาผมได้เสมอนะครับ',reply:['ตกลงครับ แล้วคุณก็ต้องดูแลตัวเองด้วยนะ']}
+    ],after:['ผมคิดถึงคุณตั้งแต่ยังไม่ออกเดินทางเลยครับ']},
+    {who:'achi',messages:['ผมกลับกรุงเทพฯ แล้วนะครับ','คุณการันต์มีอะไรจะบอกผมหรือเปล่าครับ','เห็นพี่ดุจทำตัวมีพิรุธมาตั้งแต่เช้าแล้ว'],options:[
+      {text:'ผมมีคำถามสำคัญอยากถามอชิครับ',reply:['ถามมาได้เลยครับ ผมฟังอยู่']},
+      {text:'ผมอยากใช้ชีวิตทุกวันต่อจากนี้กับอชิ',reply:['คุณการันต์... พูดจริงเหรอครับ']},
+      {text:'อชิครับ แต่งงานกับผมนะ',reply:['...','ตกลงครับ ผมจะแต่งงานกับคุณ']}
+    ],after:['ถ้าคุณกำลังขอผมแต่งงานอยู่... คำตอบคือ ตกลงครับ','ผมรักคุณนะครับ การันต์']},
+    {who:'duj',messages:['การ์ดแต่งงานเรียบร้อยแล้วค่ะคุณการันต์','พี่ส่งแบบสุดท้ายให้แล้วนะคะ','อชิยิ้มไม่หุบเลยค่ะ'],options:[
+      {text:'ขอบคุณมากครับพี่ดุจ',reply:['ยินดีมากค่ะ พี่ดีใจกับทั้งสองคนจริง ๆ']},
+      {text:'ผมอยากเห็นการ์ดแล้วครับ',reply:['เปิดดูได้เลยค่ะ พี่ส่งไว้ให้แล้ว']},
+      {text:'ฝากบอกอชิด้วยครับว่าผมรักเขา',reply:['บอกเองเลยดีกว่าค่ะ!']}
+    ],after:['ขอแสดงความยินดีด้วยนะคะ'],final:true}
+  ];
+  const state={index:0,stage:'waiting',started:false,choice:null,done:false};
+  let timers=[];const later=(fn,ms)=>{const t=setTimeout(fn,ms);timers.push(t);return t;};
+  function visibleChat(){return chat.classList.contains('active') && $('karanGameAddon').style.display==='block';}
+  function currentWho(){return $('kgChatTitle').textContent.trim();}
+  function showReplyOptions(){
+    replies.replaceChildren();
+    const scene=scenes[state.index];
+    if(!scene || state.stage!=='choice' || !visibleChat() || currentWho()!==contacts[scene.who]){replies.style.display='none';return;}
+    scene.options.forEach((opt,i)=>{
+      const b=document.createElement('button');b.type='button';b.textContent=opt.text;
+      b.onclick=()=>choose(i);replies.appendChild(b);
     });
+    replies.style.display='flex';
   }
-
-  // เชื่อมกับระบบปลดล็อก PIN 1906 โดยตรง
-  // ไม่เปลี่ยนการทำงานของ showPage เดิม
-  if (typeof showPage === "function") {
-    const originalShowPage = showPage;
-
-    showPage = function(page) {
-      originalShowPage(page);
-
-      if (page === "unlocked") {
-        if (typeof window.openKaranHome === "function") {
-          window.openKaranHome();
-        }
-
-        if (!story.started) {
-        setTimeout(startChapter,5000);
-        }
-      }
-    };
+  function message(who,text){window.karanLineReceive(who,text);}
+  function notify(who,text){
+    $('storySender').textContent=contacts[who];$('storyPreview').textContent=text;
+    notification.dataset.who=who;
+    notification.style.display='flex';
   }
-
-  // สำหรับเรียกจากบทถัดไป
-  window.karanStory = story;
-  window.karanStartChapter1 = startChapter;
-
+  function openContact(who){
+    window.openKaranLine();
+    const search=$('kgSearch');search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));
+    const person=[...document.querySelectorAll('#kgList .kg-person')].find(x=>x.querySelector('.kg-person-name')?.textContent.trim()===contacts[who]);
+    person?.click();showReplyOptions();
+  }
+  notification.onclick=()=>{const who=notification.dataset.who;notification.style.display='none';openContact(who);};
+  function send(text){
+    const input=$('kgMessageInput');input.value=text;
+    $('kgCompose').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+  }
+  function sceneStart(){
+    if(state.index>=scenes.length){state.done=true;state.stage='done';return;}
+    const scene=scenes[state.index];state.stage='incoming';
+    scene.messages.forEach((text,i)=>later(()=>{
+      message(scene.who,text);
+      if(i===0 && (!visibleChat() || currentWho()!==contacts[scene.who]))notify(scene.who,text);
+      if(i===scene.messages.length-1){state.stage='choice';showReplyOptions();}
+    },i*1250+600));
+  }
+  function choose(i){
+    const scene=scenes[state.index];if(!scene || state.stage!=='choice')return;
+    if(!visibleChat() || currentWho()!==contacts[scene.who])return;
+    const opt=scene.options[i];state.choice=i;state.stage='answer';showReplyOptions();send(opt.text);
+    const responses=[...opt.reply,...(scene.after||[])];
+    responses.forEach((text,j)=>later(()=>message(scene.who,text),900+j*1250));
+    later(()=>{
+      if(scene.final){state.stage='done';state.done=true;invite.style.display='block';return;}
+      state.index++;state.stage='waiting';
+      // Next person contacts Karan after a natural pause; never jump to another chat.
+      later(sceneStart,4500);
+    },1200+responses.length*1250);
+  }
+  const observer=new MutationObserver(showReplyOptions);
+  observer.observe(chat,{attributes:true,attributeFilter:['class']});
+  observer.observe($('kgChatTitle'),{childList:true,subtree:true,characterData:true});
+  const unlocked=$('unlockedPage');
+  function start(){if(state.started)return;state.started=true;later(sceneStart,4500);}
+  const unlockObserver=new MutationObserver(()=>{
+    if(unlocked.getAttribute('display')!=='none')start();
+  });
+  unlockObserver.observe(unlocked,{attributes:true,attributeFilter:['display']});
+  if(unlocked.getAttribute('display')!=='none')start();
+  window.karanFullStory={state,scenes,start};
 })();
 </script>
-<!-- END KARAN STORY : CHAPTER 1 -->
-
- 
+<!-- END KARAN COMPLETE STORY -->
 </body>
 </html>

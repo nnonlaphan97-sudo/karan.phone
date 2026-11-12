@@ -457,73 +457,112 @@ button{cursor:pointer}
 }
 .line-time{font-size:11px;color:#a4a7ad;align-self:flex-start}
 .line-divider{height:8px;background:#f5f6f7}
-.line-subtabs{
+.line-chat-toolbar{
   display:flex;
   align-items:center;
-  gap:4px;
-  margin:4px 17px 15px;
+  justify-content:space-between;
+  gap:8px;
+  padding:10px 16px 8px;
+}
+
+.line-chat-switch{
+  display:flex;
+  align-items:center;
+  gap:3px;
   padding:4px;
+  background:#f1f1f1;
+  border-radius:30px;
+  flex-shrink:0;
+}
+
+.line-chat-switch button{
   border:0;
+  background:transparent;
+  color:#191919;
+  border-radius:25px;
+  padding:10px 13px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.line-chat-switch button.active{
+  background:#191919;
+  color:white;
+}
+
+.line-chat-tools{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  padding:4px;
   border-radius:30px;
   background:#f1f1f1;
 }
 
-.line-subtab{
-  flex:1;
-  border:0;
-  border-radius:26px;
-  background:transparent;
-  padding:11px;
-  color:#777;
-  font-size:15px;
-  font-weight:600;
+.line-chat-tools .line-iconbtn{
+  width:34px;
+  height:35px;
+  padding:5px;
 }
 
-.line-subtab.active{
-  background:#171717;
-  color:#fff;
-  border:0;
+.line-chat-tools .ico{
+  width:20px;
+  height:20px;
 }
+
+.line-searchbox{
+  border-radius:25px;
+  margin:8px 16px 12px;
+  padding:11px 14px;
+}
+
 .line-bottom{
-  position:fixed;
-  bottom:37px;
-  left:50%;
-  transform:translateX(-50%);
-  width:calc(100% - 40px);
-  max-width:400px;
-  height:58px;
+  position:absolute;
+  bottom:27px;
+  left:25px;
+  right:25px;
+  height:54px;
+  padding:4px;
   display:flex;
   align-items:center;
   justify-content:space-around;
-  padding:4px;
+  background:#f3f3f3;
   border:1px solid #e7e7e7;
-  border-radius:32px;
-  background:#f5f5f5;
-  z-index:12;
+  border-radius:30px;
+  z-index:30;
 }
 
 .line-bottom button{
   flex:1;
   min-width:0;
-  height:49px;
-  border:0;
-  border-radius:26px;
+  height:46px;
+  padding:4px 0;
+  border:none;
+  border-radius:25px;
   background:transparent;
   color:#777;
-  font-size:9px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:3px;
-  padding:4px 0;
+  gap:2px;
+  font-size:10px;
+  font-weight:500;
+  cursor:pointer;
 }
 
 .line-bottom button.active{
   background:#171717;
   color:#fff;
-  font-weight:700;
-}.line-bottom .ico{width:23px;height:23px}
+  font-weight:600;
+}
+
+.line-bottom button svg{
+  width:19px;
+  height:19px;
+  flex-shrink:0;
+}
+.line-bottom .ico{width:23px;height:23px}
 .line-card{
   margin:10px 16px;padding:17px;
   border:1px solid #e8e9ec;border-radius:15px;
@@ -880,7 +919,7 @@ function lineIcon(name){
     chat:'<path d="M21 11a8 8 0 0 1-8 8H5l-2 2v-9a9 9 0 1 1 18-1Z"/>',
     group:'<circle cx="9" cy="8" r="3"/><path d="M2 20v-2a7 7 0 0 1 14 0v2M17 5a3 3 0 0 1 0 6M19 15a5 5 0 0 1 3 5"/>',
     news:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 11h10M7 15h6"/>',
-    wallet:'<rect x="2" y="5" width="20" height="15" rx="3"/><path d="M15 11h7v5h-7a2 2 0 0 1 0-5Z"/>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M13 14h3"/>',    wallet:'<rect x="2" y="5" width="20" height="15" rx="3"/><path d="M15 11h7v5h-7a2 2 0 0 1 0-5Z"/>',
     search:'<circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/>',
     plus:'<path d="M12 4v16M4 12h16"/>',
     settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
@@ -891,24 +930,41 @@ function lineIcon(name){
   return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(shapes[name]||shapes.user)+'</svg>';
 }
 
-function lineAvatar(){
-  return '<div class="line-avatar">'+lineIcon('user')+'</div>';
+function lineAvatar(id=''){
+  const colors={
+    achi:'#dce9e2',
+    duj:'#f1e1d9',
+    pai:'#e4def3',
+    rock:'#dce8f5',
+    office:'#e5e9ed',
+    sales:'#e5e9ed'
+  };
+
+  const group=id==='office'||id==='sales';
+  const bg=colors[id]||'#e5eaf1';
+
+  return '<div class="line-avatar" style="background:'+bg+'">'+
+    lineIcon(group?'group':'user')+
+    '</div>';
 }
 
 function lineBottom(){
   const tabs=[
     ['home','หน้าหลัก','home'],
     ['chats','แชต','chat'],
-    ['openchat','OpenChat','group'],
     ['today','TODAY','news'],
     ['wallet','Wallet','wallet']
   ];
 
-  return '<div class="line-bottom">'+tabs.map(t=>
-    '<button class="'+(lineTab===t[0]?'active':'')+
-    '" data-line-tab="'+t[0]+'">'+
-    lineIcon(t[2])+'<span>'+t[1]+'</span></button>'
-  ).join('')+'</div>';
+  return '<div class="line-bottom">'+
+    tabs.map(t=>
+      '<button class="'+(lineTab===t[0]?'active':'')+
+      '" data-line-tab="'+t[0]+'">'+
+      lineIcon(t[2])+
+      '<span>'+t[1]+'</span>'+
+      '</button>'
+    ).join('')+
+    '</div>';
 }
 
 function lineHeader(title,actions=''){
@@ -933,7 +989,7 @@ function lineSearchHTML(){
 
 function lineRow(id,name,subtitle,type='profile'){
   return '<button class="line-row" data-line-'+type+'="'+id+'">'+
-    lineAvatar()+
+    lineAvatar(id)+
     '<div class="line-row-body"><div class="line-name">'+name+
     '</div><div class="line-preview">'+subtitle+
     '</div></div></button>';
@@ -953,15 +1009,34 @@ function lineFriends(){
 
 function lineChatsHTML(){
   const q=lineSearch.trim().toLowerCase();
-  const chats=lineChats.filter(c=>c.name.toLowerCase().includes(q));
 
-  return chats.map(c=>
-    '<button class="line-row" data-line-chat="'+c.id+'">'+
-    lineAvatar()+
-    '<div class="line-row-body"><div class="line-name">'+c.name+
-    '</div><div class="line-preview">'+c.preview+
-    '</div></div><div class="line-time">30 ม.ค.</div></button>'
-  ).join('') || '<div class="line-empty">ไม่พบแชต</div>';
+  const chats=lineChats.filter(c=>
+    c.name.toLowerCase().includes(q)
+  );
+
+  return chats.map(c=>{
+
+    let preview=c.preview;
+
+    if(c.id==='duj' && save.replies.duj){
+      preview='ได้เลยจ้ะ พี่จัดการให้ ไม่ต้องห่วง';
+    }
+
+    if(c.id==='achi' && save.replies.achi){
+      preview='ขอบคุณนะครับ';
+    }
+
+    return '<button class="line-row" data-line-chat="'+c.id+'">'+
+      lineAvatar(c.id)+
+      '<div class="line-row-body">'+
+        '<div class="line-name">'+c.name+'</div>'+
+        '<div class="line-preview">'+preview+'</div>'+
+      '</div>'+
+      '<div class="line-time">30 ม.ค.</div>'+
+    '</button>';
+
+  }).join('') ||
+  '<div class="line-empty">ไม่พบแชต</div>';
 }
 
 function renderLine(){
@@ -987,17 +1062,27 @@ function renderLine(){
   }
 
   else if(lineTab==='chats'){
-    content=
-      lineHeader('แชต',
-        lineButton('plus','plus','เมนูเพิ่มเติม'))+
-      '<div class="line-subtabs">'+
-      '<button class="line-subtab '+(lineSubtab==='chats'?'active':'')+
-      '" data-line-sub="chats">แชท</button>'+
-      '<button class="line-subtab '+(lineSubtab==='friends'?'active':'')+
-      '" data-line-sub="friends">เพื่อน</button></div>'+
-      lineSearchHTML()+
-      (lineSubtab==='friends'?lineFriends():lineChatsHTML());
-  }
+  content=
+    '<div class="line-chat-toolbar">'+
+      '<div class="line-chat-switch">'+
+        '<button class="'+
+          (lineSubtab==='chats'?'active':'')+
+          '" data-line-sub="chats">แชท</button>'+
+        '<button class="'+
+          (lineSubtab==='friends'?'active':'')+
+          '" data-line-sub="friends">เพื่อน</button>'+
+      '</div>'+
+      '<div class="line-chat-tools">'+
+        lineButton('search','search','ค้นหา')+
+        lineButton('calendar','calendar','ปฏิทิน')+
+        lineButton('plus','plus','เพิ่มเติม')+
+      '</div>'+
+    '</div>'+
+    lineSearchHTML()+
+    (lineSubtab==='friends'
+      ? lineFriends()
+      : lineChatsHTML());
+}
 
   else if(lineTab==='openchat'){
     const q=lineSearch.trim().toLowerCase();

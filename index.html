@@ -12,29 +12,30 @@ html,body{
   width:100%;
   min-height:100%;
   font-family:Arial,'Noto Sans Thai',sans-serif;
-  background:#090b10;
+  background:#101018;
   color:#fff;
 }
+
 button,input,select{font:inherit}
 button{cursor:pointer}
 
 #phone{
   position:relative;
-  width:min(100% - 28px, 390px);
-  height:min(calc(100dvh - 48px), 850px);
+  width:100%;
+  max-width:440px;
+  height:calc(100dvh - 36px);
   min-height:0;
-  margin:24px auto;
+  margin:18px auto;
   overflow:hidden;
   background:#10182a;
-  border:5px solid #30343d;
-  border-radius:37px;
-  box-shadow:
-    0 0 0 2px #777d89,
-    0 0 0 4px #16191f,
-    0 18px 50px rgba(0,0,0,.55),
-    inset 0 0 0 1px rgba(255,255,255,.12);
-}
 
+  border:6px solid #343640;
+  border-radius:30px;
+
+  box-shadow:
+    0 0 0 2px #171920,
+    0 8px 24px rgba(0,0,0,.35);
+}
 
 #phone::before{
   content:"";
@@ -1125,14 +1126,7 @@ button{cursor:pointer}
 }
 
 @media(max-width:480px){
-  #phone{
-    width:calc(100% - 20px);
-    height:calc(100dvh - 28px);
-    margin:14px auto;
-    border-radius:34px;
-  }
-}
-
+ }
 
 </style>
 </head>

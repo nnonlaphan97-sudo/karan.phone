@@ -383,6 +383,142 @@ button{cursor:pointer}
 .tinylabel{font-size:11px;color:#8b96a5}
 .homecard{background:#ffffff19;border:1px solid #ffffff25;border-radius:16px;padding:16px;margin-top:35px;font-size:13px;color:#eaf1fa}
 .spacer{height:12px}
+
+
+/* ===== LINE 2026 ===== */
+.line-app{
+  position:relative;
+  min-height:100%;
+  background:#fff;
+  color:#191919;
+  padding-top:36px;
+  padding-bottom:100px;
+}
+.line-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  min-height:58px;
+}
+.line-title{font-size:23px;font-weight:700}
+.line-actions{display:flex;gap:18px;align-items:center}
+.line-iconbtn{
+  border:0;background:none;color:#191919;
+  padding:3px;display:grid;place-items:center;
+}
+.line-iconbtn .ico{width:23px;height:23px}
+.line-searchbox{
+  display:flex;align-items:center;gap:10px;
+  margin:6px 16px 14px;padding:11px 13px;
+  background:#f3f4f5;border-radius:12px;
+}
+.line-searchbox input{
+  width:100%;border:0;outline:0;
+  background:transparent;color:#222;font-size:14px;
+}
+.line-profile{
+  display:flex;align-items:center;gap:14px;
+  padding:17px 19px;cursor:pointer;
+}
+.line-avatar{
+  width:52px;height:52px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#e5eaf1;color:#58677b;
+  flex-shrink:0;
+}
+.line-avatar .ico{width:26px;height:26px}
+.line-avatar.large{width:76px;height:76px}
+.line-avatar.large .ico{width:35px;height:35px}
+.line-name{font-size:15px;font-weight:600}
+.line-sub{font-size:12px;color:#96999f;margin-top:5px}
+.line-section{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 19px 9px;font-size:14px;font-weight:700;
+}
+.line-row{
+  display:flex;align-items:center;gap:13px;
+  width:100%;padding:12px 18px;
+  background:#fff;border:0;color:#191919;
+  text-align:left;cursor:pointer;
+}
+.line-row:active{background:#f4f5f6}
+.line-row-body{flex:1;min-width:0}
+.line-preview{
+  font-size:12px;color:#989ca2;margin-top:6px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.line-time{font-size:11px;color:#a4a7ad;align-self:flex-start}
+.line-divider{height:8px;background:#f5f6f7}
+.line-subtabs{
+  display:flex;border-bottom:1px solid #eee;
+  margin:0 16px 8px;
+}
+.line-subtab{
+  flex:1;border:0;background:none;
+  padding:12px;color:#999;font-size:15px;
+}
+.line-subtab.active{
+  color:#191919;font-weight:700;
+  border-bottom:2px solid #191919;
+}
+.line-bottom{
+  position:absolute;bottom:22px;left:0;right:0;
+  height:64px;display:flex;align-items:center;
+  justify-content:space-around;
+  background:#fff;border-top:1px solid #ededed;
+  z-index:12;
+}
+.line-bottom button{
+  flex:1;min-width:0;border:0;background:none;
+  color:#96999e;font-size:10px;
+  display:flex;flex-direction:column;
+  align-items:center;gap:5px;padding:7px 0;
+}
+.line-bottom button.active{color:#171717;font-weight:700}
+.line-bottom .ico{width:23px;height:23px}
+.line-card{
+  margin:10px 16px;padding:17px;
+  border:1px solid #e8e9ec;border-radius:15px;
+}
+.line-primary{
+  background:#06c755;color:white;border:0;
+  border-radius:10px;padding:11px 16px;font-weight:600;
+}
+.line-secondary{
+  background:#f0f1f3;color:#222;border:0;
+  border-radius:10px;padding:11px 16px;
+}
+.line-buttons{display:flex;gap:9px;margin-top:15px}
+.line-empty{
+  padding:35px 20px;text-align:center;
+  color:#92969d;font-size:13px;line-height:1.8;
+}
+.line-chatpage{
+  min-height:100%;background:#d8e1ee;
+  padding-top:36px;padding-bottom:90px;
+}
+.line-chathead{
+  height:55px;background:#fff;display:flex;
+  align-items:center;gap:12px;padding:0 13px;
+}
+.line-chathead b{flex:1;font-size:17px}
+.line-chathead button{border:0;background:none;color:#222}
+.line-chatbody{padding:14px 13px}
+.line-replies{
+  background:#fff;padding:12px;
+  border-top:1px solid #eee;
+}
+.line-compose{
+  display:flex;align-items:center;gap:9px;
+  background:#fff;padding:10px 12px;
+}
+.line-compose input{
+  flex:1;min-width:0;padding:10px;
+  border:1px solid #e4e6e9;border-radius:20px;
+  background:#f8f9fa;color:#222;
+}
+
 </style>
 </head>
 <body>
@@ -470,8 +606,7 @@ button{cursor:pointer}
 const paths={
 back:'<path d="m15 18-6-6 6-6"/>',
 lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
-line:'<path d="M20 11.5c0 4.4-3.8 8-8.5 8-1 0-2-.15-2.9-.45L4 20l1.3-3.7A7.7 7.7 0 0 1 3 11.5C3 7.1 6.8 3.5 11.5 3.5S20 7.1 20 11.5Z"/>',
-phone:'<path d="M7 3H4a2 2 0 0 0-2 2c0 9.4 7.6 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
+line:'<path d="M12 2C5.9 2 1 6.1 1 11.1c0 4.5 4 8.2 9.4 8.9.4.1.9.3.7.8l-.4 1.4c-.1.4.2.6.5.4 4.1-2.6 7.1-4.9 8.8-7.2 1.2-1.5 1.9-3 1.9-4.3C21.9 6.1 17.5 2 12 2Z" fill="currentColor" stroke="none"/><text x="12" y="13.9" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.9" font-weight="900" fill="#06c755" stroke="none">LINE</text>',phone:'<path d="M7 3H4a2 2 0 0 0-2 2c0 9.4 7.6 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
 gallery:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/>',
 calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3"/>',
 note:'<path d="M5 3h11l3 3v15H5zM8 10h8M8 14h8M8 18h5"/>',
@@ -654,8 +789,273 @@ async function updateWeather(){
   }
 }
 
-function render(){
 
+/* ===== LINE 2026 DATA & NAVIGATION ===== */
+
+let lineTab='chats';
+let lineSubtab='chats';
+let lineSearch='';
+let lineProfile='achi';
+let lineGroup='office';
+let lineOpenchat='';
+
+const linePeople=[
+  {id:'achi',name:'อชิ',status:'ขอบคุณสำหรับทุกอย่างนะครับ'},
+  {id:'duj',name:'พี่ดุจ',status:'มีความสุขกับทุกวัน'},
+  {id:'pai',name:'ปาย',status:'ทีมโปรโมชั่น'},
+  {id:'rock',name:'ร็อค',status:'สมาชิกใหม่ทีมโปรโมชั่น'}
+];
+
+const lineGroups=[
+  {id:'office',name:'ประสานงานออฟฟิศ',members:'การันต์, อชิ, ปาย, ร็อค'},
+  {id:'sales',name:'ทีมฝ่ายขาย',members:'ทีมงานฝ่ายขาย'}
+];
+
+const lineChats=[
+  {id:'duj',name:'พี่ดุจ',preview:'เรื่องเค้กวันเกิดอชิ'},
+  {id:'achi',name:'อชิ',preview:'ขอบคุณนะครับคุณการันต์'},
+  {id:'office',name:'ประสานงานออฟฟิศ',preview:'ปาย: ยินดีต้อนรับร็อคค่ะ'},
+  {id:'sales',name:'ทีมฝ่ายขาย',preview:'เอกสารลูกค้าเรียบร้อยแล้วครับ'}
+];
+
+const lineCommunities=[
+  {id:'books',name:'มุมอ่านหนังสือ',detail:'พูดคุยและแนะนำหนังสือ'},
+  {id:'coffee',name:'คนรักกาแฟ',detail:'แลกเปลี่ยนเรื่องกาแฟ'},
+  {id:'travel',name:'เที่ยววันหยุด',detail:'แบ่งปันสถานที่ท่องเที่ยว'}
+];
+
+let lineJoined=[];
+let lineExtraMessages={};
+
+function lineIcon(name){
+  const shapes={
+    home:'<path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-8h6v8"/>',
+    chat:'<path d="M21 11a8 8 0 0 1-8 8H5l-2 2v-9a9 9 0 1 1 18-1Z"/>',
+    group:'<circle cx="9" cy="8" r="3"/><path d="M2 20v-2a7 7 0 0 1 14 0v2M17 5a3 3 0 0 1 0 6M19 15a5 5 0 0 1 3 5"/>',
+    news:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 11h10M7 15h6"/>',
+    wallet:'<rect x="2" y="5" width="20" height="15" rx="3"/><path d="M15 11h7v5h-7a2 2 0 0 1 0-5Z"/>',
+    search:'<circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/>',
+    plus:'<path d="M12 4v16M4 12h16"/>',
+    settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+    call:'<path d="M7 3H4a2 2 0 0 0-2 2c0 9 8 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
+    back:'<path d="m15 18-6-6 6-6"/>',
+    user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'
+  };
+  return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(shapes[name]||shapes.user)+'</svg>';
+}
+
+function lineAvatar(){
+  return '<div class="line-avatar">'+lineIcon('user')+'</div>';
+}
+
+function lineBottom(){
+  const tabs=[
+    ['home','หน้าหลัก','home'],
+    ['chats','แชต','chat'],
+    ['openchat','OpenChat','group'],
+    ['today','TODAY','news'],
+    ['wallet','Wallet','wallet']
+  ];
+
+  return '<div class="line-bottom">'+tabs.map(t=>
+    '<button class="'+(lineTab===t[0]?'active':'')+
+    '" data-line-tab="'+t[0]+'">'+
+    lineIcon(t[2])+'<span>'+t[1]+'</span></button>'
+  ).join('')+'</div>';
+}
+
+function lineHeader(title,actions=''){
+  return '<div class="line-top"><div class="line-title">'+
+    title+'</div><div class="line-actions">'+actions+'</div></div>';
+}
+
+function lineButton(iconName,action,label){
+  return '<button class="line-iconbtn" data-line-action="'+
+    action+'" aria-label="'+label+'">'+lineIcon(iconName)+'</button>';
+}
+
+function lineSearchHTML(){
+  return '<div class="line-searchbox">'+lineIcon('search')+
+    '<input id="lineSearchInput" placeholder="ค้นหา" value="'+
+    lineSearch.replace(/"/g,'&quot;')+'"></div>';
+}
+
+function lineRow(id,name,subtitle,type='profile'){
+  return '<button class="line-row" data-line-'+type+'="'+id+'">'+
+    lineAvatar()+
+    '<div class="line-row-body"><div class="line-name">'+name+
+    '</div><div class="line-preview">'+subtitle+
+    '</div></div></button>';
+}
+
+function lineFriends(){
+  const q=lineSearch.trim().toLowerCase();
+  const people=linePeople.filter(p=>p.name.toLowerCase().includes(q));
+  const groups=lineGroups.filter(g=>g.name.toLowerCase().includes(q));
+
+  return '<div class="line-section">เพื่อน ('+people.length+')</div>'+
+    people.map(p=>lineRow(p.id,p.name,p.status)).join('')+
+    '<div class="line-divider"></div>'+
+    '<div class="line-section">กลุ่ม ('+groups.length+')</div>'+
+    groups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
+}
+
+function lineChatsHTML(){
+  const q=lineSearch.trim().toLowerCase();
+  const chats=lineChats.filter(c=>c.name.toLowerCase().includes(q));
+
+  return chats.map(c=>
+    '<button class="line-row" data-line-chat="'+c.id+'">'+
+    lineAvatar()+
+    '<div class="line-row-body"><div class="line-name">'+c.name+
+    '</div><div class="line-preview">'+c.preview+
+    '</div></div><div class="line-time">30 ม.ค.</div></button>'
+  ).join('') || '<div class="line-empty">ไม่พบแชต</div>';
+}
+
+function renderLine(){
+  let content='';
+
+  if(lineTab==='home'){
+    content=
+      lineHeader('หน้าหลัก',
+        lineButton('settings','settings','ตั้งค่า'))+
+      '<button class="line-profile" data-line-action="myprofile">'+
+      '<div class="line-avatar large">'+lineIcon('user')+'</div>'+
+      '<div><div class="line-name">การันต์</div>'+
+      '<div class="line-sub">โปรไฟล์ของฉัน</div></div></button>'+
+      lineSearchHTML()+
+      '<div class="line-section">เพื่อน</div>'+
+      linePeople.slice(0,3).map(p=>lineRow(p.id,p.name,p.status)).join('')+
+      '<div class="line-section">กลุ่ม</div>'+
+      lineGroups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('')+
+      '<div class="line-divider"></div>'+
+      '<div class="line-section">บริการ</div>'+
+      lineRow('openchat','OpenChat','ค้นหาคอมมูนิตี้','service')+
+      lineRow('wallet','Wallet','บริการกระเป๋าเงิน','service');
+  }
+
+  else if(lineTab==='chats'){
+    content=
+      lineHeader('แชต',
+        lineButton('plus','plus','เมนูเพิ่มเติม'))+
+      '<div class="line-subtabs">'+
+      '<button class="line-subtab '+(lineSubtab==='chats'?'active':'')+
+      '" data-line-sub="chats">แชท</button>'+
+      '<button class="line-subtab '+(lineSubtab==='friends'?'active':'')+
+      '" data-line-sub="friends">เพื่อน</button></div>'+
+      lineSearchHTML()+
+      (lineSubtab==='friends'?lineFriends():lineChatsHTML());
+  }
+
+  else if(lineTab==='openchat'){
+    const q=lineSearch.trim().toLowerCase();
+    content=
+      lineHeader('OpenChat',
+        lineButton('search','search','ค้นหา'))+
+      lineSearchHTML()+
+      '<div class="line-section">ค้นพบคอมมูนิตี้</div>'+
+      lineCommunities.filter(c=>c.name.toLowerCase().includes(q))
+        .map(c=>lineRow(c.id,c.name,c.detail,'community')).join('')+
+      '<div class="line-divider"></div>'+
+      '<div class="line-section">โอเพนแชทของคุณ</div>'+
+      (lineJoined.length
+        ? lineJoined.map(id=>{
+            const c=lineCommunities.find(x=>x.id===id);
+            return c?lineRow(c.id,c.name,c.detail,'community'):'';
+          }).join('')
+        : '<div class="line-empty">ยังไม่ได้เข้าร่วมโอเพนแชท</div>');
+  }
+
+  else if(lineTab==='today'){
+    content=lineHeader('LINE TODAY')+
+      '<div class="line-card"><b>ข่าวสารและบทความ</b>'+
+      '<p class="line-sub">พื้นที่ข่าวสารในโทรศัพท์จำลองของการันต์</p>'+
+      '<button class="line-secondary" data-line-action="todayinfo">ดูรายละเอียด</button></div>';
+  }
+
+  else if(lineTab==='wallet'){
+    content=lineHeader('Wallet')+
+      '<div class="line-card"><b>บริการทางการเงิน</b>'+
+      '<p class="line-sub">ไม่ได้เชื่อมกับบัญชีหรือยอดเงินจริง</p>'+
+      '<button class="line-secondary" data-line-action="walletinfo">ข้อมูลบริการ</button></div>';
+  }
+
+  else if(lineTab==='myprofile'){
+    content=lineHeader('โปรไฟล์',
+      lineButton('back','home','ย้อนกลับ'))+
+      '<div class="line-profile"><div class="line-avatar large">'+
+      lineIcon('user')+'</div><div><b>การันต์</b>'+
+      '<div class="line-sub">บัญชี LINE ของการันต์</div></div></div>'+
+      '<div class="line-card">สถานะ: พร้อมทำงาน</div>';
+  }
+
+  else if(lineTab==='profile'){
+    const p=linePeople.find(x=>x.id===lineProfile);
+    if(p){
+      content=lineHeader('โปรไฟล์',
+        lineButton('back','friends','ย้อนกลับ'))+
+        '<div class="line-profile"><div class="line-avatar large">'+
+        lineIcon('user')+'</div><div><b>'+p.name+
+        '</b><div class="line-sub">'+p.status+'</div></div></div>'+
+        '<div class="line-card"><div class="line-buttons">'+
+        '<button class="line-primary" data-line-chat="'+p.id+'">แชต</button>'+
+        '<button class="line-secondary" data-line-action="call">โทร</button>'+
+        '</div></div>';
+    }
+  }
+
+  else if(lineTab==='groups'){
+    content=lineHeader('กลุ่ม',
+      lineButton('back','friends','ย้อนกลับ'))+
+      lineGroups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
+  }
+
+  else if(lineTab==='groupdetail'){
+    const g=lineGroups.find(x=>x.id===lineGroup);
+    if(g){
+      content=lineHeader(g.name,
+        lineButton('back','groups','ย้อนกลับ'))+
+        '<div class="line-card"><b>สมาชิก</b><p>'+g.members+'</p>'+
+        '<button class="line-primary" data-line-chat="'+g.id+
+        '">เปิดแชตกลุ่ม</button></div>';
+    }
+  }
+
+  else if(lineTab==='community'){
+    const c=lineCommunities.find(x=>x.id===lineOpenchat);
+    if(c){
+      const joined=lineJoined.includes(c.id);
+      content=lineHeader(c.name,
+        lineButton('back','openchat','ย้อนกลับ'))+
+        '<div class="line-card"><b>'+c.name+'</b><p>'+c.detail+'</p>'+
+        '<button class="line-primary" data-line-join="'+c.id+'">'+
+        (joined?'ออกจากโอเพนแชท':'เข้าร่วม')+'</button></div>';
+    }
+  }
+
+  else if(lineTab==='settings'){
+    content=lineHeader('ตั้งค่า',
+      lineButton('back','home','ย้อนกลับ'))+
+      lineRow('myprofile','โปรไฟล์','ข้อมูลบัญชี','service')+
+      '<div class="line-card">การแจ้งเตือน: เปิดใช้งานในเกม</div>'+
+      '<div class="line-card">ธีม: สว่าง</div>'+
+      '<div class="line-card">เกี่ยวกับ: LINE จำลอง ปี 2026</div>';
+  }
+
+  else if(lineTab==='plus'){
+    content=lineHeader('เมนูเพิ่มเติม',
+      lineButton('back','chats','ย้อนกลับ'))+
+      lineRow('friends','เพิ่มเพื่อน / ดูเพื่อน','รายชื่อผู้ติดต่อ','service')+
+      lineRow('groups','กลุ่ม','ดูแชตกลุ่ม','service')+
+      lineRow('newchat','สร้างแชต','เลือกเพื่อนเพื่อเริ่มแชต','service');
+  }
+
+  return '<div class="line-app">'+content+lineBottom()+'</div>';
+}
+
+
+function render(){
 let html='';
 
 if(page==='lock'){
@@ -755,14 +1155,11 @@ html=`
 `;
 }
 
+
 else if(page==='LINE'){
-html=appwrap('LINE','<div class="chatlist">'+[
-['พี่ดุจ','เรื่องเค้กวันเกิดอชิ','duj'],
-['อชิ','ขอบคุณนะครับคุณการันต์','achi'],
-['ประสานงานออฟฟิศ','ปาย: ยินดีต้อนรับร็อคค่ะ','office'],
-['ทีมฝ่ายขาย','เอกสารลูกค้าเรียบร้อยแล้วครับ','sales']
-].map(c=>'<div class="chatrow" data-chat="'+c[2]+'"><div class="avatar">'+icon('user')+'</div><div class="body"><div class="name">'+c[0]+'</div><div class="preview">'+c[1]+'</div></div><div class="time">30 ม.ค.</div></div>').join('')+'</div>');
+  html=renderLine();
 }
+
 else if(page==='chat'){
 html=renderChat();
 }
@@ -850,8 +1247,17 @@ b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลู�
 b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
 }
 
-return appwrap(names[chat],'<div class="conversation">'+b+'</div>'+(choices?'<div class="choices"><div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+choices+'</div>':''));
-}
+return '<div class="line-chatpage">'+
+  '<div class="line-chathead">'+
+  '<button data-go="LINE">'+lineIcon('back')+'</button>'+
+  '<b>'+names[chat]+'</b>'+
+  '<button data-line-call="1" aria-label="โทร">'+lineIcon('call')+'</button>'+
+  '</div>'+
+  '<div class="line-chatbody">'+b+'</div>'+
+  (choices?
+    '<div class="line-replies"><div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+
+    choices+'</div>':'')+
+  '</div>';
 
 function popup(title,msg){
   document.getElementById('modal').innerHTML=
@@ -871,6 +1277,104 @@ render();
 }
 
 document.addEventListener('click',function(e){
+
+/* LINE 2026 interactions */
+const lt=e.target.closest('[data-line-tab]');
+const ls=e.target.closest('[data-line-sub]');
+const lp=e.target.closest('[data-line-profile]');
+const lg=e.target.closest('[data-line-group]');
+const lc=e.target.closest('[data-line-chat]');
+const la=e.target.closest('[data-line-action]');
+const lv=e.target.closest('[data-line-service]');
+const lcom=e.target.closest('[data-line-community]');
+const lj=e.target.closest('[data-line-join]');
+
+if(lt && page==='LINE'){
+  lineTab=lt.dataset.lineTab;
+  lineSearch='';
+  render();
+  return;
+}
+
+if(ls && page==='LINE'){
+  lineSubtab=ls.dataset.lineSub;
+  lineSearch='';
+  render();
+  return;
+}
+
+if(lp && page==='LINE'){
+  lineProfile=lp.dataset.lineProfile;
+  lineTab='profile';
+  render();
+  return;
+}
+
+if(lg && page==='LINE'){
+  lineGroup=lg.dataset.lineGroup;
+  lineTab='groupdetail';
+  render();
+  return;
+}
+
+if(lc && page==='LINE'){
+  chat=lc.dataset.lineChat;
+  page='chat';
+  render();
+  return;
+}
+
+if(lv && page==='LINE'){
+  const target=lv.dataset.lineService;
+  lineTab=target==='newchat'?'chats':target;
+  if(target==='friends')lineSubtab='friends';
+  render();
+  return;
+}
+
+if(lcom && page==='LINE'){
+  lineOpenchat=lcom.dataset.lineCommunity;
+  lineTab='community';
+  render();
+  return;
+}
+
+if(lj && page==='LINE'){
+  const id=lj.dataset.lineJoin;
+  if(lineJoined.includes(id)){
+    lineJoined=lineJoined.filter(x=>x!==id);
+  }else{
+    lineJoined.push(id);
+  }
+  render();
+  return;
+}
+
+if(la && page==='LINE'){
+  const action=la.dataset.lineAction;
+
+  if(action==='call'){
+    popup('โทรผ่าน LINE','การโทรเป็นระบบจำลอง ยังไม่เชื่อมกับ LINE จริง');
+    return;
+  }
+  if(action==='todayinfo'||action==='walletinfo'){
+    popup('ข้อมูลบริการ','ฟีเจอร์นี้เป็นหน้าจอจำลอง ไม่มีการเชื่อมต่อบริการจริง');
+    return;
+  }
+  if(action==='search'){
+    document.getElementById('lineSearchInput')?.focus();
+    return;
+  }
+  lineTab=action;
+  if(action==='friends')lineSubtab='friends';
+  render();
+  return;
+}
+
+if(e.target.closest('[data-line-call]')){
+  popup('โทรผ่าน LINE','ยังไม่สามารถโทรจริงได้');
+  return;
+}
 
 const pinBtn=e.target.closest('[data-pin],[data-pin-action]');
 
@@ -971,6 +1475,20 @@ popup('รายการอาหาร','จัดส่งเรียบร�
 }
 });
 
+document.addEventListener('input',function(e){
+  if(e.target.id!=='lineSearchInput')return;
+
+  lineSearch=e.target.value;
+  const cursor=e.target.selectionStart;
+
+  render();
+
+  const input=document.getElementById('lineSearchInput');
+  if(input){
+    input.focus();
+    input.setSelectionRange(cursor,cursor);
+  }
+});
 document.getElementById('nav').addEventListener('click',function(){
   if(page==='lock'){
     pinInput='';

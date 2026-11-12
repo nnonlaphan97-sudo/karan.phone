@@ -260,9 +260,55 @@ button{cursor:pointer}
   font-size:12px;
   opacity:.85;
 }
-.home{padding:28px 18px}
-.home .greeting{font-size:28px;font-weight:300;margin:16px 0 8px}
-.home .sub{font-size:13px;color:#e3eafa;margin-bottom:35px}
+
+.home{
+  min-height:100%;
+  padding:62px 22px 35px;
+  color:#fff;
+}
+
+.home-weather{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  color:#fff;
+  text-align:left;
+}
+
+.home-weather-icon{
+  width:65px;
+  height:65px;
+  flex-shrink:0;
+}
+
+.home-weather-info{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+
+.home-weather-temp{
+  font-size:43px;
+  font-weight:700;
+  line-height:1.1;
+}
+
+.home-weather-desc{
+  margin-top:3px;
+  font-size:13px;
+}
+
+.home-weather-location{
+  margin-top:4px;
+  font-size:12px;
+  opacity:.8;
+}
+
+.home .appgrid{
+  margin-top:100px;
+}
+
 .appgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px 8px}
 .appitem{border:0;background:transparent;color:white;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px}
 .appicon{width:62px;height:62px;border-radius:19px;display:grid;place-items:center;box-shadow:0 7px 18px #0002}
@@ -483,6 +529,106 @@ function appwrap(title,body){
 return '<div class="app">'+header(title)+body+'</div>';
 }
 
+
+const WEATHER_URL =
+  'https://api.open-meteo.com/v1/forecast' +
+  '?latitude=13.71&longitude=100.41' +
+  '&current=temperature_2m,weather_code,is_day' +
+  '&timezone=Asia%2FBangkok';
+
+let weatherData = null;
+let weatherUpdatedAt = 0;
+let weatherLoading = false;
+
+function weatherDescription(code){
+  if(code===0)return 'ท้องฟ้าแจ่มใส';
+  if(code===1)return 'ท้องฟ้าโปร่งเป็นส่วนมาก';
+  if(code===2)return 'มีเมฆบางส่วน';
+  if(code===3)return 'เมฆมาก';
+  if(code===45||code===48)return 'มีหมอก';
+  if(code>=51&&code<=57)return 'มีฝนละออง';
+  if(code>=61&&code<=67)return 'มีฝนตก';
+  if(code>=80&&code<=82)return 'มีฝนเป็นช่วง ๆ';
+  if(code>=95)return 'มีพายุฝนฟ้าคะนอง';
+  return 'สภาพอากาศแปรปรวน';
+}
+
+function weatherSVG(code,isDay){
+  const rainy=(code>=51&&code<=82)||code>=95;
+  const cloudy=code===3||code===45||code===48;
+
+  const sky=isDay
+    ? `<circle cx="25" cy="23" r="11" fill="#FFD76A"/>`
+    : `<path d="M34 8A17 17 0 1 0 47 34A19 19 0 0 1 34 8Z" fill="#F4E5B5"/>`;
+
+  const cloud=`<path d="M17 47H47C54 47 58 43 58 37C58 31 53 27 47 27C44 19 38 16 31 18C24 19 20 24 19 29C12 29 7 34 7 40C7 44 11 47 17 47Z" fill="#F4F6FF" stroke="#DCE5F4" stroke-width="1.5"/>`;
+
+  const rain=`<g stroke="#91C8FF" stroke-width="3" stroke-linecap="round">
+    <path d="M20 51l-3 7M34 51l-3 7M48 51l-3 7"/>
+  </g>`;
+
+  return `<svg viewBox="0 0 64 64" width="65" height="65" xmlns="http://www.w3.org/2000/svg">
+    ${cloudy?'':sky}
+    ${code===0?'':cloud}
+    ${rainy?rain:''}
+  </svg>`;
+}
+
+function showWeather(){
+  const temp=document.getElementById('weatherTemp');
+  const desc=document.getElementById('weatherDesc');
+  const iconBox=document.getElementById('weatherIcon');
+
+  if(!temp||!desc||!iconBox)return;
+
+  if(!weatherData){
+    temp.textContent='--°';
+    desc.textContent=weatherLoading
+      ? 'กำลังโหลดสภาพอากาศ...'
+      : 'ไม่สามารถโหลดสภาพอากาศได้';
+    return;
+  }
+
+  temp.textContent=Math.round(weatherData.temperature_2m)+'°';
+  desc.textContent=weatherDescription(weatherData.weather_code);
+  iconBox.innerHTML=weatherSVG(
+    weatherData.weather_code,
+    weatherData.is_day===1
+  );
+}
+
+async function updateWeather(){
+  if(weatherLoading)return;
+
+  if(weatherData && Date.now()-weatherUpdatedAt<600000){
+    showWeather();
+    return;
+  }
+
+  weatherLoading=true;
+  showWeather();
+
+  try{
+    const response=await fetch(WEATHER_URL,{cache:'no-store'});
+    if(!response.ok)throw new Error('Weather API error');
+
+    const data=await response.json();
+    if(!data.current ||
+       !Number.isFinite(data.current.temperature_2m)){
+      throw new Error('Invalid weather data');
+    }
+
+    weatherData=data.current;
+    weatherUpdatedAt=Date.now();
+  }catch(error){
+    console.error('Weather:',error);
+    if(!weatherData)weatherData=null;
+  }finally{
+    weatherLoading=false;
+    showWeather();
+  }
+}
+
 function render(){
 
 let html='';
@@ -542,12 +688,46 @@ html=`
 }
 
 else if(page==='home'){
+html=`
+<div class="home">
 
-html='<div class="home"><div class="greeting">Karan’s Phone</div><div class="sub">เรื่องราวที่เก็บไว้ในโทรศัพท์เครื่องนี้</div><div class="appgrid">'+appdefs.map(a=>{
-const open=save.unlock.includes(a[0]);
-return '<button class="appitem" data-app="'+a[0]+'"><span class="appicon '+(open?'':'locked')+'" style="'+(open?'background:'+a[2]:'')+'">'+icon(open?a[1]:'lock')+'</span><span>'+a[0]+'</span></button>';
-}).join('')+'</div><div class="homecard">LINE มีข้อความเก่าจากพี่ดุจ<br><span style="opacity:.75">30 มกราคม · วันเกิดอชิ</span></div><button class="pill" style="margin-top:15px;width:100%" data-app="การ์ดแต่งงาน">ทดลองออกแบบการ์ดแต่งงาน</button></div>';
+<div class="home-weather">
+
+  <div class="home-weather-icon" id="weatherIcon">
+    <svg viewBox="0 0 64 64" fill="none">
+      <circle cx="25" cy="23" r="11" fill="#FFD76A"/>
+      <path d="M18 48H47C54 48 58 44 58 38C58 32 53 28 47 28C45 19 38 15 31 17C24 18 20 23 19 29C12 28 7 33 7 39C7 45 12 48 18 48Z" fill="#F4F6FF"/>
+    </svg>
+  </div>
+
+  <div class="home-weather-info">
+    <div class="home-weather-temp" id="weatherTemp">--°</div>
+    <div class="home-weather-desc" id="weatherDesc">กำลังโหลดสภาพอากาศ...</div>
+    <div class="home-weather-location">บางแค กรุงเทพฯ</div>
+  </div>
+
+</div>
+
+  <div class="appgrid">
+    ${appdefs.map(a=>{
+      const open=save.unlock.includes(a[0]);
+
+      return `
+        <button class="appitem" data-app="${a[0]}">
+          <span class="appicon ${open?'':'locked'}"
+                style="${open?'background:'+a[2]:''}">
+            ${icon(open?a[1]:'lock')}
+          </span>
+          <span>${a[0]}</span>
+        </button>
+      `;
+    }).join('')}
+  </div>
+
+</div>
+`;
 }
+
 else if(page==='LINE'){
 html=appwrap('LINE','<div class="chatlist">'+[
 ['พี่ดุจ','เรื่องเค้กวันเกิดอชิ','duj'],
@@ -571,15 +751,18 @@ html=appwrap('โทรศัพท์','<div class="content"><div class="entry"
 else if(page==='โน้ต'){
 html=appwrap('โน้ต','<div class="content"><div class="entry"><b>งานประจำสัปดาห์</b><p>ติดตามรายงานฝ่ายขาย</p><p>ตรวจเอกสารเสนอราคา</p><p>ยืนยันนัดหมายลูกค้า</p></div><div class="entry"><b>30 มกราคม</b><p>เค้ก — พี่ดุจ</p><p>ตรวจตารางประชุม</p><p>อาหารเย็น</p></div></div>');
 }
-else if(page==='การ์ดแต่งงาน'){
-html=renderCard();
-}
+
 else{
 html=appwrap(page,'<div class="content"><div class="entry">ข้อมูลส่วนนี้จะเปิดเผยในตอนถัดไป</div></div>');
 }
 
 screen.innerHTML=html;
 screen.scrollTop=0;
+
+if(page==='home'){
+  showWeather();
+  updateWeather();
+}
 }
 
 function bubble(text,out){
@@ -652,20 +835,12 @@ green:['#eaf0e7','#566d5b']
 };
 const c=colors[save.card.color]||colors.ivory;
 
-return appwrap('การ์ดแต่งงาน','<div class="cardeditor"><div class="muted">ต้นแบบกิจกรรม EP.12 · ออกแบบได้ตั้งแต่เวอร์ชันทดลอง</div><div class="invite" id="invite" style="background:'+c[0]+';color:'+c[1]+';border-style:'+(save.card.style==='modern'?'solid':'double')+'"><div class="tiny">THE WEDDING OF</div><div class="line"></div><div class="names">Karan<br>&amp;<br>Achi</div><div class="line"></div><div class="tiny">19 JUNE</div><div class="phrase" id="cardPhrase"></div></div><div class="controls"><label>สีการ์ด</label><select id="cardColor"><option value="ivory">ครีม</option><option value="pink">ชมพู</option><option value="blue">ฟ้า</option><option value="green">เขียว</option></select><label>รูปแบบ</label><select id="cardStyle"><option value="classic">คลาสสิก</option><option value="modern">โมเดิร์น</option></select><label>ข้อความบนการ์ด</label><input id="cardText" maxlength="80" placeholder="ข้อความบนการ์ด"><button class="action" data-task="savecard">บันทึกการ์ดเป็นภาพ</button></div></div>');
-}
-
 function popup(title,msg){
 document.getElementById('modal').innerHTML='<div class="overlay"><div class="dialog"><h3>'+title+'</h3><p>'+msg+'</p><button class="action" data-task="close">ตกลง</button></div></div>';
 }
 
 function goApp(name){
-if(name==='การ์ดแต่งงาน'){
-page=name;
-render();
-syncCard();
-return;
-}
+
 if(!save.unlock.includes(name)){
 popup('ยังไม่สามารถเปิดได้','สำรวจข้อมูลในแอปที่เปิดอยู่เพื่อเข้าถึงส่วนนี้');
 return;
@@ -834,10 +1009,7 @@ document.addEventListener('change',function(e){
 if(e.target.id==='cardColor')save.card.color=e.target.value;
 if(e.target.id==='cardStyle')save.card.style=e.target.value;
 persist();
-if(page==='การ์ดแต่งงาน'){
-render();
-syncCard();
-}
+
 });
 
 document.addEventListener('input',function(e){
@@ -877,17 +1049,12 @@ screen.addEventListener('touchend',e=>{
   }
 },{passive:true});
 
-
-let hold;
-document.addEventListener('pointerdown',e=>{
-if(e.target.closest('.greeting')){
-hold=setTimeout(()=>goApp('การ์ดแต่งงาน'),900);
-}
-});
-document.addEventListener('pointerup',()=>clearTimeout(hold));
-document.addEventListener('pointercancel',()=>clearTimeout(hold));
-
 render();
+
+setInterval(()=>{
+  if(page==='home')updateWeather();
+},600000);
+
 })();
 </script>
 </body>

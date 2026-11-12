@@ -478,43 +478,197 @@ button{cursor:pointer}
 }
 
 
-.line-home-preview{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px 6px;
-  padding:12px 14px 20px;
+.line-home-profile{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  padding:23px 19px 20px;
+  background:#fff;
+  border:0;
+  color:#191919;
+  text-align:left;
 }
 
-.line-home-person{
+.line-home-profile-name{
+  font-size:26px;
+  font-weight:700;
+}
+
+.line-home-profile-status{
+  margin-top:7px;
+  color:#999;
+  font-size:13px;
+}
+
+.line-home-profile-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.line-home-profile-right .line-avatar{
+  width:66px;
+  height:66px;
+}
+
+.line-home-story{
+  width:46px;
+  height:46px;
+  border:2px dashed #ddd;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#999;
+}
+
+.line-home-directory{
+  padding:12px 19px 18px;
+}
+
+.line-home-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 0 12px;
+  font-size:15px;
+}
+
+.line-home-heading button{
+  border:0;
+  background:none;
+  color:#999;
+  font-size:12px;
+}
+
+.line-directory-row{
+  display:flex;
+  align-items:center;
+  width:100%;
+  gap:13px;
+  padding:10px 0;
+  border:0;
+  background:#fff;
+  color:#191919;
+  text-align:left;
+}
+
+.line-directory-mosaic{
+  width:58px;
+  height:58px;
+  flex-shrink:0;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:2px;
+  overflow:hidden;
+  border-radius:50%;
+  background:#e8ebee;
+}
+
+.line-directory-mosaic > span{
+  display:grid;
+  place-items:center;
+}
+
+.line-directory-mosaic .ico{
+  width:16px;
+  height:16px;
+  color:#5c697c;
+}
+
+.line-directory-info{
+  flex:1;
   min-width:0;
+}
+
+.line-directory-info strong{
+  display:block;
+  font-size:15px;
+  font-weight:600;
+}
+
+.line-directory-info small{
+  display:block;
+  margin-top:5px;
+  font-size:12px;
+  color:#999;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.line-directory-count{
+  font-size:13px;
+  color:#999;
+}
+
+.line-directory-arrow{
+  font-size:24px;
+  color:#aaa;
+}
+
+.line-home-services{
+  padding:12px 19px 22px;
+}
+
+.line-home-service-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px 8px;
+  padding-top:12px;
+}
+
+.line-home-service{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:7px;
+  gap:9px;
+  padding:5px 0;
   border:0;
-  padding:0;
   background:transparent;
-  color:#191919;
-  font-size:12px;
-  cursor:pointer;
-}
-
-.line-home-person .line-avatar{
-  width:62px;
-  height:62px;
-}
-
-.line-home-person span{
-  display:block;
-  width:100%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  color:#333;
+  font-size:11px;
   text-align:center;
 }
 
-.line-home-person:active{
-  opacity:.65;
+.line-home-service .ico{
+  width:27px;
+  height:27px;
+}
+
+.line-home-themes{
+  padding:12px 19px 28px;
+}
+
+.line-home-theme-list{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding-top:10px;
+}
+
+.line-home-theme{
+  flex:0 0 125px;
+  height:150px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-size:12px;
+  color:#776d87;
+  background:#eee8f4;
+}
+
+.line-home-theme:nth-child(2){
+  background:#f7e7ed;
+  color:#ad788d;
+}
+
+.line-home-theme:nth-child(3){
+  background:#e4eef7;
+  color:#668ca7;
 }
 
 .line-section .line-iconbtn{
@@ -1108,85 +1262,127 @@ function renderLine(){
 
 
 if(lineTab==='home'){
-  const favoriteIds=['achi','duj'];
-  const favorites=linePeople.filter(p=>
-    favoriteIds.includes(p.id)
-  );
 
-  const homeTile=(id,name,type='profile')=>
-    '<button class="line-home-person" data-line-'+type+'="'+id+'">'+
-      lineAvatar(id)+
+  const mosaic=(ids)=>{
+    const colors={
+      achi:'#dce9e2',
+      duj:'#f1e1d9',
+      pai:'#e4def3',
+      rock:'#dce8f5',
+      office:'#dce8ee',
+      sales:'#e9e1f0'
+    };
+
+    return '<div class="line-directory-mosaic">'+
+      ids.map(id=>
+        '<span style="background:'+
+          (colors[id]||'#e5eaf1')+'">'+
+          lineIcon(
+            id==='office'||id==='sales'
+              ? 'group'
+              : 'user'
+          )+
+        '</span>'
+      ).join('')+
+    '</div>';
+  };
+
+  const directoryRow=(title,subtitle,count,ids,action)=>
+    '<button class="line-directory-row" data-line-action="'+action+'">'+
+      mosaic(ids)+
+      '<div class="line-directory-info">'+
+        '<strong>'+title+'</strong>'+
+        '<small>'+subtitle+'</small>'+
+      '</div>'+
+      '<span class="line-directory-count">'+count+'</span>'+
+      '<span class="line-directory-arrow">›</span>'+
+    '</button>';
+
+  const service=(name,svg,target)=>
+    '<button class="line-home-service" data-line-service="'+target+'">'+
+      svg+
       '<span>'+name+'</span>'+
     '</button>';
 
-  const section=(title,action,items)=>
-    '<div class="line-section">'+
-      '<span>'+title+'</span>'+
-      '<button class="line-iconbtn" data-line-action="'+action+
-      '" aria-label="ดูทั้งหมด">'+lineIcon('back')+'</button>'+
-    '</div>'+
-    '<div class="line-home-preview">'+items+'</div>';
-
   content=
-    lineHeader('หน้าหลัก',
-      lineButton('plus','plus','เพิ่มเพื่อน')+
-      lineButton('settings','settings','ตั้งค่า')
-    )+
-
-    '<button class="line-profile" data-line-action="myprofile">'+
-      '<div class="line-avatar large">'+lineIcon('user')+'</div>'+
-      '<div class="line-row-body">'+
-        '<div class="line-name">การันต์</div>'+
-        '<div class="line-sub">โปรไฟล์ของฉัน</div>'+
+    '<div class="line-top">'+
+      '<div class="line-title"></div>'+
+      '<div class="line-actions">'+
+        lineButton('plus','plus','เพิ่มเพื่อน')+
+        lineButton('settings','settings','ตั้งค่า')+
       '</div>'+
-      lineIcon('back')+
+    '</div>'+
+
+    '<button class="line-home-profile" data-line-action="myprofile">'+
+      '<div>'+
+        '<div class="line-home-profile-name">การันต์</div>'+
+        '<div class="line-home-profile-status">พร้อมทำงาน</div>'+
+      '</div>'+
+      '<div class="line-home-profile-right">'+
+        '<span class="line-home-story">'+lineIcon('plus')+'</span>'+
+        lineAvatar()+
+      '</div>'+
     '</button>'+
 
     lineSearchHTML()+
 
-    section(
-      'รายการโปรด',
-      'friends',
-      favorites.map(p=>
-        homeTile(p.id,p.name)
-      ).join('')
-    )+
+    '<div class="line-home-directory">'+
+      '<div class="line-home-heading">'+
+        '<b>รายชื่อเพื่อน</b>'+
+        '<button data-line-action="friends">ดูทั้งหมด</button>'+
+      '</div>'+
+
+      directoryRow(
+        'รายการโปรด',
+        'ยังไม่ได้กำหนดรายการโปรด',
+        '0',
+        ['','','',''],
+        'favorites'
+      )+
+
+      directoryRow(
+        'เพื่อน',
+        linePeople.map(p=>p.name).join(', '),
+        String(linePeople.length),
+        ['achi','duj','pai','rock'],
+        'friends'
+      )+
+
+      directoryRow(
+        'กลุ่ม',
+        lineGroups.map(g=>g.name).join(', '),
+        String(lineGroups.length),
+        ['office','sales','office','sales'],
+        'groups'
+      )+
+    '</div>'+
 
     '<div class="line-divider"></div>'+
 
-    section(
-      'เพื่อน ('+linePeople.length+')',
-      'friends',
-      linePeople.slice(0,4).map(p=>
-        homeTile(p.id,p.name)
-      ).join('')
-    )+
+    '<div class="line-home-services">'+
+      '<div class="line-home-heading"><b>บริการ</b></div>'+
+      '<div class="line-home-service-grid">'+
+
+        service('LINE Premium',lineIcon('wallet'),'wallet')+
+        service('สติกเกอร์',lineIcon('chat'),'openchat')+
+        service('LINE SHOPPING',icon('bag'),'wallet')+
+        service('ร้านเมโลดี้',lineIcon('news'),'today')+
+        service('LINE GIFT',icon('bag'),'wallet')+
+        service('บัญชีทางการ',lineIcon('group'),'openchat')+
+
+      '</div>'+
+    '</div>'+
 
     '<div class="line-divider"></div>'+
 
-    section(
-      'กลุ่ม ('+lineGroups.length+')',
-      'groups',
-      lineGroups.slice(0,4).map(g=>
-        homeTile(g.id,g.name,'group')
-      ).join('')
-    )+
-
-    '<div class="line-divider"></div>'+
-
-    '<div class="line-section">บริการ</div>'+
-    lineRow(
-      'openchat',
-      'OpenChat',
-      'ค้นหาคอมมูนิตี้',
-      'service'
-    )+
-    lineRow(
-      'wallet',
-      'Wallet',
-      'บริการกระเป๋าเงิน',
-      'service'
-    );
+    '<div class="line-home-themes">'+
+      '<div class="line-home-heading"><b>ธีมแนะนำ</b></div>'+
+      '<div class="line-home-theme-list">'+
+        '<div class="line-home-theme">LINE THEME</div>'+
+        '<div class="line-home-theme">SOFT PINK</div>'+
+        '<div class="line-home-theme">BLUE DAY</div>'+
+      '</div>'+
+    '</div>';
 }
 
   else if(lineTab==='chats'){
@@ -1616,6 +1812,14 @@ if(lj && page==='LINE'){
 
 if(la && page==='LINE'){
   const action=la.dataset.lineAction;
+
+  if(action==='favorites'){
+    popup(
+      'รายการโปรด',
+      'ยังไม่ได้กำหนดรายชื่อเพื่อนในรายการโปรด'
+    );
+    return;
+  }
 
   if(action==='friends'){
     lineTab='chats';

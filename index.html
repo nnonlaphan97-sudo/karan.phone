@@ -826,16 +826,6 @@ b+=bubble('การันต์: ขอบคุณครับ รบกวน
 return appwrap(names[chat],'<div class="conversation">'+b+'</div>'+(choices?'<div class="choices"><div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+choices+'</div>':''));
 }
 
-function renderCard(){
-const colors={
-ivory:['#f7efe3','#6d5846'],
-pink:['#f9e8ee','#87596a'],
-blue:['#e7eff9','#526f91'],
-green:['#eaf0e7','#566d5b']
-};
-const c=colors[save.card.color]||colors.ivory;
-
-function popup(title,msg){
 document.getElementById('modal').innerHTML='<div class="overlay"><div class="dialog"><h3>'+title+'</h3><p>'+msg+'</p><button class="action" data-task="close">ตกลง</button></div></div>';
 }
 

@@ -279,42 +279,55 @@ button{cursor:pointer}
   color:#fff;
 }
 
+
 .home-weather{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:18px;
   width:100%;
   color:#fff;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  padding:0;
   text-align:left;
 }
 
 .home-weather-icon{
-  width:65px;
-  height:65px;
+  width:100px;
+  height:100px;
   flex-shrink:0;
+}
+
+.home-weather-icon svg{
+  width:100%;
+  height:100%;
 }
 
 .home-weather-info{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
+  min-width:0;
+  gap:4px;
 }
 
 .home-weather-temp{
-  font-size:43px;
-  font-weight:700;
-  line-height:1.1;
+  font-size:54px;
+  font-weight:600;
+  line-height:1;
+  letter-spacing:-2px;
 }
 
 .home-weather-desc{
-  margin-top:3px;
-  font-size:13px;
+  font-size:14px;
+  margin:0;
 }
 
 .home-weather-location{
-  margin-top:4px;
   font-size:12px;
-  opacity:.8;
+  opacity:.85;
+  margin:0;
 }
 
 .home .appgrid{
@@ -703,19 +716,21 @@ else if(page==='home'){
 html=`
 <div class="home">
 
+
 <div class="home-weather">
 
   <div class="home-weather-icon" id="weatherIcon">
-    <svg viewBox="0 0 64 64" fill="none">
-      <circle cx="25" cy="23" r="11" fill="#FFD76A"/>
-      <path d="M18 48H47C54 48 58 44 58 38C58 32 53 28 47 28C45 19 38 15 31 17C24 18 20 23 19 29C12 28 7 33 7 39C7 45 12 48 18 48Z" fill="#F4F6FF"/>
-    </svg>
+    ${weatherSVG(2,true)}
   </div>
 
   <div class="home-weather-info">
     <div class="home-weather-temp" id="weatherTemp">--°</div>
-    <div class="home-weather-desc" id="weatherDesc">กำลังโหลดสภาพอากาศ...</div>
-    <div class="home-weather-location">บางแค กรุงเทพฯ</div>
+    <div class="home-weather-desc" id="weatherDesc">
+      กำลังโหลดสภาพอากาศ...
+    </div>
+    <div class="home-weather-location">
+      บางแค กรุงเทพฯ
+    </div>
   </div>
 
 </div>

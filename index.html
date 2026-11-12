@@ -102,6 +102,7 @@ button{cursor:pointer}
   z-index:2;
 }
 
+
 .pill{
   border:1px solid #ffffff80;
   background:#ffffff18;
@@ -109,6 +110,86 @@ button{cursor:pointer}
   padding:12px 25px;
   border-radius:28px;
 }
+
+/* หน้าใส่รหัส PIN */
+.pin-screen{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  color:#fff;
+  background:linear-gradient(160deg,#655779,#9b87ad 55%,#c3b5d0);
+  padding-top:clamp(65px,12vh,115px);
+}
+
+.pin-title{
+  font-size:18px;
+  font-weight:500;
+  margin-bottom:23px;
+}
+
+.pin-dots{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-bottom:35px;
+}
+
+.pin-dot{
+  width:12px;
+  height:12px;
+  border:1.5px solid #fff;
+  border-radius:50%;
+  background:transparent;
+}
+
+.pin-dot.filled{
+  background:#fff;
+}
+
+.pin-keypad{
+  display:grid;
+  grid-template-columns:repeat(3,72px);
+  justify-content:center;
+  gap:13px 20px;
+}
+
+.pin-key{
+  width:72px;
+  height:72px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.16);
+  color:#fff;
+  font-size:29px;
+  font-weight:400;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.pin-key:active{
+  background:rgba(255,255,255,.35);
+}
+
+.pin-action{
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:14px;
+  padding:12px 0;
+}
+
+.pin-bottom{
+  width:256px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:17px;
+}
+
 
 .lock-notification{
   position:absolute;
@@ -356,6 +437,8 @@ card:{...save.card,...old.card}
 }catch(e){}
 
 let page='lock',chat='';
+let pinInput='';
+const PHONE_PIN='1906';
 const screen=document.getElementById('screen');
 
 function persist(){
@@ -396,7 +479,47 @@ html=`
 `;
 }
 
+
+else if(page==='pin'){
+html=`
+<div class="pin-screen">
+
+  <div class="pin-title">ป้อนรหัส PIN</div>
+
+  <div class="pin-dots">
+    ${Array.from({length:4},(_,i)=>
+      `<span class="pin-dot ${i<pinInput.length?'filled':''}"></span>`
+    ).join('')}
+  </div>
+
+  <div class="pin-keypad">
+    ${[1,2,3,4,5,6,7,8,9].map(n=>
+      `<button class="pin-key" data-pin="${n}">${n}</button>`
+    ).join('')}
+  </div>
+
+  <button class="pin-key"
+          data-pin="0"
+          style="margin-top:13px">
+    0
+  </button>
+
+  <div class="pin-bottom">
+    <button class="pin-action" data-pin-action="cancel">
+      ยกเลิก
+    </button>
+
+    <button class="pin-action" data-pin-action="delete">
+      ลบ
+    </button>
+  </div>
+
+</div>
+`;
+}
+
 else if(page==='home'){
+
 html='<div class="home"><div class="greeting">Karan’s Phone</div><div class="sub">เรื่องราวที่เก็บไว้ในโทรศัพท์เครื่องนี้</div><div class="appgrid">'+appdefs.map(a=>{
 const open=save.unlock.includes(a[0]);
 return '<button class="appitem" data-app="'+a[0]+'"><span class="appicon '+(open?'':'locked')+'" style="'+(open?'background:'+a[2]:'')+'">'+icon(open?a[1]:'lock')+'</span><span>'+a[0]+'</span></button>';
@@ -579,9 +702,52 @@ link.href=c.toDataURL('image/png');
 link.click();
 }
 
+
 document.addEventListener('click',function(e){
+
+const pinBtn=e.target.closest('[data-pin],[data-pin-action]');
+
+if(pinBtn && page==='pin'){
+
+  if(pinBtn.dataset.pinAction==='cancel'){
+    pinInput='';
+    page='lock';
+    render();
+    return;
+  }
+
+  if(pinBtn.dataset.pinAction==='delete'){
+    pinInput=pinInput.slice(0,-1);
+    render();
+    return;
+  }
+
+  if(pinBtn.dataset.pin!==undefined){
+
+    if(pinInput.length>=4)return;
+
+    pinInput+=pinBtn.dataset.pin;
+
+    if(pinInput.length===4){
+
+      if(pinInput===PHONE_PIN){
+        pinInput='';
+        page='home';
+      }else{
+        pinInput='';
+        alert('รหัส PIN ไม่ถูกต้อง');
+      }
+
+    }
+
+    render();
+    return;
+  }
+}
+
 const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-task]');
 if(!btn)return;
+
 
 if(btn.dataset.go){
 page=btn.dataset.go;
@@ -659,22 +825,35 @@ document.getElementById('cardPhrase').textContent=e.target.value;
 }
 });
 
+
 document.getElementById('nav').addEventListener('click',function(){
-page='home';
-render();
+  if(page==='lock'){
+    pinInput='';
+    page='pin';
+  }else if(page==='pin'){
+    return;
+  }else{
+    page='home';
+  }
+  render();
 });
 
 let touchY=0;
+
 screen.addEventListener('touchstart',e=>{
-touchY=e.touches[0].clientY;
+  touchY=e.touches[0].clientY;
 },{passive:true});
 
 screen.addEventListener('touchend',e=>{
-if(page==='lock'&&touchY-e.changedTouches[0].clientY>45){
-page='home';
-render();
-}
+  if(page==='lock' &&
+     touchY-e.changedTouches[0].clientY>45){
+
+    pinInput='';
+    page='pin';
+    render();
+  }
 },{passive:true});
+
 
 let hold;
 document.addEventListener('pointerdown',e=>{

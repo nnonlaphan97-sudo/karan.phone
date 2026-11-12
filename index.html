@@ -811,30 +811,204 @@ button{cursor:pointer}
   padding:35px 20px;text-align:center;
   color:#92969d;font-size:13px;line-height:1.8;
 }
+
+/* ===== LINE CHAT SCREEN ===== */
+
 .line-chatpage{
-  min-height:100%;background:#d8e1ee;
-  padding-top:36px;padding-bottom:90px;
+  position:relative;
+  height:100dvh;
+  padding-top:36px;
+  background:#d3d9e6;
+  color:#171717;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
+
 .line-chathead{
-  height:55px;background:#fff;display:flex;
-  align-items:center;gap:12px;padding:0 13px;
+  height:59px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 12px;
+  background:rgba(211,217,230,.96);
+  color:#111;
+  z-index:5;
 }
-.line-chathead b{flex:1;font-size:17px}
-.line-chathead button{border:0;background:none;color:#222}
-.line-chatbody{padding:14px 13px}
-.line-replies{
-  background:#fff;padding:12px;
-  border-top:1px solid #eee;
+
+.line-chathead b{
+  flex:1;
+  min-width:0;
+  font-size:18px;
+  font-weight:700;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
+
+.line-chathead button{
+  border:0;
+  background:transparent;
+  color:#111;
+  padding:6px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.line-chathead .ico{
+  width:23px;
+  height:23px;
+}
+
+.line-chatbody{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:14px 12px 22px;
+  scrollbar-width:none;
+}
+
+.line-chatbody::-webkit-scrollbar{
+  display:none;
+}
+
+.line-chatpage .day{
+  text-align:center;
+  font-size:11px;
+  color:#606878;
+  margin:9px 0 20px;
+}
+
+.line-message{
+  display:flex;
+  align-items:flex-end;
+  gap:6px;
+  margin:10px 0;
+  width:100%;
+}
+
+.line-message.received{
+  justify-content:flex-start;
+}
+
+.line-message.sent{
+  justify-content:flex-end;
+}
+
+.line-message-avatar{
+  width:31px;
+  height:31px;
+  flex-shrink:0;
+  align-self:flex-start;
+}
+
+.line-message-avatar .line-avatar{
+  width:31px;
+  height:31px;
+}
+
+.line-message-avatar .ico{
+  width:18px;
+  height:18px;
+}
+
+.line-chatpage .bubble{
+  position:relative;
+  width:fit-content;
+  max-width:72%;
+  padding:10px 13px;
+  margin:0;
+  border-radius:17px;
+  font-size:15px;
+  line-height:1.5;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.line-chatpage .incoming{
+  background:#292929;
+  color:#fff;
+  border-top-left-radius:5px;
+}
+
+.line-chatpage .outgoing{
+  background:#67e56e;
+  color:#111;
+  border-top-right-radius:5px;
+}
+
+.line-message-meta{
+  font-size:10px;
+  line-height:1.35;
+  color:#535967;
+  white-space:nowrap;
+  flex-shrink:0;
+  text-align:right;
+  padding-bottom:3px;
+}
+
+.line-chatpage .line-replies{
+  flex-shrink:0;
+  max-height:42%;
+  overflow-y:auto;
+  background:#f7f8fa;
+  padding:10px 12px;
+  border-top:1px solid #e1e4eb;
+}
+
+.line-chatpage .choice{
+  border-radius:12px;
+  background:#fff;
+  color:#252525;
+  border:1px solid #dce1e8;
+  padding:10px 12px;
+}
+
 .line-compose{
-  display:flex;align-items:center;gap:9px;
-  background:#fff;padding:10px 12px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-height:65px;
+  padding:8px 12px 24px;
+  background:#171717;
+  color:#eee;
 }
+
+.line-compose button{
+  border:0;
+  background:transparent;
+  color:#ddd;
+  padding:2px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.line-compose .ico{
+  width:23px;
+  height:23px;
+}
+
 .line-compose input{
-  flex:1;min-width:0;padding:10px;
-  border:1px solid #e4e6e9;border-radius:20px;
-  background:#f8f9fa;color:#222;
+  flex:1;
+  min-width:0;
+  height:37px;
+  border:1px solid #353535;
+  border-radius:24px;
+  padding:0 12px;
+  background:#252525;
+  color:#fff;
+  outline:0;
+  font-size:14px;
 }
+
+.line-compose input::placeholder{
+  color:#888;
+}
+
 .line-home-preview{
   display:flex;
   align-items:center;
@@ -1831,8 +2005,28 @@ if(page==='home'){
 }
 }
 
+
 function bubble(text,out){
-return '<div class="bubble '+(out?'outgoing':'incoming')+'">'+text+'</div>';
+  const avatar=out
+    ? ''
+    : '<div class="line-message-avatar">'+
+        lineAvatar(chat)+
+      '</div>';
+
+  const meta=out
+    ? '<div class="line-message-meta">อ่านแล้ว<br>18:00</div>'
+    : '<div class="line-message-meta">18:00</div>';
+
+  const message=
+    '<div class="bubble '+(out?'outgoing':'incoming')+'">'+
+      text+
+    '</div>';
+
+  return '<div class="line-message '+(out?'sent':'received')+'">'+
+    (out
+      ? meta+message
+      : avatar+message+meta)+
+  '</div>';
 }
 
 function renderChat(){
@@ -1889,18 +2083,77 @@ b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลู�
 b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
 }
 
+
+const chatIcon=(type)=>{
+  const shapes={
+    clock:'<circle cx="11" cy="11" r="8"/><path d="M11 6v5l4 3M17 17l5 5"/>',
+    menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+    plus:'<path d="M12 3v18M3 12h18"/>',
+    camera:'<path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/>',
+    image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1"/><path d="m4 18 6-6 4 4 3-3 4 4"/>',
+    mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',
+    smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14q4 5 8 0"/><path d="M8 9h.01M16 9h.01"/>'
+  };
+
+  return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
+    shapes[type]+
+  '</svg>';
+};
+
 return '<div class="line-chatpage">'+
+
   '<div class="line-chathead">'+
-  '<button data-go="LINE">'+lineIcon('back')+'</button>'+
-  '<b>'+names[chat]+'</b>'+
-  '<button data-line-call="1" aria-label="โทร">'+lineIcon('call')+'</button>'+
+    '<button data-go="LINE" aria-label="ย้อนกลับ">'+
+      lineIcon('back')+
+    '</button>'+
+    '<b>'+names[chat]+'</b>'+
+    '<button data-chat-tool="search" aria-label="ค้นหา">'+
+      chatIcon('clock')+
+    '</button>'+
+    '<button data-line-call="1" aria-label="โทร">'+
+      lineIcon('call')+
+    '</button>'+
+    '<button data-chat-tool="calendar" aria-label="ปฏิทิน">'+
+      lineIcon('calendar')+
+    '</button>'+
+    '<button data-chat-tool="menu" aria-label="เมนู">'+
+      chatIcon('menu')+
+    '</button>'+
   '</div>'+
-  '<div class="line-chatbody">'+b+'</div>'+
-  (choices?
-    '<div class="line-replies"><div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+
-    choices+'</div>':'')+
-  '</div>';
+
+  '<div class="line-chatbody" id="lineChatBody">'+
+    b+
+  '</div>'+
+
+  (choices
+    ? '<div class="line-replies">'+
+        '<div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+
+        choices+
+      '</div>'
+    : '')+
+
+  '<div class="line-compose">'+
+    '<button data-chat-tool="plus" aria-label="เพิ่มเติม">'+
+      chatIcon('plus')+
+    '</button>'+
+    '<button data-chat-tool="camera" aria-label="กล้อง">'+
+      chatIcon('camera')+
+    '</button>'+
+    '<button data-chat-tool="image" aria-label="รูปภาพ">'+
+      chatIcon('image')+
+    '</button>'+
+    '<input placeholder="Aa" aria-label="พิมพ์ข้อความ" readonly>'+
+    '<button data-chat-tool="smile" aria-label="สติกเกอร์">'+
+      chatIcon('smile')+
+    '</button>'+
+    '<button data-chat-tool="mic" aria-label="ไมโครโฟน">'+
+      chatIcon('mic')+
+    '</button>'+
+  '</div>'+
+
+'</div>';
 }
+
 function popup(title,msg){
   document.getElementById('modal').innerHTML=
     '<div class="overlay"><div class="dialog"><h3>'+

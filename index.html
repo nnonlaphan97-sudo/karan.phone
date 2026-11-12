@@ -34,6 +34,19 @@ button{cursor:pointer}
 #phone:has(.lock) .nav span{background:rgba(255,255,255,.4)}
 .status{height:36px;padding:9px 10px 0 22px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#4b3652;background:transparent}
 
+.camera{
+  position:absolute;
+  z-index:30;
+  top:12px;
+  left:calc(50% - 6px);
+  width:12px;
+  height:12px;
+  background:#081322;
+  border:2px solid #23374e;
+  border-radius:50%;
+  pointer-events:none;
+}
+
 .status .right{
   display:flex;
   align-items:center;
@@ -489,20 +502,20 @@ const key='karan_phone_v2';
 let save={
 unlock:['LINE'],
 flags:{},
-replies:{},
-card:{color:'ivory',style:'classic',text:'Together, always.'}
+replies:{}
 };
 
 try{
-const old=JSON.parse(localStorage.getItem(key));
-if(old){
-save={
-...save,...old,
-flags:old.flags||{},
-replies:old.replies||{},
-card:{...save.card,...old.card}
-};
-}
+  const old=JSON.parse(localStorage.getItem(key));
+  if(old){
+    save={
+      ...save,
+      ...old,
+      flags:old.flags||{},
+      replies:old.replies||{}
+    };
+    delete save.card;
+  }
 }catch(e){}
 
 let page='lock',chat='';
@@ -843,58 +856,6 @@ page=name;
 render();
 }
 
-function syncCard(){
-const a=document.getElementById('cardColor');
-const b=document.getElementById('cardStyle');
-const c=document.getElementById('cardText');
-const p=document.getElementById('cardPhrase');
-if(a){
-a.value=save.card.color;
-b.value=save.card.style;
-c.value=save.card.text;
-p.textContent=save.card.text;
-}
-}
-
-function saveCard(){
-const c=document.createElement('canvas');
-c.width=900;
-c.height=1200;
-const x=c.getContext('2d');
-const colors={
-ivory:['#f7efe3','#6d5846'],
-pink:['#f9e8ee','#87596a'],
-blue:['#e7eff9','#526f91'],
-green:['#eaf0e7','#566d5b']
-};
-const t=colors[save.card.color]||colors.ivory;
-x.fillStyle=t[0];
-x.fillRect(0,0,900,1200);
-x.strokeStyle=t[1];
-x.lineWidth=3;
-x.strokeRect(35,35,830,1130);
-x.fillStyle=t[1];
-x.textAlign='center';
-x.font='26px Georgia';
-x.fillText('THE WEDDING OF',450,285);
-x.font='95px Georgia';
-x.fillText('Karan',450,470);
-x.font='60px Georgia';
-x.fillText('&',450,570);
-x.font='95px Georgia';
-x.fillText('Achi',450,690);
-x.font='32px Georgia';
-x.fillText('19 JUNE',450,820);
-x.font='26px Arial';
-x.fillText(save.card.text.slice(0,48),450,920);
-
-const link=document.createElement('a');
-link.download='Karan-Achi-Wedding.png';
-link.href=c.toDataURL('image/png');
-link.click();
-}
-
-
 document.addEventListener('click',function(e){
 
 const pinBtn=e.target.closest('[data-pin],[data-pin-action]');
@@ -993,27 +954,8 @@ if(task==='dinner'){
 unlock('โน้ต');
 popup('รายการอาหาร','จัดส่งเรียบร้อยแล้ว มีข้อมูลเพิ่มเติมในโน้ต');
 }
-if(task==='savecard'){
-saveCard();
-}
 }
 });
-
-document.addEventListener('change',function(e){
-if(e.target.id==='cardColor')save.card.color=e.target.value;
-if(e.target.id==='cardStyle')save.card.style=e.target.value;
-persist();
-
-});
-
-document.addEventListener('input',function(e){
-if(e.target.id==='cardText'){
-save.card.text=e.target.value;
-persist();
-document.getElementById('cardPhrase').textContent=e.target.value;
-}
-});
-
 
 document.getElementById('nav').addEventListener('click',function(){
   if(page==='lock'){

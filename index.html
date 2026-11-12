@@ -425,9 +425,25 @@ button{cursor:pointer}
   background:transparent;color:#222;font-size:14px;
 }
 .line-profile{
-  display:flex;align-items:center;gap:14px;
-  padding:17px 19px;cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  padding:17px 19px;
+  background:#fff;
+  border:0;
+  color:#191919;
+  text-align:left;
+  cursor:pointer;
 }
+
+.line-profile > .ico:last-child{
+  transform:rotate(180deg);
+  color:#999;
+  width:19px;
+  height:19px;
+}
+
 .line-avatar{
   width:52px;height:52px;border-radius:50%;
   display:grid;place-items:center;
@@ -456,7 +472,55 @@ button{cursor:pointer}
   overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
 }
 .line-time{font-size:11px;color:#a4a7ad;align-self:flex-start}
-.line-divider{height:8px;background:#f5f6f7}
+.line-divider{
+  height:8px;
+  background:#f5f6f7;
+}
+
+
+.line-home-preview{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px 6px;
+  padding:12px 14px 20px;
+}
+
+.line-home-person{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:#191919;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.line-home-person .line-avatar{
+  width:62px;
+  height:62px;
+}
+
+.line-home-person span{
+  display:block;
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:center;
+}
+
+.line-home-person:active{
+  opacity:.65;
+}
+
+.line-section .line-iconbtn{
+  transform:rotate(180deg);
+}
+
 .line-chat-toolbar{
   display:flex;
   align-items:center;
@@ -1042,24 +1106,88 @@ function lineChatsHTML(){
 function renderLine(){
   let content='';
 
-  if(lineTab==='home'){
-    content=
-      lineHeader('หน้าหลัก',
-        lineButton('settings','settings','ตั้งค่า'))+
-      '<button class="line-profile" data-line-action="myprofile">'+
+
+if(lineTab==='home'){
+  const favoriteIds=['achi','duj'];
+  const favorites=linePeople.filter(p=>
+    favoriteIds.includes(p.id)
+  );
+
+  const homeTile=(id,name,type='profile')=>
+    '<button class="line-home-person" data-line-'+type+'="'+id+'">'+
+      lineAvatar(id)+
+      '<span>'+name+'</span>'+
+    '</button>';
+
+  const section=(title,action,items)=>
+    '<div class="line-section">'+
+      '<span>'+title+'</span>'+
+      '<button class="line-iconbtn" data-line-action="'+action+
+      '" aria-label="ดูทั้งหมด">'+lineIcon('back')+'</button>'+
+    '</div>'+
+    '<div class="line-home-preview">'+items+'</div>';
+
+  content=
+    lineHeader('หน้าหลัก',
+      lineButton('plus','plus','เพิ่มเพื่อน')+
+      lineButton('settings','settings','ตั้งค่า')
+    )+
+
+    '<button class="line-profile" data-line-action="myprofile">'+
       '<div class="line-avatar large">'+lineIcon('user')+'</div>'+
-      '<div><div class="line-name">การันต์</div>'+
-      '<div class="line-sub">โปรไฟล์ของฉัน</div></div></button>'+
-      lineSearchHTML()+
-      '<div class="line-section">เพื่อน</div>'+
-      linePeople.slice(0,3).map(p=>lineRow(p.id,p.name,p.status)).join('')+
-      '<div class="line-section">กลุ่ม</div>'+
-      lineGroups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('')+
-      '<div class="line-divider"></div>'+
-      '<div class="line-section">บริการ</div>'+
-      lineRow('openchat','OpenChat','ค้นหาคอมมูนิตี้','service')+
-      lineRow('wallet','Wallet','บริการกระเป๋าเงิน','service');
-  }
+      '<div class="line-row-body">'+
+        '<div class="line-name">การันต์</div>'+
+        '<div class="line-sub">โปรไฟล์ของฉัน</div>'+
+      '</div>'+
+      lineIcon('back')+
+    '</button>'+
+
+    lineSearchHTML()+
+
+    section(
+      'รายการโปรด',
+      'friends',
+      favorites.map(p=>
+        homeTile(p.id,p.name)
+      ).join('')
+    )+
+
+    '<div class="line-divider"></div>'+
+
+    section(
+      'เพื่อน ('+linePeople.length+')',
+      'friends',
+      linePeople.slice(0,4).map(p=>
+        homeTile(p.id,p.name)
+      ).join('')
+    )+
+
+    '<div class="line-divider"></div>'+
+
+    section(
+      'กลุ่ม ('+lineGroups.length+')',
+      'groups',
+      lineGroups.slice(0,4).map(g=>
+        homeTile(g.id,g.name,'group')
+      ).join('')
+    )+
+
+    '<div class="line-divider"></div>'+
+
+    '<div class="line-section">บริการ</div>'+
+    lineRow(
+      'openchat',
+      'OpenChat',
+      'ค้นหาคอมมูนิตี้',
+      'service'
+    )+
+    lineRow(
+      'wallet',
+      'Wallet',
+      'บริการกระเป๋าเงิน',
+      'service'
+    );
+}
 
   else if(lineTab==='chats'){
   content=

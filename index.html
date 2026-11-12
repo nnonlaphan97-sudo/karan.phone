@@ -1039,7 +1039,12 @@ screen.addEventListener('touchend',e=>{
   }
 },{passive:true});
 
-render();
+try {
+  render();
+} catch(error) {
+  console.error('Render error:', error);
+  alert('เกิดข้อผิดพลาด: ' + error.message);
+}
 
 setInterval(()=>{
   if(page==='home')updateWeather();

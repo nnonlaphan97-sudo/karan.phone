@@ -13,9 +13,8 @@ button{cursor:pointer}
 #phone{position:relative;width:100%;max-width:440px;height:100dvh;min-height:550px;margin:auto;overflow:hidden;background:linear-gradient(155deg,#1c304e,#354d75 63%,#8798b5)}
 #phone:has(.lock){background:#e9ebf9}
 #phone:has(.lock) .status{color:#4b3652}
-#phone:has(.lock) .nav span{background:#fff}.camera{position:absolute;z-index:30;top:12px;left:calc(50% - 6px);height:12px;width:12px;background:#081322;border:2px solid #23374e;border-radius:50%;pointer-events:none}
-.status{height:36px;padding:9px 18px 0;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#4b3652;background:transparent}
-
+#phone:has(.lock) .nav span{background:rgba(255,255,255,.4)}
+.status{height:36px;padding:9px 10px 0 22px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#4b3652;background:transparent}
 
 .status .right{
   display:flex;
@@ -392,12 +391,8 @@ html=`
      alt="">
 
   <div class="date">วันพุธที่ 11 พฤศจิกายน</div>
-
   <div class="clock">21:36</div>
-
-  <div class="hint">
-    ปัดขึ้นเพื่อปลดล็อก
-  </div>
+  
 </div>
 `;
 }

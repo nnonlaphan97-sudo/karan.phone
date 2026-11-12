@@ -31,8 +31,7 @@ button{cursor:pointer}
 }
 #phone:has(.lock){background:#e9ebf9}
 #phone:has(.lock) .status{color:#4b3652}
-#phone:has(.lock) .nav span{background:rgba(255,255,255,.4)}
-.status{height:36px;padding:9px 10px 0 22px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#4b3652;background:transparent}
+#phone:has(.lock) .nav span{background:rgba(255,255,255,.2)}.status{height:36px;padding:9px 10px 0 22px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:20;font-size:13px;font-weight:600;color:#4b3652;background:transparent}
 
 .camera{
   position:absolute;
@@ -74,8 +73,8 @@ button{cursor:pointer}
 }
 
 .screen::-webkit-scrollbar{display:none}
-.nav{position:absolute;bottom:0;left:0;width:100%;height:22px;z-index:40;display:flex;align-items:center;justify-content:center;background:transparent}.nav span{width:105px;height:4px;background:#f6f8fd;border-radius:5px}
-
+.nav{position:absolute;bottom:0;left:0;width:100%;height:22px;z-index:40;display:flex;align-items:center;justify-content:center;background:transparent}
+.nav span{width:105px;height:4px;background:rgba(246,248,253,.35);border-radius:5px}
 .lock{
   position:relative;
   height:100%;
@@ -319,7 +318,7 @@ button{cursor:pointer}
 }
 
 .home .appgrid{
-  margin-top:100px;
+  margin-top:70px;
 }
 
 .appgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px 8px}

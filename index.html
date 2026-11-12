@@ -463,7 +463,13 @@ button{cursor:pointer}
   border-bottom:2px solid #191919;
 }
 .line-bottom{
-  position:absolute;bottom:22px;left:0;right:0;
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:440px;
+  
   height:64px;display:flex;align-items:center;
   justify-content:space-around;
   background:#fff;border-top:1px solid #ededed;
@@ -1258,7 +1264,7 @@ return '<div class="line-chatpage">'+
     '<div class="line-replies"><div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+
     choices+'</div>':'')+
   '</div>';
-
+}
 function popup(title,msg){
   document.getElementById('modal').innerHTML=
     '<div class="overlay"><div class="dialog"><h3>'+
@@ -1353,6 +1359,13 @@ if(lj && page==='LINE'){
 if(la && page==='LINE'){
   const action=la.dataset.lineAction;
 
+  if(action==='friends'){
+    lineTab='chats';
+    lineSubtab='friends';
+    render();
+    return;
+  }
+
   if(action==='call'){
     popup('โทรผ่าน LINE','การโทรเป็นระบบจำลอง ยังไม่เชื่อมกับ LINE จริง');
     return;
@@ -1419,11 +1432,18 @@ if(pinBtn && page==='pin'){
 const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-task]');
 if(!btn)return;
 
-
 if(btn.dataset.go){
-page=btn.dataset.go;
-render();
+  page=btn.dataset.go;
+
+  if(page==='LINE'){
+    lineTab='chats';
+    lineSubtab='chats';
+    lineSearch='';
+  }
+
+  render();
 }
+
 else if(btn.dataset.app){
 goApp(btn.dataset.app);
 }

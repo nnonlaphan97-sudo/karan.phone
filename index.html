@@ -388,12 +388,25 @@ button{cursor:pointer}
 /* ===== LINE 2026 ===== */
 .line-app{
   position:relative;
-  min-height:100%;
+  height:100%;
+  min-height:0;
   background:#fff;
   color:#191919;
   padding-top:36px;
-  padding-bottom:100px;
+  overflow:hidden;
 }
+
+.line-scroll{
+  height:100%;
+  overflow-y:auto;
+  padding-bottom:105px;
+  scrollbar-width:none;
+}
+
+.line-scroll::-webkit-scrollbar{
+  display:none;
+}
+
 .line-top{
   display:flex;
   align-items:center;
@@ -822,6 +835,105 @@ button{cursor:pointer}
   border:1px solid #e4e6e9;border-radius:20px;
   background:#f8f9fa;color:#222;
 }
+.line-home-preview{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:8px 19px 16px;
+}
+
+.line-home-person{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:#191919;
+  text-align:left;
+}
+
+.line-home-person .line-avatar{
+  width:54px;
+  height:54px;
+}
+
+.line-home-person span{
+  font-size:14px;
+}
+
+.line-directory-head{
+  display:grid;
+  grid-template-columns:50px 1fr 50px;
+  align-items:center;
+  padding:13px 16px 17px;
+}
+
+.line-directory-head strong{
+  text-align:center;
+  font-size:20px;
+}
+
+.line-directory-back{
+  width:43px;
+  height:43px;
+  border:0;
+  border-radius:50%;
+  background:#f1f1f1;
+  color:#191919;
+  display:grid;
+  place-items:center;
+}
+
+.line-directory-tabs{
+  display:flex;
+  gap:22px;
+  overflow-x:auto;
+  white-space:nowrap;
+  padding:12px 17px 0;
+  border-bottom:1px solid #eee;
+  scrollbar-width:none;
+}
+
+.line-directory-tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.line-directory-tabs button{
+  flex-shrink:0;
+  border:0;
+  border-bottom:3px solid transparent;
+  background:transparent;
+  color:#999;
+  padding:10px 0 13px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.line-directory-tabs button.active{
+  color:#191919;
+  border-bottom-color:#191919;
+}
+
+.line-directory-results{
+  padding-top:16px;
+}
+
+.line-directory-result-title{
+  padding:12px 19px;
+  font-size:15px;
+  font-weight:700;
+}
+
+.line-directory-results .line-row{
+  padding:13px 19px;
+}
+
+.line-directory-results .line-avatar{
+  width:47px;
+  height:47px;
+}
 
 </style>
 </head>
@@ -1098,6 +1210,7 @@ async function updateWeather(){
 
 let lineTab='chats';
 let lineSubtab='chats';
+let lineDirectoryTab='favorites';
 let lineSearch='';
 let lineProfile='achi';
 let lineGroup='office';
@@ -1319,8 +1432,7 @@ if(lineTab==='home'){
         '<div class="line-home-profile-status">พร้อมทำงาน</div>'+
       '</div>'+
       '<div class="line-home-profile-right">'+
-        '<span class="line-home-story">'+lineIcon('plus')+'</span>'+
-        lineAvatar()+
+       lineAvatar()+
       '</div>'+
     '</button>'+
 
@@ -1382,6 +1494,74 @@ if(lineTab==='home'){
         '<div class="line-home-theme">SOFT PINK</div>'+
         '<div class="line-home-theme">BLUE DAY</div>'+
       '</div>'+
+    '</div>';
+}
+else if(lineTab==='directory'){
+
+  const tabs=[
+    ['favorites','รายการโปรด'],
+    ['friends','เพื่อน'],
+    ['groups','กลุ่ม'],
+    ['official','บัญชีทางการ']
+  ];
+
+  const directoryPeople=
+    lineDirectoryTab==='favorites'
+      ? linePeople.filter(p=>p.id==='achi')
+      : linePeople;
+
+  content=
+    '<div class="line-directory-head">'+
+      '<button class="line-directory-back" data-line-action="home">'+
+        lineIcon('back')+
+      '</button>'+
+      '<strong>รายชื่อเพื่อน</strong>'+
+      '<span></span>'+
+    '</div>'+
+
+    lineSearchHTML()+
+
+    '<div class="line-directory-tabs">'+
+      tabs.map(t=>
+        '<button class="'+
+          (lineDirectoryTab===t[0]?'active':'')+
+          '" data-line-directory="'+t[0]+'">'+
+          t[1]+
+        '</button>'
+      ).join('')+
+    '</div>'+
+
+    '<div class="line-directory-results">'+
+
+      (lineDirectoryTab==='favorites' ||
+       lineDirectoryTab==='friends'
+
+        ? '<div class="line-directory-result-title">'+
+            (lineDirectoryTab==='favorites'
+              ? 'รายการโปรด '
+              : 'เพื่อน ')+
+            directoryPeople.length+
+          '</div>'+
+
+          directoryPeople.map(p=>
+            lineRow(p.id,p.name,p.status)
+          ).join('')
+
+        : lineDirectoryTab==='groups'
+
+        ? '<div class="line-directory-result-title">'+
+            'กลุ่ม '+lineGroups.length+
+          '</div>'+
+
+          lineGroups.map(g=>
+            lineRow(g.id,g.name,g.members,'group')
+          ).join('')
+
+        : '<div class="line-directory-result-title">'+
+            'บัญชีทางการ 0'+
+          '</div>'+
+          '<div class="line-empty">ยังไม่มีบัญชีทางการ</div>'
+      )+
     '</div>';
 }
 
@@ -1511,9 +1691,11 @@ if(lineTab==='home'){
       lineRow('newchat','สร้างแชต','เลือกเพื่อนเพื่อเริ่มแชต','service');
   }
 
-  return '<div class="line-app">'+content+lineBottom()+'</div>';
+  return '<div class="line-app">'+
+  '<div class="line-scroll">'+content+'</div>'+
+  lineBottom()+
+  '</div>';
 }
-
 
 function render(){
 let html='';
@@ -1739,6 +1921,7 @@ render();
 document.addEventListener('click',function(e){
 
 /* LINE 2026 interactions */
+const ld=e.target.closest('[data-line-directory]');
 const lt=e.target.closest('[data-line-tab]');
 const ls=e.target.closest('[data-line-sub]');
 const lp=e.target.closest('[data-line-profile]');
@@ -1748,6 +1931,13 @@ const la=e.target.closest('[data-line-action]');
 const lv=e.target.closest('[data-line-service]');
 const lcom=e.target.closest('[data-line-community]');
 const lj=e.target.closest('[data-line-join]');
+
+if(ld && page==='LINE'){
+  lineDirectoryTab=ld.dataset.lineDirectory;
+  lineSearch='';
+  render();
+  return;
+}
 
 if(lt && page==='LINE'){
   lineTab=lt.dataset.lineTab;
@@ -1820,7 +2010,17 @@ if(la && page==='LINE'){
     );
     return;
   }
-
+if(
+  action==='favorites' ||
+  action==='friends' ||
+  action==='groups'
+){
+  lineDirectoryTab=action;
+  lineTab='directory';
+  lineSearch='';
+  render();
+  return;
+}
   if(action==='friends'){
     lineTab='chats';
     lineSubtab='friends';

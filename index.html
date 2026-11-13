@@ -364,12 +364,17 @@ button{
 }
 
 .home .appgrid{
-  margin-top:40px;
+  margin-top:20px;
 }
 
-.appgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px 8px}
+.appgrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  column-gap:8px;
+  row-gap:20px;
+}
 .appitem{border:0;background:transparent;color:white;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px}
-.appicon{width:62px;height:62px;border-radius:19px;display:grid;place-items:center;box-shadow:0 7px 18px #0002}
+.appicon{width:60px;height:60px;border-radius:19px;display:grid;place-items:center;box-shadow:0 7px 18px #0002}
 .appicon .ico{width:29px;height:29px}
 .locked{background:#5a6780!important;color:#d2dbe8}
 .app{background:#f6f7fb;color:#172033;min-height:100%;padding-bottom:22px}

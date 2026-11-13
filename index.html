@@ -1301,6 +1301,22 @@ button{cursor:pointer}
   color:#078a4e;
   font-weight:700;
 }
+.appicon:has(.grab-logo){
+  background:#fff !important;
+}
+
+.grab-logo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+  color:#00a84f;
+  font-family:Arial,sans-serif;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-1.5px;
+}
 
 </style>
 </head>
@@ -2282,7 +2298,9 @@ html=`
         <button class="appitem" data-app="${a[0]}">
           <span class="appicon ${open?'':'locked'}"
                 style="${open?'background:'+a[2]:''}">
-            ${icon(open?a[1]:'lock')}
+            ${open && a[0]==='GrabFood'
+  ? `<span class="grab-logo">Grab</span>`
+  : icon(open?a[1]:'lock')}
           </span>
           <span>${a[0]}</span>
         </button>

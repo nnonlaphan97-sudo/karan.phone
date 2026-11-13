@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>KARAN'S PHONE</title>
 <style>
-*{box-sizing:border-box}
+{box-sizing:border-box}
 
 html,body{
   margin:0;
@@ -1144,6 +1144,163 @@ button{cursor:pointer}
 
 @media(max-width:480px){
  }
+/* ===== GRABFOOD ===== */
+
+.grab-app{
+  height:100%;
+  padding-top:36px;
+  padding-bottom:22px;
+  background:#f7f9f8;
+  color:#202a24;
+  overflow-y:auto;
+}
+
+.grab-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px;
+  background:#fff;
+}
+
+.grab-header small{
+  display:block;
+  color:#89938d;
+  font-size:11px;
+}
+
+.grab-header strong{
+  display:block;
+  margin-top:4px;
+  font-size:15px;
+}
+
+.grab-back{
+  border:0;
+  background:transparent;
+  color:#202a24;
+  padding:5px;
+}
+
+.grab-content{
+  padding:18px;
+}
+
+.grab-content h2{
+  margin:8px 0 18px;
+  font-size:24px;
+}
+
+.grab-content h3{
+  font-size:17px;
+}
+
+.grab-search{
+  padding:15px;
+  background:#fff;
+  border-radius:14px;
+  color:#8a9690;
+  font-size:13px;
+}
+
+.grab-banner{
+  margin-top:18px;
+  padding:25px 20px;
+  border-radius:18px;
+  background:#d8f3e4;
+  color:#087b46;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.grab-banner strong{
+  font-size:23px;
+}
+
+.grab-products{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+
+.grab-product{
+  border:1px solid #e5ebe7;
+  background:#fff;
+  color:#202a24;
+  border-radius:15px;
+  padding:10px;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.grab-product strong{
+  font-size:13px;
+}
+
+.grab-product small{
+  font-size:11px;
+  color:#7a857e;
+  line-height:1.5;
+}
+
+.grab-product b{
+  margin-top:auto;
+  color:#078a4e;
+}
+
+.grab-cake-art,
+.grab-cake-large{
+  display:grid;
+  place-items:center;
+  background:#e8f3ec;
+  color:#0a9855;
+  border-radius:12px;
+}
+
+.grab-cake-art{
+  height:110px;
+}
+
+.grab-cake-art .ico{
+  width:55px;
+  height:55px;
+}
+
+.grab-cake-large{
+  height:220px;
+}
+
+.grab-cake-large .ico{
+  width:100px;
+  height:100px;
+}
+
+.grab-primary{
+  width:100%;
+  padding:15px;
+  margin-top:15px;
+  border:0;
+  border-radius:13px;
+  background:#06a95b;
+  color:white;
+  font-weight:700;
+}
+
+.grab-order-card{
+  background:white;
+  border:1px solid #e5ebe7;
+  border-radius:16px;
+  padding:18px;
+}
+
+.grab-status{
+  margin-top:15px;
+  color:#078a4e;
+  font-weight:700;
+}
 
 </style>
 </head>
@@ -1264,7 +1421,7 @@ const appdefs=[
 ['แกลเลอรี','gallery','#a88bc7'],
 ['ปฏิทิน','calendar','#6e9bdc'],
 ['โน้ต','note','#caa85d'],
-['คำสั่งซื้อ','bag','#d68b64'],
+['GrabFood','bag','#06c755'],
 ['เบราว์เซอร์','web','#6d9fc4'],
 ['นาฬิกา','clock','#938dcf'],
 ['ไฟล์','file','#899cb7']
@@ -1292,6 +1449,21 @@ try{
 }catch(e){}
 
 let page='lock',chat='';
+let grabScreen='home';
+let selectedCake=null;
+
+const cakes=[
+  {id:'strawberry',name:'Strawberry Shortcake',price:390,detail:'ครีมนมสด สตรอว์เบอร์รี หวานน้อย'},
+  {id:'chocolate',name:'Chocolate Fudge',price:450,detail:'ช็อกโกแลตเข้มข้น เนื้อเค้กนุ่ม'},
+  {id:'vanilla',name:'Vanilla Birthday Cake',price:420,detail:'วานิลลา ครีมสด ตกแต่งเรียบง่าย'},
+  {id:'matcha',name:'Matcha Cream Cake',price:460,detail:'ชาเขียวมัทฉะ หวานน้อย'}
+];
+
+save.flags.birthdaySeen ??= false;
+save.flags.cakeOrdered ??= false;
+save.flags.deliveryStatus ??= 'none';
+save.flags.cakeHandedToAchi ??= false;
+save.flags.achiThanked ??= false;
 let pinInput='';
 const PHONE_PIN='1906';
 const screen=document.getElementById('screen');
@@ -1654,13 +1826,23 @@ if(lineTab==='home'){
         '<button data-line-action="friends">ดูทั้งหมด</button>'+
       '</div>'+
 
-      directoryRow(
-        'รายการโปรด',
-        'ยังไม่ได้กำหนดรายการโปรด',
-        '0',
-        ['','','',''],
-        'favorites'
-      )+
+      '<button class="line-directory-row" data-line-birthday="achi">'+
+  lineAvatar('achi')+
+  '<div class="line-directory-info">'+
+    '<strong>วันเกิดเพื่อนในช่วงนี้</strong>'+
+    '<small>อชิ · 30 มกราคม</small>'+
+  '</div>'+
+  '<span class="line-directory-count">1</span>'+
+  '<span class="line-directory-arrow">›</span>'+
+'</button>'+
+
+directoryRow(
+  'รายการโปรด',
+  'อชิ',
+  '1',
+  ['achi'],
+  'favorites'
+)+
 
       directoryRow(
         'เพื่อน',
@@ -1906,6 +2088,111 @@ else if(lineTab==='directory'){
   lineBottom()+
   '</div>';
 }
+function renderGrab(){
+
+  const f=save.flags;
+
+  const top=`
+    <div class="grab-header">
+      <button data-grab="home" class="grab-back">
+        ${icon('back')}
+      </button>
+      <div>
+        <small>จัดส่งไปยัง</small>
+        <strong>สำนักงานการันต์</strong>
+      </div>
+    </div>
+  `;
+
+  if(grabScreen==='home'){
+    return `<div class="grab-app">
+      ${top}
+      <div class="grab-content">
+        <h2>GrabFood</h2>
+        <div class="grab-search">ค้นหาร้านอาหารและเค้ก</div>
+        <div class="grab-banner">
+          <strong>Birthday Cakes</strong>
+          <span>เค้กสำหรับวันพิเศษ</span>
+        </div>
+        <h3>เค้กแนะนำ</h3>
+        <div class="grab-products">
+          ${cakes.map(c=>`
+            <button class="grab-product" data-grab-cake="${c.id}">
+              <div class="grab-cake-art">
+                ${icon('cake')}
+              </div>
+              <strong>${c.name}</strong>
+              <small>${c.detail}</small>
+              <b>฿${c.price}</b>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(grabScreen==='detail'){
+    const c=cakes.find(x=>x.id===selectedCake);
+    if(!c)return '';
+
+    return `<div class="grab-app">
+      ${top}
+      <div class="grab-content">
+        <div class="grab-cake-large">${icon('cake')}</div>
+        <h2>${c.name}</h2>
+        <p>${c.detail}</p>
+        <h3>฿${c.price}</h3>
+        <p>จัดส่งถึงสำนักงาน</p>
+        <button class="grab-primary" data-grab="order">
+          สั่งซื้อเค้ก
+        </button>
+      </div>
+    </div>`;
+  }
+
+  if(grabScreen==='tracking'){
+    const status=f.deliveryStatus;
+
+    return `<div class="grab-app">
+      ${top}
+      <div class="grab-content">
+        <h2>ติดตามคำสั่งซื้อ</h2>
+        <div class="grab-order-card">
+          <strong>${cakes.find(c=>c.id===f.orderedCake)?.name||'Birthday Cake'}</strong>
+          <p>สถานที่จัดส่ง: สำนักงานการันต์</p>
+          <div class="grab-status">
+            ${
+              status==='delivered'
+              ? 'จัดส่งสำเร็จ'
+              : status==='delayed'
+              ? 'การจัดส่งล่าช้า'
+              : 'พนักงานกำลังจัดส่ง'
+            }
+          </div>
+        </div>
+
+        ${
+          status==='delayed'
+          ? `<p>พนักงานไม่สามารถติดต่อผู้รับได้ และการจราจรติดขัด</p>
+             <button class="grab-primary" data-grab="contact">
+               ติดต่อพนักงานจัดส่ง
+             </button>`
+          : status==='delivered'
+          ? `<p>พนักงานส่งเค้กถึงสำนักงานเรียบร้อยแล้ว</p>
+             <button class="grab-primary" data-go="LINE">
+               กลับไป LINE
+             </button>`
+          : `<p>พนักงานจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>
+             <button class="grab-primary" data-grab="incoming">
+               ดูสายเรียกเข้า
+             </button>`
+        }
+      </div>
+    </div>`;
+  }
+
+  return '';
+}
 
 function render(){
 let html='';
@@ -2011,7 +2298,9 @@ html=`
 else if(page==='LINE'){
   html=renderLine();
 }
-
+else if(page==='GrabFood'){
+  html=renderGrab();
+}
 else if(page==='chat'){
 html=renderChat();
 }
@@ -2203,10 +2492,102 @@ popup('ยังไม่สามารถเปิดได้','สำรว�
 return;
 }
 page=name;
+
+if(name==='GrabFood'){
+  grabScreen=save.flags.cakeOrdered?'tracking':'home';
+}
+
 render();
 }
 
 document.addEventListener('click',function(e){
+const birthday=e.target.closest('[data-line-birthday]');
+
+if(birthday && page==='LINE'){
+  save.flags.birthdaySeen=true;
+  unlock('GrabFood');
+  persist();
+
+  popup(
+    'วันเกิดอชิ',
+    '30 มกราคม วันนี้เป็นวันเกิดของอชิ'
+  );
+  return;
+}
+const cakeBtn=e.target.closest('[data-grab-cake]');
+const grabBtn=e.target.closest('[data-grab]');
+
+if(cakeBtn && page==='GrabFood'){
+  selectedCake=cakeBtn.dataset.grabCake;
+  grabScreen='detail';
+  render();
+  return;
+}
+
+if(grabBtn && page==='GrabFood'){
+  const action=grabBtn.dataset.grab;
+
+  if(action==='home'){
+    grabScreen=save.flags.cakeOrdered?'tracking':'home';
+    render();
+    return;
+  }
+
+  if(action==='order'){
+    save.flags.cakeOrdered=true;
+    save.flags.orderedCake=selectedCake;
+    save.flags.deliveryStatus='shipping';
+    grabScreen='tracking';
+    persist();
+    render();
+    return;
+  }
+
+  if(action==='incoming'){
+    document.getElementById('modal').innerHTML=`
+      <div class="overlay">
+        <div class="dialog">
+          <h3>พนักงานจัดส่ง GrabFood</h3>
+          <p>สายเรียกเข้า</p>
+          <button class="action" data-delivery-call="answer">
+            รับสาย
+          </button>
+          <button class="action" data-delivery-call="miss">
+            ไม่รับสาย
+          </button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if(action==='contact'){
+    save.flags.deliveryStatus='delivered';
+    persist();
+    render();
+    return;
+  }
+}
+
+const deliveryCall=e.target.closest('[data-delivery-call]');
+
+if(deliveryCall){
+  const answered=deliveryCall.dataset.deliveryCall==='answer';
+
+  save.flags.deliveryStatus=answered?'delivered':'delayed';
+  persist();
+
+  document.getElementById('modal').innerHTML='';
+
+  popup(
+    answered?'จัดส่งสำเร็จ':'จัดส่งล่าช้า',
+    answered
+      ? 'พนักงานนำเค้กมาส่งถึงสำนักงานเรียบร้อยแล้ว'
+      : 'พนักงานติดต่อไม่ได้และรถติด กรุณาติดต่อผ่าน GrabFood อีกครั้ง'
+  );
+
+  render();
+  return;
+}
 
 /* LINE 2026 interactions */
 const ld=e.target.closest('[data-line-directory]');

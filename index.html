@@ -1483,7 +1483,29 @@ save.flags.achiThanked ??= false;
 let pinInput='';
 const PHONE_PIN='1906';
 const screen=document.getElementById('screen');
+function resetGame(){
+  localStorage.removeItem(key);
+  location.reload();
+}
 
+let resetTimer=null;
+const statusLabel=document.getElementById('statusTime');
+
+statusLabel.addEventListener('pointerdown',()=>{
+  clearTimeout(resetTimer);
+
+  resetTimer=setTimeout(()=>{
+    if(confirm('ต้องการเริ่มเกมใหม่เพื่่อทดสอบหรือไม่?')){
+      resetGame();
+    }
+  },1000);
+});
+
+['pointerup','pointerleave','pointercancel'].forEach(type=>{
+  statusLabel.addEventListener(type,()=>{
+    clearTimeout(resetTimer);
+  });
+});
 function persist(){
 try{localStorage.setItem(key,JSON.stringify(save))}catch(e){}
 }
@@ -1627,11 +1649,9 @@ const lineGroups=[
 ];
 
 const lineChats=[
-  {id:'duj',name:'พี่ดุจ',preview:'เรื่องเค้กวันเกิดอชิ'},
-  {id:'achi',name:'อชิ',preview:'ขอบคุณนะครับคุณการันต์'},
   {id:'office',name:'ประสานงานออฟฟิศ',preview:'ปาย: ยินดีต้อนรับร็อคค่ะ'},
   {id:'sales',name:'ทีมฝ่ายขาย',preview:'เอกสารลูกค้าเรียบร้อยแล้วครับ'}
-];
+];;
 
 const lineCommunities=[
   {id:'books',name:'มุมอ่านหนังสือ',detail:'พูดคุยและแนะนำหนังสือ'},
@@ -1739,9 +1759,27 @@ function lineFriends(){
 function lineChatsHTML(){
   const q=lineSearch.trim().toLowerCase();
 
-  const chats=lineChats.filter(c=>
-    c.name.toLowerCase().includes(q)
-  );
+const availableChats=[...lineChats];
+
+if(save.flags.deliveryStatus==='delivered'){
+  availableChats.unshift({
+    id:'duj',
+    name:'พี่ดุจ',
+    preview:'การันต์จ๊ะ ว่างไหม'
+  });
+}
+
+if(save.flags.achiThanked){
+  availableChats.unshift({
+    id:'achi',
+    name:'อชิ',
+    preview:'คุณการันต์ครับ ขอบคุณมากนะครับ'
+  });
+}
+
+const chats=availableChats.filter(c=>
+  c.name.toLowerCase().includes(q)
+);
 
   return chats.map(c=>{
 

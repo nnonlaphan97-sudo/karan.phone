@@ -2041,19 +2041,25 @@ if(page==='home'){
 }
 }
 
+let lastBubbleSender = null;
 
 function bubble(text,out){
-  const avatar=out
+  const sender = out ? 'me' : chat;
+  const showAvatar = !out && lastBubbleSender !== sender;
+
+  lastBubbleSender = sender;
+
+  const avatar = out
     ? ''
     : '<div class="line-message-avatar">'+
-        lineAvatar(chat)+
+        (showAvatar ? lineAvatar(chat) : '')+
       '</div>';
 
-  const meta=out
+  const meta = out
     ? '<div class="line-message-meta">อ่านแล้ว<br>18:00</div>'
     : '<div class="line-message-meta">18:00</div>';
 
-  const message=
+  const message =
     '<div class="bubble '+(out?'outgoing':'incoming')+'">'+
       text+
     '</div>';
@@ -2064,8 +2070,9 @@ function bubble(text,out){
       : avatar+message+meta)+
   '</div>';
 }
-
 function renderChat(){
+lastBubbleSender = null;
+
 const names={duj:'พี่ดุจ',achi:'อชิ',office:'ประสานงานออฟฟิศ',sales:'ทีมฝ่ายขาย'};
 let b='<div class="day">30 ม.ค.</div>';
 let choices='';

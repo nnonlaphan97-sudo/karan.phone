@@ -1488,168 +1488,311 @@ button{
 .notes-page .apphead{
   top:0;
 }
-/* ===== SAMSUNG STYLE CALENDAR ===== */
 
+/* ===== SAMSUNG CALENDAR / ONE UI ===== */
 .calendar-app{
   height:100%;
   padding:36px 0 22px;
   display:flex;
   flex-direction:column;
-  background:#fff;
-  color:#202124;
   overflow:hidden;
+  background:#fff;
+  color:#202127;
 }
-
 .calendar-top{
+  flex-shrink:0;
+  padding:17px 18px 8px;
+  background:#fff;
+}
+.calendar-toolbar{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:12px 18px;
-  flex-shrink:0;
+  gap:10px;
+  min-height:43px;
 }
-
 .calendar-top-title{
-  font-size:23px;
-  font-weight:700;
+  font-size:25px;
+  font-weight:750;
+  letter-spacing:-.6px;
+  flex:1;
 }
-
 .calendar-top-actions{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:3px;
 }
-
 .calendar-iconbtn{
   width:38px;
   height:38px;
+  border:0;
+  border-radius:50%;
   display:grid;
   place-items:center;
-  border:0;
   background:transparent;
-  color:#34383e;
+  color:#272932;
+  padding:7px;
 }
-
+.calendar-iconbtn:active{
+  background:#f0f1f5;
+}
 .calendar-iconbtn .ico{
-  width:24px;
-  height:24px;
+  width:25px;
+  height:25px;
+  stroke-width:1.9;
 }
-
+.calendar-month-nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 0 6px;
+}
+.calendar-month-nav button{
+  border:0;
+  background:#f5f5f8;
+  color:#454653;
+  border-radius:18px;
+  padding:5px 12px;
+  font-size:12px;
+}
+.calendar-month-nav .calendar-spacer{
+  flex:1;
+}
+.calendar-search{
+  display:none;
+  margin:8px 0 3px;
+}
+.calendar-search.visible{
+  display:block;
+}
+.calendar-search input{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  background:#f3f4f7;
+  padding:12px 14px;
+  color:#222;
+  outline:0;
+  font-size:14px;
+}
 .calendar-weekdays{
   display:grid;
   grid-template-columns:repeat(7,minmax(0,1fr));
   text-align:center;
-  padding:12px 10px 8px;
+  padding:10px 11px 7px;
   font-size:12px;
-  color:#7b8088;
+  color:#7d8089;
+  flex-shrink:0;
 }
-
 .calendar-weekdays span:first-child{
-  color:#e45d65;
+  color:#e45c63;
 }
-
 .calendar-grid{
   display:grid;
   grid-template-columns:repeat(7,minmax(0,1fr));
-  grid-auto-rows:57px;
-  padding:0 10px 12px;
+  grid-template-rows:repeat(6,minmax(43px,1fr));
+  padding:0 11px 12px;
+  flex:0 1 330px;
+  min-height:250px;
+  overflow:hidden;
 }
-
 .calendar-day{
   position:relative;
   border:0;
   background:transparent;
-  color:#24272b;
+  color:#25262d;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:5px;
+  gap:4px;
   padding:5px 0;
+  min-width:0;
 }
-
 .calendar-day.other{
   color:#bfc2c7;
 }
-
+.calendar-day.sunday .calendar-number{
+  color:#d75c65;
+}
 .calendar-day.selected .calendar-number{
-  background:#5558c8;
+  background:#6466d6;
   color:#fff;
 }
-
 .calendar-number{
-  width:32px;
-  height:32px;
+  width:34px;
+  height:34px;
   border-radius:50%;
   display:grid;
   place-items:center;
   font-size:14px;
+  font-weight:500;
 }
-
 .calendar-dots{
   display:flex;
   gap:3px;
+  justify-content:center;
+  min-height:5px;
 }
-
 .calendar-dot{
   width:5px;
   height:5px;
   border-radius:50%;
-  background:#6c70d7;
+  background:#6471d9;
 }
-
 .calendar-dot.personal{
-  background:#e991a8;
+  background:#ed9bb0;
 }
-
 .calendar-agenda{
   flex:1;
   min-height:0;
   overflow-y:auto;
-  border-top:1px solid #eef0f3;
+  border-top:1px solid #eceef2;
   padding:17px 19px 35px;
+  scrollbar-width:none;
 }
-
 .calendar-agenda-title{
-  font-size:17px;
+  font-size:16px;
   font-weight:700;
-  margin-bottom:16px;
+  margin:0 0 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-
+.calendar-agenda-title small{
+  font-size:12px;
+  font-weight:400;
+  color:#888c96;
+}
 .calendar-event{
   display:flex;
   gap:12px;
   padding:13px 0;
   border-bottom:1px solid #f0f1f3;
+  min-height:74px;
 }
-
 .calendar-event-bar{
   width:4px;
   border-radius:4px;
-  background:#6c70d7;
+  background:#6672d8;
   flex-shrink:0;
 }
-
 .calendar-event-bar.personal{
   background:#e991a8;
 }
-
 .calendar-event strong{
   display:block;
   font-size:14px;
+  font-weight:650;
+  color:#252630;
 }
-
 .calendar-event small{
   display:block;
   color:#858993;
   font-size:12px;
   margin-top:6px;
+  line-height:1.45;
 }
-
 .calendar-empty{
   color:#9a9da5;
   font-size:13px;
-  padding-top:15px;
+  padding:22px 0;
+  text-align:center;
+}
+.calendar-app-icon{
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:100%;
+  background:#fff;
+  color:#24242b;
+  border-radius:17px;
+  position:relative;
+  overflow:hidden;
+}
+.calendar-app-icon:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:13px;
+  background:#ef6369;
+}
+.calendar-app-icon .calendar-icon-day{
+  font-size:29px;
+  font-weight:750;
+  letter-spacing:-1.5px;
+  line-height:1;
+  margin-top:10px;
+}
+.calendar-app-icon .calendar-icon-month{
+  position:absolute;
+  top:1px;
+  color:#fff;
+  font-size:9px;
+  font-weight:750;
+  letter-spacing:.5px;
+}
+@media(max-height:720px){
+  .calendar-grid{
+    flex-basis:275px;
+    min-height:240px;
+  }
+  .calendar-number{
+    width:30px;
+    height:30px;
+  }
+  .calendar-day{
+    padding:3px 0;
+  }
 }
 
+.group-message-content{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  flex:0 1 auto;
+  min-width:0;
+  max-width:calc(100% - 105px);
+}
+
+.group-sender{
+  font-size:12px;
+  font-weight:500;
+  color:#657083;
+  margin:0 0 5px 8px;
+  line-height:1.3;
+}
+
+.line-chatpage .group-message-content .bubble{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  min-width:0;
+  padding:11px 15px;
+  border-radius:22px;
+  white-space:pre-wrap;
+  overflow-wrap:break-word;
+  word-break:normal;
+}
+
+.line-chatpage .line-message:has(.group-message-content){
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  gap:7px;
+}
+
+.line-chatpage .line-message:has(.group-message-content) .line-message-meta{
+  align-self:flex-end;
+  padding-bottom:5px;
+  flex-shrink:0;
+}
+
+.line-chatpage .line-message:has(.group-message-content) .line-message-avatar{
+  align-self:flex-start;
+  margin-top:19px;
+  flex-shrink:0;
+}
 </style>
 </head>
 <body>
@@ -2717,33 +2860,29 @@ function calendarDateKey(y,m,d){
     String(d).padStart(2,'0');
 }
 
+
 function calendarIcon(type){
   const shapes={
     prev:'<path d="m15 18-6-6 6-6"/>',
     next:'<path d="m9 18 6-6-6-6"/>',
+    search:'<circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 5 5"/>',
+    today:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/><circle cx="12" cy="15.5" r="2" fill="currentColor" stroke="none"/>',
     menu:'<path d="M4 6h16M4 12h16M4 18h16"/>'
   };
 
-  return '<svg class="ico" viewBox="0 0 24 24" '+
-    'fill="none" stroke="currentColor" '+
-    'stroke-width="1.8" stroke-linecap="round" '+
-    'stroke-linejoin="round">'+shapes[type]+'</svg>';
+  return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+shapes[type]+'</svg>';
 }
 
 function renderCalendar(){
-
   const firstDay=new Date(calendarYear,calendarMonth,1).getDay();
   const daysInMonth=new Date(calendarYear,calendarMonth+1,0).getDate();
-  const cells=Math.ceil((firstDay+daysInMonth)/7)*7;
 
   let days='';
 
-  for(let i=0;i<cells;i++){
-
+  for(let i=0;i<42;i++){
     const day=i-firstDay+1;
-    const valid=day>=1 && day<=daysInMonth;
 
-    if(!valid){
+    if(day<1 || day>daysInMonth){
       days+='<div></div>';
       continue;
     }
@@ -2753,13 +2892,14 @@ function renderCalendar(){
 
     days+=
       '<button class="calendar-day '+
-      (date===calendarSelected?'selected':'')+
+      (date===calendarSelected?'selected ':'')+
+      (i%7===0?'sunday':'')+
       '" data-calendar-date="'+date+'">'+
         '<span class="calendar-number">'+day+'</span>'+
         '<span class="calendar-dots">'+
           events.map(event=>
             '<span class="calendar-dot '+
-              (event.type==='personal'?'personal':'')+
+            (event.type==='personal'?'personal':'')+
             '"></span>'
           ).join('')+
         '</span>'+
@@ -2778,48 +2918,57 @@ function renderCalendar(){
     (selectedDate.getFullYear()+543);
 
   return '<div class="calendar-app">'+
-
     '<div class="calendar-top">'+
-      '<div class="calendar-top-title">'+
-        thaiMonths[calendarMonth]+' '+(calendarYear+543)+
+      '<div class="calendar-toolbar">'+
+        '<div class="calendar-top-title">'+
+          thaiMonths[calendarMonth]+' '+(calendarYear+543)+
+        '</div>'+
+        '<div class="calendar-top-actions">'+
+          '<button class="calendar-iconbtn" data-calendar-search-toggle="1" aria-label="ค้นหานัดหมาย">'+
+            calendarIcon('search')+
+          '</button>'+
+          '<button class="calendar-iconbtn" data-calendar-today="1" aria-label="กลับไปวันที่ 30 มกราคม">'+
+            calendarIcon('today')+
+          '</button>'+
+        '</div>'+
       '</div>'+
-
-      '<div class="calendar-top-actions">'+
-        '<button class="calendar-iconbtn" data-calendar-nav="-1" aria-label="เดือนก่อน">'+
-          calendarIcon('prev')+
-        '</button>'+
-        '<button class="calendar-iconbtn" data-calendar-nav="1" aria-label="เดือนถัดไป">'+
-          calendarIcon('next')+
-        '</button>'+
+      '<div class="calendar-month-nav">'+
+        '<button data-calendar-nav="-1">‹ เดือนก่อน</button>'+
+        '<button data-calendar-nav="1">เดือนถัดไป ›</button>'+
+        '<span class="calendar-spacer"></span>'+
+      '</div>'+
+      '<div class="calendar-search" id="calendarSearch">'+
+        '<input id="calendarSearchInput" type="search" placeholder="ค้นหานัดหมาย" aria-label="ค้นหานัดหมาย">'+
       '</div>'+
     '</div>'+
-
     '<div class="calendar-weekdays">'+
       ['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>
         '<span>'+d+'</span>'
       ).join('')+
     '</div>'+
-
     '<div class="calendar-grid">'+days+'</div>'+
-
     '<div class="calendar-agenda">'+
-      '<div class="calendar-agenda-title">'+dateLabel+'</div>'+
-
-      (selectedEvents.length
-        ? selectedEvents.map(event=>
-            '<div class="calendar-event">'+
-              '<div class="calendar-event-bar '+
-                (event.type==='personal'?'personal':'')+
-              '"></div>'+
-              '<div>'+
-                '<strong>'+event.title+'</strong>'+
-                '<small>'+event.time+'</small>'+
-                '<small>'+event.detail+'</small>'+
-              '</div>'+
-            '</div>'
-          ).join('')
-        : '<div class="calendar-empty">ไม่มีกิจกรรมในวันนี้</div>'
-      )+
+      '<div class="calendar-agenda-title">'+
+        '<span>'+dateLabel+'</span>'+
+        '<small>'+selectedEvents.length+' กิจกรรม</small>'+
+      '</div>'+
+      '<div id="calendarEventList">'+
+        (selectedEvents.length
+          ? selectedEvents.map(event=>
+              '<div class="calendar-event">'+
+                '<div class="calendar-event-bar '+
+                  (event.type==='personal'?'personal':'')+
+                '"></div>'+
+                '<div>'+
+                  '<strong>'+event.title+'</strong>'+
+                  '<small>'+event.time+'</small>'+
+                  '<small>'+event.detail+'</small>'+
+                '</div>'+
+              '</div>'
+            ).join('')
+          : '<div class="calendar-empty">ไม่มีกิจกรรมในวันนี้</div>'
+        )+
+      '</div>'+
     '</div>'+
   '</div>';
 }
@@ -2907,7 +3056,19 @@ html=`
 
       return `
         <button class="appitem" data-app="${a[0]}">
-          <span class="appicon ${open?'':'locked'}"
+          
+<span class="appicon ${open?'':'locked'}"
+      style="${open?(a[0]==='ปฏิทิน'?'background:#fff':'background:'+a[2]):''}">
+  ${open && a[0]==='GrabFood'
+    ? `<span class="grab-logo">Grab</span>`
+    : open && a[0]==='ปฏิทิน'
+    ? `<span class="calendar-app-icon">
+         <span class="calendar-icon-month">JAN</span>
+         <span class="calendar-icon-day">30</span>
+       </span>`
+    : icon(open?a[1]:'lock')}
+</span>
+
                 style="${open?'background:'+a[2]:''}">
             ${open && a[0]==='GrabFood'
   ? `<span class="grab-logo">Grab</span>`
@@ -3240,19 +3401,25 @@ function groupBubble(sender,text,out=false){
     'อชิ':'#dce9e2'
   };
 
-  return '<div class="line-message received">'+
-    '<div class="line-message-avatar">'+
-      '<div class="line-avatar" style="background:'+
-        (colors[sender]||'#e5eaf1')+'">'+
-        lineIcon('user')+
-      '</div>'+
-    '</div>'+
-    '<div class="group-message-content">'+
-      '<div class="group-sender">'+sender+'</div>'+
-      '<div class="bubble incoming">'+text+'</div>'+
-    '</div>'+
-    '<div class="line-message-meta">18:00</div>'+
-  '</div>';
+  return `
+    <div class="line-message received">
+
+      <div class="line-message-avatar">
+        <div class="line-avatar"
+             style="background:${colors[sender]||'#e5eaf1'}">
+          ${lineIcon('user')}
+        </div>
+      </div>
+
+      <div class="group-message-content">
+        <div class="group-sender">${sender}</div>
+        <div class="bubble incoming">${text}</div>
+      </div>
+
+      <div class="line-message-meta">18:00</div>
+
+    </div>
+  `;
 }
 
 function renderChat(){
@@ -3494,7 +3661,65 @@ if(name==='GrabFood'){
 render();
 }
 
+document.addEventListener('input',function(e){
+  if(e.target.id!=='calendarSearchInput' || page!=='ปฏิทิน') return;
+
+  const q=e.target.value.trim().toLocaleLowerCase('th');
+  const list=document.getElementById('calendarEventList');
+  if(!list) return;
+
+  const events=q
+    ? calendarEvents.filter(x=>
+        (x.title+' '+x.detail+' '+x.date)
+          .toLocaleLowerCase('th').includes(q)
+      )
+    : calendarEvents.filter(x=>x.date===calendarSelected);
+
+  list.innerHTML=events.length
+    ? events.map(event=>
+        '<div class="calendar-event">'+
+          '<div class="calendar-event-bar '+
+            (event.type==='personal'?'personal':'')+
+          '"></div>'+
+          '<div>'+
+            '<strong>'+event.title+'</strong>'+
+            '<small>'+(q?event.date+' · ':'')+event.time+'</small>'+
+            '<small>'+event.detail+'</small>'+
+          '</div>'+
+        '</div>'
+      ).join('')
+    : '<div class="calendar-empty">'+
+        (q?'ไม่พบนัดหมายที่ค้นหา':'ไม่มีกิจกรรมในวันนี้')+
+      '</div>';
+});
+
 document.addEventListener('click',function(e){
+
+const calendarSearchToggle=e.target.closest('[data-calendar-search-toggle]');
+
+if(calendarSearchToggle && page==='ปฏิทิน'){
+  const panel=document.getElementById('calendarSearch');
+
+  if(panel){
+    panel.classList.toggle('visible');
+
+    if(panel.classList.contains('visible')){
+      document.getElementById('calendarSearchInput').focus();
+    }
+  }
+  return;
+}
+
+const calendarToday=e.target.closest('[data-calendar-today]');
+
+if(calendarToday && page==='ปฏิทิน'){
+  calendarYear=2026;
+  calendarMonth=0;
+  calendarSelected='2026-01-30';
+  render();
+  return;
+}
+
 const calendarNav=e.target.closest('[data-calendar-nav]');
 const calendarDate=e.target.closest('[data-calendar-date]');
 

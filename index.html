@@ -1559,6 +1559,88 @@ save.flags.cakeOrdered ??= false;
 save.flags.deliveryStatus ??= 'none';
 save.flags.cakeHandedToAchi ??= false;
 save.flags.achiThanked ??= false;
+
+/* ===== EP.02 GAME STATE ===== */
+
+save.flags.ep2Started ??= false;
+save.flags.ep2PaiOpened ??= false;
+save.flags.ep2NotesUnlocked ??= false;
+save.flags.ep2LogoDone ??= false;
+save.flags.ep2CouponReady ??= false;
+save.flags.ep2Completed ??= false;
+
+save.flags.ep2InviteRoute ??= '';
+save.flags.ep2InviteStep ??= 0;
+
+const EP2_LOGO_ANSWER = {
+  m: 100,
+  y: 100
+};
+
+const ep2InviteRoutes = {
+  work: {
+    first: 'พอดีผมมีเรื่องงานอยากปรึกษาอชิด้วยครับ',
+    replies: [
+      'ถ้าเป็นเรื่องงาน...ก็ได้ครับ งั้นเราไปด้วยกันนะครับ'
+    ]
+  },
+
+  coupon: {
+    first: 'แต่คูปองนี้เราได้มาด้วยกันนะครับ',
+    replies: [
+      'แต่คุณการันต์เป็นคนช่วยงานมากกว่านี่ครับ',
+      'แต่ผมเกรงใจครับ',
+      'เอ่อ...ผมยังไม่แน่ใจครับ',
+      'ถ้าอย่างนั้น...ก็ได้ครับ'
+    ],
+    choices: [
+      [
+        'ถ้าไม่มีอชิช่วย งานก็คงไม่เสร็จเหมือนกันครับ',
+        'งั้นถือว่าไปฉลองที่งานเสร็จกันนะครับ'
+      ],
+      [
+        'ผมอยากให้อชิไปด้วยจริง ๆ ครับ',
+        'งั้นผมขอเลี้ยงข้าวตอบแทนอชิได้ไหมครับ'
+      ],
+      [
+        'เราเลือกวันที่อชิสะดวกก็ได้ครับ',
+        'ถือว่าไปพักผ่อนหลังจากทำงานหนักด้วยกันนะครับ'
+      ]
+    ]
+  },
+
+  alone: {
+    first: 'ผมไม่ค่อยอยากไปกินข้าวคนเดียวเลยครับ',
+    replies: [
+      'คุณการันต์ชวนคนอื่นไปด้วยก็ได้นี่ครับ',
+      'ทำไมต้องเป็นผมด้วยล่ะครับ',
+      'แต่ผมไม่อยากรบกวนคุณการันต์ครับ',
+      'คุณการันต์นี่ชวนเก่งจริง ๆ นะครับ',
+      'ก็ได้ครับ ผมไปด้วยก็ได้'
+    ],
+    choices: [
+      [
+        'แต่ผมอยากไปกับอชิมากกว่าครับ',
+        'ผมว่าคุยกับอชิสนุกกว่านะครับ'
+      ],
+      [
+        'ก็เราเพิ่งช่วยกันทำงานเสร็จน่ะครับ',
+        'เพราะผมอยากรู้จักอชิให้มากขึ้นครับ'
+      ],
+      [
+        'ไม่รบกวนเลยครับ ผมเป็นคนชวนเอง',
+        'งั้นให้อชิเลือกร้านก็ได้ครับ'
+      ],
+      [
+        'แล้วอชิจะยอมไปกับผมไหมครับ',
+        'ผมจะถือว่าเป็นคำชมแล้วกันนะครับ'
+      ]
+    ]
+  }
+};
+
+save.flags.ep2InviteHistory ??= [];
+
 let pinInput='';
 const PHONE_PIN='1906';
 const screen=document.getElementById('screen');
@@ -1835,63 +1917,60 @@ function lineFriends(){
     groups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
 }
 
+
 function lineChatsHTML(){
   const q=lineSearch.trim().toLowerCase();
 
-const availableChats=[...lineChats];
+  const availableChats=[...lineChats];
 
-if(save.flags.deliveryStatus==='delivered'){
-  availableChats.unshift({
-    id:'duj',
-    name:'พี่ดุจ',
-    preview:'การันต์จ๊ะ ว่างไหม'
-  });
-}
+  if(save.flags.deliveryStatus==='delivered'){
+    availableChats.unshift({
+      id:'duj',
+      name:'พี่ดุจ',
+      preview:'เดี๋ยวพี่จัดการให้'
+    });
+  }
 
-if(save.flags.achiThanked){
-  availableChats.unshift({
-    id:'achi',
-    name:'อชิ',
-    preview:save.replies.achi
-      ? save.replies.achi
-      : 'ขอบคุณครับ'
-  });
-}
+  if(save.flags.achiThanked){
+    availableChats.unshift({
+      id:'achi',
+      name:'อชิ',
+      preview:save.flags.ep2Completed
+        ? 'ก็ได้ครับ ผมไปด้วยก็ได้'
+        : save.flags.ep2CouponReady
+        ? 'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
+        : 'ขอบคุณครับ'
+    });
+  }
 
-const chats=availableChats.filter(c=>
-  c.name.toLowerCase().includes(q)
-);
+  if(save.flags.ep2Started){
+    availableChats.unshift({
+      id:'pai',
+      name:'ปาย',
+      preview:save.flags.ep2LogoDone
+        ? 'ได้รับข้อมูลแล้วค่ะ'
+        : 'พี่การันต์ช่วยเปลี่ยนสีโลโก้ให้หน่อยค่ะ'
+    });
+  }
 
-  return chats.map(c=>{
-
-    let preview=c.preview;
-
-    if(c.id==='duj' && save.replies.duj){
-      preview='ได้เลยจ้ะ พี่จัดการให้ ไม่ต้องห่วง';
-    }
-
-   if(c.id==='achi' && save.replies.achi){
-  preview=save.replies.achi;
-}
-
-    return '<button class="line-row" data-line-chat="'+c.id+'">'+
-      lineAvatar(c.id)+
-      '<div class="line-row-body">'+
-        '<div class="line-name">'+c.name+'</div>'+
-        '<div class="line-preview">'+preview+'</div>'+
-      '</div>'+
-      '<div class="line-time">30 ม.ค.</div>'+
-    '</button>';
-
-  }).join('') ||
-  '<div class="line-empty">ไม่พบแชต</div>';
+  return availableChats
+    .filter(c=>c.name.toLowerCase().includes(q))
+    .map(c=>
+      '<button class="line-row" data-line-chat="'+c.id+'">'+
+        lineAvatar(c.id)+
+        '<div class="line-row-body">'+
+          '<div class="line-name">'+c.name+'</div>'+
+          '<div class="line-preview">'+c.preview+'</div>'+
+        '</div>'+
+        '<div class="line-time">30 ม.ค.</div>'+
+      '</button>'
+    ).join('') ||
+    '<div class="line-empty">ไม่พบแชต</div>';
 }
 
 function renderLine(){
   let content='';
-
-
-if(lineTab==='home'){
+  if(lineTab==='home'){
 
   const mosaic=(ids)=>{
     const colors={
@@ -2450,9 +2529,45 @@ html=appwrap('คำสั่งซื้อ','<div class="content"><div class="
 else if(page==='โทรศัพท์'){
 html=appwrap('โทรศัพท์','<div class="content"><div class="entry"><b>ประวัติการโทร</b><small>30 มกราคม</small><p>09:12 · ลูกค้าบริษัท · โทรออก</p><p>13:45 · ฝ่ายขาย · สายเข้า</p><p>19:27 · พนักงานจัดส่ง · สายเข้า</p></div></div>');
 }
+
 else if(page==='โน้ต'){
-html=appwrap('โน้ต','<div class="content"><div class="entry"><b>งานประจำสัปดาห์</b><p>ติดตามรายงานฝ่ายขาย</p><p>ตรวจเอกสารเสนอราคา</p><p>ยืนยันนัดหมายลูกค้า</p></div><div class="entry"><b>30 มกราคม</b><p>เค้ก — พี่ดุจ</p><p>ตรวจตารางประชุม</p><p>อาหารเย็น</p></div></div>');
+  html=appwrap('โน้ต',`
+    <div class="content">
+
+      <div class="entry">
+        <b>งานประจำสัปดาห์</b>
+        <p>ติดตามรายงานฝ่ายขาย</p>
+        <p>ตรวจเอกสารเสนอราคา</p>
+        <p>ยืนยันนัดหมายลูกค้า</p>
+      </div>
+
+      <div class="entry">
+        <b>GEMMHOUSE — โลโก้ใหม่</b>
+        <small>บันทึกเกี่ยวกับงานลูกค้า</small>
+        <p>ลูกค้าขอปรับสีโลโก้ใหม่</p>
+        <p><b>CMYK: C0 M100 Y100 K0</b></p>
+        <p>ตรวจสอบค่าสีก่อนส่งไฟล์ให้ทีมโปรโมชั่น</p>
+      </div>
+
+      <div class="entry">
+        <b>เรื่องของอชิ</b>
+        <small>บันทึกส่วนตัว</small>
+        <p>อชิเป็นคนตั้งใจทำงานมาก</p>
+        <p>บางครั้งก็ดูเหมือนจะรับงานของคนอื่นมาทำมากเกินไป</p>
+        <p>อยากช่วยให้เขาได้พักบ้าง</p>
+      </div>
+
+      <div class="entry">
+        <b>บทความที่เคยเขียน</b>
+        <small>บันทึกเก่า</small>
+        <p>เรื่องเล็ก ๆ ที่ทำให้วันธรรมดาพิเศษขึ้น</p>
+        <p>บางครั้งความใส่ใจเล็กน้อยก็ทำให้ใครบางคนมีความสุขได้</p>
+      </div>
+
+    </div>
+  `);
 }
+
 
 else{
 html=appwrap(page,'<div class="content"><div class="entry">ข้อมูลส่วนนี้จะเปิดเผยในตอนถัดไป</div></div>');
@@ -2496,6 +2611,167 @@ function bubble(text,out){
       : avatar+message+meta)+
   '</div>';
 }
+
+/* ===== EP.02 GAME LOGIC ===== */
+
+function ep2Start(){
+  if(save.flags.ep2Started)return;
+
+  save.flags.ep2Started = true;
+  persist();
+}
+
+function ep2OpenPai(){
+  save.flags.ep2PaiOpened = true;
+  save.flags.ep2NotesUnlocked = true;
+
+  unlock('โน้ต');
+  persist();
+}
+
+function ep2CheckLogo(m,y){
+  const correct =
+    Number(m) === EP2_LOGO_ANSWER.m &&
+    Number(y) === EP2_LOGO_ANSWER.y;
+
+  if(correct){
+    save.flags.ep2LogoDone = true;
+    save.flags.ep2CouponReady = true;
+    persist();
+  }
+
+  return correct;
+}
+
+function ep2ChooseRoute(route){
+  if(!ep2InviteRoutes[route])return;
+
+  const data = ep2InviteRoutes[route];
+
+  save.flags.ep2InviteRoute = route;
+  save.flags.ep2InviteStep = 0;
+  save.flags.ep2InviteHistory = [
+    {out:true,text:data.first},
+    {out:false,text:data.replies[0]}
+  ];
+
+  if(route === 'work'){
+    ep2Finish();
+  }
+
+  persist();
+}
+
+function ep2ContinueInvite(choiceIndex){
+  const route = save.flags.ep2InviteRoute;
+  const data = ep2InviteRoutes[route];
+
+  if(!data || route === 'work')return;
+
+  const step = save.flags.ep2InviteStep;
+  const options = data.choices[step];
+
+  if(!options || !options[choiceIndex])return;
+
+  save.flags.ep2InviteHistory.push({
+    out:true,
+    text:options[choiceIndex]
+  });
+
+  const nextStep = step + 1;
+
+  save.flags.ep2InviteStep = nextStep;
+
+  save.flags.ep2InviteHistory.push({
+    out:false,
+    text:data.replies[nextStep]
+  });
+
+  if(nextStep === data.replies.length - 1){
+    ep2Finish();
+  }
+
+  persist();
+}
+
+function ep2Finish(){
+  save.flags.ep2Completed = true;
+  persist();
+}
+
+function ep2InviteChoices(){
+  const route = save.flags.ep2InviteRoute;
+
+  if(save.flags.ep2Completed){
+    return '<div class="notice">ภารกิจ EP.02 สำเร็จ — อชิตกลงไปกินข้าวด้วยแล้ว</div>';
+  }
+
+  if(!route){
+    return [
+      ['work',ep2InviteRoutes.work.first],
+      ['coupon',ep2InviteRoutes.coupon.first],
+      ['alone',ep2InviteRoutes.alone.first]
+    ].map(item=>
+      '<button class="choice" data-ep2-route="'+item[0]+'">'+
+      item[1]+'</button>'
+    ).join('');
+  }
+
+  const data = ep2InviteRoutes[route];
+  const options = data.choices?.[save.flags.ep2InviteStep] || [];
+
+  return options.map((text,index)=>
+    '<button class="choice" data-ep2-choice="'+index+'">'+
+    text+'</button>'
+  ).join('');
+}
+
+function ep2InviteMessages(){
+  return save.flags.ep2InviteHistory.map(msg=>
+    bubble(msg.text,msg.out)
+  ).join('');
+}
+
+function ep2LogoForm(){
+  if(save.flags.ep2LogoDone){
+    return '<div class="notice">ส่งข้อมูลสีโลโก้ให้ปายสำเร็จแล้ว</div>';
+  }
+
+  return `
+    <div class="entry">
+      <b>GEMMHOUSE — แก้ไขสีโลโก้</b>
+      <p>กรอกค่า CMYK จากข้อมูลที่บันทึกไว้</p>
+
+      <div class="controls">
+        <label for="ep2M">Magenta (M)</label>
+        <input
+          id="ep2M"
+          type="number"
+          inputmode="numeric"
+          min="0"
+          max="100"
+          placeholder="0–100"
+        >
+
+        <label for="ep2Y">Yellow (Y)</label>
+        <input
+          id="ep2Y"
+          type="number"
+          inputmode="numeric"
+          min="0"
+          max="100"
+          placeholder="0–100"
+        >
+
+        <button class="action" data-ep2-submit-logo="1">
+          ส่งข้อมูลให้ปาย
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+
 function renderChat(){
   lastBubbleSender=null;
 
@@ -2521,25 +2797,79 @@ function renderChat(){
     b+=bubble('ขอบคุณครับ',true);
   }
 
-  if(chat==='achi'){
-    b+=bubble('ขอบคุณครับ');
+if(chat==='achi'){
 
-    if(save.replies.achi){
-      b+=bubble(save.replies.achi,true);
-    }else{
-      const opts=[
-        'ยินดีครับ สุขสันต์วันเกิดนะครับ',
-        'ไม่เป็นไรครับ หวังว่าจะชอบเค้กนะครับ',
-        'ถ้าอชิมีความสุข ผมก็ดีใจแล้วครับ'
-      ];
+  b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
+  b+=bubble('ขอบคุณครับ');
 
-      choices=opts.map((o,i)=>
-        '<button class="choice" data-reply="achi" data-index="'+i+'">'+
-          o+
-        '</button>'
-      ).join('');
+  if(save.replies.achi){
+    b+=bubble(save.replies.achi,true);
+
+    if(save.flags.ep2Started){
+
+      b+='<div class="day">31 ม.ค.</div>';
+
+      b+=bubble('คุณการันต์ครับ เมื่อวานขอบคุณที่ช่วยงานนะครับ');
+
+      if(save.flags.ep2CouponReady){
+
+        b+=bubble(
+          'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
+        );
+
+        b+=ep2InviteMessages();
+
+        choices=ep2InviteChoices();
+
+      }else{
+
+        b+=bubble(
+          'ผมต้องจัดการงานที่ร็อคฝากไว้ให้เสร็จก่อนครับ'
+        );
+
+        b+=bubble(
+          'เดี๋ยวผมช่วยดูให้นะครับ',true
+        );
+
+      }
     }
+
+  }else{
+
+    choices=[
+      'ยินดีครับ',
+      'ขอให้วันนี้เป็นวันที่ดีนะครับ',
+      'พักผ่อนด้วยนะครับ'
+    ].map((o,i)=>
+      '<button class="choice" data-reply="achi" data-index="'+i+'">'+
+      o+'</button>'
+    ).join('');
+
   }
+}
+
+if(chat==='pai'){
+
+  b+=bubble('ปายครับ งานด่วนวันนี้ให้ทำอะไรครับ',true);
+  b+=bubble('ทำไมพี่การันต์ถึงถามเหรอคะ');
+  b+=bubble('พอดีร็อคมีนัดเลยฝากอชิไว้',true);
+  b+=bubble('แล้วไม่ได้บอกรายละเอียด',true);
+  b+=bubble('ไอ้ร็อค!!');
+  b+=bubble('ลูกค้าเปลี่ยนสีโลโก้ใหม่ค่ะ');
+  b+=bubble('พี่การันต์ช่วยเปลี่ยนสีโลโก้ให้หน่อยค่ะ');
+  b+=bubble('เป็นสีอะไรครับ',true);
+  b+=bubble('ปายจำไม่ได้ค่ะ แต่เป็นของบริษัท GEMMHOUSE');
+
+  if(save.flags.ep2LogoDone){
+
+    b+=bubble('M100 Y100 ครับ',true);
+    b+=bubble('ได้รับข้อมูลแล้วค่ะ ขอบคุณมากนะคะพี่การันต์');
+
+  }else{
+
+    b+=ep2LogoForm();
+  }
+}
 
   if(chat==='office'){
     b+=bubble('ปาย: วันนี้มีน้องใหม่เข้าทีมโปรโมชั่น ชื่อร็อคนะคะ');
@@ -2660,6 +2990,52 @@ if(bannerChat){
   document.getElementById('gameBanner').innerHTML='';
 
   render();
+  return;
+}
+
+/* ===== EP.02 INTERACTIONS ===== */
+
+const ep2Route=e.target.closest('[data-ep2-route]');
+const ep2Choice=e.target.closest('[data-ep2-choice]');
+const ep2Logo=e.target.closest('[data-ep2-submit-logo]');
+
+if(ep2Route && page==='chat' && chat==='achi'){
+  ep2ChooseRoute(ep2Route.dataset.ep2Route);
+  render();
+  return;
+}
+
+if(ep2Choice && page==='chat' && chat==='achi'){
+  ep2ContinueInvite(Number(ep2Choice.dataset.ep2Choice));
+  render();
+  return;
+}
+
+if(ep2Logo && page==='chat' && chat==='pai'){
+
+  const m=document.getElementById('ep2M')?.value;
+  const y=document.getElementById('ep2Y')?.value;
+
+  if(m==='' || y===''){
+    popup('กรอกข้อมูลไม่ครบ','กรุณากรอกค่า M และ Y');
+    return;
+  }
+
+  if(!ep2CheckLogo(m,y)){
+    popup(
+      'ค่าสีไม่ถูกต้อง',
+      'ลองกลับไปตรวจสอบบันทึก GEMMHOUSE ในแอปโน้ตอีกครั้ง'
+    );
+    return;
+  }
+
+  render();
+
+  popup(
+    'ส่งข้อมูลสำเร็จ',
+    'ปายได้รับข้อมูลสีโลโก้แล้ว และมีข้อความใหม่จากอชิ'
+  );
+
   return;
 }
 
@@ -2809,8 +3185,14 @@ if(lg && page==='LINE'){
   return;
 }
 
+
 if(lc && page==='LINE'){
   chat=lc.dataset.lineChat;
+
+  if(chat==='pai' && save.flags.ep2Started){
+    ep2OpenPai();
+  }
+
   page='chat';
   render();
   return;
@@ -2977,7 +3359,10 @@ else if(btn.dataset.reply){
   ];
 
   if(who==='achi'){
-    save.replies.achi=opts[Number(btn.dataset.index)];
+    save.replies[who]=opts[Number(btn.dataset.index)];
+  if(who==='achi' && save.flags.achiThanked){
+  ep2Start();
+}
     save.flags.ep01Complete=true;
     persist();
     render();

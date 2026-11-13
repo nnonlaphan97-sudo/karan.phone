@@ -22,8 +22,18 @@ html,body{
   color:#fff;
 }
 
-button,input,select{font:inherit}
-button{cursor:pointer}
+button,input,select,textarea{
+  font:inherit;
+  touch-action:manipulation;
+}
+
+input,select,textarea{
+  font-size:16px;
+}
+
+button{
+  cursor:pointer;
+}
 
 #phone{
   position:relative;
@@ -399,7 +409,69 @@ button{cursor:pointer}
 .controls{display:grid;gap:10px;background:#fff;border-radius:14px;padding:15px}
 .controls label{font-size:13px;font-weight:600}
 .controls select,.controls input{padding:11px;border:1px solid #cbd4df;border-radius:10px;width:100%;color:#263347;background:white}
-.overlay{position:absolute;inset:36px 0 22px;background:#101a2bbd;display:grid;place-items:center;z-index:25;padding:25px}
+.overlay{
+  position:absolute;
+  inset:36px 0 22px;
+  background:#101a2bbd;
+  display:grid;
+  place-items:center;
+  z-index:45;
+  padding:25px;
+}
+
+.game-banner{
+  position:absolute;
+  top:43px;
+  left:12px;
+  right:12px;
+  z-index:60;
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:18px;
+  background:rgba(249,250,252,.97);
+  color:#191919;
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  width:calc(100% - 24px);
+}
+
+.game-banner-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:#06c755;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.game-banner-text{
+  flex:1;
+  min-width:0;
+}
+
+.game-banner-text small{
+  display:block;
+  color:#73777e;
+  font-size:11px;
+  margin-bottom:3px;
+}
+
+.game-banner-text strong{
+  display:block;
+  font-size:14px;
+}
+
+.game-banner-text span{
+  display:block;
+  margin-top:4px;
+  font-size:13px;
+}
+
 .dialog{background:white;color:#20314c;padding:25px;border-radius:20px;width:100%;max-width:320px;text-align:center}
 .dialog p{font-size:14px;line-height:1.6}
 .toolbar{padding:10px 14px;background:#fff;border-top:1px solid #e7eaf0}
@@ -1402,6 +1474,7 @@ button{cursor:pointer}
   <main id="screen" class="screen"></main>
   <div class="nav" id="nav"><span></span></div>
   <div id="modal"></div>
+<div id="gameBanner"></div>
 </div>
 
 <script>
@@ -1779,7 +1852,9 @@ if(save.flags.achiThanked){
   availableChats.unshift({
     id:'achi',
     name:'อชิ',
-    preview:'คุณการันต์ครับ ขอบคุณมากนะครับ'
+    preview:save.replies.achi
+      ? save.replies.achi
+      : 'ขอบคุณครับ'
   });
 }
 
@@ -1795,9 +1870,9 @@ const chats=availableChats.filter(c=>
       preview='ได้เลยจ้ะ พี่จัดการให้ ไม่ต้องห่วง';
     }
 
-    if(c.id==='achi' && save.replies.achi){
-      preview='ขอบคุณนะครับ';
-    }
+   if(c.id==='achi' && save.replies.achi){
+  preview=save.replies.achi;
+}
 
     return '<button class="line-row" data-line-chat="'+c.id+'">'+
       lineAvatar(c.id)+
@@ -2422,122 +2497,120 @@ function bubble(text,out){
   '</div>';
 }
 function renderChat(){
-lastBubbleSender = null;
+  lastBubbleSender=null;
 
-const names={duj:'พี่ดุจ',achi:'อชิ',office:'ประสานงานออฟฟิศ',sales:'ทีมฝ่ายขาย'};
-let b='<div class="day">30 ม.ค.</div>';
-let choices='';
-
-if(chat==='duj'){
-
-  b+=bubble('พี่ดุจครับ ผมมีเรื่องให้ช่วย',true);
-  b+=bubble('ว่าไงจ๊ะการันต์');
-  b+=bubble('พอดีผมเห็นบอร์ดว่าวันนี้วันเกิดอชิ',true);
-  b+=bubble('ผมเลยซื้อเค้กมาฝากครับ',true);
-  b+=bubble('ต๊ายตายการันต์');
-  b+=bubble('ทำไมน่ารักแบบนี้');
-  b+=bubble('เค้กผมแช่ไว้ในตู้เย็น',true);
-  b+=bubble('ฝากพี่ดุจด้วยนะครับ',true);
-
-}
-
-if(chat==='achi'){
-b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
-b+=bubble('ขอบคุณมากนะครับคุณการันต์');
-
-if(save.replies.achi){
-b+=bubble(save.replies.achi,true);
-b+=bubble('ขอบคุณนะครับ',false);
-}else{
-choices=[
-'ยินดีครับ',
-'ขอให้วันนี้เป็นวันที่ดีนะครับ',
-'พักผ่อนด้วยนะครับ'
-].map((o,i)=>'<button class="choice" data-reply="achi" data-index="'+i+'">'+o+'</button>').join('');
-}
-}
-
-if(chat==='office'){
-b+=bubble('ปาย: วันนี้มีน้องใหม่เข้าทีมโปรโมชั่น ชื่อร็อคนะคะ');
-b+=bubble('ร็อค: สวัสดีครับ ฝากเนื้อฝากตัวด้วยนะครับ');
-b+=bubble('อชิ: ยินดีต้อนรับครับ ถ้าต้องประสานงานเอกสารติดต่อผมได้เลยครับ');
-b+=bubble('การันต์: ยินดีต้อนรับครับ',true);
-}
-
-if(chat==='sales'){
-b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ');
-b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
-}
-
-
-const chatIcon=(type)=>{
-  const shapes={
-    clock:'<circle cx="11" cy="11" r="8"/><path d="M11 6v5l4 3M17 17l5 5"/>',
-    menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
-    plus:'<path d="M12 3v18M3 12h18"/>',
-    camera:'<path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/>',
-    image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1"/><path d="m4 18 6-6 4 4 3-3 4 4"/>',
-    mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',
-    smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14q4 5 8 0"/><path d="M8 9h.01M16 9h.01"/>'
+  const names={
+    duj:'พี่ดุจ',
+    achi:'อชิ',
+    office:'ประสานงานออฟฟิศ',
+    sales:'ทีมฝ่ายขาย'
   };
 
-  return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
-    shapes[type]+
-  '</svg>';
-};
+  let b='<div class="day">30 ม.ค.</div>';
+  let choices='';
 
-return '<div class="line-chatpage">'+
+  if(chat==='duj'){
+    b+=bubble('เห็นน้องปายบอกการันต์ตามหาพี่');
+    b+=bubble('มีเรื่องอะไรรึเปล่าจ๊ะ');
+    b+=bubble('ผมไปเจอลูกค้ามา',true);
+    b+=bubble('แถวนั้นมีร้านเค้ก',true);
+    b+=bubble('เห็นว่าวันนี้วันเกิดอชิผมเลยซื้อมาให้ครับ',true);
+    b+=bubble('ฝากพี่ดุจให้อชิด้วยนะครับ',true);
+    b+=bubble('ได้เลยจ้า');
+    b+=bubble('เดี๋ยวพี่จัดการให้');
+    b+=bubble('ขอบคุณครับ',true);
+  }
 
-  '<div class="line-chathead">'+
-    '<button data-go="LINE" aria-label="ย้อนกลับ">'+
-      lineIcon('back')+
-    '</button>'+
-    '<b>'+names[chat]+'</b>'+
-    '<button data-chat-tool="search" aria-label="ค้นหา">'+
-      chatIcon('clock')+
-    '</button>'+
-    '<button data-line-call="1" aria-label="โทร">'+
-      lineIcon('call')+
-    '</button>'+
-    '<button data-chat-tool="calendar" aria-label="ปฏิทิน">'+
-      lineIcon('calendar')+
-    '</button>'+
-    '<button data-chat-tool="menu" aria-label="เมนู">'+
-      chatIcon('menu')+
-    '</button>'+
-  '</div>'+
+  if(chat==='achi'){
+    b+=bubble('ขอบคุณครับ');
 
-  '<div class="line-chatbody" id="lineChatBody">'+
-    b+
-  '</div>'+
+    if(save.replies.achi){
+      b+=bubble(save.replies.achi,true);
+    }else{
+      const opts=[
+        'ยินดีครับ สุขสันต์วันเกิดนะครับ',
+        'ไม่เป็นไรครับ หวังว่าจะชอบเค้กนะครับ',
+        'ถ้าอชิมีความสุข ผมก็ดีใจแล้วครับ'
+      ];
 
-  (choices
-    ? '<div class="line-replies">'+
-        '<div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+
-        choices+
-      '</div>'
-    : '')+
+      choices=opts.map((o,i)=>
+        '<button class="choice" data-reply="achi" data-index="'+i+'">'+
+          o+
+        '</button>'
+      ).join('');
+    }
+  }
 
-  '<div class="line-compose">'+
-    '<button data-chat-tool="plus" aria-label="เพิ่มเติม">'+
-      chatIcon('plus')+
-    '</button>'+
-    '<button data-chat-tool="camera" aria-label="กล้อง">'+
-      chatIcon('camera')+
-    '</button>'+
-    '<button data-chat-tool="image" aria-label="รูปภาพ">'+
-      chatIcon('image')+
-    '</button>'+
-    '<input placeholder="Aa" aria-label="พิมพ์ข้อความ" readonly>'+
-    '<button data-chat-tool="smile" aria-label="สติกเกอร์">'+
-      chatIcon('smile')+
-    '</button>'+
-    '<button data-chat-tool="mic" aria-label="ไมโครโฟน">'+
-      chatIcon('mic')+
-    '</button>'+
-  '</div>'+
+  if(chat==='office'){
+    b+=bubble('ปาย: วันนี้มีน้องใหม่เข้าทีมโปรโมชั่น ชื่อร็อคนะคะ');
+    b+=bubble('ร็อค: สวัสดีครับ ฝากเนื้อฝากตัวด้วยนะครับ');
+    b+=bubble('อชิ: ยินดีต้อนรับครับ ถ้าต้องประสานงานเอกสารติดต่อผมได้เลยครับ');
+    b+=bubble('การันต์: ยินดีต้อนรับครับ',true);
+  }
 
-'</div>';
+  if(chat==='sales'){
+    b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ');
+    b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
+  }
+
+  const chatIcon=(type)=>{
+    const shapes={
+      clock:'<circle cx="11" cy="11" r="8"/><path d="M11 6v5l4 3M17 17l5 5"/>',
+      menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+      plus:'<path d="M12 3v18M3 12h18"/>',
+      camera:'<path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/>',
+      image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1"/><path d="m4 18 6-6 4 4 3-3 4 4"/>',
+      mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',
+      smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14q4 5 8 0"/><path d="M8 9h.01M16 9h.01"/>'
+    };
+
+    return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
+      shapes[type]+
+    '</svg>';
+  };
+
+  return '<div class="line-chatpage">'+
+
+    '<div class="line-chathead">'+
+      '<button data-go="LINE" aria-label="ย้อนกลับ">'+
+        lineIcon('back')+
+      '</button>'+
+      '<b>'+names[chat]+'</b>'+
+      '<button data-chat-tool="search" aria-label="ค้นหา">'+
+        chatIcon('clock')+
+      '</button>'+
+      '<button data-line-call="1" aria-label="โทร">'+
+        lineIcon('call')+
+      '</button>'+
+      '<button data-chat-tool="calendar" aria-label="ปฏิทิน">'+
+        lineIcon('calendar')+
+      '</button>'+
+      '<button data-chat-tool="menu" aria-label="เมนู">'+
+        chatIcon('menu')+
+      '</button>'+
+    '</div>'+
+
+    '<div class="line-chatbody" id="lineChatBody">'+
+      b+
+    '</div>'+
+
+    (choices
+      ? '<div class="line-replies">'+
+          '<div class="tinylabel">เลือกข้อความตอบในฐานะการันต์</div>'+
+          choices+
+        '</div>'
+      : '')+
+
+    '<div class="line-compose">'+
+      '<button data-chat-tool="plus" aria-label="เพิ่มเติม">'+chatIcon('plus')+'</button>'+
+      '<button data-chat-tool="camera" aria-label="กล้อง">'+chatIcon('camera')+'</button>'+
+      '<button data-chat-tool="image" aria-label="รูปภาพ">'+chatIcon('image')+'</button>'+
+      '<input placeholder="Aa" aria-label="พิมพ์ข้อความ" readonly>'+
+      '<button data-chat-tool="smile" aria-label="สติกเกอร์">'+chatIcon('smile')+'</button>'+
+      '<button data-chat-tool="mic" aria-label="ไมโครโฟน">'+chatIcon('mic')+'</button>'+
+    '</div>'+
+
+  '</div>';
 }
 
 function popup(title,msg){
@@ -2545,6 +2618,20 @@ function popup(title,msg){
     '<div class="overlay"><div class="dialog"><h3>'+
     title+'</h3><p>'+msg+
     '</p><button class="action" data-task="close">ตกลง</button></div></div>';
+}
+
+function showGameBanner(who,message){
+  const banner=document.getElementById('gameBanner');
+
+  banner.innerHTML=
+    '<button class="game-banner" data-banner-chat="'+who+'">'+
+      '<span class="game-banner-icon">'+icon('line')+'</span>'+
+      '<span class="game-banner-text">'+
+        '<small>LINE · ตอนนี้</small>'+
+        '<strong>'+(who==='duj'?'พี่ดุจ':'อชิ')+'</strong>'+
+        '<span>'+message+'</span>'+
+      '</span>'+
+    '</button>';
 }
 
 function goApp(name){
@@ -2563,8 +2650,20 @@ render();
 }
 
 document.addEventListener('click',function(e){
-const birthday=e.target.closest('[data-line-birthday]');
 
+const bannerChat=e.target.closest('[data-banner-chat]');
+
+if(bannerChat){
+  chat=bannerChat.dataset.bannerChat;
+  page='chat';
+
+  document.getElementById('gameBanner').innerHTML='';
+
+  render();
+  return;
+}
+
+const birthday=e.target.closest('[data-line-birthday]');
 if(birthday && page==='LINE'){
   save.flags.birthdaySeen=true;
   unlock('GrabFood');
@@ -2622,12 +2721,18 @@ if(grabBtn && page==='GrabFood'){
     return;
   }
 
-  if(action==='contact'){
-    save.flags.deliveryStatus='delivered';
-    persist();
-    render();
-    return;
-  }
+if(action==='contact'){
+  save.flags.deliveryStatus='delivered';
+  persist();
+  render();
+
+  showGameBanner(
+    'duj',
+    'เห็นน้องปายบอกการันต์ตามหาพี่'
+  );
+
+  return;
+}
 }
 
 const deliveryCall=e.target.closest('[data-delivery-call]');
@@ -2640,14 +2745,20 @@ if(deliveryCall){
 
   document.getElementById('modal').innerHTML='';
 
-  popup(
-    answered?'จัดส่งสำเร็จ':'จัดส่งล่าช้า',
-    answered
-      ? 'พนักงานนำเค้กมาส่งถึงสำนักงานเรียบร้อยแล้ว'
-      : 'พนักงานติดต่อไม่ได้และรถติด กรุณาติดต่อผ่าน GrabFood อีกครั้ง'
-  );
-
   render();
+
+  if(answered){
+    showGameBanner(
+      'duj',
+      'เห็นน้องปายบอกการันต์ตามหาพี่'
+    );
+  }else{
+    popup(
+      'จัดส่งล่าช้า',
+      'พนักงานติดต่อไม่ได้และรถติด กรุณาติดต่อผ่าน GrabFood อีกครั้ง'
+    );
+  }
+
   return;
 }
 
@@ -2734,13 +2845,6 @@ if(lj && page==='LINE'){
 if(la && page==='LINE'){
   const action=la.dataset.lineAction;
 
-  if(action==='favorites'){
-    popup(
-      'รายการโปรด',
-      'ยังไม่ได้กำหนดรายชื่อเพื่อนในรายการโปรด'
-    );
-    return;
-  }
 if(
   action==='favorites' ||
   action==='friends' ||
@@ -2826,6 +2930,14 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
+
+  const leavingDuj=
+    page==='chat' &&
+    chat==='duj' &&
+    btn.dataset.go==='LINE' &&
+    save.flags.deliveryStatus==='delivered' &&
+    !save.flags.achiThanked;
+
   page=btn.dataset.go;
 
   if(page==='LINE'){
@@ -2834,7 +2946,16 @@ if(btn.dataset.go){
     lineSearch='';
   }
 
+  if(leavingDuj){
+    save.flags.achiThanked=true;
+    persist();
+  }
+
   render();
+
+  if(leavingDuj){
+    showGameBanner('achi','ขอบคุณครับ');
+  }
 }
 
 else if(btn.dataset.app){
@@ -2846,24 +2967,21 @@ page='chat';
 render();
 }
 else if(btn.dataset.reply){
-const who=btn.dataset.reply;
-const opts=who==='duj'
-?[
-'ไม่ต้องบอกก็ได้ครับ ผมแค่อยากให้อชิมีความสุขในวันเกิด',
-'บอกว่าเป็นเค้กจากทุกคนในออฟฟิศก็ได้ครับ',
-'แล้วแต่พี่ดุจสะดวกเลยครับ ผมไม่ติดอะไร'
-]
-:[
-'ยินดีครับ',
-'ขอให้วันนี้เป็นวันที่ดีนะครับ',
-'พักผ่อนด้วยนะครับ'
-];
 
-save.replies[who]=opts[Number(btn.dataset.index)];
+  const who=btn.dataset.reply;
 
-if(who==='duj')unlock('ปฏิทิน');
-persist();
-render();
+  const opts=[
+    'ยินดีครับ สุขสันต์วันเกิดนะครับ',
+    'ไม่เป็นไรครับ หวังว่าจะชอบเค้กนะครับ',
+    'ถ้าอชิมีความสุข ผมก็ดีใจแล้วครับ'
+  ];
+
+  if(who==='achi'){
+    save.replies.achi=opts[Number(btn.dataset.index)];
+    save.flags.ep01Complete=true;
+    persist();
+    render();
+  }
 }
 else if(btn.dataset.task){
 const task=btn.dataset.task;
@@ -2940,8 +3058,15 @@ try {
 setInterval(()=>{
   if(page==='home')updateWeather();
 },600000);
+document.addEventListener('gesturestart',function(e){
+  e.preventDefault();
+},{passive:false});
 
+document.addEventListener('gesturechange',function(e){
+  e.preventDefault();
+},{passive:false});
 })();
+
 </script>
 </body>
 </html>

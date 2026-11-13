@@ -1480,6 +1480,175 @@ button{
   font-weight:700;
   letter-spacing:-1.5px;
 }}
+#phone:has(.notes-page) > .status,
+#phone:has(.notes-page) > .camera{
+  display:none;
+}
+
+.notes-page .apphead{
+  top:0;
+}
+/* ===== SAMSUNG STYLE CALENDAR ===== */
+
+.calendar-app{
+  height:100%;
+  padding:36px 0 22px;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  color:#202124;
+  overflow:hidden;
+}
+
+.calendar-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  flex-shrink:0;
+}
+
+.calendar-top-title{
+  font-size:23px;
+  font-weight:700;
+}
+
+.calendar-top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.calendar-iconbtn{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:0;
+  background:transparent;
+  color:#34383e;
+}
+
+.calendar-iconbtn .ico{
+  width:24px;
+  height:24px;
+}
+
+.calendar-weekdays{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  text-align:center;
+  padding:12px 10px 8px;
+  font-size:12px;
+  color:#7b8088;
+}
+
+.calendar-weekdays span:first-child{
+  color:#e45d65;
+}
+
+.calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  grid-auto-rows:57px;
+  padding:0 10px 12px;
+}
+
+.calendar-day{
+  position:relative;
+  border:0;
+  background:transparent;
+  color:#24272b;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  padding:5px 0;
+}
+
+.calendar-day.other{
+  color:#bfc2c7;
+}
+
+.calendar-day.selected .calendar-number{
+  background:#5558c8;
+  color:#fff;
+}
+
+.calendar-number{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:14px;
+}
+
+.calendar-dots{
+  display:flex;
+  gap:3px;
+}
+
+.calendar-dot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#6c70d7;
+}
+
+.calendar-dot.personal{
+  background:#e991a8;
+}
+
+.calendar-agenda{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  border-top:1px solid #eef0f3;
+  padding:17px 19px 35px;
+}
+
+.calendar-agenda-title{
+  font-size:17px;
+  font-weight:700;
+  margin-bottom:16px;
+}
+
+.calendar-event{
+  display:flex;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #f0f1f3;
+}
+
+.calendar-event-bar{
+  width:4px;
+  border-radius:4px;
+  background:#6c70d7;
+  flex-shrink:0;
+}
+
+.calendar-event-bar.personal{
+  background:#e991a8;
+}
+
+.calendar-event strong{
+  display:block;
+  font-size:14px;
+}
+
+.calendar-event small{
+  display:block;
+  color:#858993;
+  font-size:12px;
+  margin-top:6px;
+}
+
+.calendar-empty{
+  color:#9a9da5;
+  font-size:13px;
+  padding-top:15px;
+}
 
 </style>
 </head>
@@ -1725,6 +1894,11 @@ const ep2InviteRoutes = {
 };
 
 save.flags.ep2InviteHistory ??= [];
+
+/* ===== EP.03 ===== */
+save.flags.ep3OutingAnnounced ??= false;
+save.flags.ep3OutingRead ??= false;
+save.flags.ep3NotificationShown ??= false;
 
 let pinInput='';
 const PHONE_PIN='1906';
@@ -2494,6 +2668,161 @@ function renderGrab(){
 
   return '';
 }
+/* ===== CALENDAR DATA ===== */
+
+const calendarEvents=[
+  {
+    date:'2026-01-28',
+    title:'นัดพบลูกค้า',
+    time:'10:00–11:30',
+    detail:'ประชุมงานกับลูกค้าฝ่ายขาย',
+    type:'work'
+  },
+  {
+    date:'2026-01-30',
+    title:'วันเกิดอชิ',
+    time:'ตลอดวัน',
+    detail:'วันเกิดอชิ · อย่าลืมอวยพร',
+    type:'personal'
+  },
+  {
+    date:'2026-02-01',
+    title:'กินข้าวกับอชิครั้งแรก',
+    time:'18:30',
+    detail:'นัดกินข้าวกับอชิสองคน',
+    type:'personal'
+  },
+  {
+    date:'2026-04-09',
+    title:'Company Outing — toyokawa',
+    time:'08:00',
+    detail:'เอ้าติ้งบริษัทก่อนสงกรานต์',
+    type:'work'
+  }
+];
+
+let calendarMonth=0;
+let calendarYear=2026;
+let calendarSelected='2026-01-30';
+
+const thaiMonths=[
+  'มกราคม','กุมภาพันธ์','มีนาคม','เมษายน',
+  'พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม',
+  'กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
+];
+
+function calendarDateKey(y,m,d){
+  return y+'-'+
+    String(m+1).padStart(2,'0')+'-'+
+    String(d).padStart(2,'0');
+}
+
+function calendarIcon(type){
+  const shapes={
+    prev:'<path d="m15 18-6-6 6-6"/>',
+    next:'<path d="m9 18 6-6-6-6"/>',
+    menu:'<path d="M4 6h16M4 12h16M4 18h16"/>'
+  };
+
+  return '<svg class="ico" viewBox="0 0 24 24" '+
+    'fill="none" stroke="currentColor" '+
+    'stroke-width="1.8" stroke-linecap="round" '+
+    'stroke-linejoin="round">'+shapes[type]+'</svg>';
+}
+
+function renderCalendar(){
+
+  const firstDay=new Date(calendarYear,calendarMonth,1).getDay();
+  const daysInMonth=new Date(calendarYear,calendarMonth+1,0).getDate();
+  const cells=Math.ceil((firstDay+daysInMonth)/7)*7;
+
+  let days='';
+
+  for(let i=0;i<cells;i++){
+
+    const day=i-firstDay+1;
+    const valid=day>=1 && day<=daysInMonth;
+
+    if(!valid){
+      days+='<div></div>';
+      continue;
+    }
+
+    const date=calendarDateKey(calendarYear,calendarMonth,day);
+    const events=calendarEvents.filter(x=>x.date===date);
+
+    days+=
+      '<button class="calendar-day '+
+      (date===calendarSelected?'selected':'')+
+      '" data-calendar-date="'+date+'">'+
+        '<span class="calendar-number">'+day+'</span>'+
+        '<span class="calendar-dots">'+
+          events.map(event=>
+            '<span class="calendar-dot '+
+              (event.type==='personal'?'personal':'')+
+            '"></span>'
+          ).join('')+
+        '</span>'+
+      '</button>';
+  }
+
+  const selectedEvents=calendarEvents.filter(
+    event=>event.date===calendarSelected
+  );
+
+  const selectedDate=new Date(calendarSelected+'T12:00:00');
+
+  const dateLabel=
+    selectedDate.getDate()+' '+
+    thaiMonths[selectedDate.getMonth()]+' '+
+    (selectedDate.getFullYear()+543);
+
+  return '<div class="calendar-app">'+
+
+    '<div class="calendar-top">'+
+      '<div class="calendar-top-title">'+
+        thaiMonths[calendarMonth]+' '+(calendarYear+543)+
+      '</div>'+
+
+      '<div class="calendar-top-actions">'+
+        '<button class="calendar-iconbtn" data-calendar-nav="-1" aria-label="เดือนก่อน">'+
+          calendarIcon('prev')+
+        '</button>'+
+        '<button class="calendar-iconbtn" data-calendar-nav="1" aria-label="เดือนถัดไป">'+
+          calendarIcon('next')+
+        '</button>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="calendar-weekdays">'+
+      ['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>
+        '<span>'+d+'</span>'
+      ).join('')+
+    '</div>'+
+
+    '<div class="calendar-grid">'+days+'</div>'+
+
+    '<div class="calendar-agenda">'+
+      '<div class="calendar-agenda-title">'+dateLabel+'</div>'+
+
+      (selectedEvents.length
+        ? selectedEvents.map(event=>
+            '<div class="calendar-event">'+
+              '<div class="calendar-event-bar '+
+                (event.type==='personal'?'personal':'')+
+              '"></div>'+
+              '<div>'+
+                '<strong>'+event.title+'</strong>'+
+                '<small>'+event.time+'</small>'+
+                '<small>'+event.detail+'</small>'+
+              '</div>'+
+            '</div>'
+          ).join('')
+        : '<div class="calendar-empty">ไม่มีกิจกรรมในวันนี้</div>'
+      )+
+    '</div>'+
+  '</div>';
+}
 
 function render(){
 let html='';
@@ -2555,10 +2884,7 @@ html=`
 else if(page==='home'){
 html=`
 <div class="home">
-
-
 <div class="home-weather">
-
   <div class="home-weather-icon" id="weatherIcon">
     ${weatherSVG(2,true)}
   </div>
@@ -2608,7 +2934,7 @@ else if(page==='chat'){
 html=renderChat();
 }
 else if(page==='ปฏิทิน'){
-html=appwrap('ปฏิทิน','<div class="content"><div class="entry"><b>30 มกราคม</b><small>วันเกิดอชิ · ปฏิทินบริษัท</small><p>พี่ดุจช่วยดูเรื่องเค้ก</p><button class="action" data-task="calendar">ดูรายละเอียดรายการ</button></div><div class="entry"><b>ประชุมฝ่ายขาย</b><small>09:30 · ห้องประชุม 2</small></div><div class="entry"><b>ตรวจรายงานยอดขาย</b><small>16:00 · งานฝ่ายขาย</small></div></div>');
+  html=renderCalendar();
 }
 else if(page==='คำสั่งซื้อ'){
 html=appwrap('คำสั่งซื้อ','<div class="content"><div class="entry"><b>'+icon('cake')+' เค้กวันเกิด</b><small>สั่งล่วงหน้า · รับ 30 มกราคม</small><p>ผู้รับสินค้า: พี่ดุจ</p><button class="action" data-task="order">ตรวจสอบรายละเอียด</button></div><div class="entry"><b>อาหารเย็น</b><small>30 มกราคม · จัดส่งที่สำนักงาน</small><p>อาหาร 2 ชุด</p><button class="action" data-task="dinner">เปิดรายการอาหาร</button></div></div>');
@@ -2618,7 +2944,7 @@ html=appwrap('โทรศัพท์','<div class="content"><div class="entry"
 }
 
 else if(page==='โน้ต'){
-  html=appwrap('โน้ต',`
+    html='<div class="notes-page">'+appwrap('โน้ต',`
     <div class="content">
 
       <div class="entry">
@@ -2652,9 +2978,8 @@ else if(page==='โน้ต'){
       </div>
 
     </div>
-  `);
+  `)+'</div>';
 }
-
 
 else{
 html=appwrap(page,'<div class="content"><div class="entry">ข้อมูลส่วนนี้จะเปิดเผยในตอนถัดไป</div></div>');
@@ -2667,10 +2992,27 @@ if(page==='home'){
   showWeather();
   updateWeather();
 }
+
+/* ===== EP.03 NOTIFICATION ===== */
+if(
+  save.flags.ep2Completed &&
+  !save.flags.ep3OutingRead &&
+  !save.flags.ep3NotificationShown &&
+  (page==='home' || page==='LINE' || page==='chat')
+){
+  save.flags.ep3NotificationShown=true;
+  save.flags.ep3OutingAnnounced=true;
+  persist();
+
+  showGameBanner(
+    'office',
+    'พี่ดุจ: ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ'
+  );
+}
+
 }
 
 let lastBubbleSender = null;
-
 function bubble(text,out=false,senderId=''){
   const isGroup = chat==='office' || chat==='sales';
 
@@ -2817,9 +3159,9 @@ function ep2Finish(){
 function ep2InviteChoices(){
   const route = save.flags.ep2InviteRoute;
 
-  if(save.flags.ep2Completed){
-    return '<div class="notice">ภารกิจ EP.02 สำเร็จ — อชิตกลงไปกินข้าวด้วยแล้ว</div>';
-  }
+if(save.flags.ep2Completed){
+  return '';
+}
 
   if(!route){
     return [
@@ -2885,7 +3227,33 @@ function ep2LogoForm(){
     </div>
   `;
 }
+function groupBubble(sender,text,out=false){
 
+  if(out){
+    return bubble(text,true);
+  }
+
+  const colors={
+    'พี่ดุจ':'#f1e1d9',
+    'ปาย':'#e4def3',
+    'ร็อค':'#dce8f5',
+    'อชิ':'#dce9e2'
+  };
+
+  return '<div class="line-message received">'+
+    '<div class="line-message-avatar">'+
+      '<div class="line-avatar" style="background:'+
+        (colors[sender]||'#e5eaf1')+'">'+
+        lineIcon('user')+
+      '</div>'+
+    '</div>'+
+    '<div class="group-message-content">'+
+      '<div class="group-sender">'+sender+'</div>'+
+      '<div class="bubble incoming">'+text+'</div>'+
+    '</div>'+
+    '<div class="line-message-meta">18:00</div>'+
+  '</div>';
+}
 
 function renderChat(){
   lastBubbleSender=null;
@@ -2986,16 +3354,43 @@ if(chat==='pai'){
   }
 }
 
-  if(chat==='office'){
-    b+=bubble('พี่ดุจ: สวัสดีจ้าทุกคน');
-    b+=bubble('พี่ดุจ: พี่ขอแจ้งเรื่องกิจกรรม Outing ประจำปีของบริษัทนะจ๊ะ');
-    b+=bubble('พี่ดุจ: รายละเอียดกำหนดการและสถานที่ พี่จะแจ้งให้ทราบอีกครั้งจ้า');
-    b+=bubble('ปาย: รับทราบค่ะพี่ดุจ');
-    b+=bubble('ร็อค: รับทราบครับ');
-    b+=bubble('อชิ: รับทราบครับ');
-    b+=bubble('รับทราบครับ',true);
-  }
+if(chat==='office'){
 
+  b='<div class="day">30 ม.ค.</div>';
+
+  // พี่ดุจแนะนำร็อคในกลุ่มบริษัท
+  b+=groupBubble(
+    'พี่ดุจ',
+    'ขอแนะนำสมาชิกใหม่ของบริษัทนะจ๊ะ น้องร็อคเข้ามาร่วมทีมโปรโมชั่น ฝากทุกคนช่วยดูแลน้องด้วยนะ'
+  );
+
+  b+=groupBubble(
+    'ร็อค',
+    'สวัสดีครับทุกคน ฝากเนื้อฝากตัวด้วยนะครับ'
+  );
+
+  b+=groupBubble('ปาย','ยินดีต้อนรับจ้า');
+  b+=groupBubble('อชิ','ยินดีต้อนรับครับ');
+
+  // ข้อความของการันต์
+  b+=bubble('ยินดีต้อนรับครับ',true);
+
+  // EP.03 เริ่มหลังจาก EP.02 จบ
+  if(save.flags.ep2Completed){
+
+    b+='<div class="day">9 เม.ย.</div>';
+
+    b+=groupBubble(
+      'พี่ดุจ',
+      'ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ ปีนี้เราจะจัดกันก่อนช่วงสงกรานต์ รายละเอียดวันและเวลาพี่ลงไว้ในปฏิทินแล้ว ทุกคนเข้าไปตรวจสอบกันด้วยนะ'
+    );
+
+    b+=groupBubble('ปาย','รับทราบค่ะพี่ดุจ');
+    b+=groupBubble('ร็อค','รับทราบครับ');
+    b+=groupBubble('อชิ','รับทราบครับ');
+
+  }
+}
   if(chat==='sales'){
     b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ');
     b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
@@ -3076,7 +3471,9 @@ function showGameBanner(who,message){
       '<span class="game-banner-icon">'+icon('line')+'</span>'+
       '<span class="game-banner-text">'+
         '<small>LINE · ตอนนี้</small>'+
-        '<strong>'+(who==='duj'?'พี่ดุจ':'อชิ')+'</strong>'+
+        '<strong>'+
+  (who==='office'?'toyokawa':who==='duj'?'พี่ดุจ':'อชิ')+
+'</strong>'+
         '<span>'+message+'</span>'+
       '</span>'+
     '</button>';
@@ -3098,7 +3495,30 @@ render();
 }
 
 document.addEventListener('click',function(e){
+const calendarNav=e.target.closest('[data-calendar-nav]');
+const calendarDate=e.target.closest('[data-calendar-date]');
 
+if(calendarNav && page==='ปฏิทิน'){
+
+  const offset=Number(calendarNav.dataset.calendarNav);
+  const next=new Date(calendarYear,calendarMonth+offset,1);
+
+  calendarYear=next.getFullYear();
+  calendarMonth=next.getMonth();
+
+  calendarSelected=calendarDateKey(
+    calendarYear,calendarMonth,1
+  );
+
+  render();
+  return;
+}
+
+if(calendarDate && page==='ปฏิทิน'){
+  calendarSelected=calendarDate.dataset.calendarDate;
+  render();
+  return;
+}
 const bannerChat=e.target.closest('[data-banner-chat]');
 
 if(bannerChat){
@@ -3106,7 +3526,12 @@ if(bannerChat){
   page='chat';
 
   document.getElementById('gameBanner').innerHTML='';
-
+    if(chat==='office' && save.flags.ep2Completed){
+    save.flags.ep3OutingRead=true;
+    unlock('ปฏิทิน');
+    persist();
+  }
+  
   render();
   return;
 }
@@ -3303,10 +3728,15 @@ if(lg && page==='LINE'){
   return;
 }
 
-
 if(lc && page==='LINE'){
   chat=lc.dataset.lineChat;
+    if(chat==='office' && save.flags.ep2Completed){
+    save.flags.ep3OutingRead=true;
+    unlock('ปฏิทิน');
+    persist();
 
+    document.getElementById('gameBanner').innerHTML='';
+  }
   if(chat==='pai' && save.flags.ep2Started){
     ep2OpenPai();
   }

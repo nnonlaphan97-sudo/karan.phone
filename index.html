@@ -1768,9 +1768,11 @@ return '<div class="apphead"><button class="back" data-go="home" aria-label="ย
 }
 
 function appwrap(title,body){
-return '<div class="app">'+header(title)+body+'</div>';
+  return '<div class="app">'+
+    '<div class="apphead"><b>'+title+'</b></div>'+
+    body+
+  '</div>';
 }
-
 
 const WEATHER_URL =
   'https://api.open-meteo.com/v1/forecast' +

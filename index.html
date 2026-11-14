@@ -1946,6 +1946,35 @@ button{
   text-decoration:underline;
   text-underline-offset:3px;
 }
+.line-map-link{
+  width:78%;
+  max-width:290px;
+  margin:10px 0 12px 48px;
+  padding:14px;
+  background:#fff;
+  border-radius:16px;
+  color:#202124;
+  cursor:pointer;
+  border:1px solid #e2e5eb;
+}
+
+.line-map-link-title{
+  font-size:16px;
+  font-weight:700;
+}
+
+.line-map-link-desc{
+  font-size:13px;
+  margin-top:5px;
+  color:#626b79;
+}
+
+.line-map-link-url{
+  font-size:12px;
+  margin-top:8px;
+  color:#1683c5;
+}
+
 </style>
 </head>
 <body>
@@ -4029,25 +4058,23 @@ function renderChat(){
   b+=bubble(
     'พี่ดุจครับ พอจะมีที่อยู่บ้านอชิไหมครับ',true
   );
+b+=bubble('แผนที่บ้านอชิจ๊ะ');
+
+b+=`
+  <div class="line-map-link"
+       data-open-achi-map="1">
+    <div class="line-map-link-title">Maps</div>
+    <div class="line-map-link-desc">
+      เปิดแผนที่เพื่อค้นหาบ้านอชิ
+    </div>
+    <div class="line-map-link-url">
+      maps.app/achi-search
+    </div>
+  </div>
+`;
 
   b+=bubble(
-    'อชิไม่สบายเหรอจ๊ะ'
-  );
-
-  b+=bubble(
-    'ครับ ผมเป็นห่วง เลยอยากไปดูอาการหน่อย',true
-  );
-
-  b+=bubble(
-    'พี่ไม่แน่ใจเลขที่บ้านนะ แต่จำได้ว่าอยู่ในซอยใกล้คลอง'
-  );
-
-  b+=bubble(
-    'แถวทางเข้ามีสวนเล็ก ๆ ด้วยจ้ะ'
-  );
-
-  b+=bubble(
-    'ขอบคุณครับพี่ดุจ เดี๋ยวผมลองหาทางไปครับ',true
+    'ขอบคุณครับพี่ดุจ',true
   );
 }
   }
@@ -4313,7 +4340,13 @@ document.addEventListener('input',function(e){
 
 document.addEventListener('click',function(e){
 /* ===== EP.04 MAP INTERACTIONS ===== */
+const mapLink=e.target.closest('[data-open-achi-map]');
 
+if(mapLink){
+  page='maps';
+  render();
+  return;
+}
 const mapPoint=e.target.closest('[data-map-point]');
 
 if(mapPoint && page==='Maps'){

@@ -2892,6 +2892,61 @@ button{
   color:white;
 }
 
+/* ===== CLOCK ALARM LIST ===== */
+
+.sclock-alarm-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:#fff;
+  border-radius:24px;
+  padding:20px 18px;
+  margin-bottom:12px;
+}
+
+.sclock-alarm-info {
+  min-width:0;
+}
+
+.sclock-alarm-row .sclock-time {
+  font-size:43px;
+  font-weight:300;
+  line-height:1.15;
+}
+
+.sclock-alarm-row.is-off .sclock-time {
+  color:#a2a2ab;
+}
+
+.sclock-switch {
+  width:49px;
+  height:29px;
+  border:0;
+  border-radius:20px;
+  background:#c9c9d1;
+  padding:3px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:background .2s;
+}
+
+.sclock-switch.on {
+  background:#7654d7;
+  justify-content:flex-end;
+}
+
+.sclock-switch-knob {
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 3px #0002;
+}
+
 </style>
 </head>
 <body>
@@ -5136,8 +5191,38 @@ function renderInstagram() {
 
 /* ===== EP.06 CLOCK ===== */
 
-/* ===== SAMSUNG CLOCK ===== */
+/* ===== CLOCK ALARMS ===== */
 
+save.flags.clockAlarms ??= {
+  '08:00':true,
+  '13:00':true,
+  '16:45':true
+};
+
+function renderSamsungAlarmRow(time,label){
+  const enabled=!!save.flags.clockAlarms[time];
+
+  return `
+    <div class="sclock-alarm-row ${enabled?'':'is-off'}">
+      <div class="sclock-alarm-info">
+        <div class="sclock-time">${time}</div>
+        <div class="sclock-sub">${label}</div>
+      </div>
+
+      <button
+        class="sclock-switch ${enabled?'on':''}"
+        type="button"
+        role="switch"
+        aria-label="นาฬิกาปลุก ${time}"
+        aria-checked="${enabled}"
+        data-sclock-alarm-toggle="${time}">
+        <span class="sclock-switch-knob"></span>
+      </button>
+    </div>
+  `;
+}
+
+/* ===== SAMSUNG CLOCK ===== */
 let samsungClockTab='alarm';
 let samsungStopwatchStartedAt=null;
 let samsungStopwatchElapsed=0;
@@ -5195,34 +5280,31 @@ function renderEp6Clock(){
 
   let body='';
 
-  if(samsungClockTab==='alarm'){
-    body=`
+
+if(samsungClockTab==='alarm'){
+
+  body=`
+    ${ringing ? `
       <div class="sclock-alarm">
         <div class="sclock-time">06:00</div>
-
         <div class="sclock-sub">
-          18 เมษายน · เชียงใหม่
+          นาฬิกาปลุก EP.06 กำลังดัง
         </div>
 
-        ${ringing?`
-          <div class="sclock-active">
-            นาฬิกาปลุกกำลังดัง
-          </div>
-
-          <button class="sclock-stop"
-            data-ep6-alarm="1">
-            ปิดนาฬิกาปลุก
-          </button>
-        `:`
-          <div class="sclock-sub">
-            ${stopped
-              ? 'ปิดนาฬิกาปลุกแล้ว'
-              : 'นาฬิกาปลุกที่ตั้งไว้'}
-          </div>
-        `}
+        <button
+          class="sclock-stop"
+          data-ep6-alarm="1">
+          ปิดนาฬิกาปลุก
+        </button>
       </div>
-    `;
-  }
+    ` : ''}
+
+    ${renderSamsungAlarmRow('08:00','ทุกวัน')}
+    ${renderSamsungAlarmRow('13:00','ทุกวัน')}
+    ${renderSamsungAlarmRow('16:45','ทุกวัน')}
+  `;
+}
+
 
   if(samsungClockTab==='world'){
     body=`
@@ -6539,6 +6621,30 @@ if(ep6Banner){
 
 
 /* ===== SAMSUNG CLOCK INTERACTIONS ===== */
+
+/* ===== CLOCK ALARM SWITCH ===== */
+
+const alarmToggle=e.target.closest(
+  '[data-sclock-alarm-toggle]'
+);
+
+if(alarmToggle && page==='นาฬิกา'){
+  const time=alarmToggle.dataset.sclockAlarmToggle;
+
+  if(
+    Object.prototype.hasOwnProperty.call(
+      save.flags.clockAlarms,time
+    )
+  ){
+    save.flags.clockAlarms[time]=
+      !save.flags.clockAlarms[time];
+
+    persist();
+    render();
+  }
+
+  return;
+}
 
 const clockTabButton=e.target.closest(
   '[data-sclock-tab]'

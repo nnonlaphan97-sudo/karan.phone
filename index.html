@@ -433,7 +433,7 @@ button{
 .appicon{
   width:60px;
   height:60px;
-  border-radius:17px;
+  border-radius:22px;
   display:grid;
   place-items:center;
   overflow:hidden;
@@ -2083,25 +2083,76 @@ button{
   font-size:13px;
 }
 
+
+.samsung-viewfinder video{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#111;
+}
+
+.samsung-capture-flash{
+  position:absolute;
+  inset:0;
+  background:#fff;
+  opacity:0;
+  pointer-events:none;
+  z-index:5;
+}
+
+.samsung-capture-flash.active{
+  animation:ep4CameraFlash .32s ease-out;
+}
+
+@keyframes ep4CameraFlash{
+  0%{opacity:0}
+  20%{opacity:.95}
+  100%{opacity:0}
+}
+
 .samsung-shutter-row{
   height:90px;
-  display:flex;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
   align-items:center;
-  justify-content:space-around;
+  justify-items:center;
+  width:100%;
 }
 
 .samsung-shutter-row button{
+  padding:0;
+  border:0;
+  appearance:none;
+  -webkit-appearance:none;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.samsung-camera-thumbnail,
+.samsung-camera-flip{
   width:54px;
   height:54px;
-  border:0;
   border-radius:50%;
   background:#292b30;
   color:#fff;
-  display:grid;
-  place-items:center;
+  overflow:hidden;
 }
 
-.samsung-shutter-row .ico{
+.samsung-camera-thumbnail img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.samsung-camera-thumbnail .ico{
+  width:38px;
+  height:38px;
+}
+
+.samsung-camera-flip svg{
   width:30px;
   height:30px;
 }
@@ -2109,15 +2160,24 @@ button{
 .samsung-shutter-row .samsung-shutter{
   width:76px;
   height:76px;
+  border:4px solid #aeb0b3;
+  border-radius:50%;
   background:#fff;
-  border:4px solid #aaa;
+  display:grid;
+  place-items:center;
 }
 
 .samsung-shutter span{
+  display:block;
   width:62px;
   height:62px;
-  border:2px solid #151515;
+  border:3px solid #171717;
   border-radius:50%;
+  background:#fff;
+}
+
+.samsung-shutter:active{
+  transform:scale(.96);
 }
 
 .samsung-gallery{
@@ -2336,8 +2396,7 @@ function icon(n,cls=''){
     <svg class="ico ${cls}" viewBox="0 0 64 64"
          xmlns="http://www.w3.org/2000/svg"
          aria-hidden="true">
-     <rect width="64" height="64" rx="17" fill="${color}"/>
-    ${art}
+     <rect width="64" height="64" rx="22" fill="${color}"/>    ${art}
     </svg>`;
 
   switch(n){
@@ -2358,26 +2417,25 @@ function icon(n,cls=''){
           l-12-6-6 6c-5-2-9-6-11-11l6-6-6-9Z"
           fill="white"/>`);
 
+ 
     case 'gallery':
       return app('#FFFFFF',`
         <g transform="translate(32 32)">
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#ED4698"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#A637E7" transform="rotate(45)"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#20BA25" transform="rotate(90)"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#80BE0E" transform="rotate(135)"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#F5A900" transform="rotate(180)"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#F44343" transform="rotate(225)"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#F06AAB" transform="rotate(270)"/>
-          <ellipse cx="0" cy="-15" rx="7" ry="13"
-            fill="#F7B33D" transform="rotate(315)"/>
-          <circle r="7" fill="#FFFFFF"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#F33B98"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#A22CF0" transform="rotate(51.43)"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#19C629" transform="rotate(102.86)"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#8EBB09" transform="rotate(154.29)"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#F5A900" transform="rotate(205.72)"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#F43848" transform="rotate(257.15)"/>
+          <ellipse cx="0" cy="-14" rx="6.8" ry="12.5"
+            fill="#F04B86" transform="rotate(308.58)"/>
+          <circle cx="0" cy="0" r="7.5" fill="#FFFFFF"/>
         </g>
       `);
  
@@ -4041,23 +4099,43 @@ function renderSamsungCamera(){
           <span>MORE</span>
         </div>
 
-        <div class="samsung-shutter-row">
-          <button data-app="แกลเลอรี"
-                  aria-label="แกลเลอรี่">
-            ${icon('gallery')}
-          </button>
+   
+<div class="samsung-shutter-row">
 
-          <button class="samsung-shutter"
-                  data-ep4-shutter="1"
-                  aria-label="ถ่ายภาพ">
-            <span></span>
-          </button>
+  <button class="samsung-camera-thumbnail"
+          data-ep4-open-gallery="1"
+          aria-label="เปิดภาพล่าสุด">
+    ${save.flags.ep4PhotoTaken
+      ? '<img src="videos/IMG_3258.jpeg" alt="ภาพที่ถ่าย">'
+      : icon('gallery')}
+  </button>
 
-          <button data-camera-flip="1"
-                  aria-label="สลับกล้อง">
-            ${icon('camera')}
-          </button>
-        </div>
+  <button class="samsung-shutter"
+          data-ep4-shutter="1"
+          aria-label="ถ่ายภาพ">
+    <span></span>
+  </button>
+
+  <button class="samsung-camera-flip"
+          data-camera-flip="1"
+          aria-label="สลับกล้องหน้าและหลัง">
+    <svg viewBox="0 0 48 48"
+         width="30" height="30"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2.7"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <path d="M14 15h17l-5-5"/>
+      <path d="M31 15l-5 5"/>
+      <path d="M34 33H17l5 5"/>
+      <path d="M17 33l5-5"/>
+      <rect x="15" y="19" width="18"
+            height="10" rx="3"/>
+      <circle cx="24" cy="24" r="3"/>
+    </svg>
+  </button>
+</div>
       </div>
     </div>
   `;
@@ -4083,7 +4161,9 @@ function renderSamsungGallery(){
           taken
           ? `<button class="samsung-photo"
                      data-ep4-photo="1">
-               ${ep4PhotoSVG()}
+             <img src="videos/IMG_3258.jpeg"
+     alt="ภาพที่ถ่าย"
+     style="width:100%;height:100%;object-fit:cover;display:block">
              </button>`
           : `<div class="samsung-gallery-empty">
                ยังไม่มีรูปภาพ
@@ -5541,6 +5621,7 @@ if(breakfastBtn && page==='chat' && chat==='achi'){
   );
   return;
 }
+
 // EP.04 — ถ่ายภาพ
 const shutter=e.target.closest('[data-ep4-shutter]');
 
@@ -5548,14 +5629,56 @@ if(shutter && page==='กล้อง'){
 
   if(!save.flags.ep4KarinRead)return;
 
-  save.flags.ep4PhotoTaken=true;
+  const flash=document.querySelector('.samsung-capture-flash');
+  const video=document.getElementById('ep4CameraVideo');
 
+  if(flash){
+    flash.classList.remove('active');
+    void flash.offsetWidth;
+    flash.classList.add('active');
+  }
+
+  save.flags.ep4PhotoTaken=true;
   unlock('แกลเลอรี');
   persist();
 
+  // ไม่เปลี่ยนหน้า ให้ภาพที่ถ่ายปรากฏในวงกลมซ้าย
+  const thumbnail=document.querySelector('.samsung-camera-thumbnail');
+
+  if(thumbnail){
+    thumbnail.innerHTML=
+      '<img src="videos/IMG_3258.jpeg" alt="ภาพที่ถ่าย">';
+  }
+
+  if(video && video.paused){
+    video.play().catch(()=>{});
+  }
+
+  return;
+}
+
+// กดภาพวงกลมซ้ายเพื่อเปิดแกลเลอรี่
+const openGallery=e.target.closest('[data-ep4-open-gallery]');
+
+if(openGallery && page==='กล้อง'){
+  if(!save.flags.ep4PhotoTaken)return;
+
   page='แกลเลอรี';
   render();
+  return;
+}
 
+// ปุ่มสลับกล้องจำลอง
+const flipCamera=e.target.closest('[data-camera-flip]');
+
+if(flipCamera && page==='กล้อง'){
+  const video=document.getElementById('ep4CameraVideo');
+  if(video){
+    video.style.transform=
+      video.style.transform==='scaleX(-1)'
+        ? 'scaleX(1)'
+        : 'scaleX(-1)';
+  }
   return;
 }
 

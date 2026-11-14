@@ -2234,6 +2234,9 @@ save.flags.ep4DujBannerShown ??= false;
 save.flags.ep4MapUnlocked ??= false;
 save.flags.ep4MapStage ??= 0;
 save.flags.ep4MapComplete ??= false;
+save.flags.ep4HomeBannerShown ??= false;
+save.flags.ep4HomeBannerRead ??= false;
+save.flags.ep4AchiFinalReply ??= '';
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -2655,11 +2658,30 @@ function lineChatsHTML(){
   chat=previousChat;
   lastBubbleSender=previousSender;
   results.sort((a,b)=>{
-  // EP.04: การันต์ส่งข้อความหาพี่ดุจหลังอ่านข้อความอชิ
-  if(save.flags.ep4DujBannerShown){
-    if(a.id==='duj') return -1;
-    if(b.id==='duj') return 1;
+
+  // หลังอ่านแชทใหม่จากอชิ
+  // หรือเลือกตอบแล้ว ห้องอชิจะอยู่บนสุด
+  if(save.flags.ep4HomeBannerRead){
+
+    if(a.id==='achi')return -1;
+    if(b.id==='achi')return 1;
+
   }
+
+  // ก่อนหน้านั้น พี่ดุจเป็นห้องล่าสุด
+  if(save.flags.ep4DujBannerShown){
+
+    if(a.id==='duj')return -1;
+    if(b.id==='duj')return 1;
+
+  }
+
+  return (
+    b.dateOrder-a.dateOrder ||
+    b.messageIndex-a.messageIndex ||
+    a.originalIndex-b.originalIndex
+  );
+});
 
   return (
     b.dateOrder-a.dateOrder ||
@@ -3521,11 +3543,25 @@ function selectMapPoint(id){
   }
 
   // บ้านอชิ
-  else if(id==='houseB'){
-    save.flags.ep4MapStage=3;
-    save.flags.ep4MapComplete=true;
-    mapFeedback='พบบ้านอชิแล้ว';
+ else if(id==='houseB'){
+  save.flags.ep4MapStage=3;
+  save.flags.ep4MapComplete=true;
+  mapFeedback='พบบ้านอชิแล้ว';
+
+  if(!save.flags.ep4HomeBannerShown){
+    save.flags.ep4HomeBannerShown=true;
+
+    persist();
+    render();
+
+    showGameBanner(
+      'achi',
+      'การันต์ถึงบ้านแล้วใช่ไหมครับ'
+    );
+
+    return;
   }
+}
 
   // สถานี BTS ไม่ใช่จุดที่ต้องเลือก
   else{
@@ -4136,8 +4172,7 @@ if(chat==='achi'){
     }
   }
 
-  // EP.04 — 13 เมษายน
-  // แสดงข้อความที่อชิยกเลิกเป็นรายการล่าสุด
+   // EP.04 — 13 เมษายน
   if(save.flags.ep4AchiCancelledRead){
 
     b+='<div class="day">13 เม.ย.</div>';
@@ -4145,11 +4180,64 @@ if(chat==='achi'){
 
     choices='';
   }
-}
 
+  // หลังการันต์หาบ้านอชิสำเร็จ
+  if(save.flags.ep4HomeBannerRead){
 
+    b+=bubble('การันต์ถึงบ้านแล้วใช่ไหมครับ');
 
-if(chat==='pai'){
+    b+=bubble('ถึงแล้วครับ',true);
+    b+=bubble('อชิกินยาแล้วใช่ไหม',true);
+
+    b+=bubble('เรียบร้อยแล้วครับ');
+
+    b+=bubble(
+      'ถ้าอชิไม่ไหว ไม่ต้องมาช่วยผมก็ได้นะครับ',
+      true
+    );
+
+    b+=bubble('ผมไหวครับ');
+    b+=bubble('ผมได้ยาจากการันต์มาแล้ว');
+
+    const replyOptions=[
+      {
+        text:'เจอกันพรุ่งนี้ครับ',
+        answer:'ครับ เจอกันพรุ่งนี้นะครับ'
+      },
+      {
+        text:'ฝันดีครับ',
+        answer:'ครับ การันต์ก็ฝันดีนะครับ'
+      },
+      {
+        text:'พักผ่อนครับ',
+        answer:'ครับ ขอบคุณที่เป็นห่วงนะครับ'
+      }
+    ];
+
+    const selected=save.flags.ep4AchiFinalReply;
+
+    if(selected!==''){
+
+      const picked=replyOptions[Number(selected)];
+
+      if(picked){
+        b+=bubble(picked.text,true);
+        b+=bubble(picked.answer);
+      }
+
+    }else{
+
+      choices=replyOptions.map((item,i)=>
+        '<button class="choice" '+
+        'data-ep4-achi-reply="'+i+'">'+
+        item.text+
+        '</button>'
+      ).join('');
+
+    }
+  }
+  
+  if(chat==='pai'){
 
   b+=bubble('ปายครับ งานด่วนวันนี้ให้ทำอะไรครับ',true);
   b+=bubble('ทำไมพี่การันต์ถึงถามเหรอคะ');
@@ -4463,12 +4551,18 @@ if(bannerChat){
     unlock('ปฏิทิน');
   }
 
-  if(chat==='achi' && save.flags.ep4AchiBannerShown){
+ if(chat==='achi'){
+
+  if(save.flags.ep4MapComplete &&
+     save.flags.ep4HomeBannerShown){
+
+    save.flags.ep4HomeBannerRead=true;
+
+  }else if(save.flags.ep4AchiBannerShown){
 
     save.flags.ep4AchiCancelledRead=true;
-
   }
-
+}
   persist();
   render();
 
@@ -4818,6 +4912,26 @@ if(pinBtn && page==='pin'){
     render();
     return;
   }
+}
+// EP.04 — เลือกคำตอบสุดท้ายให้อชิ
+const ep4Reply=e.target.closest('[data-ep4-achi-reply]');
+
+if(ep4Reply){
+
+  if(!save.flags.ep4HomeBannerRead)return;
+
+  if(save.flags.ep4AchiFinalReply!=='')return;
+
+  const index=Number(ep4Reply.dataset.ep4AchiReply);
+
+  if(![0,1,2].includes(index))return;
+
+  save.flags.ep4AchiFinalReply=String(index);
+
+  persist();
+  render();
+
+  return;
 }
 
 const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-task]');

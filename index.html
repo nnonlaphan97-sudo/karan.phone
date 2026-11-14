@@ -5320,6 +5320,7 @@ if(chat==='pai'){
     b+=ep2LogoForm();
   }
 }
+if(chat==='karin' && save.flags.ep4KarinShown){
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');
 
     b+='<div class="day">15 เม.ย.</div>';
@@ -5354,8 +5355,6 @@ if(chat==='pai'){
     }else{
 
       choices=renderEp5BagPicker();
-
-    }
   }
 }
 if(chat==='office'){
@@ -6235,7 +6234,7 @@ if(sendPhoto && page==='แกลเลอรี'){
   );
 
   return;
-
+}
 // EP.04 — เลือกคำตอบสุดท้ายให้อชิ
 const ep4Reply=e.target.closest('[data-ep4-achi-reply]');
 

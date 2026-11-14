@@ -3495,11 +3495,38 @@ button{
 }
 
 .ep8-dial-bottom{
+  position:relative;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:32px;
-  margin-top:15px;
+  width:100%;
+  max-width:315px;
+  min-height:76px;
+  margin:15px auto 0;
+}
+
+.ep8-call-green{
+  width:65px;
+  height:65px;
+  border:0;
+  border-radius:50%;
+  background:#50BA60;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  margin:0 auto;
+}
+
+.ep8-delete{
+  position:absolute;
+  right:9px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:transparent;
+  color:#555963;
+  padding:12px;
 }
 
 .ep8-call-green{
@@ -3757,8 +3784,6 @@ check:'<path d="m4 12 5 5L20 6"/>',
 send:'<path d="m3 3 18 9-18 9 4-9-4-9ZM7 12h14"/>'
 };
 
-
-
 function icon(n,cls=''){
   const app=(color,art)=>`
     <svg class="ico ${cls}" viewBox="0 0 64 64"
@@ -3768,22 +3793,42 @@ function icon(n,cls=''){
     </svg>`;
 
   switch(n){
-    case 'message':
-  return app('#2389ED',`
-    <path d="M13 16H51
-      A9 9 0 0 1 60 25V39
-      A9 9 0 0 1 51 48H29
-      L16 55V48H13
-      A9 9 0 0 1 4 39V25
-      A9 9 0 0 1 13 16Z"
-      fill="#FFFFFF"/>
-    <circle cx="23" cy="32" r="3"
-      fill="#2389ED"/>
-    <circle cx="32" cy="32" r="3"
-      fill="#2389ED"/>
-    <circle cx="41" cy="32" r="3"
-      fill="#2389ED"/>
-  `);
+       case 'message':
+      return `
+        <svg class="ico ${cls}" viewBox="0 0 64 64"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <defs>
+            <linearGradient id="ep8MsgBlue"
+              x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#39A5F4"/>
+              <stop offset="1" stop-color="#0860DB"/>
+            </linearGradient>
+          </defs>
+
+          <rect width="64" height="64" rx="19"
+            fill="url(#ep8MsgBlue)"/>
+
+          <path d="
+            M15 15 H49
+            Q56 15 56 23
+            V39
+            Q56 47 48 47
+            H28
+            L17 54
+            V47 H15
+            Q8 47 8 39
+            V23
+            Q8 15 15 15 Z"
+            fill="#fff"/>
+
+          <g fill="#2688EB">
+            <circle cx="23" cy="31" r="3.2"/>
+            <circle cx="32" cy="31" r="3.2"/>
+            <circle cx="41" cy="31" r="3.2"/>
+          </g>
+        </svg>`;
+        
     case 'line':
       return app('#06C755',`
         <path d="M32 10C18 10 8 19 8 31
@@ -3794,43 +3839,43 @@ function icon(n,cls=''){
           font-family="Arial" font-size="12"
           font-weight="bold" fill="#06C755">LINE</text>`);
 
-        case 'phone':
+          case 'phone':
       return `
-        <svg class="ico" viewBox="0 0 64 64"
+        <svg class="ico ${cls}" viewBox="0 0 64 64"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true">
           <defs>
-            <linearGradient id="samsungPhoneGreen"
+            <linearGradient id="ep8PhoneGreen"
               x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#00F12C"/>
-              <stop offset="1" stop-color="#00BF31"/>
+              <stop offset="0" stop-color="#00F529"/>
+              <stop offset="1" stop-color="#00C83B"/>
             </linearGradient>
           </defs>
 
-          <rect x="0" y="0" width="64" height="64"
-            rx="20" fill="url(#samsungPhoneGreen)"/>
+          <rect width="64" height="64" rx="19"
+            fill="url(#ep8PhoneGreen)"/>
 
-          <path
-            d="M29 10
-               C25.8 10 24 12.7 23.4 16
-               C21.8 26.5 21.8 37.5 23.4 48
-               C24 51.3 25.8 54 29 54
-               L35 54
-               C37.6 54 39 52.2 38.5 49.7
-               L37.2 43.4
-               C36.8 41.4 35.5 40.2 33.5 40.2
-               L31.6 40.2
-               C29.7 40.2 29.2 38.8 29.2 36.8
-               L29.2 27.2
-               C29.2 25.2 29.7 23.8 31.6 23.8
-               L33.5 23.8
-               C35.5 23.8 36.8 22.6 37.2 20.6
-               L38.5 14.3
-               C39 11.8 37.6 10 35 10 Z"
-            fill="#FFFFFF"/>
-        </svg>
-      `;
-      
+          <path d="
+            M28 10
+            C25 10 23.5 12.5 23 16
+            C21.7 26 21.7 38 23 48
+            C23.5 51.5 25 54 28 54
+            H35
+            C37.7 54 39 52.4 38.4 49.5
+            L37.1 43
+            C36.7 41 35.6 40 33.6 40
+            H31.4
+            C29.5 40 29 38.5 29 36.5
+            V27.5
+            C29 25.5 29.5 24 31.4 24
+            H33.6
+            C35.6 24 36.7 23 37.1 21
+            L38.4 14.5
+            C39 11.6 37.7 10 35 10
+            Z"
+            fill="#fff"/>
+        </svg>`;
+        
     case 'gallery':
       return app('#FFFFFF',`
         <g transform="translate(32 32)">
@@ -3955,28 +4000,36 @@ function icon(n,cls=''){
         <circle cx="32" cy="30" r="9"
           fill="#EF3529"/>`);
 
-    case 'camera':
-      return app('#AEB5BA',`
-        <rect x="11" y="17" width="42" height="34"
-          rx="9" fill="#F5F6F7"/>
-        <circle cx="32" cy="34" r="17"
-          fill="#D8DDE1"/>
-        <circle cx="32" cy="34" r="13"
-          fill="#111820"/>
-        <circle cx="32" cy="34" r="10"
-          fill="#697A92"/>
-        <circle cx="32" cy="34" r="7"
-          fill="#293344"/>
-        <circle cx="32" cy="34" r="3.5"
-          fill="#080D17"/>
-        <path d="M26 27a9 9 0 0 1 10-1"
-          stroke="#A9D7E8"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          fill="none"/>
-        <circle cx="14" cy="15" r="3"
-          fill="#F04D58"/>
-      `);
+        case 'camera':
+      return `
+        <svg class="ico ${cls}" viewBox="0 0 64 64"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+
+          <rect width="64" height="64" rx="19"
+            fill="#AEB2B5"/>
+
+          <rect x="9" y="18" width="46" height="33"
+            rx="11" fill="#F7F7F8"/>
+
+          <circle cx="32" cy="34" r="18"
+            fill="#DFE2E5"/>
+          <circle cx="32" cy="34" r="15"
+            fill="#10141B"/>
+          <circle cx="32" cy="34" r="11.8"
+            fill="#55647A"/>
+          <circle cx="32" cy="34" r="9"
+            fill="#27354C"/>
+          <circle cx="32" cy="34" r="5"
+            fill="#090E18"/>
+
+          <path d="M25 26 Q32 20 40 26"
+            fill="none" stroke="#9DD9F0"
+            stroke-width="2.5" stroke-linecap="round"/>
+
+          <circle cx="13" cy="15" r="3.2"
+            fill="#FF465C"/>
+        </svg>`;
     default:
       return '<svg class="ico '+cls+
         '" viewBox="0 0 24 24" aria-hidden="true">'+
@@ -4198,13 +4251,65 @@ if(!Array.isArray(save.flags.ep8Sales)){
 const EP8_TARGET=3000000;
 
 const ep8Customers=[
+  const ep8Customers=[
+  // รายชื่อลูกค้าเดิมของการันต์
+  {
+    id:'old01',
+    name:'ร้าน พีเอส ออฟฟิศ',
+    phone:'02-410-7011',
+    amount:12500,
+    product:'อุปกรณ์สำนักงาน',
+    source:'เดิม'
+  },
+  {
+    id:'old02',
+    name:'บริษัท เคพี เซอร์วิส',
+    phone:'02-410-7022',
+    amount:18900,
+    product:'วัสดุสิ้นเปลือง',
+    source:'เดิม'
+  },
+  {
+    id:'old03',
+    name:'ร้าน เจริญกิจ',
+    phone:'02-410-7033',
+    amount:24000,
+    product:'อุปกรณ์จัดเก็บสินค้า',
+    source:'เดิม'
+  },
+  {
+    id:'old04',
+    name:'บริษัท บีเค เทรด',
+    phone:'02-410-7044',
+    amount:36500,
+    product:'วัสดุสำหรับสำนักงาน',
+    source:'เดิม'
+  },
+  {
+    id:'old05',
+    name:'บริษัท เอสเอ็ม ซัพพลาย',
+    phone:'02-410-7055',
+    amount:42000,
+    product:'อุปกรณ์สำหรับคลังสินค้า',
+    source:'เดิม'
+  },
+  {
+    id:'old06',
+    name:'บริษัท อาร์เอส กรุ๊ป',
+    phone:'02-410-7066',
+    amount:58000,
+    product:'วัสดุสำหรับโครงการ',
+    source:'เดิม'
+  },
+
+  // บริษัทบิ๊กแบ็กจากโน้ตของอชิ
   {
     id:'sp',
     name:'บริษัท เอสพี เทรดดิ้ง',
     phone:'02-410-1041',
     amount:450000,
     product:'สินค้าล็อตใหม่',
-    reply:'ยืนยันคำสั่งซื้อ 450,000 บาท'
+    source:'อชิ'
   },
   {
     id:'nakamura',
@@ -4212,7 +4317,7 @@ const ep8Customers=[
     phone:'02-410-2286',
     amount:720000,
     product:'ต่อสัญญาจัดซื้อ',
-    reply:'ยืนยันการต่อสัญญา 720,000 บาท'
+    source:'อชิ'
   },
   {
     id:'tn',
@@ -4220,7 +4325,7 @@ const ep8Customers=[
     phone:'02-410-3508',
     amount:380000,
     product:'สินค้าสำหรับโครงการใหม่',
-    reply:'ตกลงสั่งซื้อ 380,000 บาท'
+    source:'อชิ'
   },
   {
     id:'hoshino',
@@ -4228,7 +4333,7 @@ const ep8Customers=[
     phone:'02-410-4412',
     amount:650000,
     product:'คำสั่งซื้อที่รอยืนยัน',
-    reply:'ยืนยันยอด 650,000 บาท'
+    source:'อชิ'
   },
   {
     id:'mk',
@@ -4236,15 +4341,23 @@ const ep8Customers=[
     phone:'02-410-5073',
     amount:800000,
     product:'สินค้ารอบใหญ่',
-    reply:'ยืนยันรายการ 800,000 บาท'
+    source:'อชิ'
   },
-  {
+    {
     id:'sakura',
     name:'บริษัท ซากุระ คอร์ปอเรชั่น',
     phone:'02-410-6124',
     amount:510000,
     product:'ต่อยอดคำสั่งซื้อเดิม',
-    reply:'ยืนยันคำสั่งซื้อ 510,000 บาท'
+    source:'อชิ'
+  },
+  {
+    id:'big01',
+    name:'บริษัท ไทยโกลบอล อินดัสทรี',
+    phone:'02-410-8891',
+    amount:1200000,
+    product:'สัญญาจัดซื้อสินค้าประจำปี',
+    source:'อชิ'
   }
 ];
 
@@ -8113,46 +8226,62 @@ if(
   chat==='achi' &&
   save.flags.ep8TanakaRead
 ){
-
   b+='<div class="day">19 เม.ย.</div>';
 
   b+=bubble(
-    'การันต์ เรื่องยอดขาย 3 ล้าน ผมช่วยหาข้อมูลลูกค้าเก่าให้นะ'
+    'การันต์ เรื่องยอดขายสามล้าน ผมลองช่วยหารายชื่อลูกค้าเก่าให้นะ'
   );
 
   b+=bubble(
-    'ผมลองค้นจากรายชื่อลูกค้าที่เคยติดต่อบริษัทไว้แล้ว'
+    'ผมเจอบริษัทที่เคยสั่งซื้อยอดใหญ่หลายรายเลย'
   );
 
   b+=bubble(
-    'มีอยู่ 6 รายที่น่าจะยังสนใจสั่งซื้อสินค้า'
+    'ผมรวบรวมชื่อบริษัทกับเบอร์โทรไว้ในโน้ตแล้ว'
   );
 
-  b+=bubble(
-    'ผมส่งรายชื่อกับเบอร์โทรให้แล้วนะ'
-  );
+  b+=`
+    <div class="ep8-note-card">
+      <div class="ep8-note-heading">
+        ${ep8PhoneSVG('note')}
+        <div>
+          <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+          <small>โน้ตจากอชิ · 6 บริษัท</small>
+        </div>
+      </div>
+
+      <div class="ep8-note-preview">
+        ${ep8Customers
+          .filter(c=>c.source==='อชิ')
+          .map(c=>`
+            <div class="ep8-note-item">
+              <strong>${c.name}</strong>
+              <small>${c.phone}</small>
+              <span>${c.product}</span>
+            </div>
+          `).join('')}
+      </div>
+
+      ${!save.flags.ep8ContactsReceived
+        ? `
+          <button class="ep8-note-save"
+            data-ep8-receive-contacts="1">
+            บันทึกรายชื่อทั้ง 6 บริษัท
+          </button>
+        `
+        : `
+          <div class="ep8-note-saved">
+            บันทึกลงในรายชื่อแล้ว
+          </div>
+        `
+      }
+    </div>
+  `;
 
   b+=bubble(
     'ขอบคุณนะอชิ เดี๋ยวผมจะลองติดต่อดู',
     true
   );
-
-  if(!save.flags.ep8ContactsReceived){
-
-    choices=`
-      <button class="choice"
-        data-ep8-receive-contacts="1">
-        บันทึกรายชื่อลูกค้าลงใน Phone
-      </button>
-    `;
-
-  }else{
-
-    b+=bubble(
-      'บันทึกรายชื่อเรียบร้อยแล้ว',
-      true
-    );
-  }
 }
 /* ===== EP.06 ACHI CONFESSION ===== */
 

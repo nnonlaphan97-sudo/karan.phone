@@ -3827,6 +3827,14 @@ button{
   background:#f0444f;
   color:#fff;
 }
+.home-dock .dock-camera-icon{
+  overflow:visible;
+  background:transparent;
+}
+
+.home-dock .dock-camera-icon .ico{
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.20));
+}
 
 </style>
 </head>
@@ -3948,41 +3956,55 @@ function icon(n,cls=''){
     </svg>`;
 
   switch(n){
-       case 'message':
-      return `
-        <svg class="ico ${cls}" viewBox="0 0 64 64"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true">
-          <defs>
-            <linearGradient id="ep8MsgBlue"
-              x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#39A5F4"/>
-              <stop offset="1" stop-color="#0860DB"/>
-            </linearGradient>
-          </defs>
+      case 'message':
+  return `
+  <svg class="ico ${cls}" viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="dockMsgBg" x1="0" y1="0" x2=".9" y2="1">
+        <stop stop-color="#48B6FA"/>
+        <stop offset=".5" stop-color="#1787F2"/>
+        <stop offset="1" stop-color="#0750D6"/>
+      </linearGradient>
+      <linearGradient id="dockMsgBubble" x1="0" y1="0" x2="0" y2="1">
+        <stop stop-color="#FFFFFF"/>
+        <stop offset="1" stop-color="#F0F5FF"/>
+      </linearGradient>
+    </defs>
 
-          <rect width="64" height="64" rx="19"
-            fill="url(#ep8MsgBlue)"/>
+    <rect x="1" y="1" width="62" height="62" rx="20"
+      fill="url(#dockMsgBg)"/>
 
-          <path d="
-            M15 15 H49
-            Q56 15 56 23
-            V39
-            Q56 47 48 47
-            H28
-            L17 54
-            V47 H15
-            Q8 47 8 39
-            V23
-            Q8 15 15 15 Z"
-            fill="#fff"/>
+    <path d="M7 25 Q8 9 30 7"
+      stroke="#FFFFFF" stroke-opacity=".2"
+      stroke-width="5" fill="none"
+      stroke-linecap="round"/>
 
-          <g fill="#2688EB">
-            <circle cx="23" cy="31" r="3.2"/>
-            <circle cx="32" cy="31" r="3.2"/>
-            <circle cx="41" cy="31" r="3.2"/>
-          </g>
-        </svg>`;
+    <path d="M15 16 H49 Q56 16 56 24
+      V39 Q56 47 48 47
+      H29 L17 54 V47 H15
+      Q8 47 8 39 V24
+      Q8 16 15 16Z"
+      fill="#073EAB" opacity=".2"
+      transform="translate(0 1.5)"/>
+
+    <path d="M15 15 H49 Q56 15 56 23
+      V38 Q56 46 48 46
+      H29 L17 54 V46 H15
+      Q8 46 8 38 V23
+      Q8 15 15 15Z"
+      fill="url(#dockMsgBubble)"/>
+
+    <path d="M15 15 H49 Q56 15 56 23"
+      fill="none" stroke="#FFFFFF"
+      stroke-opacity=".9" stroke-width="1.2"/>
+
+    <g fill="#268CF1">
+      <circle cx="23" cy="31" r="3.1"/>
+      <circle cx="32" cy="31" r="3.1"/>
+      <circle cx="41" cy="31" r="3.1"/>
+    </g>
+  </svg>`;
         
     case 'line':
       return app('#06C755',`
@@ -3995,41 +4017,70 @@ function icon(n,cls=''){
           font-weight="bold" fill="#06C755">LINE</text>`);
 
           case 'phone':
-      return `
-        <svg class="ico ${cls}" viewBox="0 0 64 64"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true">
-          <defs>
-            <linearGradient id="ep8PhoneGreen"
-              x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#00F529"/>
-              <stop offset="1" stop-color="#00C83B"/>
-            </linearGradient>
-          </defs>
+  return `
+  <svg class="ico ${cls}" viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="dockPhoneBg" x1=".15" y1="0" x2=".85" y2="1">
+        <stop offset="0" stop-color="#20FF45"/>
+        <stop offset=".45" stop-color="#00E72C"/>
+        <stop offset="1" stop-color="#00B933"/>
+      </linearGradient>
+      <linearGradient id="dockPhoneWhite" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#FFFFFF"/>
+        <stop offset="1" stop-color="#E6FFF0"/>
+      </linearGradient>
+      <linearGradient id="dockPhoneShine" x1="0" y1="0" x2="0" y2="1">
+        <stop stop-color="#FFFFFF" stop-opacity=".28"/>
+        <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
 
-          <rect width="64" height="64" rx="19"
-            fill="url(#ep8PhoneGreen)"/>
+    <rect x="1" y="1" width="62" height="62" rx="20"
+      fill="url(#dockPhoneBg)"/>
+    <rect x="2" y="2" width="60" height="29" rx="19"
+      fill="url(#dockPhoneShine)"/>
+    <path d="M7 48 Q32 61 57 48"
+      fill="none" stroke="#008F26"
+      stroke-opacity=".16" stroke-width="2"/>
 
-          <path d="
-            M28 10
-            C25 10 23.5 12.5 23 16
-            C21.7 26 21.7 38 23 48
-            C23.5 51.5 25 54 28 54
-            H35
-            C37.7 54 39 52.4 38.4 49.5
-            L37.1 43
-            C36.7 41 35.6 40 33.6 40
-            H31.4
-            C29.5 40 29 38.5 29 36.5
-            V27.5
-            C29 25.5 29.5 24 31.4 24
-            H33.6
-            C35.6 24 36.7 23 37.1 21
-            L38.4 14.5
-            C39 11.6 37.7 10 35 10
-            Z"
-            fill="#fff"/>
-        </svg>`;
+    <path d="M29 10
+      C25 10 23 13 22.5 17
+      C21 27 21 38 23 48
+      C23.7 52 25.5 54 29 54
+      H35
+      C38 54 39 52 38.5 49
+      L37 43
+      C36.5 41 35 40 33 40
+      H31
+      C29.3 40 29 38.5 29 36.5
+      V27.5
+      C29 25.5 29.3 24 31 24
+      H33
+      C35 24 36.5 23 37 21
+      L38.5 15
+      C39 12 38 10 35 10Z"
+      fill="#008F27" opacity=".19"
+      transform="translate(1 1.3)"/>
+
+    <path d="M29 10
+      C25 10 23 13 22.5 17
+      C21 27 21 38 23 48
+      C23.7 52 25.5 54 29 54
+      H35
+      C38 54 39 52 38.5 49
+      L37 43
+      C36.5 41 35 40 33 40
+      H31
+      C29.3 40 29 38.5 29 36.5
+      V27.5
+      C29 25.5 29.3 24 31 24
+      H33
+      C35 24 36.5 23 37 21
+      L38.5 15
+      C39 12 38 10 35 10Z"
+      fill="url(#dockPhoneWhite)"/>
+  </svg>`;
         
     case 'gallery':
       return app('#FFFFFF',`
@@ -4155,36 +4206,54 @@ function icon(n,cls=''){
         <circle cx="32" cy="30" r="9"
           fill="#EF3529"/>`);
 
-        case 'camera':
-      return `
-        <svg class="ico ${cls}" viewBox="0 0 64 64"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true">
+      case 'camera':
+  return `
+  <svg class="ico ${cls}" viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="dockCamBg" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#C7CDD1"/>
+        <stop offset=".55" stop-color="#A9B0B5"/>
+        <stop offset="1" stop-color="#888F97"/>
+      </linearGradient>
+      <radialGradient id="dockCamLens" cx=".35" cy=".25" r=".85">
+        <stop stop-color="#B2E5FA"/>
+        <stop offset=".25" stop-color="#647E9D"/>
+        <stop offset=".6" stop-color="#29384F"/>
+        <stop offset="1" stop-color="#080C17"/>
+      </radialGradient>
+      <linearGradient id="dockCamBody" x1="0" y1="0" x2="0" y2="1">
+        <stop stop-color="#FFFFFF"/>
+        <stop offset="1" stop-color="#E8E9ED"/>
+      </linearGradient>
+    </defs>
 
-          <rect width="64" height="64" rx="19"
-            fill="#AEB2B5"/>
+    <rect x="1" y="1" width="62" height="62" rx="20"
+      fill="url(#dockCamBg)"/>
+    <path d="M5 20 Q5 5 21 5 H44"
+      fill="none" stroke="#FFFFFF"
+      stroke-opacity=".4" stroke-width="1.5"/>
 
-          <rect x="9" y="18" width="46" height="33"
-            rx="11" fill="#F7F7F8"/>
+    <rect x="9" y="19" width="46" height="34" rx="11"
+      fill="#5E646E" opacity=".2"/>
+    <rect x="9" y="17" width="46" height="34" rx="11"
+      fill="url(#dockCamBody)"/>
 
-          <circle cx="32" cy="34" r="18"
-            fill="#DFE2E5"/>
-          <circle cx="32" cy="34" r="15"
-            fill="#10141B"/>
-          <circle cx="32" cy="34" r="11.8"
-            fill="#55647A"/>
-          <circle cx="32" cy="34" r="9"
-            fill="#27354C"/>
-          <circle cx="32" cy="34" r="5"
-            fill="#090E18"/>
+    <circle cx="32" cy="34" r="18" fill="#D1D5DB"/>
+    <circle cx="32" cy="34" r="15.5" fill="#151A25"/>
+    <circle cx="32" cy="34" r="12.5"
+      fill="url(#dockCamLens)"/>
+    <circle cx="32" cy="34" r="8.2" fill="#1D293C"/>
+    <circle cx="32" cy="34" r="5.4" fill="#080B14"/>
 
-          <path d="M25 26 Q32 20 40 26"
-            fill="none" stroke="#9DD9F0"
-            stroke-width="2.5" stroke-linecap="round"/>
-
-          <circle cx="13" cy="15" r="3.2"
-            fill="#FF465C"/>
-        </svg>`;
+    <path d="M24 27 Q32 19 41 27"
+      fill="none" stroke="#B5E7FF"
+      stroke-opacity=".8" stroke-width="2.4"
+      stroke-linecap="round"/>
+    <circle cx="13" cy="15" r="3.1" fill="#FF4055"/>
+    <circle cx="12.2" cy="14.1" r=".9"
+      fill="#FFADB5"/>
+  </svg>`;
     default:
       return '<svg class="ico '+cls+
         '" viewBox="0 0 24 24" aria-hidden="true">'+
@@ -4407,113 +4476,31 @@ if(!Array.isArray(save.flags.ep8Sales)){
 const EP8_TARGET=3000000;
 
 const ep8Customers=[
-  // รายชื่อลูกค้าเดิมของการันต์
-  {
-    id:'old01',
-    name:'ร้าน พีเอส ออฟฟิศ',
-    phone:'02-410-7011',
-    amount:12500,
-    product:'อุปกรณ์สำนักงาน',
-    source:'เดิม'
-  },
-  {
-    id:'old02',
-    name:'บริษัท เคพี เซอร์วิส',
-    phone:'02-410-7022',
-    amount:18900,
-    product:'วัสดุสิ้นเปลือง',
-    source:'เดิม'
-  },
-  {
-    id:'old03',
-    name:'ร้าน เจริญกิจ',
-    phone:'02-410-7033',
-    amount:24000,
-    product:'อุปกรณ์จัดเก็บสินค้า',
-    source:'เดิม'
-  },
-  {
-    id:'old04',
-    name:'บริษัท บีเค เทรด',
-    phone:'02-410-7044',
-    amount:36500,
-    product:'วัสดุสำหรับสำนักงาน',
-    source:'เดิม'
-  },
-  {
-    id:'old05',
-    name:'บริษัท เอสเอ็ม ซัพพลาย',
-    phone:'02-410-7055',
-    amount:42000,
-    product:'อุปกรณ์สำหรับคลังสินค้า',
-    source:'เดิม'
-  },
-  {
-    id:'old06',
-    name:'บริษัท อาร์เอส กรุ๊ป',
-    phone:'02-410-7066',
-    amount:58000,
-    product:'วัสดุสำหรับโครงการ',
-    source:'เดิม'
-  },
+  // ลูกค้าเดิมของการันต์ — 12 ราย หลักหมื่น
+  {id:'old01',name:'ร้าน พีเอส ออฟฟิศ',phone:'02-410-7011',amount:12500,product:'อุปกรณ์สำนักงาน',source:'เดิม'},
+  {id:'old02',name:'บริษัท เคพี เซอร์วิส',phone:'02-410-7022',amount:18900,product:'วัสดุสิ้นเปลือง',source:'เดิม'},
+  {id:'old03',name:'ร้าน เจริญกิจ',phone:'02-410-7033',amount:24000,product:'อุปกรณ์จัดเก็บสินค้า',source:'เดิม'},
+  {id:'old04',name:'บริษัท บีเค เทรด',phone:'02-410-7044',amount:36500,product:'วัสดุสำนักงาน',source:'เดิม'},
+  {id:'old05',name:'บริษัท เอสเอ็ม ซัพพลาย',phone:'02-410-7055',amount:42000,product:'อุปกรณ์คลังสินค้า',source:'เดิม'},
+  {id:'old06',name:'บริษัท อาร์เอส กรุ๊ป',phone:'02-410-7066',amount:58000,product:'วัสดุสำหรับโครงการ',source:'เดิม'},
+  {id:'old07',name:'บริษัท วีเอส พาร์ทเนอร์',phone:'02-410-7077',amount:15500,product:'เครื่องเขียนสำนักงาน',source:'เดิม'},
+  {id:'old08',name:'ร้าน พรชัยพาณิชย์',phone:'02-410-7088',amount:27800,product:'อุปกรณ์จัดเก็บเอกสาร',source:'เดิม'},
+  {id:'old09',name:'บริษัท พีเอ็น โลจิสติกส์',phone:'02-410-7099',amount:33400,product:'วัสดุบรรจุภัณฑ์',source:'เดิม'},
+  {id:'old10',name:'บริษัท สยามโปรดักส์',phone:'02-410-7101',amount:46500,product:'อุปกรณ์สำนักงาน',source:'เดิม'},
+  {id:'old11',name:'บริษัท ดีเอส คอมเมิร์ซ',phone:'02-410-7112',amount:62000,product:'วัสดุสิ้นเปลือง',source:'เดิม'},
+  {id:'old12',name:'บริษัท ไทยพรีเมียร์',phone:'02-410-7123',amount:78500,product:'อุปกรณ์จัดเก็บสินค้า',source:'เดิม'},
 
-  // บริษัทบิ๊กแบ็กจากโน้ตของอชิ
-  {
-    id:'sp',
-    name:'บริษัท เอสพี เทรดดิ้ง',
-    phone:'02-410-1041',
-    amount:450000,
-    product:'สินค้าล็อตใหม่',
-    source:'อชิ'
-  },
-  {
-    id:'nakamura',
-    name:'บริษัท นากามูระ',
-    phone:'02-410-2286',
-    amount:720000,
-    product:'ต่อสัญญาจัดซื้อ',
-    source:'อชิ'
-  },
-  {
-    id:'tn',
-    name:'บริษัท ทีเอ็น ซัพพลาย',
-    phone:'02-410-3508',
-    amount:380000,
-    product:'สินค้าสำหรับโครงการใหม่',
-    source:'อชิ'
-  },
-  {
-    id:'hoshino',
-    name:'บริษัท โฮชิโนะ',
-    phone:'02-410-4412',
-    amount:650000,
-    product:'คำสั่งซื้อที่รอยืนยัน',
-    source:'อชิ'
-  },
-  {
-    id:'mk',
-    name:'บริษัท เอ็มเค อินเตอร์',
-    phone:'02-410-5073',
-    amount:800000,
-    product:'สินค้ารอบใหญ่',
-    source:'อชิ'
-  },
-    {
-    id:'sakura',
-    name:'บริษัท ซากุระ คอร์ปอเรชั่น',
-    phone:'02-410-6124',
-    amount:510000,
-    product:'ต่อยอดคำสั่งซื้อเดิม',
-    source:'อชิ'
-  },
-  {
-    id:'big01',
-    name:'บริษัท ไทยโกลบอล อินดัสทรี',
-    phone:'02-410-8891',
-    amount:1200000,
-    product:'สัญญาจัดซื้อสินค้าประจำปี',
-    source:'อชิ'
-  }
+  // โน้ตที่อชิแชร์ — 7 ราย หลักแสน
+  {id:'sp',name:'บริษัท เอสพี เทรดดิ้ง',phone:'02-410-1041',amount:250000,product:'สินค้าล็อตใหม่',source:'อชิ'},
+  {id:'nakamura',name:'บริษัท นากามูระ',phone:'02-410-2286',amount:420000,product:'ต่อสัญญาจัดซื้อ',source:'อชิ'},
+  {id:'tn',name:'บริษัท ทีเอ็น ซัพพลาย',phone:'02-410-3508',amount:180000,product:'สินค้าสำหรับโครงการใหม่',source:'อชิ'},
+  {id:'hoshino',name:'บริษัท โฮชิโนะ',phone:'02-410-4412',amount:350000,product:'คำสั่งซื้อที่รอยืนยัน',source:'อชิ'},
+  {id:'mk',name:'บริษัท เอ็มเค อินเตอร์',phone:'02-410-5073',amount:600000,product:'สินค้ารอบใหญ่',source:'อชิ'},
+  {id:'sakura',name:'บริษัท ซากุระ คอร์ปอเรชั่น',phone:'02-410-6124',amount:310000,product:'ต่อยอดคำสั่งซื้อเดิม',source:'อชิ'},
+  {id:'big02',name:'บริษัท โกลเด้นเอเชีย ซัพพลาย',phone:'02-410-7735',amount:540000,product:'สัญญาจัดซื้อรายไตรมาส',source:'อชิ'},
+
+  // ลูกค้ารายใหญ่ — 1 ราย หลักล้าน
+  {id:'big01',name:'บริษัท ไทยโกลบอล อินดัสทรี',phone:'02-410-8891',amount:1200000,product:'สัญญาจัดซื้อสินค้าประจำปี',source:'อชิ'}
 ];
 
 let ep8PhoneTab='keypad';
@@ -7024,49 +7011,64 @@ function renderEp8Phone(){
     `;
   }
 
-  if(ep8PhoneTab==='contacts'){
+if(ep8PhoneTab==='contacts'){
 
-    const filtered=ep8Customers.filter(c=>
-      c.name.toLowerCase().includes(
-        ep8PhoneSearch.toLowerCase()
-      ) ||
-      c.phone.includes(ep8PhoneSearch)
-    );
+  const available=ep8Customers.filter(c=>
+    c.source==='เดิม' ||
+    f.ep8ContactsReceived
+  );
 
-    content=`
-      <div class="ep8-phone-search">
-        ${ep8PhoneSVG('search')}
-        <input id="ep8PhoneSearch"
-          value="${ep8PhoneSearch}"
-          placeholder="ค้นหาชื่อหรือหมายเลข"
-          autocomplete="off">
+  const filtered=available.filter(c=>
+    c.name.toLowerCase().includes(
+      ep8PhoneSearch.toLowerCase()
+    ) ||
+    c.phone.includes(ep8PhoneSearch)
+  );
+
+  content=`
+    <div class="ep8-phone-search">
+      ${ep8PhoneSVG('search')}
+      <input id="ep8PhoneSearch"
+        value="${ep8PhoneSearch}"
+        placeholder="ค้นหาชื่อหรือหมายเลข"
+        autocomplete="off">
+    </div>
+
+    <div class="ep8-contact-count">
+      รายชื่อทั้งหมด ${available.length} ราย
+    </div>
+
+    ${filtered.map(c=>`
+      <div class="ep8-phone-contact">
+        <div class="ep8-phone-avatar">
+          ${ep8PhoneSVG('user')}
+        </div>
+
+        <div class="ep8-phone-contact-info">
+          <strong>${c.name}</strong>
+          <small>${c.phone}</small>
+          <small>
+            ${c.source==='อชิ'
+              ? 'รายชื่อจากอชิ'
+              : 'รายชื่อลูกค้าเดิม'}
+          </small>
+        </div>
+
+        <button class="ep8-phone-callbtn"
+          data-ep8-call="${c.id}"
+          aria-label="โทรหา ${c.name}">
+          ${ep8PhoneSVG('call')}
+        </button>
       </div>
+    `).join('')}
 
-      ${f.ep8ContactsReceived
-        ? filtered.map(c=>`
-          <div class="ep8-phone-contact">
-            <div class="ep8-phone-avatar">
-              ${ep8PhoneSVG('user')}
-            </div>
-
-            <div class="ep8-phone-contact-info">
-              <strong>${c.name}</strong>
-              <small>${c.phone}</small>
-            </div>
-
-            <button class="ep8-phone-callbtn"
-              data-ep8-call="${c.id}"
-              aria-label="โทรหา ${c.name}">
-              ${ep8PhoneSVG('call')}
-            </button>
-          </div>
-        `).join('')
-        : `<div class="ep8-empty">
-             ยังไม่มีรายชื่อลูกค้าสำหรับภารกิจนี้
-           </div>`
-      }
-    `;
-  }
+    ${filtered.length===0
+      ? `<div class="ep8-empty">
+           ไม่พบรายชื่อที่ค้นหา
+         </div>`
+      : ''}
+  `;
+}
 
   if(ep8PhoneTab==='recents'){
 
@@ -7317,7 +7319,7 @@ else if(page==='โน้ต'){
               เข้าร่วมโน้ตที่แชร์
             </button>
           ` : `
-            <p>รายชื่อลูกค้าเก่า 7 บริษัท</p>
+            <p>รายชื่อลูกค้าเก่า 8 บริษัท</p>
 
             ${ep8Customers
               .filter(c=>c.source==='อชิ')
@@ -7332,7 +7334,7 @@ else if(page==='โน้ต'){
             ${!save.flags.ep8ContactsReceived ? `
               <button class="action"
                 data-ep8-receive-contacts="1">
-                บันทึก 7 บริษัทลงในรายชื่อ
+                บันทึก 8 บริษัทลงในรายชื่อ
               </button>
             ` : `
               <p class="ep8-note-done">
@@ -8385,11 +8387,15 @@ if(chat==='achi' && save.flags.ep8TanakaRead){
   b+='<div class="day">19 เม.ย.</div>';
 
   b+=bubble(
-    'การันต์ ผมหารายชื่อลูกค้าเก่าที่เคยสั่งซื้อยอดใหญ่ได้แล้วนะ'
+    'การันต์ ผมลองย้อนดูรายชื่อลูกค้าเก่าที่เคยติดต่อบริษัทไว้แล้วนะ'
   );
 
   b+=bubble(
-    'ผมแชร์โน้ตให้แล้ว ลองเปิดดูนะ'
+    'มีอยู่ 8 บริษัทที่เคยสั่งซื้อยอดใหญ่ ผมรวบรวมไว้ใน Samsung Notes แล้ว'
+  );
+
+  b+=bubble(
+    'ผมแชร์ลิงก์ให้แล้วนะ ลองเปิดดูได้เลย'
   );
 
   b+=`
@@ -8403,7 +8409,7 @@ if(chat==='achi' && save.flags.ep8TanakaRead){
       <span class="ep8-shared-info">
         <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
         <small>Samsung Notes · แชร์โดยอชิ</small>
-        <small>7 บริษัท · แตะเพื่อเปิดโน้ต</small>
+        <small>8 บริษัท · เปิดโน้ตที่แชร์</small>
       </span>
 
     </button>

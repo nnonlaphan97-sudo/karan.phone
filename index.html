@@ -323,20 +323,29 @@ button{
 
 .home{
   position:relative;
-  min-height:100%;
-  padding:62px 22px 125px;
+  height:100%;
+  min-height:0;
+  padding:62px 22px 115px;
   color:#fff;
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+
+.home::-webkit-scrollbar{
+  display:none;
 }
 
 .home-dock{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:30px;
+  position:sticky;
+  bottom:15px;
+  z-index:10;
   display:flex;
   justify-content:center;
-  gap:20px;
   align-items:center;
+  gap:20px;
+  width:max-content;
+  max-width:100%;
+  margin:28px auto 0;
   padding:0;
   background:transparent;
   border:0;
@@ -370,6 +379,19 @@ button{
   stroke:none;
 }
 
+/* Dock: แอปที่ยังไม่ปลดล็อก */
+
+.dock-camera-icon:has(.dock-lock-icon){
+  background:#5a6780;
+  color:#d2dbe8;
+}
+
+.dock-lock-icon{
+  width:32px !important;
+  height:32px !important;
+  stroke:currentColor !important;
+  fill:none !important;
+}
 .home-weather{
   display:flex;
   align-items:center;
@@ -3835,7 +3857,17 @@ button{
 .home-dock .dock-camera-icon .ico{
   filter:drop-shadow(0 4px 5px rgba(0,0,0,.20));
 }
+.dock-camera-icon.dock-locked{
+  background:#5a6780;
+  color:#d2dbe8;
+}
 
+.dock-camera-icon.dock-locked .ico{
+  width:32px;
+  height:32px;
+  stroke:currentColor;
+  fill:none;
+}
 </style>
 </head>
 <body>
@@ -7228,34 +7260,29 @@ html=`
         }).join('')}
   </div>
 
-  <div class="home-dock">
-    <button class="dock-camera"
-            data-app="โทรศัพท์"
-            aria-label="โทรศัพท์">
-      <span class="dock-camera-icon">
-        ${icon(save.unlock.includes('โทรศัพท์') ? 'phone' : 'lock')}
-      </span>
-    </button>
-        <button class="dock-camera"
-            data-app="Messages"
-            aria-label="ข้อความ">
-      <span class="dock-camera-icon">
-        ${icon(
-          save.unlock.includes('Messages')
-            ? 'message'
-            : 'lock'
-        )}
-      </span>
-    </button>
-    <button class="dock-camera"
-            data-app="กล้อง"
-            aria-label="กล้อง">
-      <span class="dock-camera-icon">
-        ${icon(save.unlock.includes('กล้อง') ? 'camera' : 'lock')}
-      </span>
-    </button>
-  </div>
+ <div class="home-dock">
 
+  ${[
+    ['โทรศัพท์','phone'],
+    ['Messages','message'],
+    ['กล้อง','camera']
+  ].map(([name,iconName])=>{
+
+    const open=save.unlock.includes(name);
+
+    return `
+      <button class="dock-camera"
+        data-app="${name}"
+        aria-label="${name}">
+
+        <span class="dock-camera-icon ${open?'':'dock-locked'}">
+          ${open ? icon(iconName) : icon('lock')}
+        </span>
+
+      </button>
+    `;
+  }).join('')}
+</div>
 </div>
 `;
 }

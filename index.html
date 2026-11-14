@@ -1928,7 +1928,24 @@ button{
 .maps-finish{
   color:#18794e;
 }
+.line-cancelled-message{
+  width:max-content;
+  max-width:90%;
+  margin:18px auto;
+  padding:12px 20px;
+  border-radius:18px;
+  background:rgba(110,119,140,.38);
+  color:#fff;
+  text-align:center;
+  font-size:13px;
+  line-height:1.6;
+}
 
+.line-cancelled-message span{
+  display:block;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
 </style>
 </head>
 <body>
@@ -2189,7 +2206,7 @@ save.flags.ep4MapUnlocked ??= false;
 save.flags.ep4MapStage ??= 0;
 save.flags.ep4MapComplete ??= false;
 
-let mapZoom=1;
+let mapZoom=0.65;
 let mapFeedback='';
 let pinInput='';
 const PHONE_PIN='1906';
@@ -2468,42 +2485,72 @@ function lineFriends(){
     '<div class="line-section">กลุ่ม ('+groups.length+')</div>'+
     groups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
 }
-
-
+  
 function lineChatsHTML(){
   const q=lineSearch.trim().toLowerCase();
 
-  const availableChats=[...lineChats];
+const availableChats=[...lineChats].map(c=>({...c}));
 
-  if(save.flags.deliveryStatus==='delivered'){
-    availableChats.unshift({
-      id:'duj',
-      name:'พี่ดุจ',
-      preview:'เดี๋ยวพี่จัดการให้'
-    });
-  }
+if(save.flags.ep2Started){
+  availableChats.unshift({
+    id:'pai',
+    name:'ปาย',
+    preview:save.flags.ep2LogoDone
+      ? 'ได้รับข้อมูลแล้วค่ะ ขอบคุณมากนะคะพี่การันต์'
+      : 'พี่การันต์ช่วยเปลี่ยนสีโลโก้ให้หน่อยค่ะ',
+    order:20
+  });
+}
 
-  if(save.flags.achiThanked){
-    availableChats.unshift({
-      id:'achi',
-      name:'อชิ',
-      preview:save.flags.ep2Completed
-        ? 'ก็ได้ครับ ผมไปด้วยก็ได้'
-        : save.flags.ep2CouponReady
-        ? 'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
-        : 'ขอบคุณครับ'
-    });
-  }
+if(save.flags.deliveryStatus==='delivered'){
+  availableChats.unshift({
+    id:'duj',
+    name:'พี่ดุจ',
+    preview:'เดี๋ยวพี่จัดการให้',
+    order:30
+  });
+}
 
-  if(save.flags.ep2Started){
-    availableChats.unshift({
-      id:'pai',
-      name:'ปาย',
-      preview:save.flags.ep2LogoDone
-        ? 'ได้รับข้อมูลแล้วค่ะ'
-        : 'พี่การันต์ช่วยเปลี่ยนสีโลโก้ให้หน่อยค่ะ'
-    });
+if(save.flags.achiThanked){
+  availableChats.unshift({
+    id:'achi',
+    name:'อชิ',
+    preview:save.flags.ep2Completed
+      ? 'ก็ได้ครับ ผมไปด้วยก็ได้'
+      : 'ขอบคุณครับ',
+    order:40
+  });
+}
+
+if(save.flags.ep2Completed){
+  const office=availableChats.find(c=>c.id==='office');
+  if(office){
+    office.preview='พี่ดุจ: ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ';
+    office.order=50;
   }
+}
+
+if(save.flags.ep4AchiBannerShown){
+  const achi=availableChats.find(c=>c.id==='achi');
+  if(achi){
+    achi.preview=save.flags.ep4AchiCancelledRead
+      ? 'ไม่สบายเหรอครับ เป็นอะไรมากหรือเปล่า'
+      : 'วันนี้ผมป่วย ไม่สบาย';
+    achi.order=100;
+  }
+}
+
+if(save.flags.ep4DujBannerShown){
+  const duj=availableChats.find(c=>c.id==='duj');
+  if(duj){
+    duj.preview=save.flags.ep4MapUnlocked
+      ? 'แถวทางเข้ามีสวนเล็ก ๆ ด้วยจ้ะ'
+      : 'การันต์จ๊ะ พี่มีเรื่องจะบอกเกี่ยวกับอชิ';
+    duj.order=110;
+  }
+}
+
+availableChats.sort((a,b)=>(b.order||0)-(a.order||0));
 
   return availableChats
     .filter(c=>c.name.toLowerCase().includes(q))
@@ -2514,7 +2561,14 @@ function lineChatsHTML(){
           '<div class="line-name">'+c.name+'</div>'+
           '<div class="line-preview">'+c.preview+'</div>'+
         '</div>'+
-        '<div class="line-time">30 ม.ค.</div>'+
+        '<div class="line-time">'+
+  ((c.id==='achi' && save.flags.ep4AchiBannerShown) ||
+    (c.id==='duj' && save.flags.ep4DujBannerShown)
+    ? '13 เม.ย.'
+    : c.id==='office' && save.flags.ep2Completed
+      ? '9 เม.ย.'
+      : '30 ม.ค.')+
+'</div>'+
       '</button>'
     ).join('') ||
     '<div class="line-empty">ไม่พบแชต</div>';
@@ -3124,7 +3178,8 @@ function renderCalendar(){
 /* ===== EP.04 MAPS ===== */
 
 const mapLocations=[
-  {id:'pier',name:'ท่าเรือ',x:24,y:72},
+  {id:'pier',name:'ท่าเรือฝั่งบ้าน',x:36,y:72},
+  {id:'pierOther',name:'ท่าเรือฝั่ง BTS',x:53,y:63},
   {id:'bts',name:'สถานี BTS',x:68,y:34},
   {id:'houseA',name:'บ้าน A',x:36,y:24},
   {id:'houseB',name:'บ้าน B',x:77,y:72},
@@ -3246,7 +3301,35 @@ function renderMaps(){
               stroke-width="29"
               stroke-linecap="round"
             />
+<!-- เส้นทางจากบ้านไปท่าเรือ -->
+<path d="M554 518 L470 518 L330 518 L260 518"
+      fill="none"
+      stroke="#4285f4"
+      stroke-width="8"
+      stroke-linecap="round"
+      stroke-dasharray="12 9"/>
 
+<!-- เส้นทางเรือข้ามคลอง -->
+<path d="M260 518 Q325 590 382 540"
+      fill="none"
+      stroke="#147db1"
+      stroke-width="7"
+      stroke-linecap="round"
+      stroke-dasharray="4 12"/>
+
+<!-- เส้นทางจากท่าเรืออีกฝั่งไป BTS -->
+<path d="M382 540 L440 430 L490 245"
+      fill="none"
+      stroke="#4285f4"
+      stroke-width="8"
+      stroke-linecap="round"
+      stroke-dasharray="12 9"/>
+
+<g font-family="Arial,sans-serif"
+   font-size="17" font-weight="700">
+  <text x="265" y="620" fill="#147db1">เรือข้ามคลอง</text>
+  <text x="450" y="390" fill="#315f9c">ต่อ BTS</text>
+</g>
             <!-- แนวรถไฟฟ้า -->
             <path
               d="M40 100 L690 315"
@@ -3447,7 +3530,25 @@ html=`
          <span class="calendar-icon-month">JAN</span>
          <span class="calendar-icon-day">30</span>
        </span>`
-    : icon(open?a[1]:'lock')}
+    : open && a[0]==='Maps'
+  ? `<svg viewBox="0 0 64 64"
+          width="56" height="56"
+          xmlns="http://www.w3.org/2000/svg">
+       <rect width="64" height="64" rx="15" fill="#fff"/>
+       <path d="M0 43L23 25L44 36L64 19V64H0Z" fill="#d5ead1"/>
+       <path d="M0 13L23 26L44 14L64 25"
+             fill="none" stroke="#f2c84e" stroke-width="12"/>
+       <path d="M0 47L23 28L44 39L64 21"
+             fill="none" stroke="#fff" stroke-width="10"/>
+       <path d="M0 47L23 28L44 39L64 21"
+             fill="none" stroke="#8cb2e6" stroke-width="4"/>
+       <path d="M32 7C20 7 15 16 15 25C15 38 32 53 32 53S49 38 49 25C49 16 44 7 32 7Z"
+             fill="#4285f4"/>
+       <path d="M32 7C44 7 49 16 49 25C49 38 32 53 32 53Z"
+             fill="#34a853"/>
+       <circle cx="32" cy="24" r="8" fill="#fff"/>
+     </svg>`
+  : icon(open?a[1]:'lock')}
 </span>
 <span>${a[0]}</span>
         </button>
@@ -3814,7 +3915,13 @@ function groupBubble(sender,text,out=false){
     </div>
   `;
 }
-
+function cancelledMessage(){
+  return `
+    <div class="line-cancelled-message">
+      <div> Aci ยกเลิกข้อความแล้ว</div>
+    </div>
+  `;
+}
 function renderChat(){
   lastBubbleSender=null;
 
@@ -3869,34 +3976,15 @@ function renderChat(){
   }
 
 if(chat==='achi'){
+
+  // ข้อความเก่าต้องอยู่ก่อนเหตุการณ์ใหม่
+  b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
+  b+=bubble('ขอบคุณครับ');
+
+  // ข้อความวันที่ 13 เมษายน
   if(save.flags.ep4AchiCancelledRead){
-
   b+='<div class="day">13 เม.ย.</div>';
-
-  b+=bubble('ยกเลิกข้อความแล้ว');
-
-  b+=bubble(
-    'อชิครับ เมื่อกี้ผมเห็นข้อความแล้วนะครับ',true
-  );
-
-  b+=bubble(
-    'ไม่สบายเหรอครับ เป็นอะไรมากหรือเปล่า',true
-  );
-
-}
-if(save.flags.ep3OutingRead){
-
-  b+='<div class="day">13 เม.ย.</div>';
-
-  b+=bubble('ยกเลิกข้อความแล้ว');
-
-  b+=bubble(
-    'อชิครับ ไม่สบายหรือเปล่าครับ',true
-  );
-
-  b+=bubble(
-    'ผมเป็นห่วงนะครับ',true
-  );
+  b+=cancelledMessage();
 }
   b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
   b+=bubble('ขอบคุณครับ');
@@ -4169,9 +4257,9 @@ if(mapZoomButton && page==='Maps'){
   const previousZoom=mapZoom;
 
   if(mapZoomButton.dataset.mapZoom==='in'){
-    mapZoom=Math.min(2.5,mapZoom+.25);
+    mapZoom=Math.min(4,mapZoom+.2);
   }else{
-    mapZoom=Math.max(.75,mapZoom-.25);
+    mapZoom=Math.max(.35,mapZoom-.2);
   }
 
   render();

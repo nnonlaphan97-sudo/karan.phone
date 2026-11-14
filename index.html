@@ -2494,6 +2494,198 @@ button{
 #phone:has(.ep5-instagram) .ep5-ig-finished{
   padding-bottom:30px;
 }
+
+/* ===== INSTAGRAM MAIN UI ===== */
+.ig-app {
+  height:100%;
+  padding-top:36px;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.ig-header {
+  height:55px;
+  flex-shrink:0;
+  padding:0 15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #eee;
+}
+.ig-header strong {font-size:20px}
+.ig-logo {
+  font-family:Georgia,serif;
+  font-style:italic;
+  font-size:27px!important;
+}
+.ig-header-actions {display:flex;gap:18px}
+.ig-header button,.ig-navigation button {
+  background:none;
+  border:0;
+  color:inherit;
+  padding:4px;
+}
+.ig-scroll {
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+.ig-navigation {
+  height:70px;
+  padding:7px 8px 20px;
+  flex-shrink:0;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #eee;
+  background:#fff;
+}
+.ig-navigation button.active {color:#000}
+.ig-avatar {
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border-radius:50%;
+  background:linear-gradient(135deg,#e9c7bd,#b9a8c8);
+  color:#fff;
+  font-size:20px;
+  font-weight:600;
+}
+.ig-stories {
+  display:flex;
+  gap:17px;
+  padding:17px 15px;
+  border-bottom:1px solid #eee;
+}
+.ig-stories button {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  background:none;
+  border:0;
+  color:#222;
+}
+.ig-stories small {font-size:11px}
+.ig-post-user {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 14px;
+}
+.ig-post-user strong {flex:1;font-size:14px}
+.ig-post-art {
+  width:100%;
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#d4d9e8,#a6b7d0);
+  color:white;
+  font-family:Georgia,serif;
+  font-style:italic;
+  font-size:32px;
+}
+.ig-post-actions {
+  display:flex;
+  gap:17px;
+  padding:13px 15px;
+}
+.ig-post-actions svg:last-child {margin-left:auto}
+.ig-post-caption {padding:0 15px 20px;font-size:13px}
+.ig-search {
+  margin:14px;
+  padding:13px 17px;
+  border-radius:12px;
+  background:#f0f0f0;
+  color:#999;
+  font-size:14px;
+}
+.ig-section-title {padding:12px 17px;font-weight:700}
+.ig-chat-row {
+  width:100%;
+  padding:12px 17px;
+  border:0;
+  background:#fff;
+  color:#111;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+}
+.ig-chat-row > span:nth-child(2) {flex:1;min-width:0}
+.ig-chat-row strong {display:block;font-size:14px}
+.ig-chat-row small {
+  display:block;
+  margin-top:6px;
+  color:#999;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.ig-chat-arrow {font-size:26px;color:#999}
+.ig-profile {padding:18px 15px}
+.ig-profile-info {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.ig-profile-info div:not(:first-child) {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+}
+.ig-profile-info strong {font-size:17px}
+.ig-profile-info small {font-size:11px}
+.ig-profile-name {margin:15px 0}
+.ig-profile-buttons {display:flex;gap:8px}
+.ig-profile-buttons button {
+  flex:1;
+  padding:9px;
+  background:#eee;
+  border:0;
+  border-radius:9px;
+  color:#222;
+  font-size:12px;
+  font-weight:600;
+}
+.ig-profile-tabs {
+  display:grid;
+  place-items:center;
+  margin-top:25px;
+  padding:12px;
+  border-bottom:1px solid #eee;
+}
+.ig-explore-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+}
+.ig-explore-item {
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  background:#e8eaf0;
+  color:#a5a7b2;
+}
+.ig-placeholder {
+  min-height:260px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  color:#999;
+  text-align:center;
+}
+.ig-placeholder h3 {margin:0;color:#222}
+.ig-placeholder p {font-size:13px}
+#phone:has(.ig-app) .nav span {background:#222}
+
 </style>
 </head>
 <body>
@@ -4439,7 +4631,7 @@ function renderSamsungGallery(){
     </div>
   `;
 }
-function renderInstagram(){
+function renderInstagramDM(){
   const options=[
     {
       text:'มีคนพาไป',
@@ -4514,6 +4706,196 @@ function renderInstagram(){
     </div>
   `;
 }
+
+let igTab = 'home';
+let igScreen = 'main';
+
+function igIcon(name) {
+  const paths = {
+    home: '<path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/>',
+    reels: '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 3 4 6m3-6 4 6M3 9h18"/><path d="m10 12 5 3-5 3z"/>',
+    heart: '<path d="M20.8 8.6c0 4.5-8.8 10-8.8 10s-8.8-5.5-8.8-10a4.6 4.6 0 0 1 8.8-1.8 4.6 4.6 0 0 1 8.8 1.8z"/>',
+    message: '<path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4z"/>',
+    plus: '<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 7v10M7 12h10"/>',
+    back: '<path d="m15 18-6-6 6-6"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    grid: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',
+    bookmark: '<path d="M5 3h14v18l-7-5-7 5z"/>'
+  };
+
+  return `<svg viewBox="0 0 24 24" width="24" height="24"
+    fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    ${paths[name] || paths.home}
+  </svg>`;
+}
+
+function igAvatar(label, size = 46) {
+  return `<span class="ig-avatar" style="width:${size}px;height:${size}px">
+    ${label}
+  </span>`;
+}
+
+function igNavigation() {
+  const tabs = [
+    ['home','home'],
+    ['search','search'],
+    ['reels','reels'],
+    ['create','plus'],
+    ['profile','profile']
+  ];
+
+  return `<nav class="ig-navigation">
+    ${tabs.map(([tab, iconName]) => `
+      <button data-ig-tab="${tab}"
+        class="${igTab === tab ? 'active' : ''}">
+        ${tab === 'profile'
+          ? igAvatar('K', 27)
+          : igIcon(iconName)}
+      </button>
+    `).join('')}
+  </nav>`;
+}
+
+function renderInstagram() {
+  if (igScreen === 'dm') {
+    return renderInstagramDM();
+  }
+
+  if (igScreen === 'inbox') {
+    return `
+      <div class="ig-app">
+        <header class="ig-header">
+          <button data-ig-screen="main">${igIcon('back')}</button>
+          <strong>ข้อความ</strong>
+          <span></span>
+        </header>
+        <div class="ig-scroll">
+          <div class="ig-search">ค้นหาข้อความ</div>
+          <div class="ig-section-title">ข้อความ</div>
+          <button class="ig-chat-row" data-ig-screen="dm">
+            ${igAvatar('ป', 55)}
+            <span>
+              <strong>ป่า</strong>
+              <small>มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย</small>
+            </span>
+            <span class="ig-chat-arrow">›</span>
+          </button>
+        </div>
+      </div>`;
+  }
+
+  let content = '';
+
+  if (igTab === 'home') {
+    content = `
+      <div class="ig-stories">
+        <button data-ig-tab="profile">
+          ${igAvatar('K', 64)}
+          <small>สตอรี่ของคุณ</small>
+        </button>
+        <button data-ig-screen="inbox">
+          ${igAvatar('ป', 64)}
+          <small>ป่า</small>
+        </button>
+      </div>
+      <div class="ig-post">
+        <div class="ig-post-user">
+          ${igAvatar('K', 35)}
+          <strong>karan</strong>
+          <span>•••</span>
+        </div>
+        <div class="ig-post-art">
+          <span>Instagram</span>
+        </div>
+        <div class="ig-post-actions">
+          ${igIcon('heart')}
+          ${igIcon('message')}
+          ${igIcon('bookmark')}
+        </div>
+        <div class="ig-post-caption">
+          <strong>karan</strong> บันทึกช่วงเวลาของวันนี้
+        </div>
+      </div>`;
+  }
+
+  if (igTab === 'search') {
+    content = `
+      <div class="ig-search">ค้นหา</div>
+      <div class="ig-explore-grid">
+        ${Array.from({length:12}, (_,i) =>
+          `<div class="ig-explore-item"> ${i+1} </div>`
+        ).join('')}
+      </div>`;
+  }
+
+  if (igTab === 'reels') {
+    content = `
+      <div class="ig-placeholder">
+        ${igIcon('reels')}
+        <h3>Reels</h3>
+        <p>ยังไม่มีวิดีโอในตอนนี้</p>
+      </div>`;
+  }
+
+  if (igTab === 'create') {
+    content = `
+      <div class="ig-placeholder">
+        ${igIcon('plus')}
+        <h3>สร้างโพสต์</h3>
+        <p>ยังไม่ได้เพิ่มระบบอัปโหลด</p>
+      </div>`;
+  }
+
+  if (igTab === 'profile') {
+    content = `
+      <div class="ig-profile">
+        <div class="ig-profile-info">
+          ${igAvatar('K', 85)}
+          <div><strong>0</strong><small>โพสต์</small></div>
+          <div><strong>—</strong><small>ผู้ติดตาม</small></div>
+          <div><strong>—</strong><small>กำลังติดตาม</small></div>
+        </div>
+        <div class="ig-profile-name">
+          <strong>การันต์</strong>
+        </div>
+        <div class="ig-profile-buttons">
+          <button>แก้ไขโปรไฟล์</button>
+          <button>แชร์โปรไฟล์</button>
+        </div>
+        <div class="ig-profile-tabs">${igIcon('grid')}</div>
+        <div class="ig-placeholder">
+          <p>ยังไม่มีโพสต์</p>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="ig-app">
+      <header class="ig-header">
+        ${igTab === 'home'
+          ? `<strong class="ig-logo">Instagram</strong>`
+          : `<strong>${{
+              search:'สำรวจ',
+              reels:'Reels',
+              create:'สร้าง',
+              profile:'karan'
+            }[igTab]}</strong>`}
+        <div class="ig-header-actions">
+          <button data-ig-tab="notifications">${igIcon('heart')}</button>
+          <button data-ig-screen="inbox">${igIcon('message')}</button>
+        </div>
+      </header>
+      <div class="ig-scroll">
+        ${igTab === 'notifications'
+          ? `<div class="ig-placeholder">ยังไม่มีการแจ้งเตือนใหม่</div>`
+          : content}
+      </div>
+      ${igNavigation()}
+    </div>`;
+}
+
 function render(){
 let html='';
 
@@ -5594,12 +5976,30 @@ if(sendBag && page==='chat' && chat==='karin'){
 }
 
 // เปิด Instagram จากแจ้งเตือนของป่า
+
+const igTabButton=e.target.closest('[data-ig-tab]');
+
+if(igTabButton && page==='Instagram'){
+  igTab=igTabButton.dataset.igTab;
+  igScreen='main';
+  render();
+  return;
+}
+
+const igScreenButton=e.target.closest('[data-ig-screen]');
+
+if(igScreenButton && page==='Instagram'){
+  igScreen=igScreenButton.dataset.igScreen;
+  render();
+  return;
+}
 const openIG=e.target.closest('[data-ep5-open-ig]');
 
 if(openIG){
   if(!save.flags.ep5BagSent)return;
 
   document.getElementById('gameBanner').innerHTML='';
+  igScreen='dm';
   page='Instagram';
   render();
   return;

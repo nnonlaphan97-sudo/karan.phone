@@ -2486,73 +2486,154 @@ function lineFriends(){
     groups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
 }
   
+
 function lineChatsHTML(){
+
   const q=lineSearch.trim().toLowerCase();
 
-const availableChats=[...lineChats].map(c=>({...c}));
+  const availableChats=[
+    {id:'office',name:'TOYOKAWA'},
+    {id:'sales',name:'ทีมฝ่ายขาย'}
+  ];
 
-if(save.flags.ep2Started){
-  availableChats.unshift({
-    id:'pai',
-    name:'ปาย',
-    preview:save.flags.ep2LogoDone
-      ? 'ได้รับข้อมูลแล้วค่ะ ขอบคุณมากนะคะพี่การันต์'
-      : 'พี่การันต์ช่วยเปลี่ยนสีโลโก้ให้หน่อยค่ะ',
-    order:20
-  });
-}
-
-if(save.flags.deliveryStatus==='delivered'){
-  availableChats.unshift({
-    id:'duj',
-    name:'พี่ดุจ',
-    preview:'เดี๋ยวพี่จัดการให้',
-    order:30
-  });
-}
-
-if(save.flags.achiThanked){
-  availableChats.unshift({
-    id:'achi',
-    name:'อชิ',
-    preview:save.flags.ep2Completed
-      ? 'ก็ได้ครับ ผมไปด้วยก็ได้'
-      : 'ขอบคุณครับ',
-    order:40
-  });
-}
-
-if(save.flags.ep2Completed){
-  const office=availableChats.find(c=>c.id==='office');
-  if(office){
-    office.preview='พี่ดุจ: ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ';
-    office.order=50;
+  if(save.flags.ep2Started){
+    availableChats.push({
+      id:'pai',
+      name:'ปาย'
+    });
   }
-}
 
-if(save.flags.ep4AchiBannerShown){
-  const achi=availableChats.find(c=>c.id==='achi');
-  if(achi){
-    achi.preview=save.flags.ep4AchiCancelledRead
-      ? 'ไม่สบายเหรอครับ เป็นอะไรมากหรือเปล่า'
-      : 'วันนี้ผมป่วย ไม่สบาย';
-    achi.order=100;
+  if(
+    save.flags.deliveryStatus==='delivered' ||
+    save.flags.ep4DujBannerShown
+  ){
+    availableChats.push({
+      id:'duj',
+      name:'พี่ดุจ'
+    });
   }
-}
 
-if(save.flags.ep4DujBannerShown){
-  const duj=availableChats.find(c=>c.id==='duj');
-  if(duj){
-    duj.preview=save.flags.ep4MapUnlocked
-      ? 'แถวทางเข้ามีสวนเล็ก ๆ ด้วยจ้ะ'
-      : 'การันต์จ๊ะ พี่มีเรื่องจะบอกเกี่ยวกับอชิ';
-    duj.order=110;
+  if(
+    save.flags.achiThanked ||
+    save.flags.ep4AchiBannerShown
+  ){
+    availableChats.push({
+      id:'achi',
+      name:'อชิ'
+    });
   }
-}
 
-availableChats.sort((a,b)=>(b.order||0)-(a.order||0));
+  const previousChat=chat;
+  const previousSender=lastBubbleSender;
 
-  return availableChats
+  function dateValue(label){
+    const match=(label||'').match(
+      /(\d{1,2})\s*(ม\.ค\.|เม\.ย\.)/
+    );
+
+    if(!match)return 0;
+
+    const month=match[2]==='เม.ย.'?4:1;
+
+    return 20260000+month*100+Number(match[1]);
+  }
+
+  const results=availableChats.map((c,index)=>{
+
+    // ใช้ข้อความจากห้องแชทจริง
+    chat=c.id;
+
+    const holder=document.createElement('div');
+    holder.innerHTML=renderChat();
+
+    const body=holder.querySelector('.line-chatbody');
+
+    let currentDate='30 ม.ค.';
+    let latestText='';
+    let latestDate=currentDate;
+    let latestSender='';
+    let messageIndex=0;
+
+    if(body){
+
+      Array.from(body.children).forEach(el=>{
+
+        if(el.classList.contains('day')){
+          currentDate=el.textContent.trim();
+          return;
+        }
+
+        if(el.classList.contains('line-cancelled-message')){
+          latestText='อชิยกเลิกข้อความแล้ว';
+          latestDate=currentDate;
+          latestSender='cancelled';
+          messageIndex++;
+          return;
+        }
+
+        if(!el.classList.contains('line-message')){
+          return;
+        }
+
+        const bubbleEl=el.querySelector('.bubble');
+        if(!bubbleEl)return;
+
+        const text=bubbleEl.textContent.trim();
+        if(!text)return;
+
+        const isSent=el.classList.contains('sent');
+
+        const senderEl=el.querySelector(
+          '.group-sender, .line-sender-name'
+        );
+
+        latestSender=isSent
+          ? 'me'
+          : (senderEl
+              ? senderEl.textContent.trim()
+              : 'other');
+
+        latestText=text;
+        latestDate=currentDate;
+        messageIndex++;
+      });
+    }
+
+    holder.remove();
+
+    let preview=latestText;
+
+    if(latestSender==='me'){
+      preview='คุณ: '+latestText;
+    }else if(
+      latestSender!=='other' &&
+      latestSender!=='cancelled' &&
+      latestSender
+    ){
+      preview=latestSender+': '+latestText;
+    }
+
+    return {
+      ...c,
+      preview,
+      date:latestDate,
+      dateOrder:dateValue(latestDate),
+      messageIndex,
+      originalIndex:index
+    };
+  });
+
+  chat=previousChat;
+  lastBubbleSender=previousSender;
+
+  // เรียงห้องที่มีวันที่ข้อความล่าสุดใหม่กว่าขึ้นก่อน
+  results.sort((a,b)=>
+    b.dateOrder-a.dateOrder ||
+    b.messageIndex-a.messageIndex ||
+    a.originalIndex-b.originalIndex
+  );
+
+  return results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
       '<button class="line-row" data-line-chat="'+c.id+'">'+
@@ -2561,14 +2642,7 @@ availableChats.sort((a,b)=>(b.order||0)-(a.order||0));
           '<div class="line-name">'+c.name+'</div>'+
           '<div class="line-preview">'+c.preview+'</div>'+
         '</div>'+
-        '<div class="line-time">'+
-  ((c.id==='achi' && save.flags.ep4AchiBannerShown) ||
-    (c.id==='duj' && save.flags.ep4DujBannerShown)
-    ? '13 เม.ย.'
-    : c.id==='office' && save.flags.ep2Completed
-      ? '9 เม.ย.'
-      : '30 ม.ค.')+
-'</div>'+
+        '<div class="line-time">'+c.date+'</div>'+
       '</button>'
     ).join('') ||
     '<div class="line-empty">ไม่พบแชต</div>';
@@ -3473,7 +3547,6 @@ function selectMapPoint(id){
   render();
 }
 
-
 function render(){
 let html='';
 
@@ -3666,8 +3739,17 @@ else{
 html=appwrap(page,'<div class="content"><div class="entry">ข้อมูลส่วนนี้จะเปิดเผยในตอนถัดไป</div></div>');
 }
 
+
 screen.innerHTML=html;
 screen.scrollTop=0;
+
+if(page==='chat'){
+  const chatBody=document.getElementById('lineChatBody');
+
+  if(chatBody){
+    chatBody.scrollTop=chatBody.scrollHeight;
+  }
+}
 
 if(page==='home'){
   showWeather();
@@ -4016,54 +4098,19 @@ function renderChat(){
 }
   }
 
+
 if(chat==='achi'){
 
-  // ข้อความเก่าต้องอยู่ก่อนเหตุการณ์ใหม่
-  b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
-  b+=bubble('ขอบคุณครับ');
-
-  // ข้อความวันที่ 13 เมษายน
-  if(save.flags.ep4AchiCancelledRead){
-  b+='<div class="day">13 เม.ย.</div>';
-  b+=cancelledMessage();
-}
-  b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
+  // EP.01 — 30 มกราคม
+  b+=bubble(
+    'สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',
+    true
+  );
   b+=bubble('ขอบคุณครับ');
 
   if(save.replies.achi){
     b+=bubble(save.replies.achi,true);
-
-    if(save.flags.ep2Started){
-
-      b+='<div class="day">31 ม.ค.</div>';
-
-      b+=bubble('คุณการันต์ครับ เมื่อวานขอบคุณที่ช่วยงานนะครับ');
-
-      if(save.flags.ep2CouponReady){
-
-        b+=bubble(
-          'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
-        );
-
-        b+=ep2InviteMessages();
-
-        choices=ep2InviteChoices();
-
-      }else{
-
-        b+=bubble(
-          'ผมต้องจัดการงานที่ร็อคฝากไว้ให้เสร็จก่อนครับ'
-        );
-
-        b+=bubble(
-          'เดี๋ยวผมช่วยดูให้นะครับ',true
-        );
-
-      }
-    }
-
-  }else{
-
+  }else if(!save.flags.ep2Started){
     choices=[
       'ยินดีครับ',
       'ขอให้วันนี้เป็นวันที่ดีนะครับ',
@@ -4072,9 +4119,48 @@ if(chat==='achi'){
       '<button class="choice" data-reply="achi" data-index="'+i+'">'+
       o+'</button>'
     ).join('');
+  }
 
+  // EP.02 — 31 มกราคม
+  if(save.flags.ep2Started){
+
+    b+='<div class="day">31 ม.ค.</div>';
+
+    b+=bubble(
+      'คุณการันต์ครับ เมื่อวานขอบคุณที่ช่วยงานนะครับ'
+    );
+
+    if(save.flags.ep2CouponReady){
+
+      b+=bubble(
+        'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
+      );
+
+      b+=ep2InviteMessages();
+      choices=ep2InviteChoices();
+
+    }else{
+
+      b+=bubble(
+        'ผมต้องจัดการงานที่ร็อคฝากไว้ให้เสร็จก่อนครับ'
+      );
+
+      b+=bubble('เดี๋ยวผมช่วยดูให้นะครับ',true);
+    }
+  }
+
+  // EP.04 — 13 เมษายน
+  // แสดงข้อความที่อชิยกเลิกเป็นรายการล่าสุด
+  if(save.flags.ep4AchiCancelledRead){
+
+    b+='<div class="day">13 เม.ย.</div>';
+    b+=cancelledMessage();
+
+    choices='';
   }
 }
+
+
 
 if(chat==='pai'){
 

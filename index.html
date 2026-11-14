@@ -433,46 +433,30 @@ button{
 .appicon{
   width:60px;
   height:60px;
-  border-radius:17px;
+  border-radius:20px;
   display:grid;
   place-items:center;
   overflow:hidden;
+  background:transparent;
   box-shadow:0 7px 18px #0002;
 }
 
 .appicon .ico{
-  width:39px;
-  height:39px;
+  width:60px;
+  height:60px;
+  display:block;
   flex-shrink:0;
+  stroke:none;
 }
 
-/* LINE — ให้บอลลูนใหญ่สมดุลกับพื้นเขียว */
-.appitem[data-app="LINE"] .appicon .ico{
-  width:47px;
-  height:47px;
+.appicon.locked{
+  background:#5a6780;
 }
 
-/* Samsung Notes — ขยายสมุดให้เต็มพื้นที่เหมาะสม */
-.appitem[data-app="โน้ต"] .appicon .ico{
-  width:44px;
-  height:44px;
-}
-
-/* โทรศัพท์ แกลเลอรี ปฏิทิน เบราว์เซอร์ นาฬิกา ไฟล์ */
-.appitem[data-app="โทรศัพท์"] .appicon .ico,
-.appitem[data-app="แกลเลอรี"] .appicon .ico,
-.appitem[data-app="ปฏิทิน"] .appicon .ico,
-.appitem[data-app="เบราว์เซอร์"] .appicon .ico,
-.appitem[data-app="นาฬิกา"] .appicon .ico,
-.appitem[data-app="ไฟล์"] .appicon .ico{
-  width:40px;
-  height:40px;
-}
-
-/* แอปที่ยังล็อกอยู่ */
 .appicon.locked .ico{
   width:32px;
   height:32px;
+  stroke:currentColor;
 }
 .locked{background:#5a6780!important;color:#d2dbe8}
 .app{background:#f6f7fb;color:#172033;min-height:100%;padding-bottom:22px}
@@ -2233,16 +2217,6 @@ button{
   color:#111;
   font-weight:700;
 }
-.appitem:has([data-app="แกลเลอรี"]) .appicon{
-  background:transparent !important;
-  box-shadow:none;
-}
-
-.appitem:has([data-app="แกลเลอรี"]) .appicon .ico{
-  width:60px;
-  height:60px;
-  stroke:none;
-}
 
 </style>
 </head>
@@ -2356,71 +2330,127 @@ send:'<path d="m3 3 18 9-18 9 4-9-4-9ZM7 12h14"/>'
 };
 
 
+
 function icon(n,cls=''){
+  const app=(color,art)=>`
+    <svg class="ico ${cls}" viewBox="0 0 64 64"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true">
+      <rect width="64" height="64" rx="20" fill="${color}"/>
+      ${art}
+    </svg>`;
 
-  if(n==='camera'){
-    return `
-      <svg class="ico ${cls}" viewBox="0 0 64 64"
-           xmlns="http://www.w3.org/2000/svg"
-           aria-hidden="true">
-        <rect x="3" y="3" width="58" height="58"
-              rx="18" fill="#F1F2F5"/>
-        <rect x="10" y="20" width="44" height="28"
-              rx="9" fill="#FFFFFF"
-              stroke="#535762" stroke-width="2.5"/>
-        <path d="M22 20 26 15H38L42 20"
-              fill="#FFFFFF"
-              stroke="#535762" stroke-width="2.5"
-              stroke-linejoin="round"/>
-        <circle cx="32" cy="34" r="11"
-                fill="#4C515D"/>
-        <circle cx="32" cy="34" r="7.5"
-                fill="#8F9AAB"/>
-        <circle cx="32" cy="34" r="4"
-                fill="#263443"/>
-        <circle cx="47" cy="26" r="2"
-                fill="#AAB4C4"/>
-      </svg>
-    `;
+  switch(n){
+    case 'line':
+      return app('#06C755',`
+        <path d="M32 10C18 10 8 19 8 31
+          c0 11 9 19 21 20l-2 7 10-7
+          c12-2 19-10 19-20C56 19 46 10 32 10Z"
+          fill="white"/>
+        <text x="32" y="36" text-anchor="middle"
+          font-family="Arial" font-size="12"
+          font-weight="bold" fill="#06C755">LINE</text>`);
+
+    case 'phone':
+      return app('#42C779',`
+        <path d="M20 13c-5 0-8 4-8 9
+          0 13 17 30 30 30 5 0 9-3 9-8v-5
+          l-12-6-6 6c-5-2-9-6-11-11l6-6-6-9Z"
+          fill="white"/>`);
+
+    case 'gallery':
+      return app('#FFFFFF',`
+        <path d="M32 31C22 25 18 16 23 12
+          c6-5 12 3 12 15Z" fill="#EE7094"/>
+        <path d="M33 31c5-10 14-14 19-9
+          5 6-3 12-15 12Z" fill="#F6B552"/>
+        <path d="M33 33c10 5 14 14 9 19
+          -6 5-12-3-12-15Z" fill="#76C18B"/>
+        <path d="M31 33c-5 10-14 14-19 9
+          -5-6 3-12 15-12Z" fill="#9487DC"/>
+        <circle cx="32" cy="32" r="5" fill="white"/>`);
+
+    case 'calendar':
+      return app('#FFFFFF',`
+        <path d="M0 20V20Q0 0 20 0H44
+          Q64 0 64 20H0Z" fill="#F15F67"/>
+        <text x="32" y="15" text-anchor="middle"
+          font-family="Arial" font-size="11"
+          font-weight="bold" fill="white">JAN</text>
+        <text x="32" y="51" text-anchor="middle"
+          font-family="Arial" font-size="34"
+          font-weight="bold" fill="#24252B">30</text>`);
+
+    case 'note':
+      return app('#F52E39',`
+        <path d="M22 11h22a7 7 0 0 1 7 7v26
+          L41 54H22a7 7 0 0 1-7-7V18
+          a7 7 0 0 1 7-7Z" fill="white"/>
+        <path d="M41 54V45a4 4 0 0 1 4-4h6Z"
+          fill="#FFB8BF"/>
+        <path d="M14 23h7M14 32h7M14 41h7"
+          stroke="#F52E39" stroke-width="3"
+          stroke-linecap="round"/>`);
+
+    case 'Grab Food':
+      return app('#FFFFFF',`
+        <text x="32" y="41" text-anchor="middle"
+          font-family="Arial" font-size="25"
+          font-weight="bold" letter-spacing="-2"
+          fill="#00A859">Grab</text>`);
+
+    case 'web':
+      return app('#6962D7',`
+        <circle cx="32" cy="32" r="23" fill="white"/>
+        <circle cx="32" cy="32" r="18" fill="#70BDF4"/>
+        <path d="M14 39c13-15 24-18 39-13
+          -7 18-21 24-36 18
+          13 0 23-7 28-15-13 0-22 4-31 10Z"
+          fill="white"/>`);
+
+    case 'clock':
+      return app('#F6F7FB',`
+        <circle cx="32" cy="32" r="23"
+          fill="white" stroke="#333A48" stroke-width="2"/>
+        <path d="M32 15v17l11 7"
+          stroke="#333A48" stroke-width="3.5"
+          stroke-linecap="round" fill="none"/>
+        <circle cx="32" cy="32" r="3" fill="#333A48"/>`);
+
+    case 'file':
+      return app('#F6C449',`
+        <path d="M9 22a8 8 0 0 1 8-8h12
+          l7 7h11a8 8 0 0 1 8 8v18
+          a8 8 0 0 1-8 8H17
+          a8 8 0 0 1-8-8Z" fill="white"/>
+        <path d="M9 30h46v17a8 8 0 0 1-8 8H17
+          a8 8 0 0 1-8-8Z" fill="#FFE4A0"/>`);
+
+    case 'map':
+      return app('#EF3529',`
+        <path d="M32 10c-12 0-21 9-21 21
+          0 14 21 27 21 27s21-13 21-27
+          c0-12-9-21-21-21Z" fill="white"/>
+        <circle cx="32" cy="30" r="9"
+          fill="#EF3529"/>`);
+
+    case 'camera':
+      return app('#F1F2F5',`
+        <rect x="9" y="20" width="46" height="31"
+          rx="9" fill="white"
+          stroke="#565D6A" stroke-width="2.5"/>
+        <path d="M20 20l5-6h14l5 6"
+          fill="white" stroke="#565D6A"
+          stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="32" cy="35" r="12" fill="#555F6F"/>
+        <circle cx="32" cy="35" r="8" fill="#98A7B9"/>
+        <circle cx="32" cy="35" r="4" fill="#273648"/>`);
+
+    default:
+      return '<svg class="ico '+cls+
+        '" viewBox="0 0 24 24" aria-hidden="true">'+
+        (paths[n]||paths.file)+'</svg>';
   }
-
-  if(n==='gallery'){
-    return `
-      <svg class="ico ${cls}" viewBox="0 0 64 64"
-           xmlns="http://www.w3.org/2000/svg"
-           aria-hidden="true">
-        <rect x="3" y="3" width="58" height="58"
-              rx="18" fill="#FFFFFF"/>
-        <path d="M32 31
-                 C24 23 17 20 17 13
-                 C17 7 24 7 28 14
-                 L34 26Z"
-              fill="#EF637A"/>
-        <path d="M32 31
-                 C39 22 45 19 51 23
-                 C57 28 52 35 42 35
-                 L34 35Z"
-              fill="#F3AF50"/>
-        <path d="M32 31
-                 C42 35 47 42 43 49
-                 C39 56 32 52 30 43
-                 L29 35Z"
-              fill="#75BD83"/>
-        <path d="M32 31
-                 C27 42 20 47 13 43
-                 C6 39 10 32 20 30
-                 L29 29Z"
-              fill="#8A87D8"/>
-        <circle cx="32" cy="32" r="5.5"
-                fill="#FFFFFF"/>
-      </svg>
-    `;
-  }
-
-  return '<svg class="ico '+cls+
-         '" viewBox="0 0 24 24" aria-hidden="true">'+
-         (paths[n]||paths.file)+
-         '</svg>';
 }
 
 const appdefs=[
@@ -4128,38 +4158,8 @@ html=`
       return `
         <button class="appitem" data-app="${a[0]}">
           
-<span class="appicon ${open?'':'locked'}"
-      style="${open?(a[0]==='ปฏิทิน'?'background:#fff':'background:'+a[2]):''}">
-  ${open && a[0]==='GrabFood'
-    ? `<span class="grab-logo">Grab</span>`
-    : open && a[0]==='ปฏิทิน'
-    ? `<span class="calendar-app-icon">
-         <span class="calendar-icon-month">JAN</span>
-         <span class="calendar-icon-day">30</span>
-       </span>`
-  : open && a[0]==='Maps'
-  ? `<svg
-       viewBox="0 0 64 64"
-       width="60"
-       height="60"
-       xmlns="http://www.w3.org/2000/svg"
-       aria-label="Samsung Maps">
-
-       <path
-         fill="#ffffff"
-         d="M32 12
-            C21.5 12 13 20.5 13 31
-            C13 44 32 55 32 55
-            S51 44 51 31
-            C51 20.5 42.5 12 32 12Z"/>
-
-       <circle
-         cx="32"
-         cy="30"
-         r="8.5"
-         fill="#ef3124"/>
-     </svg>`
-  : icon(open?a[1]:'lock')}
+<span class="appicon ${open?'':'locked'}">
+  ${icon(open ? a[1] : 'lock')}
 </span>
 <span>${a[0]}</span>
         </button>
@@ -4172,9 +4172,7 @@ html=`
             data-app="กล้อง"
             aria-label="กล้อง">
       <span class="dock-camera-icon">
-        ${save.unlock.includes('กล้อง')
-          ? icon('camera')
-          : icon('lock')}
+        ${icon(save.unlock.includes('กล้อง') ? 'camera' : 'lock')}
       </span>
     </button>
   </div>

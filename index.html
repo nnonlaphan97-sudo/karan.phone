@@ -2026,7 +2026,7 @@ button{
   background:#34383c;
 }
 
-.samsung-viewfinder svg{
+.samsung-viewfinder video{
   display:block;
   width:100%;
   height:100%;
@@ -4052,7 +4052,7 @@ function ep4PhotoSVG(){
     </svg>
   `;
 }
-
+let cameraShotThisSession = false;
 function renderSamsungCamera(){
   return `
     <div class="samsung-camera">
@@ -4081,9 +4081,14 @@ function renderSamsungCamera(){
 </div>
 
       <div class="samsung-viewfinder">
-        ${ep4PhotoSVG()}
-        <div class="samsung-focus"></div>
-      </div>
+  <video id="ep4CameraVideo"
+    autoplay muted loop playsinline
+    preload="auto"
+    src="videos/copy_BE677553-AA0B-4B8A-B194-D336F9D46A96.mov">
+  </video>
+  <div class="samsung-focus"></div>
+  <div class="samsung-capture-flash"></div>
+</div>
 
       <div class="samsung-camera-bottom">
         <div class="samsung-zoom">
@@ -4105,7 +4110,7 @@ function renderSamsungCamera(){
   <button class="samsung-camera-thumbnail"
           data-ep4-open-gallery="1"
           aria-label="เปิดภาพล่าสุด">
-    ${save.flags.ep4PhotoTaken
+    ${cameraShotThisSession
       ? '<img src="videos/IMG_3258.jpeg" alt="ภาพที่ถ่าย">'
       : icon('gallery')}
   </button>
@@ -4119,21 +4124,19 @@ function renderSamsungCamera(){
   <button class="samsung-camera-flip"
           data-camera-flip="1"
           aria-label="สลับกล้องหน้าและหลัง">
-    <svg viewBox="0 0 48 48"
-         width="30" height="30"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2.7"
-         stroke-linecap="round"
-         stroke-linejoin="round">
-      <path d="M14 15h17l-5-5"/>
-      <path d="M31 15l-5 5"/>
-      <path d="M34 33H17l5 5"/>
-      <path d="M17 33l5-5"/>
-      <rect x="15" y="19" width="18"
-            height="10" rx="3"/>
-      <circle cx="24" cy="24" r="3"/>
-    </svg>
+    
+<svg viewBox="0 0 48 48" width="32" height="32"
+     fill="none" stroke="currentColor"
+     stroke-width="2.6"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+  <path d="M13 17a15 15 0 0 1 24-3"/>
+  <path d="M32 9l5 5-7 2"/>
+  <path d="M35 31a15 15 0 0 1-24 3"/>
+  <path d="M16 39l-5-5 7-2"/>
+  <rect x="17" y="19" width="14" height="11" rx="3"/>
+  <circle cx="24" cy="24.5" r="3"/>
+</svg>
   </button>
 </div>
       </div>
@@ -5637,7 +5640,7 @@ if(shutter && page==='กล้อง'){
     void flash.offsetWidth;
     flash.classList.add('active');
   }
-
+cameraShotThisSession = true;
   save.flags.ep4PhotoTaken=true;
   unlock('แกลเลอรี');
   persist();

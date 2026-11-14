@@ -3672,6 +3672,161 @@ button{
 #phone:has(.ep8-call-screen) .nav span{
   background:rgba(255,255,255,.75);
 }
+/* ===== EP.08 SHARED SAMSUNG NOTES ===== */
+
+.ep8-shared-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:85%;
+  padding:14px;
+  margin:10px 0;
+  border:1px solid #d8dce6;
+  border-radius:16px;
+  background:#fff;
+  color:#20232a;
+  text-align:left;
+}
+
+.ep8-shared-icon{
+  display:grid;
+  place-items:center;
+  width:43px;
+  height:43px;
+  flex-shrink:0;
+  border-radius:12px;
+  background:#fff1cb;
+  color:#a97a20;
+}
+
+.ep8-shared-icon svg{
+  width:25px;
+  height:25px;
+}
+
+.ep8-shared-info{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:0;
+}
+
+.ep8-shared-info strong{
+  font-size:13px;
+}
+
+.ep8-shared-info small{
+  font-size:11px;
+  color:#777b87;
+}
+
+.ep8-shared-note-entry{
+  border:1px solid #e7dfc9;
+  background:#fffdf6;
+}
+
+.ep8-note-company{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  padding:12px 0;
+  border-bottom:1px solid #eae5d8;
+}
+
+.ep8-note-company strong{
+  font-size:13px;
+}
+
+.ep8-note-company span,
+.ep8-note-company small{
+  color:#737780;
+  font-size:12px;
+}
+
+.ep8-note-done{
+  color:#21854d;
+}
+
+/* ===== EP.08 CALL SCREEN ===== */
+
+.ep8-call-screen{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:95px 24px 65px;
+  background:linear-gradient(160deg,#344258,#1b2535);
+  color:#fff;
+  text-align:center;
+}
+
+.ep8-call-top{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.ep8-call-screen .ep8-phone-avatar{
+  width:100px;
+  height:100px;
+  background:#65748a;
+  color:#fff;
+}
+
+.ep8-call-screen .ep8-phone-avatar svg{
+  width:50px;
+  height:50px;
+}
+
+.ep8-call-screen h2{
+  margin:25px 0 9px;
+  font-size:23px;
+  line-height:1.4;
+}
+
+.ep8-call-screen small{
+  color:#c9d1dc;
+}
+
+.ep8-call-timer{
+  margin-top:20px;
+  font-size:13px;
+}
+
+.ep8-call-bottom{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:40px;
+  width:100%;
+  margin-top:auto;
+}
+
+.ep8-call-controls{
+  display:flex;
+  justify-content:center;
+  gap:28px;
+}
+
+.ep8-call-controls span{
+  display:grid;
+  place-items:center;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#ffffff24;
+}
+
+.ep8-hangup{
+  display:grid;
+  place-items:center;
+  width:72px;
+  height:72px;
+  border:0;
+  border-radius:50%;
+  background:#f0444f;
+  color:#fff;
+}
 
 </style>
 </head>
@@ -4239,6 +4394,7 @@ save.flags.ep7RainbowShown ??= false;
 save.flags.ep8Started ??= false;
 save.flags.ep8TanakaRead ??= false;
 save.flags.ep8ContactsReceived ??= false;
+save.flags.ep8NoteJoined ??= false;
 save.flags.ep8PhoneUnlocked ??= false;
 save.flags.ep8Sales ??= [];
 save.flags.ep8Completed ??= false;
@@ -4251,7 +4407,6 @@ if(!Array.isArray(save.flags.ep8Sales)){
 const EP8_TARGET=3000000;
 
 const ep8Customers=[
-  const ep8Customers=[
   // รายชื่อลูกค้าเดิมของการันต์
   {
     id:'old01',
@@ -6742,6 +6897,7 @@ function ep8PhoneSVG(name){
     search:'<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/>',
     more:'<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>',
     user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3-8 8-8s8 3 8 8"/>',
+        note:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
     call:'<path d="M6 3c-2 0-3 2-3 4 0 7 7 14 14 14 2 0 4-1 4-3v-3l-5-2-3 3c-3-1-5-3-6-6l3-3-2-4Z"/>',
     hangup:'<path d="M3 13c5-5 13-5 18 0l-3 5-4-2v-3a13 13 0 0 0-4 0v3l-4 2-3-5Z"/>',
     delete:'<path d="M9 4H21v16H9L2 12Z"/><path d="m12 9 5 6m0-6-5 6"/>',
@@ -6767,86 +6923,46 @@ function renderEp8Phone(){
 
   const f=save.flags;
 
-  if(ep8Calling){
-    const c=ep8Customers.find(x=>x.id===ep8Calling);
+   if(ep8Calling){
+    const c=ep8Customers.find(
+      x=>x.id===ep8Calling
+    );
 
     if(!c){
       ep8Calling=null;
       return renderEp8Phone();
     }
 
-    const already=f.ep8Sales.includes(c.id);
-
     return `
       <div class="ep8-call-screen">
-        <div class="ep8-phone-avatar">
-          ${ep8PhoneSVG('user')}
+
+        <div class="ep8-call-top">
+          <div class="ep8-phone-avatar">
+            ${ep8PhoneSVG('user')}
+          </div>
+
+          <h2>${c.name}</h2>
+          <small>${c.phone}</small>
+          <div class="ep8-call-timer">กำลังสนทนา</div>
         </div>
 
-        <h2>${c.name}</h2>
-        <small>${c.phone}</small>
+        <div class="ep8-call-bottom">
+          <div class="ep8-call-controls">
+            <span>${ep8PhoneSVG('mic')}</span>
+            <span>${ep8PhoneSVG('keypad')}</span>
+            <span>${ep8PhoneSVG('speaker')}</span>
+          </div>
 
-        <div class="ep8-call-dialogue">
-          ${ep8CallStep===0
-            ? `สวัสดีครับคุณการันต์
-               เรื่อง${c.product}
-               ที่ติดต่อมาครั้งก่อนใช่ไหมครับ`
-            : ep8CallStep===1
-            ? `ทางเราตรวจสอบรายละเอียดแล้ว
-               สามารถยืนยันคำสั่งซื้อได้ครับ`
-            : already
-            ? `รายการนี้ได้รับการบันทึกยอดขายไปแล้วครับ`
-            : `ตกลงครับ ทางเรายืนยันยอด
-               ${ep8Money(c.amount)} บาท
-               รบกวนส่งเอกสารตามมาได้เลยครับ`
-          }
+          <button class="ep8-hangup"
+            data-ep8-hangup="1"
+            aria-label="วางสาย">
+            ${ep8PhoneSVG('hangup')}
+          </button>
         </div>
 
-        ${ep8CallStep===0
-          ? `
-            <button class="ep8-call-choice"
-              data-ep8-call-choice="confirm">
-              ครับ ผมโทรมาติดตามรายการนี้
-              ไม่ทราบว่าสามารถยืนยันคำสั่งซื้อได้ไหมครับ
-            </button>
-
-            <button class="ep8-call-choice"
-              data-ep8-call-choice="later">
-              ถ้ายังไม่สะดวก ผมติดต่อกลับภายหลังได้ครับ
-            </button>
-          `
-          : ep8CallStep===1
-          ? `
-            <button class="ep8-call-choice"
-              data-ep8-call-choice="close">
-              ขอบคุณมากครับ
-              ผมจะส่งเอกสารยืนยันให้ทันที
-            </button>
-          `
-          : `
-            <div class="ep8-call-status">
-              ${ep8CallStep===2
-                ? 'ลูกค้ายืนยันคำสั่งซื้อแล้ว'
-                : 'ยังไม่ได้ปิดการขาย'}
-            </div>
-          `
-        }
-
-        <div class="ep8-call-controls">
-          <span>${ep8PhoneSVG('mic')}</span>
-          <span>${ep8PhoneSVG('keypad')}</span>
-          <span>${ep8PhoneSVG('speaker')}</span>
-        </div>
-
-        <button class="ep8-hangup"
-          data-ep8-hangup="1"
-          aria-label="วางสาย">
-          ${ep8PhoneSVG('hangup')}
-        </button>
       </div>
     `;
   }
-
   const tabs=`
     <div class="ep8-phone-tabs">
       <button data-ep8-tab="keypad"
@@ -7184,7 +7300,49 @@ else if(page==='โทรศัพท์'){
 else if(page==='โน้ต'){
     html='<div class="notes-page">'+appwrap('โน้ต',`
     <div class="content">
+          ${save.flags.ep8TanakaRead ? `
+        <div class="entry ep8-shared-note-entry">
 
+          <b>รายชื่อลูกค้าบิ๊กแบ็ก</b>
+
+          <small>
+            Samsung Notes · แชร์โดยอชิ
+          </small>
+
+          ${!save.flags.ep8NoteJoined ? `
+            <p>อชิเชิญคุณเข้าร่วมโน้ตที่แชร์</p>
+
+            <button class="action"
+              data-ep8-join-note="1">
+              เข้าร่วมโน้ตที่แชร์
+            </button>
+          ` : `
+            <p>รายชื่อลูกค้าเก่า 7 บริษัท</p>
+
+            ${ep8Customers
+              .filter(c=>c.source==='อชิ')
+              .map(c=>`
+                <div class="ep8-note-company">
+                  <strong>${c.name}</strong>
+                  <span>${c.phone}</span>
+                  <small>${c.product}</small>
+                </div>
+              `).join('')}
+
+            ${!save.flags.ep8ContactsReceived ? `
+              <button class="action"
+                data-ep8-receive-contacts="1">
+                บันทึก 7 บริษัทลงในรายชื่อ
+              </button>
+            ` : `
+              <p class="ep8-note-done">
+                บันทึกรายชื่อเรียบร้อยแล้ว
+              </p>
+            `}
+          `}
+
+        </div>
+      ` : ''}
       <div class="entry">
         <b>งานประจำสัปดาห์</b>
         <p>ติดตามรายงานฝ่ายขาย</p>
@@ -8220,68 +8378,43 @@ if(chat==='office'){
       }
     }
   }
-/* ===== EP.08 ACHI HELPS KARAN ===== */
+/* ===== EP.08 ACHI SHARED NOTE ===== */
 
-if(
-  chat==='achi' &&
-  save.flags.ep8TanakaRead
-){
+if(chat==='achi' && save.flags.ep8TanakaRead){
+
   b+='<div class="day">19 เม.ย.</div>';
 
   b+=bubble(
-    'การันต์ เรื่องยอดขายสามล้าน ผมลองช่วยหารายชื่อลูกค้าเก่าให้นะ'
+    'การันต์ ผมหารายชื่อลูกค้าเก่าที่เคยสั่งซื้อยอดใหญ่ได้แล้วนะ'
   );
 
   b+=bubble(
-    'ผมเจอบริษัทที่เคยสั่งซื้อยอดใหญ่หลายรายเลย'
-  );
-
-  b+=bubble(
-    'ผมรวบรวมชื่อบริษัทกับเบอร์โทรไว้ในโน้ตแล้ว'
+    'ผมแชร์โน้ตให้แล้ว ลองเปิดดูนะ'
   );
 
   b+=`
-    <div class="ep8-note-card">
-      <div class="ep8-note-heading">
+    <button class="ep8-shared-link"
+      data-ep8-open-note="1">
+
+      <span class="ep8-shared-icon">
         ${ep8PhoneSVG('note')}
-        <div>
-          <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
-          <small>โน้ตจากอชิ · 6 บริษัท</small>
-        </div>
-      </div>
+      </span>
 
-      <div class="ep8-note-preview">
-        ${ep8Customers
-          .filter(c=>c.source==='อชิ')
-          .map(c=>`
-            <div class="ep8-note-item">
-              <strong>${c.name}</strong>
-              <small>${c.phone}</small>
-              <span>${c.product}</span>
-            </div>
-          `).join('')}
-      </div>
+      <span class="ep8-shared-info">
+        <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+        <small>Samsung Notes · แชร์โดยอชิ</small>
+        <small>7 บริษัท · แตะเพื่อเปิดโน้ต</small>
+      </span>
 
-      ${!save.flags.ep8ContactsReceived
-        ? `
-          <button class="ep8-note-save"
-            data-ep8-receive-contacts="1">
-            บันทึกรายชื่อทั้ง 6 บริษัท
-          </button>
-        `
-        : `
-          <div class="ep8-note-saved">
-            บันทึกลงในรายชื่อแล้ว
-          </div>
-        `
-      }
-    </div>
+    </button>
   `;
 
-  b+=bubble(
-    'ขอบคุณนะอชิ เดี๋ยวผมจะลองติดต่อดู',
-    true
-  );
+  if(save.flags.ep8ContactsReceived){
+    b+=bubble(
+      'ผมบันทึกรายชื่อแล้วนะ ขอบคุณมากอชิ',
+      true
+    );
+  }
 }
 /* ===== EP.06 ACHI CONFESSION ===== */
 
@@ -8631,7 +8764,33 @@ document.addEventListener('change',function(e){
 });
 document.addEventListener('click',function(e){
 /* ===== EP.08 INTERACTIONS ===== */
+// เปิดลิงก์ Samsung Notes จาก LINE
+const ep8OpenNote=e.target.closest(
+  '[data-ep8-open-note]'
+);
 
+if(ep8OpenNote){
+  page='โน้ต';
+  unlock('โน้ต');
+  render();
+  return;
+}
+
+// เข้าร่วมโน้ตที่อชิแชร์
+const ep8JoinNote=e.target.closest(
+  '[data-ep8-join-note]'
+);
+
+if(
+  ep8JoinNote &&
+  page==='โน้ต' &&
+  !save.flags.ep8NoteJoined
+){
+  save.flags.ep8NoteJoined=true;
+  persist();
+  render();
+  return;
+}
 // เปิดแจ้งเตือน EP.08
 const ep8Notice=e.target.closest('[data-ep8-banner]');
 
@@ -8660,12 +8819,10 @@ const ep8Receive=e.target.closest(
 
 if(
   ep8Receive &&
-  page==='chat' &&
-  chat==='achi' &&
-  save.flags.ep8TanakaRead &&
+  page==='โน้ต' &&
+  save.flags.ep8NoteJoined &&
   !save.flags.ep8ContactsReceived
 ){
-
   save.flags.ep8ContactsReceived=true;
   save.flags.ep8PhoneUnlocked=true;
 
@@ -8676,7 +8833,7 @@ if(
 
   ep8Banner(
     'Phone',
-    'เพิ่มรายชื่อลูกค้า 6 รายเรียบร้อยแล้ว',
+    'เพิ่มรายชื่อลูกค้า 7 รายเรียบร้อยแล้ว',
     'phone'
   );
 
@@ -8754,88 +8911,51 @@ if(ep8Call && page==='โทรศัพท์'){
 
   return;
 }
+// ===== EP.08 HANG UP =====
 
-// เลือกคำตอบระหว่างสนทนา
-const ep8Choice=e.target.closest(
-  '[data-ep8-call-choice]'
+const ep8Hangup=e.target.closest(
+  '[data-ep8-hangup]'
 );
-
-if(
-  ep8Choice &&
-  page==='โทรศัพท์' &&
-  ep8Calling
-){
-
-  const answer=ep8Choice.dataset.ep8CallChoice;
-
-  if(answer==='confirm'){
-    ep8CallStep=1;
-  }
-
-  if(answer==='close'){
-    ep8CallStep=2;
-  }
-
-  if(answer==='later'){
-    ep8CallStep=3;
-  }
-
-  render();
-  return;
-}
-
-// วางสาย
-const ep8Hangup=e.target.closest('[data-ep8-hangup]');
 
 if(
   ep8Hangup &&
   page==='โทรศัพท์' &&
   ep8Calling
 ){
-
   const customer=ep8Customers.find(
     c=>c.id===ep8Calling
   );
 
-  const successful=ep8CallStep===2;
-
   ep8CallHistory.push(ep8Calling);
 
-  if(
-    successful &&
+  const newSale=
     customer &&
-    !save.flags.ep8Sales.includes(customer.id)
-  ){
+    !save.flags.ep8Sales.includes(customer.id);
 
+  if(newSale){
     save.flags.ep8Sales.push(customer.id);
 
     if(ep8Total()>=EP8_TARGET){
       save.flags.ep8Completed=true;
     }
-
-    persist();
-
-    ep8Calling=null;
-    ep8CallStep=0;
-    ep8PhoneTab='recents';
-
-    render();
-
-    ep8Banner(
-      'ทีมฝ่ายขาย',
-      'อัปเดตยอดขายล่าสุด +'+
-      ep8Money(customer.amount)+' บาท',
-      'sales'
-    );
-
-    return;
   }
 
   ep8Calling=null;
   ep8CallStep=0;
   ep8PhoneTab='recents';
 
+  persist();
   render();
+
+  if(newSale){
+    ep8Banner(
+      'ทีมฝ่ายขาย',
+      'ยอดขาย +'+ep8Money(customer.amount)+
+      ' บาท · รวม '+ep8Money(ep8Total())+' บาท',
+      'sales'
+    );
+  }
+
   return;
 }
 /* ===== EP.07 INTERACTIONS ===== */
@@ -10053,6 +10173,26 @@ if(btn.dataset.go){
     save.flags.deliveryStatus==='delivered' &&
     !save.flags.achiThanked;
 
+  const ep8LeavingAchi=
+    page==='chat' &&
+    chat==='achi' &&
+    btn.dataset.go==='LINE' &&
+    !!save.flags.ep7Wish &&
+    !save.flags.ep8Started;
+
+  const ep8LeavingTanaka=
+    page==='chat' &&
+    chat==='tanaka' &&
+    btn.dataset.go==='LINE' &&
+    save.flags.ep8Started &&
+    !save.flags.ep8TanakaRead;
+
+  const ep8LeavingSales=
+    page==='chat' &&
+    chat==='sales' &&
+    btn.dataset.go==='LINE' &&
+    save.flags.ep8Completed &&
+    !save.flags.ep8TanakaFinalRead;
   page=btn.dataset.go;
 
   if(page==='LINE'){
@@ -10061,13 +10201,11 @@ if(btn.dataset.go){
     lineSearch='';
   }
 
-
   if(leavingDuj){
     save.flags.achiThanked=true;
     persist();
   }
 
-  
   // EP.06: กลับจากแชตทานากะซัง
   if(ep6LeavingTanaka){
     // ปลดล็อกแอปนาฬิกา
@@ -10104,54 +10242,34 @@ if(ep7LeavingAchi){
   if(leavingDuj){
     showGameBanner('achi','ขอบคุณครับ');
   }
-    /* ===== EP.08 STORY TRANSITIONS ===== */
+  /* ===== EP.08 STORY TRANSITIONS ===== */
 
-  // หลังอชิตอบรับเป็นแฟน และการันต์กลับหน้า LINE
-  if(
-    page==='LINE' &&
-    chat==='achi' &&
-    save.flags.ep7Wish &&
-    !save.flags.ep8Started
-  ){
-    ep8Start();
-  }
-
-  // อ่านเงื่อนไขทานากะซังแล้วกลับ LINE
-  else if(
-    page==='LINE' &&
-    chat==='tanaka' &&
-    save.flags.ep8Started &&
-    !save.flags.ep8TanakaRead
-  ){
-    save.flags.ep8TanakaRead=true;
-    persist();
-    render();
-
-    ep8Banner(
-      'อชิ',
-      'ผมหารายชื่อลูกค้าเก่าไว้ให้แล้วนะ',
-      'achi'
-    );
-  }
-
-  // หลังทำยอดครบและกลับจากกลุ่มฝ่ายขาย
-  else if(
-    page==='LINE' &&
-    chat==='sales' &&
-    save.flags.ep8Completed &&
-    !save.flags.ep8TanakaFinalRead
-  ){
-    save.flags.ep8TanakaFinalRead=true;
-    persist();
-
-    ep8Banner(
-      'ทานากะซัง',
-      'ผมตรวจสอบยอดขายเรียบร้อยแล้ว',
-      'tanaka'
-    );
-  }
+if(ep8LeavingAchi){
+  ep8Start();
 }
 
+if(ep8LeavingTanaka){
+  save.flags.ep8TanakaRead=true;
+  persist();
+
+  ep8Banner(
+    'อชิ',
+    'ผมแชร์รายชื่อลูกค้าใน Samsung Notes ให้แล้วนะ',
+    'achi'
+  );
+}
+
+if(ep8LeavingSales){
+  save.flags.ep8TanakaFinalRead=true;
+  persist();
+
+  ep8Banner(
+    'ทานากะซัง',
+    'ผมตรวจสอบยอดขายเรียบร้อยแล้ว',
+    'tanaka'
+  );
+}
+}
 else if(btn.dataset.app){
 goApp(btn.dataset.app);
 }

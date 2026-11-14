@@ -433,7 +433,7 @@ button{
 .appicon{
   width:60px;
   height:60px;
-  border-radius:20px;
+  border-radius:17px;
   display:grid;
   place-items:center;
   overflow:hidden;
@@ -2336,8 +2336,8 @@ function icon(n,cls=''){
     <svg class="ico ${cls}" viewBox="0 0 64 64"
          xmlns="http://www.w3.org/2000/svg"
          aria-hidden="true">
-      <rect width="64" height="64" rx="20" fill="${color}"/>
-      ${art}
+     <rect width="64" height="64" rx="17" fill="${color}"/>
+    ${art}
     </svg>`;
 
   switch(n){
@@ -2360,37 +2360,65 @@ function icon(n,cls=''){
 
     case 'gallery':
       return app('#FFFFFF',`
-        <path d="M32 31C22 25 18 16 23 12
-          c6-5 12 3 12 15Z" fill="#EE7094"/>
-        <path d="M33 31c5-10 14-14 19-9
-          5 6-3 12-15 12Z" fill="#F6B552"/>
-        <path d="M33 33c10 5 14 14 9 19
-          -6 5-12-3-12-15Z" fill="#76C18B"/>
-        <path d="M31 33c-5 10-14 14-19 9
-          -5-6 3-12 15-12Z" fill="#9487DC"/>
-        <circle cx="32" cy="32" r="5" fill="white"/>`);
-
+        <g transform="translate(32 32)">
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#ED4698"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#A637E7" transform="rotate(45)"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#20BA25" transform="rotate(90)"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#80BE0E" transform="rotate(135)"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#F5A900" transform="rotate(180)"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#F44343" transform="rotate(225)"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#F06AAB" transform="rotate(270)"/>
+          <ellipse cx="0" cy="-15" rx="7" ry="13"
+            fill="#F7B33D" transform="rotate(315)"/>
+          <circle r="7" fill="#FFFFFF"/>
+        </g>
+      `);
+ 
     case 'calendar':
       return app('#FFFFFF',`
-        <path d="M0 20V20Q0 0 20 0H44
-          Q64 0 64 20H0Z" fill="#F15F67"/>
+        <path d="M0 17 Q0 0 17 0 H47 Q64 0 64 17 V19 H0Z"
+          fill="#18A99D"/>
+        <path d="M0 15 Q0 0 17 0 H47 Q64 0 64 15 V17 H0Z"
+          fill="#19B6A9"/>
+        <rect x="13" y="0" width="6" height="8" rx="2"
+          fill="#E5F8F5"/>
+        <rect x="45" y="0" width="6" height="8" rx="2"
+          fill="#E5F8F5"/>
         <text x="32" y="15" text-anchor="middle"
-          font-family="Arial" font-size="11"
-          font-weight="bold" fill="white">JAN</text>
-        <text x="32" y="51" text-anchor="middle"
-          font-family="Arial" font-size="34"
-          font-weight="bold" fill="#24252B">30</text>`);
+          font-family="Arial" font-size="10"
+          font-weight="bold" fill="white">FRI</text>
+        <text x="32" y="53" text-anchor="middle"
+          font-family="Arial" font-size="36"
+          font-weight="bold" fill="#202124">30</text>
+      `);
 
+    
     case 'note':
-      return app('#F52E39',`
-        <path d="M22 11h22a7 7 0 0 1 7 7v26
-          L41 54H22a7 7 0 0 1-7-7V18
-          a7 7 0 0 1 7-7Z" fill="white"/>
-        <path d="M41 54V45a4 4 0 0 1 4-4h6Z"
-          fill="#FFB8BF"/>
-        <path d="M14 23h7M14 32h7M14 41h7"
-          stroke="#F52E39" stroke-width="3"
-          stroke-linecap="round"/>`);
+      return app('#F42C32',`
+        <path d="M20 12H43
+          Q49 12 49 18V43
+          L39 53H20
+          Q15 53 15 48V17
+          Q15 12 20 12Z"
+          fill="#FFFFFF"/>
+        <path d="M39 53V45
+          Q39 43 42 43H49Z"
+          fill="#F5A3A7"/>
+        <path d="M14 23H21
+                 M14 32H21
+                 M14 41H21"
+          fill="none"
+          stroke="#F42C32"
+          stroke-width="3.5"
+          stroke-linecap="round"/>
+      `);
 
     case 'Grab Food':
       return app('#FFFFFF',`
@@ -2435,17 +2463,27 @@ function icon(n,cls=''){
           fill="#EF3529"/>`);
 
     case 'camera':
-      return app('#F1F2F5',`
-        <rect x="9" y="20" width="46" height="31"
-          rx="9" fill="white"
-          stroke="#565D6A" stroke-width="2.5"/>
-        <path d="M20 20l5-6h14l5 6"
-          fill="white" stroke="#565D6A"
-          stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="32" cy="35" r="12" fill="#555F6F"/>
-        <circle cx="32" cy="35" r="8" fill="#98A7B9"/>
-        <circle cx="32" cy="35" r="4" fill="#273648"/>`);
-
+      return app('#AEB5BA',`
+        <rect x="11" y="17" width="42" height="34"
+          rx="9" fill="#F5F6F7"/>
+        <circle cx="32" cy="34" r="17"
+          fill="#D8DDE1"/>
+        <circle cx="32" cy="34" r="13"
+          fill="#111820"/>
+        <circle cx="32" cy="34" r="10"
+          fill="#697A92"/>
+        <circle cx="32" cy="34" r="7"
+          fill="#293344"/>
+        <circle cx="32" cy="34" r="3.5"
+          fill="#080D17"/>
+        <path d="M26 27a9 9 0 0 1 10-1"
+          stroke="#A9D7E8"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          fill="none"/>
+        <circle cx="14" cy="15" r="3"
+          fill="#F04D58"/>
+      `);
     default:
       return '<svg class="ico '+cls+
         '" viewBox="0 0 24 24" aria-hidden="true">'+

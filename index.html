@@ -2654,13 +2654,19 @@ function lineChatsHTML(){
 
   chat=previousChat;
   lastBubbleSender=previousSender;
+  results.sort((a,b)=>{
+  // EP.04: การันต์ส่งข้อความหาพี่ดุจหลังอ่านข้อความอชิ
+  if(save.flags.ep4DujBannerShown){
+    if(a.id==='duj') return -1;
+    if(b.id==='duj') return 1;
+  }
 
-  // เรียงห้องที่มีวันที่ข้อความล่าสุดใหม่กว่าขึ้นก่อน
-  results.sort((a,b)=>
+  return (
     b.dateOrder-a.dateOrder ||
     b.messageIndex-a.messageIndex ||
     a.originalIndex-b.originalIndex
   );
+});
 
   return results
     .filter(c=>c.name.toLowerCase().includes(q))
@@ -4343,7 +4349,7 @@ document.addEventListener('click',function(e){
 const mapLink=e.target.closest('[data-open-achi-map]');
 
 if(mapLink){
-  page='maps';
+  page='Maps';
   render();
   return;
 }

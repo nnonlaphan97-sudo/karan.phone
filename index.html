@@ -3192,6 +3192,126 @@ button{
   color:#747580;
 }
 
+/* ===== EP.07 SUNSET / RAINBOW ===== */
+
+.ep7-sunset-page,
+.ep7-rainbow-page{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  background:#f8e3d9;
+  color:#292b39;
+}
+
+.ep7-sky-back{
+  position:absolute;
+  z-index:5;
+  top:48px;
+  left:16px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border:0;
+  border-radius:24px;
+  padding:9px 13px;
+  background:rgba(255,255,255,.85);
+  color:#303447;
+  font-size:13px;
+}
+
+.ep7-sunset-sky{
+  width:100%;
+  height:44%;
+  min-height:260px;
+  overflow:hidden;
+}
+
+.ep7-sunset-sky svg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.ep7-sunset-content{
+  padding:24px 20px 45px;
+  background:#fff8f4;
+  min-height:56%;
+}
+
+.ep7-sunset-content small,
+.ep7-rainbow-content span{
+  color:#8b7181;
+  font-size:12px;
+}
+
+.ep7-sunset-content h2,
+.ep7-rainbow-content h2{
+  margin:10px 0;
+  font-size:26px;
+}
+
+.ep7-sunset-content p,
+.ep7-rainbow-content p{
+  font-size:14px;
+  line-height:1.7;
+}
+
+.ep7-wish-list{
+  display:grid;
+  gap:11px;
+  margin-top:22px;
+}
+
+.ep7-wish-list button{
+  border:1px solid #e9d5d5;
+  border-radius:16px;
+  padding:15px;
+  background:#fff;
+  color:#493d4b;
+  text-align:left;
+  line-height:1.6;
+  font-size:14px;
+}
+
+.ep7-wish-list button:active{
+  background:#f6e7ed;
+}
+
+.ep7-rainbow-page{
+  background:#a7c9e7;
+}
+
+.ep7-rainbow-sky{
+  position:absolute;
+  inset:0;
+}
+
+.ep7-rainbow-content{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:30px 22px 55px;
+  background:linear-gradient(
+    transparent,
+    rgba(255,255,255,.95) 28%,
+    #fff
+  );
+  text-align:center;
+}
+
+.ep7-rainbow-content button{
+  margin-top:20px;
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:16px;
+  background:#526eab;
+  color:#fff;
+  font-weight:700;
+}
+
 </style>
 </head>
 <body>
@@ -3694,6 +3814,10 @@ save.flags.ep7Flower ??= '';
 save.flags.ep7Shirt ??= '';
 save.flags.ep7CoffeeConfirmed ??= false;
 save.flags.ep7HelicopterConfirmed ??= false;
+save.flags.ep7AchiFaintedMessage ??= false;
+save.flags.ep7SunsetNotified ??= false;
+save.flags.ep7Wish ??= '';
+save.flags.ep7RainbowShown ??= false;
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -6017,6 +6141,137 @@ function ep7MessagesPage(){
     </div>`;
 }
 
+/* ===== EP.07 SUNSET AND RAINBOW ===== */
+
+function ep7SunsetBanner(){
+  const el=document.getElementById('gameBanner');
+  if(!el)return;
+
+  el.innerHTML=`
+    <button class="game-banner"
+      data-ep7-sunset="1">
+      <span class="game-banner-icon"
+        style="background:#e9a35c">
+        ${lineIcon('calendar')}
+      </span>
+      <span class="game-banner-text">
+        <small>พยากรณ์อากาศ</small>
+        <strong>ใกล้เวลาพระอาทิตย์ตก</strong>
+        <span>แตะเพื่อดูท้องฟ้ายามเย็น</span>
+      </span>
+    </button>`;
+}
+
+function ep7SunsetPage(){
+  return `
+    <div class="ep7-sunset-page">
+      <button class="ep7-sky-back" data-go="home">
+        ${lineIcon('back')}
+        <span>กลับ</span>
+      </button>
+
+      <div class="ep7-sunset-sky">
+        <svg viewBox="0 0 360 300"
+          width="100%" aria-hidden="true">
+          <defs>
+            <linearGradient id="ep7Sky" x1="0" y1="0"
+              x2="0" y2="1">
+              <stop offset="0%" stop-color="#7689c9"/>
+              <stop offset="52%" stop-color="#e9a5a3"/>
+              <stop offset="100%" stop-color="#f7c98d"/>
+            </linearGradient>
+          </defs>
+          <rect width="360" height="300"
+            fill="url(#ep7Sky)"/>
+          <circle cx="180" cy="190" r="47"
+            fill="#ffe2a0"/>
+          <path d="M0 235Q90 215 180 235
+                   T360 235V300H0Z"
+            fill="#6b8ca1"/>
+          <path d="M0 255Q90 235 180 255
+                   T360 255V300H0Z"
+            fill="#526e85"/>
+        </svg>
+      </div>
+
+      <div class="ep7-sunset-content">
+        <small>18 เมษายน · เชียงใหม่</small>
+        <h2>พระอาทิตย์กำลังตก</h2>
+        <p>ท้องฟ้ายามเย็นทำให้การันต์นึกถึงคำขอที่อยากบอกอชิ</p>
+
+        <div class="ep7-wish-list">
+          <button data-ep7-wish="stay">
+            ผมขอให้อชิอยู่ข้าง ๆ ผมแบบนี้ไปนาน ๆ ได้ไหมครับ
+          </button>
+
+          <button data-ep7-wish="date">
+            ต่อจากนี้ ผมขอพาอชิไปเดตด้วยกันอีกได้ไหมครับ
+          </button>
+
+          <button data-ep7-wish="together">
+            ผมขอให้เราได้ใช้เวลาด้วยกันมากกว่านี้ได้ไหมครับ
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function ep7RainbowPage(){
+  return `
+    <div class="ep7-rainbow-page">
+      <div class="ep7-rainbow-sky">
+        <svg viewBox="0 0 360 420"
+          width="100%" height="100%"
+          preserveAspectRatio="xMidYMid slice"
+          aria-label="สายรุ้งบนท้องฟ้า">
+          <defs>
+            <linearGradient id="ep7RainbowSky"
+              x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#87b9e7"/>
+              <stop offset="100%" stop-color="#f6c9ba"/>
+            </linearGradient>
+          </defs>
+
+          <rect width="360" height="420"
+            fill="url(#ep7RainbowSky)"/>
+
+          <g fill="none" stroke-width="12"
+            stroke-linecap="round" opacity=".92">
+            <path d="M-95 360 A275 275 0 0 1 455 360"
+              stroke="#e66e75"/>
+            <path d="M-83 360 A263 263 0 0 1 443 360"
+              stroke="#f3a16c"/>
+            <path d="M-71 360 A251 251 0 0 1 431 360"
+              stroke="#f5d77c"/>
+            <path d="M-59 360 A239 239 0 0 1 419 360"
+              stroke="#86c59b"/>
+            <path d="M-47 360 A227 227 0 0 1 407 360"
+              stroke="#79afe0"/>
+            <path d="M-35 360 A215 215 0 0 1 395 360"
+              stroke="#b9a1df"/>
+          </g>
+
+          <g fill="#fff" opacity=".83">
+            <ellipse cx="70" cy="320" rx="92" ry="25"/>
+            <ellipse cx="12" cy="305" rx="50" ry="35"/>
+            <ellipse cx="290" cy="350" rx="100" ry="26"/>
+            <ellipse cx="345" cy="330" rx="56" ry="39"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="ep7-rainbow-content">
+        <span>18 เมษายน · เชียงใหม่</span>
+        <h2>สายรุ้ง</h2>
+        <p>หลังจากอชิตอบตกลง สายรุ้งก็ปรากฏขึ้นบนท้องฟ้า</p>
+
+        <button data-ep7-rainbow-close="1">
+          กลับไปที่โทรศัพท์
+        </button>
+      </div>
+    </div>`;
+}
+
 function render(){
 let html='';
 
@@ -6158,6 +6413,12 @@ else if(page==='EP7Flowers'){
 }
 else if(page==='Messages'){
   html=ep7MessagesPage();
+}
+else if(page==='EP7Sunset'){
+  html=ep7SunsetPage();
+}
+else if(page==='EP7Rainbow'){
+  html=ep7RainbowPage();
 }
 else if(page==='GrabFood'){
   html=renderGrab();
@@ -7007,17 +7268,40 @@ if(
     );
   }
 }
+/* ===== EP.07 ACHI AFTER HELICOPTER ===== */
 
+if(
+  chat==='achi' &&
+  save.flags.ep7HelicopterConfirmed
+){
+  b+=`<div class="day">18 เม.ย. · หลังขึ้นเฮลิคอปเตอร์</div>`;
+
+  b+=bubble(
+    'พี่การันต์ครับ ขอโทษนะครับที่ผมเป็นลมไป'
+  );
+
+  b+=bubble(
+    'จริง ๆ แล้วผมกลัวความสูงครับ'
+  );
+
+  if(save.flags.ep7Wish){
+    b+=bubble(
+      save.flags.ep7Wish,
+      true
+    );
+
+    b+=bubble(
+      'ตกลงครับพี่การันต์'
+    );
+  }
+}
 /* ===== EP.07 FLOWER SHOP CHAT ===== */
 
 if(chat==='flowerShop' && save.flags.ep7Stage>=1){
-
   b='<div class="day">เตรียมเดต</div>';
-
   b+=bubble(
     'สวัสดีค่ะคุณการันต์ ทางร้านส่งแบบช่อดอกไม้มาให้เลือกแล้วนะคะ'
   );
-
   b+=`
     <button class="choice"
       data-ep7-open-flowers="1">
@@ -7448,11 +7732,19 @@ if(
   save.flags.ep7Stage>=4 &&
   !save.flags.ep7HelicopterConfirmed
 ){
-  save.flags.ep7HelicopterConfirmed=true;
-  ep7Next(5);
+save.flags.ep7HelicopterConfirmed=true;
+save.flags.ep7AchiFaintedMessage=true;
 
-  render();
-  return;
+ep7Next(5);
+persist();
+render();
+
+showGameBanner(
+  'achi',
+  'พี่การันต์ครับ ขอโทษนะครับที่ผมเป็นลมไป'
+);
+
+return;
 }
 
 /* ย้อนกลับจาก Instagram DM ของ EP.07 */
@@ -8381,7 +8673,82 @@ if(ep4Reply){
   );
   return;
 }
+/* ===== EP.07 SUNSET INTERACTIONS ===== */
 
+const ep7Sunset=e.target.closest('[data-ep7-sunset]');
+
+if(ep7Sunset){
+  const banner=document.getElementById('gameBanner');
+  if(banner)banner.innerHTML='';
+
+  page='EP7Sunset';
+  render();
+  return;
+}
+
+const ep7Wish=e.target.closest('[data-ep7-wish]');
+
+if(ep7Wish && page==='EP7Sunset'){
+  const wishes={
+    stay:'ผมขอให้อชิอยู่ข้าง ๆ ผมแบบนี้ไปนาน ๆ ได้ไหมครับ',
+    date:'ต่อจากนี้ ผมขอพาอชิไปเดตด้วยกันอีกได้ไหมครับ',
+    together:'ผมขอให้เราได้ใช้เวลาด้วยกันมากกว่านี้ได้ไหมครับ'
+  };
+
+  const selected=wishes[ep7Wish.dataset.ep7Wish];
+  if(!selected)return;
+
+  save.flags.ep7Wish=selected;
+  persist();
+
+  chat='achi';
+  page='chat';
+  render();
+
+  const banner=document.getElementById('gameBanner');
+
+  if(banner){
+    banner.innerHTML=`
+      <button class="game-banner"
+        data-ep7-rainbow="1">
+        <span class="game-banner-icon"
+          style="background:#7eaddb">
+          ${lineIcon('calendar')}
+        </span>
+        <span class="game-banner-text">
+          <small>ท้องฟ้า · เชียงใหม่</small>
+          <strong>มีสายรุ้งปรากฏขึ้น</strong>
+          <span>แตะเพื่อดูท้องฟ้า</span>
+        </span>
+      </button>`;
+  }
+
+  return;
+}
+
+const ep7Rainbow=e.target.closest('[data-ep7-rainbow]');
+
+if(ep7Rainbow){
+  save.flags.ep7RainbowShown=true;
+  persist();
+
+  const banner=document.getElementById('gameBanner');
+  if(banner)banner.innerHTML='';
+
+  page='EP7Rainbow';
+  render();
+  return;
+}
+
+const ep7RainbowClose=e.target.closest(
+  '[data-ep7-rainbow-close]'
+);
+
+if(ep7RainbowClose){
+  page='home';
+  render();
+  return;
+}
 const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-task]');
 if(!btn)return;
 
@@ -8391,7 +8758,12 @@ if(btn.dataset.go){
     chat === 'tanaka' &&
     save.flags.ep6Stage === 1 &&
     btn.dataset.go === 'LINE';
-    
+    const ep7LeavingAchi=
+  page==='chat' &&
+  chat==='achi' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep7AchiFaintedMessage &&
+  !save.flags.ep7SunsetNotified;
   const leavingDuj=
     page==='chat' &&
     chat==='duj' &&
@@ -8422,7 +8794,11 @@ if(btn.dataset.go){
 
   // อัปเดตหน้าจอหลังปลดล็อกแอป
   render();
-
+if(ep7LeavingAchi){
+  save.flags.ep7SunsetNotified=true;
+  persist();
+  ep7SunsetBanner();
+}
   // แจ้งเตือนนาฬิกาปลุก
   if(ep6LeavingTanaka){
     const el=document.getElementById('gameBanner');

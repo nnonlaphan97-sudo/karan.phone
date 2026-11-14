@@ -6531,6 +6531,13 @@ return;
 }
 page=name;
 
+// เปิด Instagram จากไอคอนแอป
+// ให้เริ่มที่หน้า Home ทุกครั้ง
+if(name==='Instagram'){
+  igScreen='main';
+  igTab='home';
+}
+
 if(name==='GrabFood'){
   grabScreen=save.flags.cakeOrdered?'tracking':'home';
 }
@@ -6854,13 +6861,21 @@ ep6Notify(
   return;
 }
 /* ===== EP.04 MAP INTERACTIONS ===== */
+
 const mapLink=e.target.closest('[data-open-achi-map]');
 
 if(mapLink){
+  // ปลดล็อก Maps ทันทีเมื่อกดลิงก์จากพี่ดุจ
+  save.flags.ep4MapUnlocked=true;
+  unlock('Maps');
+  persist();
+
+  // เปิดแอป Maps
   page='Maps';
   render();
   return;
 }
+
 const mapPoint=e.target.closest('[data-map-point]');
 
 if(mapPoint && page==='Maps'){

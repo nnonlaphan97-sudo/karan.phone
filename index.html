@@ -3068,13 +3068,7 @@ html=`
        </span>`
     : icon(open?a[1]:'lock')}
 </span>
-
-                style="${open?'background:'+a[2]:''}">
-            ${open && a[0]==='GrabFood'
-  ? `<span class="grab-logo">Grab</span>`
-  : icon(open?a[1]:'lock')}
-          </span>
-          <span>${a[0]}</span>
+<span>${a[0]}</span>
         </button>
       `;
     }).join('')}

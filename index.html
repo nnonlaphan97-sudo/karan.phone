@@ -5219,8 +5219,7 @@ function renderInstagramDM(){
   return `
     <div class="ep5-instagram">
       <div class="ep5-ig-head">
-        <button data-go="home" aria-label="กลับหน้าหลัก">
-          ${lineIcon('back')}
+      <button data-ig-screen="inbox" aria-label="กลับไปข้อความ Instagram">          ${lineIcon('back')}
         </button>
         <strong>ป่า</strong>
         <span>Instagram</span>
@@ -5255,6 +5254,28 @@ function renderInstagramDM(){
         ` : ''}
       </div>
 
+      ${save.flags.ep7Stage>=3 ? `
+        <div class="ep5-ig-date">เตรียมเดตกับอชิ</div>
+
+        <div class="ep5-ig-bubble received">
+          พรุ่งนี้จะเข้ามาที่ร้านเหรอ
+        </div>
+
+        ${save.flags.ep7CoffeeConfirmed ? `
+          <div class="ep5-ig-bubble sent">
+            ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
+          </div>
+
+          <div class="ep5-ig-bubble sent">
+            ขอเมล็ดกาแฟจากลำพูน
+          </div>
+
+          <div class="ep5-ig-bubble received">
+            ได้เลย เดี๋ยวเตรียมไว้ให้
+          </div>
+        ` : ''}
+      ` : ''}
+
       ${!chosen ? `
         <div class="ep5-ig-replies">
           <div>เลือกข้อความตอบป่า</div>
@@ -5264,10 +5285,21 @@ function renderInstagramDM(){
             </button>
           `).join('')}
         </div>
-      ` : `
-        <div class="ep5-ig-finished">
-          อ่านแล้ว
-        </div>
+           ` : `
+        ${save.flags.ep7Stage>=3 &&
+          !save.flags.ep7CoffeeConfirmed ? `
+          <div class="ep5-ig-replies">
+            <div>ตอบข้อความป่า</div>
+            <button data-ep7-coffee="1">
+              ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
+              ขอเมล็ดกาแฟจากลำพูน
+            </button>
+          </div>
+        ` : `
+          <div class="ep5-ig-finished">
+            อ่านแล้ว
+          </div>
+        `}
       `}
     </div>
   `;
@@ -5379,8 +5411,13 @@ ${save.flags.ep7Stage>=3?`
             ${igAvatar('ป', 55)}
             <span>
               <strong>ป่า</strong>
-              <small>มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย</small>
-            </span>
+        <small>
+  ${save.flags.ep7CoffeeConfirmed
+    ? 'ได้เลย เดี๋ยวเตรียมไว้ให้'
+    : save.flags.ep7Stage>=3
+      ? 'พรุ่งนี้จะเข้ามาที่ร้านเหรอ'
+      : 'มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย'}
+</small>  </span>
             <span class="ig-chat-arrow">›</span>
           </button>
         </div>
@@ -5943,41 +5980,7 @@ function ep7InstagramPage(){
         </div>
       </div>`;
   }
-
-  return `
-    <div class="ep7-page">
-      <header class="ep7-header">
-        <button data-ep7-ig-back="1">
-          ${igIcon('back')}
-        </button>
-        <strong>ป่า</strong>
-        <span>Instagram</span>
-      </header>
-
-      <div class="ep7-scroll">
-        <div class="ep7-dm received">
-          พรุ่งนี้จะเข้ามาที่ร้านเหรอ
-        </div>
-
-        ${save.flags.ep7CoffeeConfirmed?`
-          <div class="ep7-dm sent">
-            ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
-          </div>
-          <div class="ep7-dm sent">
-            ขอเมล็ดกาแฟจากลำพูน
-          </div>
-          <div class="ep7-dm received">
-            ได้เลย เดี๋ยวเตรียมไว้ให้
-          </div>
-        `:`
-          <button class="ep7-reply"
-            data-ep7-coffee="1">
-            ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
-            ขอเมล็ดกาแฟจากลำพูน
-          </button>
-        `}
-      </div>
-    </div>`;
+  return renderInstagramDM();
 }
 
 function ep7MessagesPage(){
@@ -6019,10 +6022,6 @@ function ep7MessagesPage(){
             ขอบคุณที่ใช้บริการ
           </div>
 
-          <div class="ep7-complete">
-            <strong>EP.07 COMPLETE</strong>
-            <span>เตรียมเดตกับอชิเรียบร้อยแล้ว</span>
-          </div>
         `:`
           <button class="ep7-primary"
             data-ep7-helicopter="1">
@@ -7309,10 +7308,10 @@ if(ep7Notification){
     page='Instagram';
   }
 
-  if(target==='pa'){
-    igScreen='ep7pa';
-    page='Instagram';
-  }
+ if(target==='pa'){
+  igScreen='dm';
+  page='Instagram';
+}
 
   if(target==='sms'){
     page='Messages';
@@ -7390,7 +7389,7 @@ const ep7Shirt=e.target.closest(
 if(
   ep7Shirt &&
   page==='Instagram' &&
-  igScreen==='ep7shop'
+igScreen==='dm'
 ){
   ep7ShirtDraft=ep7Shirt.dataset.ep7Shirt;
   render();

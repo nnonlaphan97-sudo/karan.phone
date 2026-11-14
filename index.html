@@ -335,6 +335,7 @@ button{
   bottom:30px;
   display:flex;
   justify-content:center;
+  gap:32px;
   align-items:center;
   padding:0;
   background:transparent;
@@ -2277,7 +2278,222 @@ button{
   color:#111;
   font-weight:700;
 }
+/* ===== EP.05 BAG SELECTION ===== */
 
+.ep5-bag-picker{
+  padding:14px;
+  background:#fff;
+  border-radius:18px;
+  color:#222;
+}
+
+.ep5-bag-picker strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.ep5-bag-picker small{
+  display:block;
+  font-size:12px;
+  color:#888;
+  margin-bottom:12px;
+}
+
+.ep5-bag-options{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+
+.ep5-bag-option{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid #e3e5ea;
+  border-radius:13px;
+  background:#fafafa;
+  color:#252525;
+  font-size:13px;
+}
+
+.ep5-bag-option input{
+  width:18px;
+  height:18px;
+  accent-color:#06c755;
+  flex-shrink:0;
+}
+
+.ep5-bag-submit{
+  width:100%;
+  margin-top:13px;
+  padding:13px;
+  border:0;
+  border-radius:13px;
+  background:#06c755;
+  color:#fff;
+  font-weight:700;
+}
+
+/* ===== EP.05 INSTAGRAM ===== */
+
+.ep5-instagram{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding-top:36px;
+  background:#fff;
+  color:#191919;
+  overflow:hidden;
+}
+
+.ep5-ig-head{
+  flex-shrink:0;
+  height:58px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid #eee;
+}
+
+.ep5-ig-head button{
+  border:0;
+  background:transparent;
+  color:#191919;
+  display:grid;
+  place-items:center;
+}
+
+.ep5-ig-head strong{
+  flex:1;
+  font-size:17px;
+}
+
+.ep5-ig-head span{
+  font-size:12px;
+  color:#888;
+}
+
+.ep5-ig-body{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:16px;
+}
+
+.ep5-ig-date{
+  text-align:center;
+  color:#999;
+  font-size:12px;
+  margin-bottom:18px;
+}
+
+.ep5-ig-story{
+  width:68%;
+  margin:0 0 20px auto;
+  border:1px solid #eee;
+  border-radius:15px;
+  overflow:hidden;
+}
+
+.ep5-ig-story-label{
+  padding:9px 11px;
+  font-size:11px;
+  color:#777;
+}
+
+.ep5-ig-story-photo{
+  min-height:145px;
+  background:linear-gradient(145deg,#d7e5ee,#7e9bb0);
+  display:grid;
+  place-items:center;
+  padding:15px;
+  text-align:center;
+  color:#fff;
+  font-size:13px;
+}
+
+.ep5-ig-bubble{
+  width:fit-content;
+  max-width:80%;
+  padding:12px 15px;
+  margin:10px 0;
+  border-radius:22px;
+  font-size:14px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
+.ep5-ig-bubble.received{
+  background:#efefef;
+  color:#191919;
+  margin-right:auto;
+}
+
+.ep5-ig-bubble.sent{
+  background:#3797f0;
+  color:#fff;
+  margin-left:auto;
+}
+
+.ep5-ig-replies{
+  flex-shrink:0;
+  padding:12px 14px 28px;
+  border-top:1px solid #eee;
+  background:#fff;
+}
+
+.ep5-ig-replies > div{
+  color:#777;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.ep5-ig-replies button{
+  width:100%;
+  padding:11px;
+  margin:4px 0;
+  border:1px solid #ddd;
+  border-radius:13px;
+  background:#fff;
+  color:#222;
+  text-align:left;
+  font-size:13px;
+}
+
+.ep5-ig-finished{
+  flex-shrink:0;
+  padding:15px 15px 30px;
+  text-align:right;
+  color:#888;
+  font-size:12px;
+}
+
+.ep5-ig-banner-icon{
+  background:transparent;
+  overflow:hidden;
+}
+
+.ep5-ig-banner-icon .ico{
+  width:40px;
+  height:40px;
+  display:block;
+  stroke:none;
+}
+#phone:has(.ep5-instagram) .nav{
+  background:#fff;
+}
+
+#phone:has(.ep5-instagram) .nav span{
+  background:#555;
+}
+
+#phone:has(.ep5-instagram) .ep5-ig-replies,
+#phone:has(.ep5-instagram) .ep5-ig-finished{
+  padding-bottom:30px;
+}
 </style>
 </head>
 <body>
@@ -2548,10 +2764,35 @@ function icon(n,cls=''){
         (paths[n]||paths.file)+'</svg>';
   }
 }
-
+function instagramIcon(){
+  return `
+    <svg class="ico" viewBox="0 0 64 64"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-label="Instagram">
+      <defs>
+        <linearGradient id="igGradient" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#FEDA75"/>
+          <stop offset=".35" stop-color="#FA7E1E"/>
+          <stop offset=".65" stop-color="#D62976"/>
+          <stop offset="1" stop-color="#4F5BD5"/>
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="20"
+            fill="url(#igGradient)"/>
+      <rect x="15" y="15" width="34" height="34"
+            rx="11" fill="none" stroke="#fff"
+            stroke-width="4"/>
+      <circle cx="32" cy="32" r="9"
+              fill="none" stroke="#fff"
+              stroke-width="4"/>
+      <circle cx="43" cy="21" r="3"
+              fill="#fff"/>
+    </svg>
+  `;
+}
 const appdefs=[
 ['LINE','line','#06c755'],
-['โทรศัพท์','phone','#56a97f'],
+['Instagram','instagram','#ffffff'],
 ['แกลเลอรี','gallery','#a88bc7'],
 ['ปฏิทิน','calendar','#6e9bdc'],
 ['โน้ต','note','#F52227'],
@@ -2702,6 +2943,11 @@ save.flags.ep4KarinShown ??= false;
 save.flags.ep4KarinRead ??= false;
 save.flags.ep4PhotoTaken ??= false;
 save.flags.ep4PhotoSent ??= false;
+/* ===== EP.05 ===== */
+save.flags.ep5BagSent ??= false;
+save.flags.ep5BagItems ??= [];
+save.flags.ep5InstagramNotified ??= false;
+save.flags.ep5PaReply ??= '';
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -4193,7 +4439,81 @@ function renderSamsungGallery(){
     </div>
   `;
 }
+function renderInstagram(){
+  const options=[
+    {
+      text:'มีคนพาไป',
+      answer:'ใครวะ ถึงขั้นพาคุณชายลงเรือได้'
+    },
+    {
+      text:'กูก็นั่งเป็นปกติ',
+      answer:'ตั้งแต่รู้จักกันมาเพิ่งเคยเห็นมึงนั่งเรือเนี่ยนะ'
+    },
+    {
+      text:'ไปกับอชิ',
+      answer:'อ๋อออ เข้าใจละ ทำไมยอมลำบาก'
+    }
+  ];
 
+  const reply=save.flags.ep5PaReply;
+  const chosen=reply==='' ? null : options[Number(reply)];
+
+  return `
+    <div class="ep5-instagram">
+      <div class="ep5-ig-head">
+        <button data-go="home" aria-label="กลับหน้าหลัก">
+          ${lineIcon('back')}
+        </button>
+        <strong>ป่า</strong>
+        <span>Instagram</span>
+      </div>
+
+      <div class="ep5-ig-body">
+        <div class="ep5-ig-date">16 เมษายน</div>
+
+        <div class="ep5-ig-story">
+          <div class="ep5-ig-story-label">
+            ตอบกลับสตอรี่ของคุณ
+          </div>
+          <div class="ep5-ig-story-photo">
+            <span>การเดินทางทางเรือกับอชิ</span>
+          </div>
+        </div>
+
+        <div class="ep5-ig-bubble received">
+          มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย
+        </div>
+
+        ${chosen ? `
+          <div class="ep5-ig-bubble sent">
+            ${chosen.text}
+          </div>
+          <div class="ep5-ig-bubble received">
+            ${chosen.answer}
+          </div>
+          <div class="ep5-ig-bubble received">
+            แต่มึงดูมีความสุขดีนะ
+          </div>
+        ` : ''}
+      </div>
+
+      ${!chosen ? `
+        <div class="ep5-ig-replies">
+          <div>เลือกข้อความตอบป่า</div>
+          ${options.map((option,i)=>`
+            <button data-ep5-pa-reply="${i}">
+              ${option.text}
+            </button>
+          `).join('')}
+        </div>
+      ` : `
+        <div class="ep5-ig-finished">
+          อ่านแล้ว
+        </div>
+      `}
+    </div>
+  `;
+}
 function render(){
 let html='';
 
@@ -4279,7 +4599,9 @@ html=`
         <button class="appitem" data-app="${a[0]}">
           
 <span class="appicon ${open?'':'locked'}">
-  ${icon(open ? a[1] : 'lock')}
+ ${open && a[0]==='Instagram'
+  ? instagramIcon()
+  : icon(open ? a[1] : 'lock')}
 </span>
 <span>${a[0]}</span>
         </button>
@@ -4288,6 +4610,13 @@ html=`
   </div>
 
   <div class="home-dock">
+    <button class="dock-camera"
+            data-app="โทรศัพท์"
+            aria-label="โทรศัพท์">
+      <span class="dock-camera-icon">
+        ${icon(save.unlock.includes('โทรศัพท์') ? 'phone' : 'lock')}
+      </span>
+    </button>
     <button class="dock-camera"
             data-app="กล้อง"
             aria-label="กล้อง">
@@ -4303,6 +4632,9 @@ html=`
 
 else if(page==='LINE'){
   html=renderLine();
+}
+else if(page==='Instagram'){
+  html=renderInstagram();
 }
 else if(page==='GrabFood'){
   html=renderGrab();
@@ -4677,6 +5009,79 @@ function cancelledMessage(){
     </div>
   `;
 }
+const ep5BagOptions=[
+  {id:'clothes',label:'เสื้อผ้าสำหรับเปลี่ยน'},
+  {id:'toothbrush',label:'แปรงสีฟันและของใช้ส่วนตัว'},
+  {id:'charger',label:'สายชาร์จโทรศัพท์'},
+  {id:'laptop',label:'โน้ตบุ๊กและเอกสารงาน'},
+  {id:'medicine',label:'ยาและของใช้สำหรับคนป่วย'},
+  {id:'pillow',label:'หมอนส่วนตัว'},
+  {id:'skincare',label:'สกินแคร์ทั้งเซ็ต'},
+  {id:'shoes',label:'รองเท้าสำรอง'}
+];
+
+let ep5BagDraft=[...save.flags.ep5BagItems];
+
+function renderEp5BagPicker(){
+  return `
+    <div class="ep5-bag-picker">
+      <strong>ให้พี่การินเตรียมอะไรมาให้บ้าง?</strong>
+      <small>เลือกได้หลายรายการ</small>
+
+      <div class="ep5-bag-options">
+        ${ep5BagOptions.map(item=>`
+          <label class="ep5-bag-option">
+            <input type="checkbox"
+                   data-ep5-bag="${item.id}"
+                   ${ep5BagDraft.includes(item.id)
+                     ? 'checked' : ''}>
+            <span>${item.label}</span>
+          </label>
+        `).join('')}
+      </div>
+
+      <button class="ep5-bag-submit"
+              data-ep5-send-bag="1">
+        ส่งรายการให้พี่การิน
+      </button>
+    </div>
+  `;
+}
+
+function ep5KarinResponse(){
+  const items=save.flags.ep5BagItems;
+  const hasMedicine=items.includes('medicine');
+  const many=items.length>=5;
+
+  if(many && hasMedicine){
+    return [
+      'นี่แกจะย้ายบ้านเหรอ ให้ชั้นขนไปเยอะขนาดนี้',
+      'แล้วมียาด้วย จะไปดูแลใครจ๊ะ',
+      'อชิเหรอ'
+    ];
+  }
+
+  if(many){
+    return [
+      'แกจะย้ายบ้านหรือไปค้างคืน',
+      'ขนอะไรเยอะแยะเนี่ย'
+    ];
+  }
+
+  if(hasMedicine){
+    return [
+      'อ๋อ มียาด้วยเหรอจ๊ะ',
+      'ซื้อให้ตัวเองหรือซื้อให้ใครเป็นพิเศษ',
+      'อชิใช่ไหมล่ะ'
+    ];
+  }
+
+  return [
+    'โอเค เดี๋ยวชั้นเตรียมให้',
+    'อย่าลืมรับโทรศัพท์ด้วยล่ะ'
+  ];
+}
+
 function renderChat(){
   lastBubbleSender=null;
 
@@ -4915,23 +5320,42 @@ if(chat==='pai'){
     b+=ep2LogoForm();
   }
 }
-if(chat==='karin'){
-
-  b='<div class="day">14 เม.ย.</div>';
-
-  b+=bubble('การันต์ พี่ขอไปนอนคอนโดด้วยหน่อยสิ');
-  b+=bubble('พี่จะมาอีกแล้วเหรอครับ',true);
-  b+=bubble('ก็พี่อยากไปอยู่ด้วยนี่');
-  b+=bubble('ตอนนี้ผมทำงานอยู่ครับ',true);
-  b+=bubble('ไม่เชื่อ');
-  b+=bubble('ทำงานจริง ๆ ครับ',true);
-  b+=bubble('งั้นถ่ายรูปมาให้พี่ดูหน่อยสิ');
-
-  if(save.flags.ep4PhotoSent){
-
-    b+=bubble('ส่งรูปภาพให้พี่แล้วนะครับ',true);
-    b+=bubble('โอเค ๆ พี่เชื่อแล้วว่าทำงานอยู่');
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');
+
+    b+='<div class="day">15 เม.ย.</div>';
+
+    b+=bubble('คนในรูปนี่อชิเหรอ');
+    b+=bubble('ทำไมไม่ไปนอนบ้านอชิเลยล่ะ');
+    b+=bubble('ลำบากอชิเขาครับ',true);
+    b+=bubble('เดี๋ยวชั้นไปหาแกดีกว่า');
+    b+=bubble('มาทำไมครับ',true);
+
+    b+='<div class="day">15 เม.ย. · ตอนเย็น</div>';
+
+    b+=bubble('แล้วจะให้ชั้นเอาอะไรใส่กระเป๋าไปให้บ้าง');
+
+    if(save.flags.ep5BagSent){
+
+      const labels=save.flags.ep5BagItems.map(id=>
+        ep5BagOptions.find(item=>item.id===id)?.label
+      ).filter(Boolean);
+
+      b+=bubble('เอา'+labels.join(' แล้วก็')+'ครับ',true);
+
+      ep5KarinResponse().forEach(message=>{
+        b+=bubble(message);
+      });
+
+      if(save.flags.ep5BagItems.includes('medicine')){
+        b+=bubble('พี่การินครับ...',true);
+        b+=bubble('ชั้นพูดถูกใช่ไหมล่ะ');
+      }
+
+    }else{
+
+      choices=renderEp5BagPicker();
+
+    }
   }
 }
 if(chat==='office'){
@@ -5043,6 +5467,24 @@ function popup(title,msg){
     '</p><button class="action" data-task="close">ตกลง</button></div></div>';
 }
 
+function showEp5InstagramBanner(){
+  const banner=document.getElementById('gameBanner');
+
+  banner.innerHTML=`
+    <button class="game-banner"
+            data-ep5-open-ig="1">
+      <span class="game-banner-icon ep5-ig-banner-icon">
+        ${instagramIcon()}
+      </span>
+      <span class="game-banner-text">
+        <small>Instagram · 16 เม.ย.</small>
+        <strong>ป่า</strong>
+        <span>มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย</span>
+      </span>
+    </button>
+  `;
+}
+
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
 
@@ -5106,8 +5548,81 @@ document.addEventListener('input',function(e){
         (q?'ไม่พบนัดหมายที่ค้นหา':'ไม่มีกิจกรรมในวันนี้')+
       '</div>';
 });
+document.addEventListener('change',function(e){
+  const checkbox=e.target.closest('[data-ep5-bag]');
 
+  if(!checkbox)return;
+
+  const id=checkbox.dataset.ep5Bag;
+
+  if(checkbox.checked){
+    if(!ep5BagDraft.includes(id)){
+      ep5BagDraft.push(id);
+    }
+  }else{
+    ep5BagDraft=ep5BagDraft.filter(x=>x!==id);
+  }
+});
 document.addEventListener('click',function(e){
+/* ===== EP.05 INTERACTIONS ===== */
+
+// ส่งรายการของให้พี่การิน วันที่ 15
+const sendBag=e.target.closest('[data-ep5-send-bag]');
+
+if(sendBag && page==='chat' && chat==='karin'){
+
+  if(save.flags.ep5BagSent)return;
+
+  if(ep5BagDraft.length===0){
+    popup('ยังไม่ได้เลือกของ','กรุณาเลือกอย่างน้อย 1 รายการ');
+    return;
+  }
+
+  save.flags.ep5BagItems=[...ep5BagDraft];
+  save.flags.ep5BagSent=true;
+
+  persist();
+  render();
+
+  // เริ่มเหตุการณ์วันที่ 16 หลังจบภารกิจวันที่ 15
+  unlock('Instagram');
+  save.flags.ep5InstagramNotified=true;
+  persist();
+
+  showEp5InstagramBanner();
+
+  return;
+}
+
+// เปิด Instagram จากแจ้งเตือนของป่า
+const openIG=e.target.closest('[data-ep5-open-ig]');
+
+if(openIG){
+  if(!save.flags.ep5BagSent)return;
+
+  document.getElementById('gameBanner').innerHTML='';
+  page='Instagram';
+  render();
+  return;
+}
+
+// เลือกคำตอบ DM ของป่า
+const paReply=e.target.closest('[data-ep5-pa-reply]');
+
+if(paReply && page==='Instagram'){
+
+  if(save.flags.ep5PaReply!=='')return;
+
+  const index=Number(paReply.dataset.ep5PaReply);
+
+  if(![0,1,2].includes(index))return;
+
+  save.flags.ep5PaReply=String(index);
+  persist();
+  render();
+
+  return;
+}
 /* ===== EP.04 MAP INTERACTIONS ===== */
 const mapLink=e.target.closest('[data-open-achi-map]');
 
@@ -5706,15 +6221,20 @@ if(sendPhoto && page==='แกลเลอรี'){
 
   if(!save.flags.ep4PhotoTaken)return;
 
-  save.flags.ep4PhotoSent=true;
+   save.flags.ep4PhotoSent=true;
   persist();
 
   chat='karin';
   page='chat';
   render();
 
+  // วันที่ 15 พี่การินทักมาต่อจากรูปที่ส่ง
+  showGameBanner(
+    'karin',
+    'คนในรูปนี่อชิเหรอ ทำไมไม่ไปนอนบ้านอชิเลยล่ะ'
+  );
+
   return;
-}
 
 // EP.04 — เลือกคำตอบสุดท้ายให้อชิ
 const ep4Reply=e.target.closest('[data-ep4-achi-reply]');

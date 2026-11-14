@@ -2071,7 +2071,7 @@ const appdefs=[
 ['เบราว์เซอร์','web','#6d9fc4'],
 ['นาฬิกา','clock','#938dcf'],
 ['ไฟล์','file','#899cb7'],
-['Maps','map','#4c95e8']
+['Maps','map','#ffffff']
 ];
 
 const key='karan_phone_v2';
@@ -3176,14 +3176,12 @@ function renderCalendar(){
 }
 
 /* ===== EP.04 MAPS ===== */
-
 const mapLocations=[
-  {id:'pier',name:'ท่าเรือฝั่งบ้าน',x:36,y:72},
-  {id:'pierOther',name:'ท่าเรือฝั่ง BTS',x:53,y:63},
-  {id:'bts',name:'สถานี BTS',x:68,y:34},
-  {id:'houseA',name:'บ้าน A',x:36,y:24},
-  {id:'houseB',name:'บ้าน B',x:77,y:72},
-  {id:'houseC',name:'บ้าน C',x:47,y:60}
+  {id:'pier',name:'ท่าเรือฝั่งบ้าน',x:36,y:75},
+  {id:'bts',name:'สถานี BTS',x:72,y:20},
+  {id:'houseA',name:'บ้าน A',x:22,y:82},
+  {id:'houseB',name:'บ้าน B',x:72,y:85},
+  {id:'houseC',name:'บ้าน C',x:44,y:92}
 ];
 
 function renderMaps(){
@@ -3247,8 +3245,96 @@ function renderMaps(){
         <div class="maps-world"
              style="width:${size}px;height:${size}px">
 
-          <svg viewBox="0 0 720 720"
-               xmlns="http://www.w3.org/2000/svg">
+         <svg viewBox="0 0 720 720"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="720" height="720" fill="#e9efe6"/>
+
+  <!-- ถนนฝั่ง BTS -->
+  <g fill="none" stroke="#fff" stroke-width="30">
+    <path d="M0 110H720"/>
+    <path d="M0 230H720"/>
+    <path d="M180 0V325"/>
+    <path d="M510 0V325"/>
+  </g>
+
+  <!-- ถนนฝั่งบ้าน -->
+  <g fill="none" stroke="#fff" stroke-width="24">
+    <path d="M0 520H720"/>
+    <path d="M0 650H720"/>
+    <path d="M180 470V720"/>
+    <path d="M510 470V720"/>
+  </g>
+
+  <!-- คลองคั่นกลาง -->
+  <path d="M-30 390 Q170 335 350 395 T750 385"
+        fill="none" stroke="#9bcde4"
+        stroke-width="112"/>
+
+  <path d="M-30 390 Q170 335 350 395 T750 385"
+        fill="none" stroke="#c7e9f5"
+        stroke-width="86"/>
+
+  <!-- แนว BTS อยู่ฝั่งเหนือเท่านั้น -->
+  <path d="M0 125H720"
+        fill="none"
+        stroke="#68a287"
+        stroke-width="10"
+        stroke-dasharray="18 7"/>
+
+  <!-- ท่าเรือสองฝั่ง -->
+  <g fill="#b9a28c" stroke="#fff" stroke-width="3">
+    <rect x="242" y="312" width="75" height="55" rx="4"/>
+    <rect x="242" y="437" width="75" height="55" rx="4"/>
+  </g>
+
+  <!-- เส้นทางจากบ้านไป BTS -->
+  <path d="M518 612 L395 552 L280 475"
+        stroke="#4285f4" stroke-width="8"
+        fill="none" stroke-dasharray="13 10"
+        stroke-linecap="round"/>
+
+  <!-- ช่วงนั่งเรือข้ามคลอง -->
+  <path d="M280 475 L280 340"
+        stroke="#237db4" stroke-width="9"
+        fill="none" stroke-dasharray="8 12"
+        stroke-linecap="round"/>
+
+  <!-- เดินต่อไป BTS -->
+  <path d="M280 340 L410 230 L518 145"
+        stroke="#4285f4" stroke-width="8"
+        fill="none" stroke-dasharray="13 10"
+        stroke-linecap="round"/>
+
+  <!-- บ้านและอาคาร -->
+  <g fill="#f8f5ec" stroke="#d5d8d0" stroke-width="3">
+    <rect x="55" y="535" width="155" height="90" rx="12"/>
+    <rect x="460" y="565" width="175" height="100" rx="12"/>
+    <rect x="265" y="650" width="160" height="60" rx="10"/>
+    <rect x="50" y="35" width="100" height="65" rx="8"/>
+    <rect x="300" y="35" width="140" height="65" rx="8"/>
+    <rect x="570" y="190" width="115" height="90" rx="8"/>
+  </g>
+
+  <!-- สวนใกล้บ้าน B -->
+  <rect x="580" y="505" width="95" height="52"
+        rx="14" fill="#add6a5"/>
+
+  <g fill="#72aa72">
+    <circle cx="605" cy="524" r="12"/>
+    <circle cx="643" cy="535" r="14"/>
+  </g>
+
+  <g font-family="Arial,sans-serif"
+     font-size="18" fill="#60737c">
+    <text x="30" y="295">ฝั่งสถานีรถไฟฟ้า</text>
+    <text x="45" y="405">คลอง</text>
+    <text x="310" y="410">เรือข้ามฝั่ง</text>
+    <text x="40" y="495">ฝั่งบ้านอชิ</text>
+    <text x="585" y="495">สวนเล็ก</text>
+  </g>
+
+</svg>
 
             <rect width="720" height="720"
                   fill="#e8eee4"/>
@@ -3530,23 +3616,21 @@ html=`
          <span class="calendar-icon-month">JAN</span>
          <span class="calendar-icon-day">30</span>
        </span>`
-    : open && a[0]==='Maps'
+  : open && a[0]==='Maps'
   ? `<svg viewBox="0 0 64 64"
-          width="56" height="56"
-          xmlns="http://www.w3.org/2000/svg">
-       <rect width="64" height="64" rx="15" fill="#fff"/>
-       <path d="M0 43L23 25L44 36L64 19V64H0Z" fill="#d5ead1"/>
-       <path d="M0 13L23 26L44 14L64 25"
-             fill="none" stroke="#f2c84e" stroke-width="12"/>
-       <path d="M0 47L23 28L44 39L64 21"
-             fill="none" stroke="#fff" stroke-width="10"/>
-       <path d="M0 47L23 28L44 39L64 21"
-             fill="none" stroke="#8cb2e6" stroke-width="4"/>
-       <path d="M32 7C20 7 15 16 15 25C15 38 32 53 32 53S49 38 49 25C49 16 44 7 32 7Z"
-             fill="#4285f4"/>
-       <path d="M32 7C44 7 49 16 49 25C49 38 32 53 32 53Z"
-             fill="#34a853"/>
-       <circle cx="32" cy="24" r="8" fill="#fff"/>
+          width="52" height="52"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="Google Maps">
+       <path fill="#34a853"
+             d="M32 4C17 4 7 15 7 29c0 18 25 33 25 33s25-15 25-33C57 15 47 4 32 4Z"/>
+       <path fill="#4285f4"
+             d="M32 4C17 4 7 15 7 29c0 7 4 14 9 20l18-20 16-16C45 7 39 4 32 4Z"/>
+       <path fill="#fbbc04"
+             d="M50 13 34 29l-18 20c5 6 11 10 16 13 0 0 25-15 25-33 0-6-2-12-7-16Z"/>
+       <path fill="#ea4335"
+             d="M32 4c-9 0-16 4-21 11l21 21 18-23C45 7 39 4 32 4Z"/>
+       <circle cx="32" cy="29" r="10" fill="#fff"/>
+       <circle cx="32" cy="29" r="5" fill="#4285f4"/>
      </svg>`
   : icon(open?a[1]:'lock')}
 </span>

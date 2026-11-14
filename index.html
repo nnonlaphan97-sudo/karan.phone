@@ -3250,63 +3250,35 @@ function renderCalendar(){
 }
 
 /* ===== EP.04 MAPS ===== */
-const mapLocations=[
-  {id:'pier',name:'ท่าเรือฝั่งบ้าน',x:39,y:66},
-  {id:'pierBts',name:'ท่าเรือฝั่ง BTS',x:39,y:43},
-  {id:'bts',name:'สถานี BTS',x:76,y:17},
 
-  // บ้านหลอกฝั่งเดียวกับ BTS
+const mapLocations=[
+  // ฝั่งพระนคร — มี BTS และบ้านหลอก
+  {id:'bts',name:'สถานี BTS',x:76,y:17},
   {id:'houseA',name:'บ้าน A',x:20,y:30},
   {id:'houseD',name:'บ้าน D',x:69,y:34},
 
-  // บ้านฝั่งตรงข้าม BTS
+  // ฝั่งธนบุรี — บ้านอชิและบ้านหลอก
   {id:'houseB',name:'บ้าน B',x:75,y:83},
   {id:'houseC',name:'บ้าน C',x:20,y:80},
   {id:'houseE',name:'บ้าน E',x:47,y:92}
 ];
 
-
 function renderMaps(){
-  const stage=save.flags.ep4MapStage || 0;
-  const size=Math.round(720*mapZoom);
+  
+const stage=save.flags.ep4MapComplete ? 3 : 0;
+const size=Math.round(720*mapZoom);
 
-  const clues=[
-    {
-      title:'เบาะแสที่ 1 · เส้นทางเรือ',
-      text:'อชิเดินทางจากบ้านด้วยเรือข้ามคลอง ก่อนต่อ BTS ไปทำงาน ลองหาท่าเรือฝั่งบ้าน'
-    },
-    {
-      title:'เบาะแสที่ 2 · รถไฟฟ้า',
-      text:'ข้ามคลองแล้วต้องเดินต่อไปขึ้น BTS ลองหาสถานีที่อยู่คนละฝั่งกับบ้าน'
-    },
-    {
-      title:'เบาะแสที่ 3 · บ้านอชิ',
-      text:'บ้านอชิอยู่คนละฝั่งคลองกับ BTS อยู่ในซอย ไม่ติดถนนใหญ่ และมีสวนเล็กอยู่ใกล้ทางเข้า ลองเลือกบ้านที่ตรงกับเบาะแส'
-    },
-    {
-      title:'พบจุดหมายแล้ว',
-      text:'การันต์พบเส้นทางไปบ้านอชิแล้ว'
-    }
-  ];
+const pins=mapLocations.map(p=>{
+  return `
+    <button
+      class="maps-pin"
+      data-map-point="${p.id}"
+      style="left:${p.x}%;top:${p.y}%"
+    >${p.name}</button>
+  `;
+}).join('');
 
-  const clue=clues[Math.min(stage,3)];
-
-  const pins=mapLocations.map(p=>{
-    const active=
-      (stage===0 && p.id==='pier') ||
-      (stage===1 && p.id==='bts') ||
-      (stage>=2 && p.id.startsWith('house'));
-
-    return `
-      <button
-        class="maps-pin ${active?'active':''}"
-        data-map-point="${p.id}"
-        style="left:${p.x}%;top:${p.y}%"
-      >${p.name}</button>
-    `;
-  }).join('');
-
-  const route=stage===3 ? `
+  const route=false ? `
     <g fill="none" stroke-linecap="round"
        stroke-linejoin="round">
       <path d="M540 598 L460 580 L350 560 L281 475"
@@ -3329,11 +3301,6 @@ function renderMaps(){
         <div class="maps-subtitle">
           13 เมษายน · ค้นหาเส้นทางไปบ้านอชิ
         </div>
-      </div>
-
-      <div class="maps-clue">
-        <strong>${clue.title}</strong>
-        ${clue.text}
       </div>
 
       <div class="maps-viewport" id="mapsViewport">
@@ -3394,7 +3361,7 @@ function renderMaps(){
               <path d="M0 515H720"/>
             </g>
 
-            <!-- คลองกั้นระหว่างสองฝั่ง -->
+            <!-- แม่น้ำเจ้าพระยา -->
             <path d="M-35 402
                      C130 355 210 440 355 395
                      S575 355 755 410"
@@ -3456,17 +3423,17 @@ function renderMaps(){
               <rect x="540" y="588"
                     width="77" height="49" rx="6"/>
             </g>
+       
+<!-- ป้ายพื้นที่ -->
+<g font-family="Arial,sans-serif"
+   font-size="17" fill="#657681">
+  <text x="26" y="25">ฝั่งพระนคร</text>
+  <text x="29" y="387">แม่น้ำเจ้าพระยา</text>
+  <text x="27" y="490">ฝั่งธนบุรี</text>
+  <text x="580" y="505">สวนเล็ก</text>
+  <text x="530" y="35">แนว BTS</text>
+</g>
 
-            <!-- ป้ายพื้นที่ -->
-            <g font-family="Arial,sans-serif"
-               font-size="17" fill="#657681">
-              <text x="26" y="25">ฝั่งรถไฟฟ้า</text>
-              <text x="29" y="387">คลอง</text>
-              <text x="319" y="407">เรือข้ามคลอง</text>
-              <text x="27" y="490">ฝั่งชุมชน</text>
-              <text x="580" y="505">สวนเล็ก</text>
-              <text x="530" y="35">แนว BTS</text>
-            </g>
 
             ${route}
 
@@ -3490,57 +3457,44 @@ function renderMaps(){
         ${mapFeedback || (
           stage===3
             ? 'การันต์กำลังเดินทางไปหาอชิ'
-            : 'เลื่อนแผนที่ ซูม และแตะจุดที่ตรงกับเบาะแส'
+            : 'แตะบ้านที่คิดว่าเป็นบ้านอชิ'
         )}
       </div>
 
     </div>
   `;
 }
-
+  
 
 function selectMapPoint(id){
-  const stage=save.flags.ep4MapStage || 0;
 
-  if(stage===0){
-    if(id==='pier'){
-      save.flags.ep4MapStage=1;
-      mapFeedback='พบท่าเรือฝั่งบ้านแล้ว ข้ามคลองไปแล้วต้องต่อ BTS';
-    }else if(id==='pierBts'){
-      mapFeedback='นี่คือท่าเรือฝั่ง BTS ลองหาท่าเรือฝั่งบ้านก่อน';
-    }else{
-      mapFeedback='ยังไม่ใช่ท่าเรือฝั่งบ้าน ลองดูริมคลอง';
-    }
+  if(save.flags.ep4MapComplete){
+    mapFeedback='พบบ้านอชิแล้ว';
+    render();
+    return;
+  }
 
-  }else if(stage===1){
-    if(id==='bts'){
-      save.flags.ep4MapStage=2;
-      mapFeedback='พบสถานี BTS แล้ว ลองหาบ้านที่อยู่ฝั่งตรงข้ามคลอง';
-    }else if(id==='pierBts'){
-      mapFeedback='พบท่าเรือฝั่ง BTS แล้ว ลองหาสถานีรถไฟฟ้าต่อ';
-    }else{
-      mapFeedback='ยังไม่ใช่สถานี BTS ลองดูแนวรถไฟฟ้า';
-    }
+  // บ้านหลอกฝั่งพระนคร
+  if(id==='houseA' || id==='houseD'){
+    mapFeedback=
+      'อชิต้องนั่งเรือข้ามแม่น้ำเจ้าพระยามาก่อนขึ้น BTS';
+  }
 
-  }else if(stage===2){
-    if(id==='houseB'){
-      save.flags.ep4MapStage=3;
-      save.flags.ep4MapComplete=true;
-      mapFeedback='บ้านหลังนี้อยู่ฝั่งตรงข้าม BTS และมีสวนเล็กใกล้ทางเข้า ตรงกับเบาะแสของพี่ดุจ';
-    }else if(id.startsWith('house')){
-      const location=mapLocations.find(p=>p.id===id);
+  // บ้านหลอกฝั่งธนบุรี
+  else if(id==='houseC' || id==='houseE'){
+    mapFeedback='ไม่ใช่';
+  }
 
-      if(location && location.y<45){
-        mapFeedback='บ้านหลังนี้อยู่ฝั่งเดียวกับ BTS แต่อชิต้องนั่งเรือข้ามคลองก่อนขึ้นรถไฟฟ้า';
-      }else{
-        mapFeedback='บ้านหลังนี้อยู่ฝั่งที่ถูกต้อง แต่ตำแหน่งไม่ตรงกับเบาะแสเรื่องสวนเล็ก';
-      }
-    }else{
-      mapFeedback='ตอนนี้ต้องเลือกบ้านจากเบาะแส';
-    }
+  // บ้านอชิ
+  else if(id==='houseB'){
+    save.flags.ep4MapStage=3;
+    save.flags.ep4MapComplete=true;
+    mapFeedback='พบบ้านอชิแล้ว';
+  }
 
-  }else{
-    mapFeedback='คุณพบเส้นทางไปบ้านอชิแล้ว';
+  // สถานี BTS ไม่ใช่จุดที่ต้องเลือก
+  else{
+    return;
   }
 
   persist();

@@ -335,7 +335,7 @@ button{
   bottom:30px;
   display:flex;
   justify-content:center;
-  gap:32px;
+  gap:20px;
   align-items:center;
   padding:0;
   background:transparent;
@@ -2947,6 +2947,251 @@ button{
   box-shadow:0 1px 3px #0002;
 }
 
+/* ===== EP.07 FIRST DATE UI ===== */
+
+.ep7-page{
+  height:100%;
+  padding-top:36px;
+  background:#f8f8fb;
+  color:#202127;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.ep7-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-height:60px;
+  padding:12px 17px;
+  background:#fff;
+  border-bottom:1px solid #e9e9ef;
+}
+
+.ep7-header button{
+  border:0;
+  background:transparent;
+  color:#24252b;
+  padding:5px;
+  display:grid;
+  place-items:center;
+}
+
+.ep7-header strong{
+  flex:1;
+  font-size:17px;
+}
+
+.ep7-header>span{
+  font-size:11px;
+  color:#858592;
+}
+
+.ep7-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:20px 17px 45px;
+}
+
+.ep7-scroll h2{
+  font-size:24px;
+  margin:5px 0 8px;
+}
+
+.ep7-scroll h3{
+  font-size:17px;
+  margin:25px 0 14px;
+}
+
+.ep7-muted{
+  color:#82838d;
+  font-size:13px;
+  margin-bottom:22px;
+}
+
+.ep7-product{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  border:2px solid transparent;
+  border-radius:20px;
+  background:#fff;
+  padding:13px;
+  margin-bottom:12px;
+  text-align:left;
+  color:#25252b;
+}
+
+.ep7-product.selected,
+.ep7-shirt.selected{
+  border-color:#8063d6;
+  background:#f4f0ff;
+}
+
+.ep7-product-art{
+  width:84px;
+  height:84px;
+  flex-shrink:0;
+  border-radius:15px;
+  background:#f7edf1;
+  display:grid;
+  place-items:center;
+}
+
+.ep7-product-info{
+  flex:1;
+  min-width:0;
+}
+
+.ep7-product-info strong,
+.ep7-product-info small{
+  display:block;
+}
+
+.ep7-product-info strong{
+  font-size:14px;
+}
+
+.ep7-product-info small{
+  color:#8a8b94;
+  font-size:12px;
+  margin-top:7px;
+  line-height:1.5;
+}
+
+.ep7-radio{
+  font-size:22px;
+  color:#8063d6;
+}
+
+.ep7-primary{
+  width:100%;
+  margin-top:22px;
+  padding:16px;
+  border:0;
+  border-radius:17px;
+  background:#7658d4;
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+}
+
+.ep7-primary:disabled{
+  background:#c9c8d2;
+  color:#fff;
+}
+
+.ep7-dm{
+  width:fit-content;
+  max-width:83%;
+  padding:13px 16px;
+  margin:12px 0;
+  border-radius:20px;
+  font-size:14px;
+  line-height:1.65;
+  white-space:pre-line;
+}
+
+.ep7-dm.received{
+  background:#e8e8ee;
+  color:#25252b;
+  margin-right:auto;
+}
+
+.ep7-dm.sent{
+  background:#dcd0fa;
+  color:#25252b;
+  margin-left:auto;
+}
+
+.ep7-shirt-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+}
+
+.ep7-shirt{
+  min-width:0;
+  padding:9px 5px 13px;
+  border:2px solid #e7e7ed;
+  border-radius:16px;
+  background:#fff;
+  color:#25252b;
+}
+
+.ep7-shirt strong{
+  display:block;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.ep7-reply{
+  display:block;
+  width:100%;
+  margin-top:30px;
+  padding:16px;
+  border:1px solid #d7c6f2;
+  border-radius:17px;
+  background:#f0e9ff;
+  color:#4e3685;
+  text-align:left;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.ep7-sms-head{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:25px;
+}
+
+.ep7-sms-avatar{
+  width:49px;
+  height:49px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#e1ebff;
+  color:#276cdb;
+}
+
+.ep7-sms-head strong,
+.ep7-sms-head small{
+  display:block;
+}
+
+.ep7-sms-head small{
+  color:#858592;
+  margin-top:5px;
+  font-size:12px;
+}
+
+.ep7-complete{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  margin-top:40px;
+  padding:28px 15px;
+  border-radius:22px;
+  background:#fff;
+  text-align:center;
+}
+
+.ep7-complete strong{
+  color:#7658d4;
+  font-size:23px;
+}
+
+.ep7-complete span{
+  font-size:13px;
+  color:#747580;
+}
+
 </style>
 </head>
 <body>
@@ -3069,6 +3314,22 @@ function icon(n,cls=''){
     </svg>`;
 
   switch(n){
+    case 'message':
+  return app('#2389ED',`
+    <path d="M13 16H51
+      A9 9 0 0 1 60 25V39
+      A9 9 0 0 1 51 48H29
+      L16 55V48H13
+      A9 9 0 0 1 4 39V25
+      A9 9 0 0 1 13 16Z"
+      fill="#FFFFFF"/>
+    <circle cx="23" cy="32" r="3"
+      fill="#2389ED"/>
+    <circle cx="32" cy="32" r="3"
+      fill="#2389ED"/>
+    <circle cx="41" cy="32" r="3"
+      fill="#2389ED"/>
+  `);
     case 'line':
       return app('#06C755',`
         <path d="M32 10C18 10 8 19 8 31
@@ -3427,6 +3688,12 @@ save.flags.ep5PaReply ??= '';
 save.flags.ep6Stage ??=
   (save.flags.ep5PaReply !== '' ? 1 : 0);
 save.flags.ep6AlarmUnlocked ??= false;
+/* ===== EP.07 FIRST DATE ===== */
+save.flags.ep7Stage ??= 0;
+save.flags.ep7Flower ??= '';
+save.flags.ep7Shirt ??= '';
+save.flags.ep7CoffeeConfirmed ??= false;
+save.flags.ep7HelicopterConfirmed ??= false;
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -3719,6 +3986,12 @@ function lineChatsHTML(){
     {id:'office',name:'TOYOKAWA'},
     {id:'sales',name:'ทีมฝ่ายขาย'}
   ];
+  if(save.flags.ep7Stage>=1){
+  availableChats.push({
+    id:'flowerShop',
+    name:'ร้านดอกไม้'
+  });
+}
 if(save.flags.ep6Stage >= 1){
   availableChats.push({
     id:'tanaka',name:'ทานากะซัง'
@@ -5052,6 +5325,12 @@ function igNavigation() {
 }
 
 function renderInstagram() {
+    if(
+    igScreen==='ep7shop' ||
+    igScreen==='ep7pa'
+  ){
+    return ep7InstagramPage();
+  }
   if (igScreen === 'dm') {
     return renderInstagramDM();
   }
@@ -5067,6 +5346,35 @@ function renderInstagram() {
         <div class="ig-scroll">
           <div class="ig-search">ค้นหาข้อความ</div>
           <div class="ig-section-title">ข้อความ</div>
+          ${save.flags.ep7Stage>=2?`
+  <button class="ig-chat-row"
+    data-ep7-ig-open="ep7shop">
+    ${igAvatar('ร',55)}
+    <span>
+      <strong>ร้านเสื้อผ้า</strong>
+      <small>
+        ${save.flags.ep7Shirt
+          ? 'ยืนยันเสื้อเรียบร้อยแล้ว'
+          : 'ส่งแบบเสื้อมาให้เลือกแล้วค่ะ'}
+      </small>
+    </span>
+  </button>
+`:''}
+
+${save.flags.ep7Stage>=3?`
+  <button class="ig-chat-row"
+    data-ep7-ig-open="ep7pa">
+    ${igAvatar('ป',55)}
+    <span>
+      <strong>ป่า · เดตกับอชิ</strong>
+      <small>
+        ${save.flags.ep7CoffeeConfirmed
+          ? 'ได้เลย เดี๋ยวเตรียมไว้ให้'
+          : 'พรุ่งนี้จะเข้ามาที่ร้านเหรอ'}
+      </small>
+    </span>
+  </button>
+`:''}
           <button class="ig-chat-row" data-ig-screen="dm">
             ${igAvatar('ป', 55)}
             <span>
@@ -5453,6 +5761,278 @@ function ep6Advance(stage){
   persist();
 }
 
+/* ===== EP.07 FIRST DATE SYSTEM ===== */
+
+let ep7FlowerDraft='';
+let ep7ShirtDraft='';
+
+function ep7Next(stage){
+  if(save.flags.ep7Stage>=stage)return;
+
+  save.flags.ep7Stage=stage;
+
+  if(stage>=4){
+    unlock('Messages');
+  }
+
+  persist();
+}
+
+function ep7Banner(app,name,message,target){
+  const el=document.getElementById('gameBanner');
+  if(!el)return;
+
+  const isIG=app==='Instagram';
+  const isSMS=app==='Messages';
+
+  el.innerHTML=`
+    <button class="game-banner"
+      data-ep7-open="${target}">
+      <span class="game-banner-icon"
+        style="background:${isIG?'#C13584':isSMS?'#2479E8':'#06c755'}">
+        ${icon(isSMS?'message':'line')}
+      </span>
+      <span class="game-banner-text">
+        <small>${app} · ข้อความใหม่</small>
+        <strong>${name}</strong>
+        <span>${message}</span>
+      </span>
+    </button>`;
+}
+
+function ep7FlowerPage(){
+  const flowers=[
+    ['lotus','ช่อดอกบัวใหญ่','สำหรับนำไปไหว้พระ'],
+    ['rose','ช่อกุหลาบ','ช่อดอกไม้สำหรับโอกาสพิเศษ'],
+    ['mixed','ช่อดอกไม้รวม','ช่อดอกไม้หลากชนิด']
+  ];
+
+  return `
+    <div class="ep7-page">
+      <header class="ep7-header">
+        <button data-go="LINE">
+          ${lineIcon('back')}
+        </button>
+        <strong>แค็ตตาล็อกร้านดอกไม้</strong>
+      </header>
+
+      <div class="ep7-scroll">
+        <h2>เลือกช่อดอกไม้</h2>
+        <p class="ep7-muted">
+          กรุณาเลือกแบบที่ต้องการ แล้วกดยืนยัน
+        </p>
+
+        ${flowers.map(([id,name,detail])=>`
+          <button class="ep7-product
+            ${ep7FlowerDraft===id?'selected':''}"
+            data-ep7-flower="${id}">
+            <span class="ep7-product-art">
+              ${ep7FlowerArt(id)}
+            </span>
+            <span class="ep7-product-info">
+              <strong>${name}</strong>
+              <small>${detail}</small>
+            </span>
+            <span class="ep7-radio">
+              ${ep7FlowerDraft===id?'●':'○'}
+            </span>
+          </button>
+        `).join('')}
+
+        <button class="ep7-primary"
+          data-ep7-flower-confirm="1"
+          ${!ep7FlowerDraft?'disabled':''}>
+          ยืนยันช่อดอกไม้
+        </button>
+      </div>
+    </div>`;
+}
+
+function ep7FlowerArt(type){
+  const petal=type==='lotus'
+    ? '#e99bb7'
+    : type==='rose'
+      ? '#dc637c'
+      : '#e5b86b';
+
+  return `
+    <svg viewBox="0 0 80 80"
+      width="75" height="75"
+      aria-hidden="true">
+      <path d="M40 42L40 72M40 54L23 43M40 60L57 47"
+        fill="none" stroke="#518765"
+        stroke-width="3.5"
+        stroke-linecap="round"/>
+      <path d="M40 43C19 29 28 14 40 7
+               C52 14 61 29 40 43Z"
+        fill="${petal}"/>
+      <path d="M38 42C19 40 14 25 19 17
+               C31 20 39 30 38 42Z"
+        fill="${petal}" opacity=".8"/>
+      <path d="M42 42C61 40 66 25 61 17
+               C49 20 41 30 42 42Z"
+        fill="${petal}" opacity=".8"/>
+      <path d="M26 56L54 56L47 76L33 76Z"
+        fill="#f1e6dc"/>
+    </svg>`;
+}
+
+function ep7InstagramPage(){
+  const shop=igScreen==='ep7shop';
+
+  if(shop){
+    const shirts=[
+      ['white','เสื้อเชิ้ตสีขาว','#f8f8f5'],
+      ['blue','เสื้อเชิ้ตสีฟ้า','#a7c9e8'],
+      ['cream','เสื้อสีครีม','#e7d8b9']
+    ];
+
+    return `
+      <div class="ep7-page">
+        <header class="ep7-header">
+          <button data-ep7-ig-back="1">
+            ${igIcon('back')}
+          </button>
+          <strong>ร้านเสื้อผ้า</strong>
+          <span>Instagram</span>
+        </header>
+
+        <div class="ep7-scroll">
+          <div class="ep7-dm received">
+            สวัสดีค่ะคุณการันต์
+            ทางร้านส่งแบบเสื้อมาให้เลือกแล้วนะคะ
+          </div>
+
+          <div class="ep7-dm received">
+            ต้องการให้ทางร้านเตรียมตัวไหนไว้ให้คะ
+          </div>
+
+          <h3>เลือกเสื้อให้อชิ</h3>
+
+          <div class="ep7-shirt-grid">
+            ${shirts.map(([id,name,color])=>`
+              <button class="ep7-shirt
+                ${ep7ShirtDraft===id?'selected':''}"
+                data-ep7-shirt="${id}">
+                <svg viewBox="0 0 100 110"
+                  width="100%" height="115"
+                  aria-hidden="true">
+                  <path d="M31 12L42 7H58L69 12
+                    L94 30L79 55L69 48
+                    V103H31V48L21 55
+                    L6 30Z"
+                    fill="${color}"
+                    stroke="#8f929c"
+                    stroke-width="2"/>
+                  <path d="M42 7L50 21L58 7
+                    M50 21V101"
+                    fill="none"
+                    stroke="#8f929c"
+                    stroke-width="2"/>
+                </svg>
+                <strong>${name}</strong>
+              </button>
+            `).join('')}
+          </div>
+
+          <button class="ep7-primary"
+            data-ep7-shirt-confirm="1"
+            ${!ep7ShirtDraft?'disabled':''}>
+            ยืนยันเสื้อ
+          </button>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="ep7-page">
+      <header class="ep7-header">
+        <button data-ep7-ig-back="1">
+          ${igIcon('back')}
+        </button>
+        <strong>ป่า</strong>
+        <span>Instagram</span>
+      </header>
+
+      <div class="ep7-scroll">
+        <div class="ep7-dm received">
+          พรุ่งนี้จะเข้ามาที่ร้านเหรอ
+        </div>
+
+        ${save.flags.ep7CoffeeConfirmed?`
+          <div class="ep7-dm sent">
+            ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
+          </div>
+          <div class="ep7-dm sent">
+            ขอเมล็ดกาแฟจากลำพูน
+          </div>
+          <div class="ep7-dm received">
+            ได้เลย เดี๋ยวเตรียมไว้ให้
+          </div>
+        `:`
+          <button class="ep7-reply"
+            data-ep7-coffee="1">
+            ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
+            ขอเมล็ดกาแฟจากลำพูน
+          </button>
+        `}
+      </div>
+    </div>`;
+}
+
+function ep7MessagesPage(){
+  const confirmed=
+    save.flags.ep7HelicopterConfirmed;
+
+  return `
+    <div class="ep7-page">
+      <header class="ep7-header">
+        <button data-go="home">
+          ${lineIcon('back')}
+        </button>
+        <strong>ข้อความ</strong>
+      </header>
+
+      <div class="ep7-scroll">
+        <div class="ep7-sms-head">
+          <span class="ep7-sms-avatar">
+            ${icon('message')}
+          </span>
+          <div>
+            <strong>Helicopter Service</strong>
+            <small>ข้อความ SMS</small>
+          </div>
+        </div>
+
+        <div class="ep7-dm received">
+          เรียนคุณการันต์
+          กรุณายืนยันการจองเฮลิคอปเตอร์
+          สำหรับผู้โดยสาร 2 ท่าน
+        </div>
+
+        ${confirmed?`
+          <div class="ep7-dm sent">
+            ยืนยันการจองสำหรับ 2 ท่านครับ
+          </div>
+          <div class="ep7-dm received">
+            ยืนยันการจองเรียบร้อยแล้วค่ะ
+            ขอบคุณที่ใช้บริการ
+          </div>
+
+          <div class="ep7-complete">
+            <strong>EP.07 COMPLETE</strong>
+            <span>เตรียมเดตกับอชิเรียบร้อยแล้ว</span>
+          </div>
+        `:`
+          <button class="ep7-primary"
+            data-ep7-helicopter="1">
+            ยืนยันการจอง 2 ท่าน
+          </button>
+        `}
+      </div>
+    </div>`;
+}
+
 function render(){
 let html='';
 
@@ -5556,6 +6136,17 @@ html=`
         ${icon(save.unlock.includes('โทรศัพท์') ? 'phone' : 'lock')}
       </span>
     </button>
+        <button class="dock-camera"
+            data-app="Messages"
+            aria-label="ข้อความ">
+      <span class="dock-camera-icon">
+        ${icon(
+          save.unlock.includes('Messages')
+            ? 'message'
+            : 'lock'
+        )}
+      </span>
+    </button>
     <button class="dock-camera"
             data-app="กล้อง"
             aria-label="กล้อง">
@@ -5577,6 +6168,12 @@ else if(page==='Instagram'){
 }
 else if(page==='นาฬิกา'){
   html=renderEp6Clock();
+}
+else if(page==='EP7Flowers'){
+  html=ep7FlowerPage();
+}
+else if(page==='Messages'){
+  html=ep7MessagesPage();
 }
 else if(page==='GrabFood'){
   html=renderGrab();
@@ -6032,6 +6629,7 @@ function renderChat(){
     achi:'อชิ',
     karin:'พี่การิน',
     tanaka:'ทานากะซัง',
+    flowerShop:'ร้านดอกไม้',
     office:'TOYOKAWA',
     sales:'ทีมฝ่ายขาย'
   };
@@ -6395,8 +6993,68 @@ if(chat==='achi' && save.flags.ep6Stage>=2){
   }
 }
 
-/* ===== EP.06 PAI CHAT ===== */
+/* ===== EP.07 ACHI DATE INVITATION ===== */
 
+if(
+  chat==='achi' &&
+  save.flags.ep6Stage>=6
+){
+  if(save.flags.ep7Stage===0){
+
+    choices=`
+      <button class="choice"
+        data-ep7-invite="1">
+        ถ้าอย่างนั้น พรุ่งนี้อชิไปเดตกับผมนะครับ
+      </button>
+    `;
+
+  }else{
+
+    b+=bubble(
+      'ถ้าอย่างนั้น พรุ่งนี้อชิไปเดตกับผมนะครับ',
+      true
+    );
+
+    b+=bubble('ได้ครับ');
+
+    b+=bubble(
+      'ตีห้าผมไปรับนะครับ',
+      true
+    );
+  }
+}
+
+/* ===== EP.07 FLOWER SHOP CHAT ===== */
+
+if(chat==='flowerShop' && save.flags.ep7Stage>=1){
+
+  b='<div class="day">เตรียมเดต</div>';
+
+  b+=bubble(
+    'สวัสดีค่ะคุณการันต์ ทางร้านส่งแบบช่อดอกไม้มาให้เลือกแล้วนะคะ'
+  );
+
+  b+=`
+    <button class="choice"
+      data-ep7-open-flowers="1">
+      ดูแค็ตตาล็อกช่อดอกไม้
+    </button>
+  `;
+
+  if(save.flags.ep7Flower){
+
+    b+=bubble(
+      'ผมเลือกช่อดอกบัวใหญ่ครับ',
+      true
+    );
+
+    b+=bubble(
+      'รับทราบค่ะ ทางร้านจะเตรียมช่อดอกบัวใหญ่ไว้ให้ค่ะ'
+    );
+  }
+}
+
+/* ===== EP.06 PAI CHAT ===== */
 if(chat==='pai' && save.flags.ep6Stage>=4){
 
   b+='<div class="day">18 เม.ย.</div>';
@@ -6530,7 +7188,10 @@ popup('ยังไม่สามารถเปิดได้','สำรว�
 return;
 }
 page=name;
-
+if(name==='Instagram'){
+  igScreen='main';
+  igTab='home';
+}
 // เปิด Instagram จากไอคอนแอป
 // ให้เริ่มที่หน้า Home ทุกครั้ง
 if(name==='Instagram'){
@@ -6593,8 +7254,236 @@ document.addEventListener('change',function(e){
 });
 document.addEventListener('click',function(e){
 
-/* ===== EP.06 INTERACTIONS ===== */
+/* ===== EP.07 INTERACTIONS ===== */
+const ep7IGOpen=e.target.closest(
+  '[data-ep7-ig-open]'
+);
 
+if(ep7IGOpen && page==='Instagram'){
+  igScreen=ep7IGOpen.dataset.ep7IgOpen;
+  render();
+  return;
+}
+const ep7Invite=e.target.closest(
+  '[data-ep7-invite]'
+);
+
+if(
+  ep7Invite &&
+  page==='chat' &&
+  chat==='achi' &&
+  save.flags.ep6Stage>=6 &&
+  save.flags.ep7Stage===0
+){
+  ep7Next(1);
+  render();
+
+  ep7Banner(
+    'LINE',
+    'ร้านดอกไม้',
+    'ส่งแบบช่อดอกไม้ให้เลือกแล้วค่ะ',
+    'flowers-chat'
+  );
+
+  return;
+}
+
+/* เปิดแจ้งเตือน EP.07 */
+
+const ep7Notification=e.target.closest(
+  '[data-ep7-open]'
+);
+
+if(ep7Notification){
+  const target=ep7Notification.dataset.ep7Open;
+
+  document.getElementById('gameBanner').innerHTML='';
+
+  if(target==='flowers-chat'){
+    chat='flowerShop';
+    page='chat';
+  }
+
+  if(target==='shop'){
+    igScreen='ep7shop';
+    page='Instagram';
+  }
+
+  if(target==='pa'){
+    igScreen='ep7pa';
+    page='Instagram';
+  }
+
+  if(target==='sms'){
+    page='Messages';
+  }
+
+  render();
+  return;
+}
+
+/* เปิดแค็ตตาล็อกดอกไม้ */
+
+const ep7OpenFlowers=e.target.closest(
+  '[data-ep7-open-flowers]'
+);
+
+if(ep7OpenFlowers){
+  page='EP7Flowers';
+  render();
+  return;
+}
+
+/* เลือกช่อดอกไม้ */
+
+const ep7Flower=e.target.closest(
+  '[data-ep7-flower]'
+);
+
+if(ep7Flower && page==='EP7Flowers'){
+  ep7FlowerDraft=ep7Flower.dataset.ep7Flower;
+  render();
+  return;
+}
+
+/* ยืนยันช่อดอกไม้ */
+
+const ep7FlowerConfirm=e.target.closest(
+  '[data-ep7-flower-confirm]'
+);
+
+if(ep7FlowerConfirm && page==='EP7Flowers'){
+
+  if(ep7FlowerDraft!=='lotus'){
+    popup(
+      'เลือกช่อดอกไม้อีกครั้ง',
+      'การันต์ต้องการช่อดอกบัวใหญ่สำหรับนำไปไหว้พระที่บ้านอชิ'
+    );
+    return;
+  }
+
+  save.flags.ep7Flower='lotus';
+  ep7Next(2);
+
+  page='LINE';
+  lineTab='chats';
+  lineSubtab='chats';
+
+  render();
+
+  ep7Banner(
+    'Instagram',
+    'ร้านเสื้อผ้า',
+    'ส่งแบบเสื้อมาให้คุณการันต์เลือกแล้วค่ะ',
+    'shop'
+  );
+
+  return;
+}
+
+/* เลือกเสื้อให้อชิ */
+
+const ep7Shirt=e.target.closest(
+  '[data-ep7-shirt]'
+);
+
+if(
+  ep7Shirt &&
+  page==='Instagram' &&
+  igScreen==='ep7shop'
+){
+  ep7ShirtDraft=ep7Shirt.dataset.ep7Shirt;
+  render();
+  return;
+}
+
+/* ยืนยันเสื้อ */
+
+const ep7ShirtConfirm=e.target.closest(
+  '[data-ep7-shirt-confirm]'
+);
+
+if(
+  ep7ShirtConfirm &&
+  page==='Instagram' &&
+  igScreen==='ep7shop'
+){
+  if(!ep7ShirtDraft)return;
+
+  save.flags.ep7Shirt=ep7ShirtDraft;
+  ep7Next(3);
+
+  igScreen='inbox';
+  render();
+
+  ep7Banner(
+    'Instagram',
+    'ป่า',
+    'พรุ่งนี้จะเข้ามาที่ร้านเหรอ',
+    'pa'
+  );
+
+  return;
+}
+
+/* การันต์ฝากป่าเตรียมกาแฟจากลำพูน */
+
+const ep7Coffee=e.target.closest(
+  '[data-ep7-coffee]'
+);
+
+if(
+  ep7Coffee &&
+  page==='Instagram' &&
+  igScreen==='ep7pa'
+){
+  save.flags.ep7CoffeeConfirmed=true;
+  ep7Next(4);
+
+  render();
+
+  ep7Banner(
+    'Messages',
+    'Helicopter Service',
+    'กรุณายืนยันการจองสำหรับ 2 ท่าน',
+    'sms'
+  );
+
+  return;
+}
+
+/* ยืนยันเฮลิคอปเตอร์ */
+
+const ep7Helicopter=e.target.closest(
+  '[data-ep7-helicopter]'
+);
+
+if(
+  ep7Helicopter &&
+  page==='Messages' &&
+  save.flags.ep7Stage>=4 &&
+  !save.flags.ep7HelicopterConfirmed
+){
+  save.flags.ep7HelicopterConfirmed=true;
+  ep7Next(5);
+
+  render();
+  return;
+}
+
+/* ย้อนกลับจาก Instagram DM ของ EP.07 */
+
+const ep7IGBack=e.target.closest(
+  '[data-ep7-ig-back]'
+);
+
+if(ep7IGBack && page==='Instagram'){
+  igScreen='inbox';
+  render();
+  return;
+}
+
+/* ===== EP.06 INTERACTIONS ===== */
 // เปิดนาฬิกาปลุก
 const ep6OpenClock=e.target.closest(
   '[data-ep6-open-clock]'

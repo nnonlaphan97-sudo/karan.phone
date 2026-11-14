@@ -322,11 +322,51 @@ button{
 }
 
 .home{
+  position:relative;
   min-height:100%;
-  padding:62px 22px 35px;
+  padding:62px 22px 125px;
   color:#fff;
 }
 
+.home-dock{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:30px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+
+.dock-camera{
+  width:64px;
+  height:64px;
+  padding:0;
+  border:0;
+  background:transparent;
+  display:grid;
+  place-items:center;
+}
+
+.dock-camera-icon{
+  width:60px;
+  height:60px;
+  border-radius:18px;
+  background:#31333b;
+  color:#fff;
+  display:grid;
+  place-items:center;
+}
+
+.dock-camera-icon .ico{
+  width:39px;
+  height:39px;
+  stroke-width:1.8;
+}
 
 .home-weather{
   display:flex;
@@ -1974,6 +2014,224 @@ button{
   margin-top:8px;
   color:#1683c5;
 }
+.samsung-camera{
+  height:100%;
+  padding:36px 0 22px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background:#08090b;
+  color:#fff;
+}
+
+.samsung-camera-top{
+  height:58px;
+  flex-shrink:0;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  font-size:15px;
+}
+
+.samsung-viewfinder{
+  position:relative;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  background:#34383c;
+}
+
+.samsung-viewfinder svg{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.samsung-focus{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:65px;
+  height:65px;
+  transform:translate(-50%,-50%);
+  border:1px solid #ffffff80;
+  border-radius:5px;
+}
+
+.samsung-camera-bottom{
+  flex-shrink:0;
+  padding:8px 16px;
+  background:#08090b;
+}
+
+.samsung-zoom{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  height:46px;
+  font-size:13px;
+}
+
+.samsung-zoom strong{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+}
+
+.samsung-modes{
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  height:46px;
+  color:#999;
+  font-size:11px;
+}
+
+.samsung-modes strong{
+  color:#fff;
+  font-size:13px;
+}
+
+.samsung-shutter-row{
+  height:90px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+}
+
+.samsung-shutter-row button{
+  width:54px;
+  height:54px;
+  border:0;
+  border-radius:50%;
+  background:#292b30;
+  color:#fff;
+  display:grid;
+  place-items:center;
+}
+
+.samsung-shutter-row .ico{
+  width:30px;
+  height:30px;
+}
+
+.samsung-shutter-row .samsung-shutter{
+  width:76px;
+  height:76px;
+  background:#fff;
+  border:4px solid #aaa;
+}
+
+.samsung-shutter span{
+  width:62px;
+  height:62px;
+  border:2px solid #151515;
+  border-radius:50%;
+}
+
+.samsung-gallery{
+  position:relative;
+  height:100%;
+  padding:55px 20px 100px;
+  background:#fff;
+  color:#202127;
+  overflow-y:auto;
+}
+
+.samsung-gallery-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.samsung-gallery-title h2{
+  font-size:30px;
+  margin:8px 0 26px;
+}
+
+.samsung-gallery-title .ico{
+  width:28px;
+  height:28px;
+}
+
+.samsung-gallery-date{
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:15px;
+}
+
+.samsung-photo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+}
+
+.samsung-photo{
+  aspect-ratio:1;
+  padding:0;
+  border:0;
+  overflow:hidden;
+  background:#ddd;
+}
+
+.samsung-photo svg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.samsung-gallery-empty{
+  grid-column:1/-1;
+  padding:45px 0;
+  text-align:center;
+  color:#888;
+}
+
+.samsung-photo-send{
+  margin-top:24px;
+  padding:18px;
+  border-radius:18px;
+  background:#f5f6f8;
+}
+
+.samsung-photo-send p{
+  margin:0 0 14px;
+  font-size:14px;
+}
+
+.samsung-photo-send button{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:14px;
+  background:#222;
+  color:#fff;
+}
+
+.samsung-gallery-tabs{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:24px;
+  display:flex;
+  justify-content:space-around;
+  padding:18px 0;
+  background:#fff;
+  border-top:1px solid #eee;
+  font-size:13px;
+  color:#777;
+}
+
+.samsung-gallery-tabs .selected{
+  color:#111;
+  font-weight:700;
+}
 
 </style>
 </head>
@@ -2064,8 +2322,8 @@ const paths={
 back:'<path d="m15 18-6-6 6-6"/>',
 lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
 line:'<path d="M12 2C5.9 2 1 6.1 1 11.1c0 4.5 4 8.2 9.4 8.9.4.1.9.3.7.8l-.4 1.4c-.1.4.2.6.5.4 4.1-2.6 7.1-4.9 8.8-7.2 1.2-1.5 1.9-3 1.9-4.3C21.9 6.1 17.5 2 12 2Z" fill="currentColor" stroke="none"/><text x="12" y="13.9" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.9" font-weight="900" fill="#06c755" stroke="none">LINE</text>',phone:'<path d="M7 3H4a2 2 0 0 0-2 2c0 9.4 7.6 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
-gallery:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/>',
-calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3"/>',
+camera:'<path d="M4 7h3.5l2-3h5l2 3H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/><circle cx="12" cy="13" r="4"/>',
+gallery:'<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.5"/><path d="m4 17 5-5 4 4 3-3 5 5"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3"/>',
 note:'<path d="M8 3H16C18.2 3 20 4.8 20 7V16L14 22H8C5.8 22 4 20.2 4 18V7C4 4.8 5.8 3 8 3Z" fill="#fff" stroke="none"/><path d="M8 3H10V22H8C5.8 22 4 20.2 4 18V7C4 4.8 5.8 3 8 3Z" fill="#FFD5D5" stroke="none"/><path d="M4 8H5.2M4 13H5.2M4 18H5.2" stroke="#E92727" stroke-width="2.5" stroke-linecap="round"/><path d="M14 22V18C14 16.9 14.9 16 16 16H20Z" fill="#F6A2A2" stroke="none"/>',
 bag:'<path d="M4 8h16l-1 13H5L4 8ZM9 9V6a3 3 0 0 1 6 0v3"/>',
 web:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/>',
@@ -2237,6 +2495,12 @@ save.flags.ep4MapComplete ??= false;
 save.flags.ep4HomeBannerShown ??= false;
 save.flags.ep4HomeBannerRead ??= false;
 save.flags.ep4AchiFinalReply ??= '';
+save.flags.ep4Day14Started ??= false;
+save.flags.ep4BreakfastReply ??= '';
+save.flags.ep4KarinShown ??= false;
+save.flags.ep4KarinRead ??= false;
+save.flags.ep4PhotoTaken ??= false;
+save.flags.ep4PhotoSent ??= false;
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -2523,10 +2787,17 @@ function lineChatsHTML(){
 
   const q=lineSearch.trim().toLowerCase();
 
-  const availableChats=[
+    const availableChats=[
     {id:'office',name:'TOYOKAWA'},
     {id:'sales',name:'ทีมฝ่ายขาย'}
   ];
+
+  if(save.flags.ep4KarinShown){
+    availableChats.push({
+      id:'karin',
+      name:'พี่การิน'
+    });
+  }
 
   if(save.flags.ep2Started){
     availableChats.push({
@@ -2657,38 +2928,13 @@ function lineChatsHTML(){
 
   chat=previousChat;
   lastBubbleSender=previousSender;
-  results.sort((a,b)=>{
-
-  // หลังอ่านแชทใหม่จากอชิ
-  // หรือเลือกตอบแล้ว ห้องอชิจะอยู่บนสุด
-  if(save.flags.ep4HomeBannerRead){
-
-    if(a.id==='achi')return -1;
-    if(b.id==='achi')return 1;
-
-  }
-
-  // ก่อนหน้านั้น พี่ดุจเป็นห้องล่าสุด
-  if(save.flags.ep4DujBannerShown){
-
-    if(a.id==='duj')return -1;
-    if(b.id==='duj')return 1;
-
-  }
-
-  return (
-    b.dateOrder-a.dateOrder ||
-    b.messageIndex-a.messageIndex ||
-    a.originalIndex-b.originalIndex
-  );
-});
-
-  return (
-    b.dateOrder-a.dateOrder ||
-    b.messageIndex-a.messageIndex ||
-    a.originalIndex-b.originalIndex
-  );
-});
+   results.sort((a,b)=>{
+    return (
+      b.dateOrder-a.dateOrder ||
+      b.messageIndex-a.messageIndex ||
+      a.originalIndex-b.originalIndex
+    );
+  });
 
   return results
     .filter(c=>c.name.toLowerCase().includes(q))
@@ -3571,6 +3817,141 @@ function selectMapPoint(id){
   persist();
   render();
 }
+function ep4PhotoSVG(){
+  return `
+    <svg viewBox="0 0 360 500"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-label="อชิกำลังทำงาน">
+      <rect width="360" height="500" fill="#d9dfe4"/>
+      <rect x="20" y="25" width="320" height="300"
+            fill="#f0f2f4"/>
+      <rect x="35" y="40" width="140" height="240"
+            fill="#b5cedb"/>
+      <path d="M105 40v240M35 160h140"
+            stroke="#f7f8fa" stroke-width="9"/>
+      <rect x="190" y="70" width="120" height="175"
+            rx="5" fill="#d0d7db"/>
+      <rect y="325" width="360" height="175"
+            fill="#b5bfc7"/>
+      <path d="M100 335q5-75 80-75t80 75v120H100Z"
+            fill="#f7f8fa"/>
+      <ellipse cx="180" cy="223" rx="43" ry="52"
+               fill="#e6bda5"/>
+      <path d="M137 222q-3-69 43-69 49 0 43 69
+               q-18-24-43-24-27 0-43 24Z"
+            fill="#292a2c"/>
+      <rect x="40" y="390" width="280" height="25"
+            rx="6" fill="#6c7984"/>
+      <rect x="85" y="335" width="190" height="95"
+            rx="7" fill="#424c57"/>
+      <rect x="93" y="343" width="174" height="78"
+            rx="3" fill="#8baab9"/>
+      <rect y="440" width="360" height="60"
+            fill="#e9ecee"/>
+    </svg>
+  `;
+}
+
+function renderSamsungCamera(){
+  return `
+    <div class="samsung-camera">
+
+      <div class="samsung-camera-top">
+        <span>⚡</span>
+        <span>3:4</span>
+        <span>12M</span>
+        <span>⋮</span>
+      </div>
+
+      <div class="samsung-viewfinder">
+        ${ep4PhotoSVG()}
+        <div class="samsung-focus"></div>
+      </div>
+
+      <div class="samsung-camera-bottom">
+        <div class="samsung-zoom">
+          <span>0.6</span>
+          <strong>1x</strong>
+          <span>2</span>
+        </div>
+
+        <div class="samsung-modes">
+          <span>PORTRAIT</span>
+          <strong>PHOTO</strong>
+          <span>VIDEO</span>
+          <span>MORE</span>
+        </div>
+
+        <div class="samsung-shutter-row">
+          <button data-app="แกลเลอรี"
+                  aria-label="แกลเลอรี่">
+            ${icon('gallery')}
+          </button>
+
+          <button class="samsung-shutter"
+                  data-ep4-shutter="1"
+                  aria-label="ถ่ายภาพ">
+            <span></span>
+          </button>
+
+          <button data-camera-flip="1"
+                  aria-label="สลับกล้อง">
+            ${icon('camera')}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSamsungGallery(){
+  const taken=save.flags.ep4PhotoTaken;
+
+  return `
+    <div class="samsung-gallery">
+
+      <div class="samsung-gallery-title">
+        <h2>รูปภาพ</h2>
+        ${icon('gallery')}
+      </div>
+
+      <div class="samsung-gallery-date">
+        14 เมษายน
+      </div>
+
+      <div class="samsung-photo-grid">
+        ${
+          taken
+          ? `<button class="samsung-photo"
+                     data-ep4-photo="1">
+               ${ep4PhotoSVG()}
+             </button>`
+          : `<div class="samsung-gallery-empty">
+               ยังไม่มีรูปภาพ
+             </div>`
+        }
+      </div>
+
+      ${
+        taken
+        ? `<div class="samsung-photo-send">
+             <p>ภาพถ่ายขณะทำงาน</p>
+             <button data-ep4-send-photo="1">
+               ส่งรูปให้พี่การิน
+             </button>
+           </div>`
+        : ''
+      }
+
+      <div class="samsung-gallery-tabs">
+        <span class="selected">รูปภาพ</span>
+        <span>อัลบั้ม</span>
+        <span>เรื่องราว</span>
+      </div>
+
+    </div>
+  `;
+}
 
 function render(){
 let html='';
@@ -3692,13 +4073,24 @@ html=`
 <span>${a[0]}</span>
         </button>
       `;
-    }).join('')}
+        }).join('')}
+  </div>
+
+  <div class="home-dock">
+    <button class="dock-camera"
+            data-app="กล้อง"
+            aria-label="กล้อง">
+      <span class="dock-camera-icon">
+        ${save.unlock.includes('กล้อง')
+          ? icon('camera')
+          : icon('lock')}
+      </span>
+    </button>
   </div>
 
 </div>
 `;
 }
-
 
 else if(page==='LINE'){
   html=renderLine();
@@ -3711,6 +4103,12 @@ html=renderChat();
 }
 else if(page==='ปฏิทิน'){
   html=renderCalendar();
+}
+else if(page==='กล้อง'){
+  html=renderSamsungCamera();
+}
+else if(page==='แกลเลอรี'){
+  html=renderSamsungGallery();
 }
 else if(page==='Maps'){
   html=renderMaps();
@@ -4073,9 +4471,10 @@ function cancelledMessage(){
 function renderChat(){
   lastBubbleSender=null;
 
-  const names={
+   const names={
     duj:'พี่ดุจ',
     achi:'อชิ',
+    karin:'พี่การิน',
     office:'TOYOKAWA',
     sales:'ทีมฝ่ายขาย'
   };
@@ -4233,11 +4632,59 @@ if(chat==='achi'){
         item.text+
         '</button>'
       ).join('');
-
     }
   }
-  
-  if(chat==='pai'){
+
+  // EP.04 — 14 เมษายน
+  if(save.flags.ep4Day14Started){
+
+    b+='<div class="day">14 เม.ย.</div>';
+
+    b+=bubble(
+      'คุณการันต์ครับ ผมถึงที่ทำงานแล้วนะครับ'
+    );
+
+    const breakfastOptions=[
+      {
+        text:'อชิกินข้าวเช้ามาหรือยังครับ',
+        answer:'ยังเลยครับ ผมรีบออกมานิดหน่อย'
+      },
+      {
+        text:'ผมซื้ออาหารเช้ามาเผื่ออชิด้วยนะครับ',
+        answer:'จริงเหรอครับ ขอบคุณมากนะครับ'
+      },
+      {
+        text:'วันนี้อยากกินอะไรเป็นพิเศษไหมครับ',
+        answer:'อะไรก็ได้ครับ ผมไม่ค่อยเลือกกิน'
+      }
+    ];
+
+    const selectedBreakfast=save.flags.ep4BreakfastReply;
+
+    if(selectedBreakfast!==''){
+
+      const picked=breakfastOptions[Number(selectedBreakfast)];
+
+      if(picked){
+        b+=bubble(picked.text,true);
+        b+=bubble(picked.answer);
+        b+=bubble('เดี๋ยวผมจัดการให้นะครับ',true);
+        b+=bubble('ขอบคุณครับ');
+      }
+
+    }else{
+
+      choices=breakfastOptions.map((item,i)=>
+        '<button class="choice" '+
+        'data-ep4-breakfast="'+i+'">'+
+        item.text+
+        '</button>'
+      ).join('');
+    }
+  }
+}
+
+if(chat==='pai'){
 
   b+=bubble('ปายครับ งานด่วนวันนี้ให้ทำอะไรครับ',true);
   b+=bubble('ทำไมพี่การันต์ถึงถามเหรอคะ');
@@ -4259,7 +4706,25 @@ if(chat==='achi'){
     b+=ep2LogoForm();
   }
 }
+if(chat==='karin'){
 
+  b='<div class="day">14 เม.ย.</div>';
+
+  b+=bubble('การันต์ พี่ขอไปนอนคอนโดด้วยหน่อยสิ');
+  b+=bubble('พี่จะมาอีกแล้วเหรอครับ',true);
+  b+=bubble('ก็พี่อยากไปอยู่ด้วยนี่');
+  b+=bubble('ตอนนี้ผมทำงานอยู่ครับ',true);
+  b+=bubble('ไม่เชื่อ');
+  b+=bubble('ทำงานจริง ๆ ครับ',true);
+  b+=bubble('งั้นถ่ายรูปมาให้พี่ดูหน่อยสิ');
+
+  if(save.flags.ep4PhotoSent){
+
+    b+=bubble('ส่งรูปภาพให้พี่แล้วนะครับ',true);
+    b+=bubble('โอเค ๆ พี่เชื่อแล้วว่าทำงานอยู่');
+    b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');
+  }
+}
 if(chat==='office'){
 
   b='<div class="day">30 ม.ค.</div>';
@@ -4378,8 +4843,9 @@ function showGameBanner(who,message){
       '<span class="game-banner-text">'+
         '<small>LINE · ตอนนี้</small>'+
         '<strong>'+
-  (who==='office'?'toyokawa':who==='duj'?'พี่ดุจ':'อชิ')+
-'</strong>'+
+ (who==='office'?'TOYOKAWA':
+ who==='duj'?'พี่ดุจ':
+ who==='karin'?'พี่การิน':'อชิ')+'</strong>'+
         '<span>'+message+'</span>'+
       '</span>'+
     '</button>';
@@ -4541,11 +5007,16 @@ if(bannerChat){
 
   const targetChat=bannerChat.dataset.bannerChat;
 
-  chat=targetChat;
+    chat=targetChat;
   page='chat';
 
   document.getElementById('gameBanner').innerHTML='';
 
+  if(chat==='karin' && save.flags.ep4KarinShown){
+    save.flags.ep4KarinRead=true;
+    unlock('กล้อง');
+    persist();
+  }
   if(chat==='office' && save.flags.ep2Completed){
     save.flags.ep3OutingRead=true;
     unlock('ปฏิทิน');
@@ -4779,6 +5250,12 @@ if(lg && page==='LINE'){
 
 if(lc && page==='LINE'){
   chat=lc.dataset.lineChat;
+
+  if(chat==='karin' && save.flags.ep4KarinShown){
+    save.flags.ep4KarinRead=true;
+    unlock('กล้อง');
+    persist();
+  }
     if(chat==='duj' && save.flags.ep3OutingRead){
 
     if(!save.flags.ep4MapUnlocked){
@@ -4913,6 +5390,80 @@ if(pinBtn && page==='pin'){
     return;
   }
 }
+
+// EP.04 — ตอบอชิเรื่องอาหารเช้า
+const breakfastBtn=e.target.closest('[data-ep4-breakfast]');
+
+if(breakfastBtn && page==='chat' && chat==='achi'){
+
+  if(save.flags.ep4BreakfastReply!=='')return;
+
+  const choice=Number(breakfastBtn.dataset.ep4Breakfast);
+
+  if(![0,1,2].includes(choice))return;
+
+  save.flags.ep4BreakfastReply=String(choice);
+  save.flags.ep4KarinShown=true;
+
+  persist();
+  render();
+
+  showGameBanner(
+    'karin',
+    'การันต์ พี่ขอไปนอนคอนโดด้วยหน่อยสิ'
+  );
+  return;
+}
+// EP.04 — ถ่ายภาพ
+const shutter=e.target.closest('[data-ep4-shutter]');
+
+if(shutter && page==='กล้อง'){
+
+  if(!save.flags.ep4KarinRead)return;
+
+  save.flags.ep4PhotoTaken=true;
+
+  unlock('แกลเลอรี');
+  persist();
+
+  page='แกลเลอรี';
+  render();
+
+  return;
+}
+
+// เปิดภาพในแกลเลอรี่
+const photo=e.target.closest('[data-ep4-photo]');
+
+if(photo && page==='แกลเลอรี'){
+
+  if(!save.flags.ep4PhotoTaken)return;
+
+  popup(
+    'ภาพถ่ายวันที่ 14 เมษายน',
+    'ภาพอชิกำลังทำงานอยู่ที่สำนักงาน'
+  );
+
+  return;
+}
+
+// ส่งภาพให้พี่การิน
+const sendPhoto=e.target.closest('[data-ep4-send-photo]');
+
+if(sendPhoto && page==='แกลเลอรี'){
+
+  if(!save.flags.ep4PhotoTaken)return;
+
+  save.flags.ep4PhotoSent=true;
+  persist();
+
+  chat='karin';
+  page='chat';
+  render();
+
+  return;
+}
+
 // EP.04 — เลือกคำตอบสุดท้ายให้อชิ
 const ep4Reply=e.target.closest('[data-ep4-achi-reply]');
 
@@ -4926,11 +5477,16 @@ if(ep4Reply){
 
   if(![0,1,2].includes(index))return;
 
-  save.flags.ep4AchiFinalReply=String(index);
+   save.flags.ep4AchiFinalReply=String(index);
+  save.flags.ep4Day14Started=true;
 
   persist();
   render();
 
+  showGameBanner(
+    'achi',
+    'คุณการันต์ครับ ผมถึงที่ทำงานแล้วนะครับ'
+  );
   return;
 }
 

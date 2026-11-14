@@ -3186,6 +3186,91 @@ button{
   margin-bottom:5px;
 }
 
+/* ===== EP.07 LOVE EFFECTS ===== */
+
+.ep7-love-choices{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  padding:10px 0;
+}
+
+.ep7-love-label{
+  text-align:center;
+  font-size:12px;
+  color:#707783;
+  margin-bottom:5px;
+}
+
+.ep7-love-effect{
+  position:absolute;
+  inset:0;
+  z-index:900;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.ep7-love-effect svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.ep7-falling-piece{
+  animation:ep7Fall var(--duration) linear
+    var(--delay) both;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+
+@keyframes ep7Fall{
+  0%{
+    transform:translate(0,-100px) rotate(0deg);
+    opacity:0;
+  }
+  8%{opacity:1}
+  85%{opacity:1}
+  100%{
+    transform:
+      translate(var(--drift),1050px)
+      rotate(var(--spin));
+    opacity:0;
+  }
+}
+
+.ep7-firework-burst{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:ep7Burst 1.6s ease-out
+    var(--delay) both;
+}
+
+@keyframes ep7Burst{
+  0%{
+    opacity:0;
+    scale:.05;
+  }
+  25%{
+    opacity:1;
+    scale:1;
+  }
+  70%{
+    opacity:1;
+    scale:1.2;
+  }
+  100%{
+    opacity:0;
+    scale:1.45;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ep7-falling-piece,
+  .ep7-firework-burst{
+    animation-duration:.01ms;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -6603,6 +6688,184 @@ function ep5KarinResponse(){
   ];
 }
 
+/* ===== EP.07 LOVE CELEBRATION ===== */
+
+function ep7CreateLoveEffect(type){
+  const NS='http://www.w3.org/2000/svg';
+
+  const layer=document.createElement('div');
+  layer.className='ep7-love-effect';
+
+  const svg=document.createElementNS(NS,'svg');
+  svg.setAttribute('viewBox','0 0 360 780');
+  svg.setAttribute('preserveAspectRatio','none');
+
+  layer.appendChild(svg);
+
+  const make=(tag,attrs)=>{
+    const el=document.createElementNS(NS,tag);
+
+    Object.entries(attrs).forEach(([key,value])=>{
+      el.setAttribute(key,String(value));
+    });
+
+    return el;
+  };
+
+  if(type==='rainbow' || type==='flowers'){
+
+    const colors=type==='rainbow'
+      ? [
+          '#ff648c','#ffb04c','#ffe36b',
+          '#7dd9a4','#75baff','#bd91ed'
+        ]
+      : [
+          '#f6a4bf','#f9c3d5','#e98db3',
+          '#fff0f4','#dca2c8'
+        ];
+
+    for(let i=0;i<85;i++){
+      const x=Math.random()*360;
+      const y=-Math.random()*780-30;
+
+      const group=make('g',{
+        class:'ep7-falling-piece'
+      });
+
+      group.style.setProperty(
+        '--duration',
+        `${3+Math.random()*2}s`
+      );
+
+      group.style.setProperty(
+        '--delay',
+        `${Math.random()*1.2}s`
+      );
+
+      group.style.setProperty(
+        '--drift',
+        `${Math.random()*130-65}px`
+      );
+
+      group.style.setProperty(
+        '--spin',
+        `${Math.random()*900-450}deg`
+      );
+
+      const color=colors[
+        Math.floor(Math.random()*colors.length)
+      ];
+
+      let piece;
+
+      if(type==='rainbow'){
+        piece=make('rect',{
+          x:x,
+          y:y,
+          width:5+Math.random()*7,
+          height:9+Math.random()*10,
+          rx:1.5,
+          fill:color
+        });
+      }else{
+        piece=make('path',{
+          d:`M ${x} ${y}
+             C ${x-13} ${y-12},
+               ${x-19} ${y+8},
+               ${x} ${y+20}
+             C ${x+19} ${y+8},
+               ${x+13} ${y-12},
+               ${x} ${y} Z`,
+          fill:color
+        });
+      }
+
+      group.appendChild(piece);
+      svg.appendChild(group);
+    }
+  }
+
+  if(type==='fireworks'){
+
+    const colors=[
+      '#ff87b4',
+      '#ffd36f',
+      '#8ac8ff',
+      '#d7a0ff',
+      '#a5e6cf'
+    ];
+
+    const positions=[
+      [75,170],[270,130],[170,280],
+      [85,400],[280,450],[180,570],
+      [60,650],[295,680]
+    ];
+
+    positions.forEach(([x,y],i)=>{
+      const group=make('g',{
+        class:'ep7-firework-burst',
+        transform:`translate(${x} ${y})`
+      });
+
+      group.style.setProperty(
+        '--delay',
+        `${i*.38}s`
+      );
+
+      for(let j=0;j<14;j++){
+        const a=j*Math.PI*2/14;
+
+        group.appendChild(make('line',{
+          x1:Math.cos(a)*9,
+          y1:Math.sin(a)*9,
+          x2:Math.cos(a)*38,
+          y2:Math.sin(a)*38,
+          stroke:colors[i%colors.length],
+          'stroke-width':3.5,
+          'stroke-linecap':'round'
+        }));
+      }
+
+      svg.appendChild(group);
+    });
+  }
+
+  return layer;
+}
+
+function ep7PlayLoveEffect(type){
+  if(page!=='chat' || chat!=='achi')return;
+
+  const chatBody=document.getElementById(
+    'lineChatBody'
+  );
+
+  if(!chatBody)return;
+
+  const host=chatBody.closest('.line-chat') ||
+    chatBody.parentElement;
+
+  if(!host)return;
+
+  const existing=host.querySelector(
+    '.ep7-love-effect'
+  );
+
+  if(existing)existing.remove();
+
+  if(getComputedStyle(host).position==='static'){
+    host.style.position='relative';
+  }
+
+  const layer=ep7CreateLoveEffect(type);
+
+  host.appendChild(layer);
+
+  setTimeout(()=>{
+    layer.remove();
+  },6000);
+}
+
 function renderChat(){
   lastBubbleSender=null;
    const names={
@@ -7005,6 +7268,7 @@ if(
   }
 }
 
+
 /* ===== EP.07 ACHI AFTER HELICOPTER ===== */
 
 if(
@@ -7014,7 +7278,7 @@ if(
   b+=`<div class="day">18 เม.ย. · หลังขึ้นเฮลิคอปเตอร์</div>`;
 
   b+=bubble(
-    'พี่การันต์ครับ ขอโทษนะครับที่ผมเป็นลมไป'
+    'การันต์ครับ ขอโทษนะครับที่ผมเป็นลมไป'
   );
 
   b+=bubble(
@@ -7030,18 +7294,18 @@ if(
         </div>
 
         <button class="choice"
-          data-ep7-love="1">
+          data-ep7-love="rainbow">
           อชิครับ เป็นแฟนกับผมนะครับ
         </button>
 
         <button class="choice"
-          data-ep7-love="2">
-          ต่อจากนี้ ให้ผมได้ดูแลอชิ
-          ในฐานะแฟนได้ไหมครับ
+          data-ep7-love="flowers">
+          ต่อจากนี้ ให้ผมได้อยู่ข้าง ๆ
+          อชิในฐานะแฟนได้ไหมครับ
         </button>
 
         <button class="choice"
-          data-ep7-love="3">
+          data-ep7-love="fireworks">
           ผมอยากอยู่ข้าง ๆ อชิ
           ไม่ใช่แค่วันนี้ แต่ทุกวันเลยครับ
           เป็นแฟนกับผมนะ
@@ -7057,11 +7321,11 @@ if(
     );
 
     b+=bubble(
-      'ตกลงครับพี่การันต์'
+      'ตกลงครับ การันต์'
     );
 
     b+=bubble(
-      'ผมก็อยากเป็นแฟนพี่การันต์เหมือนกันครับ'
+      'ผมก็อยากเป็นแฟนการันต์เหมือนกันครับ'
     );
   }
 }
@@ -7293,7 +7557,6 @@ document.addEventListener('change',function(e){
 document.addEventListener('click',function(e){
 
 /* ===== EP.07 INTERACTIONS ===== */
-
 /* ===== EP.07 ASK ACHI TO BE BOYFRIEND ===== */
 
 const ep7Love=e.target.closest(
@@ -7308,23 +7571,30 @@ if(
   !save.flags.ep7Wish
 ){
   const loveMessages={
-    '1':'อชิครับ เป็นแฟนกับผมนะครับ',
+    rainbow:
+      'อชิครับ เป็นแฟนกับผมนะครับ',
 
-    '2':'ต่อจากนี้ ให้ผมได้ดูแลอชิในฐานะแฟนได้ไหมครับ',
+    flowers:
+      'ต่อจากนี้ ให้ผมได้อยู่ข้าง ๆ อชิในฐานะแฟนได้ไหมครับ',
 
-    '3':'ผมอยากอยู่ข้าง ๆ อชิ ไม่ใช่แค่วันนี้ แต่ทุกวันเลยครับ เป็นแฟนกับผมนะ'
+    fireworks:
+      'ผมอยากอยู่ข้าง ๆ อชิ ไม่ใช่แค่วันนี้ แต่ทุกวันเลยครับ เป็นแฟนกับผมนะ'
   };
 
-  const selected=loveMessages[
-    ep7Love.dataset.ep7Love
-  ];
+  const type=ep7Love.dataset.ep7Love;
+  const selected=loveMessages[type];
 
   if(!selected)return;
 
   save.flags.ep7Wish=selected;
-  persist();
+  save.flags.ep7LoveEffect=type;
 
+  persist();
   render();
+
+  // แสดงเอฟเฟกต์ตามตัวเลือกหลังอชิตอบตกลง
+  ep7PlayLoveEffect(type);
+
   return;
 }
 

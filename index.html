@@ -7649,6 +7649,7 @@ if(ep7FlowerConfirm && page==='EP7Flowers'){
   return;
 }
 
+
 /* เลือกเสื้อให้อชิ */
 
 const ep7Shirt=e.target.closest(
@@ -7658,12 +7659,13 @@ const ep7Shirt=e.target.closest(
 if(
   ep7Shirt &&
   page==='Instagram' &&
-igScreen==='dm'
+  igScreen==='ep7shop'
 ){
   ep7ShirtDraft=ep7Shirt.dataset.ep7Shirt;
   render();
   return;
 }
+
 
 /* ยืนยันเสื้อ */
 

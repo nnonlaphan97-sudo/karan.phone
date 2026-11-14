@@ -1793,6 +1793,142 @@ button{
   margin-top:19px;
   flex-shrink:0;
 }
+  
+/* ===== EP.04 INTERACTIVE MAPS ===== */
+
+.maps-app{
+  height:100%;
+  padding-top:36px;
+  display:flex;
+  flex-direction:column;
+  background:#f7f9fc;
+  color:#202631;
+  overflow:hidden;
+}
+
+.maps-header{
+  flex-shrink:0;
+  padding:13px 16px;
+  background:#fff;
+  border-bottom:1px solid #e5e8ed;
+}
+
+.maps-title{
+  font-size:21px;
+  font-weight:700;
+}
+
+.maps-subtitle{
+  margin-top:5px;
+  font-size:12px;
+  color:#737d8b;
+}
+
+.maps-clue{
+  flex-shrink:0;
+  padding:13px 16px;
+  background:#fff;
+  border-bottom:1px solid #e5e8ed;
+  font-size:13px;
+  line-height:1.65;
+}
+
+.maps-clue strong{
+  display:block;
+  margin-bottom:4px;
+  font-size:14px;
+}
+
+.maps-viewport{
+  flex:1;
+  min-height:0;
+  position:relative;
+  overflow:auto;
+  background:#e8eee7;
+  scrollbar-width:none;
+  touch-action:pan-x pan-y;
+}
+
+.maps-viewport::-webkit-scrollbar{
+  display:none;
+}
+
+.maps-world{
+  position:relative;
+  flex-shrink:0;
+}
+
+.maps-world svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.maps-pin{
+  position:absolute;
+  transform:translate(-50%,-100%);
+  border:2px solid white;
+  border-radius:22px;
+  background:#fff;
+  color:#253044;
+  box-shadow:0 3px 12px #0003;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+  z-index:2;
+}
+
+.maps-pin.active{
+  background:#2877dc;
+  color:white;
+}
+
+.maps-pin:active{
+  transform:translate(-50%,-100%) scale(.94);
+}
+
+.maps-zoom{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  z-index:4;
+}
+
+.maps-zoom button{
+  width:42px;
+  height:42px;
+  border:1px solid #dce1e8;
+  border-radius:13px;
+  background:white;
+  color:#27364b;
+  font-size:25px;
+  box-shadow:0 2px 8px #0002;
+}
+
+.maps-feedback{
+  flex-shrink:0;
+  min-height:72px;
+  padding:13px 16px 20px;
+  background:#fff;
+  border-top:1px solid #e6e9ef;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.maps-feedback strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:3px;
+}
+
+.maps-finish{
+  color:#18794e;
+}
+
 </style>
 </head>
 <body>
@@ -1889,6 +2025,7 @@ bag:'<path d="M4 8h16l-1 13H5L4 8ZM9 9V6a3 3 0 0 1 6 0v3"/>',
 web:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/>',
 clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/>',
 file:'<path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9H3z"/>',
+map:'<path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/><circle cx="15" cy="11" r="2" fill="currentColor" stroke="none"/>',  
 user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
 
 mute:'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/>',
@@ -1916,7 +2053,8 @@ const appdefs=[
 ['GrabFood','Grab Food','#06c755'],
 ['เบราว์เซอร์','web','#6d9fc4'],
 ['นาฬิกา','clock','#938dcf'],
-['ไฟล์','file','#899cb7']
+['ไฟล์','file','#899cb7'],
+['Maps','map','#4c95e8']
 ];
 
 const key='karan_phone_v2';
@@ -2042,7 +2180,17 @@ save.flags.ep2InviteHistory ??= [];
 save.flags.ep3OutingAnnounced ??= false;
 save.flags.ep3OutingRead ??= false;
 save.flags.ep3NotificationShown ??= false;
+  /* ===== EP.04 NOTIFICATIONS ===== */
+save.flags.ep4AchiBannerShown ??= false;
+save.flags.ep4AchiCancelledRead ??= false;
+save.flags.ep4DujBannerShown ??= false;
+/* ===== EP.04 MAP GAME ===== */
+save.flags.ep4MapUnlocked ??= false;
+save.flags.ep4MapStage ??= 0;
+save.flags.ep4MapComplete ??= false;
 
+let mapZoom=1;
+let mapFeedback='';
 let pinInput='';
 const PHONE_PIN='1906';
 const screen=document.getElementById('screen');
@@ -2973,6 +3121,239 @@ function renderCalendar(){
   '</div>';
 }
 
+/* ===== EP.04 MAPS ===== */
+
+const mapLocations=[
+  {id:'pier',name:'ท่าเรือ',x:24,y:72},
+  {id:'bts',name:'สถานี BTS',x:68,y:34},
+  {id:'houseA',name:'บ้าน A',x:36,y:24},
+  {id:'houseB',name:'บ้าน B',x:77,y:72},
+  {id:'houseC',name:'บ้าน C',x:47,y:60}
+];
+
+function renderMaps(){
+
+  const stage=save.flags.ep4MapStage;
+  const size=Math.round(720*mapZoom);
+
+  const clues=[
+    {
+      title:'เบาะแสที่ 1 · เส้นทางเรือ',
+      text:'อชิใช้เรือเป็นส่วนหนึ่งของการเดินทางไปทำงาน ลองหาท่าเรือบนแผนที่'
+    },
+    {
+      title:'เบาะแสที่ 2 · รถไฟฟ้า',
+      text:'หลังจากนั่งเรือ อชิเดินทางต่อด้วย BTS ลองหาสถานีที่เชื่อมกับเส้นทาง'
+    },
+    {
+      title:'เบาะแสที่ 3 · บ้านอชิ',
+      text:'พี่ดุจบอกว่าบ้านอยู่ในซอยใกล้คลอง มีสวนเล็ก ๆ อยู่ใกล้ทางเข้า และไม่ใช่บ้านติดถนนใหญ่'
+    },
+    {
+      title:'พบจุดหมายแล้ว',
+      text:'คุณการันต์ค้นพบเส้นทางไปบ้านอชิแล้ว'
+    }
+  ];
+
+  const clue=clues[Math.min(stage,3)];
+
+  const pins=mapLocations.map(p=>{
+    const active=
+      (stage===0 && p.id==='pier') ||
+      (stage===1 && p.id==='bts') ||
+      (stage===2 && p.id.startsWith('house'));
+
+    return `
+      <button
+        class="maps-pin ${active?'active':''}"
+        data-map-point="${p.id}"
+        style="left:${p.x}%;top:${p.y}%"
+      >${p.name}</button>
+    `;
+  }).join('');
+
+  return `
+    <div class="maps-app">
+
+      <div class="maps-header">
+        <div class="maps-title">Maps</div>
+        <div class="maps-subtitle">
+          13 เมษายน · ค้นหาเส้นทางไปบ้านอชิ
+        </div>
+      </div>
+
+      <div class="maps-clue">
+        <strong>${clue.title}</strong>
+        ${clue.text}
+      </div>
+
+      <div class="maps-viewport" id="mapsViewport">
+
+        <div class="maps-world"
+             style="width:${size}px;height:${size}px">
+
+          <svg viewBox="0 0 720 720"
+               xmlns="http://www.w3.org/2000/svg">
+
+            <rect width="720" height="720"
+                  fill="#e8eee4"/>
+
+            <!-- พื้นที่ชุมชน -->
+            <g fill="#f8f3e8" stroke="#d7d7cc"
+               stroke-width="2">
+              <rect x="40" y="60" width="170" height="135" rx="12"/>
+              <rect x="280" y="45" width="190" height="165" rx="12"/>
+              <rect x="515" y="75" width="150" height="140" rx="12"/>
+              <rect x="45" y="310" width="155" height="180" rx="12"/>
+              <rect x="280" y="310" width="180" height="160" rx="12"/>
+              <rect x="520" y="335" width="145" height="130" rx="12"/>
+              <rect x="290" y="545" width="180" height="130" rx="12"/>
+              <rect x="520" y="540" width="155" height="130" rx="12"/>
+            </g>
+
+            <!-- ถนน -->
+            <g stroke="#fff" fill="none"
+               stroke-linecap="round">
+              <path d="M0 245H720" stroke-width="35"/>
+              <path d="M250 0V720" stroke-width="30"/>
+              <path d="M490 0V720" stroke-width="28"/>
+              <path d="M0 515H720" stroke-width="28"/>
+            </g>
+
+            <g stroke="#d3d7d9" stroke-width="2"
+               stroke-dasharray="8 9" fill="none">
+              <path d="M0 245H720"/>
+              <path d="M250 0V720"/>
+              <path d="M490 0V720"/>
+              <path d="M0 515H720"/>
+            </g>
+
+            <!-- คลอง -->
+            <path
+              d="M0 560 C130 490 160 590 280 540
+                 S500 490 720 580"
+              fill="none"
+              stroke="#94d0e7"
+              stroke-width="43"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M0 560 C130 490 160 590 280 540
+                 S500 490 720 580"
+              fill="none"
+              stroke="#bde5f3"
+              stroke-width="29"
+              stroke-linecap="round"
+            />
+
+            <!-- แนวรถไฟฟ้า -->
+            <path
+              d="M40 100 L690 315"
+              stroke="#7194d3"
+              stroke-width="9"
+              fill="none"
+              stroke-dasharray="15 8"
+            />
+
+            <!-- สวนสาธารณะ -->
+            <rect x="535" y="425"
+                  width="105" height="75"
+                  rx="14" fill="#a9d6a4"/>
+
+            <g fill="#6dab76">
+              <circle cx="555" cy="445" r="12"/>
+              <circle cx="603" cy="449" r="15"/>
+              <circle cx="581" cy="476" r="13"/>
+            </g>
+
+            <!-- อาคาร -->
+            <g fill="#ddd8ca">
+              <rect x="80" y="110" width="65" height="43" rx="5"/>
+              <rect x="325" y="100" width="82" height="60" rx="5"/>
+              <rect x="550" y="125" width="65" height="55" rx="5"/>
+              <rect x="82" y="370" width="65" height="70" rx="5"/>
+              <rect x="326" y="355" width="83" height="63" rx="5"/>
+              <rect x="325" y="590" width="88" height="54" rx="5"/>
+              <rect x="550" y="593" width="74" height="48" rx="5"/>
+            </g>
+
+            <g font-family="Arial,sans-serif"
+               font-size="16" fill="#687781">
+              <text x="35" y="290">ถนนสายหลัก</text>
+              <text x="90" y="605">คลอง</text>
+              <text x="520" y="412">สวนเล็ก</text>
+              <text x="285" y="75">ย่านชุมชน</text>
+            </g>
+          </svg>
+
+          ${pins}
+
+        </div>
+      </div>
+
+      <div class="maps-zoom">
+        <button data-map-zoom="in" aria-label="ซูมเข้า">+</button>
+        <button data-map-zoom="out" aria-label="ซูมออก">−</button>
+      </div>
+
+      <div class="maps-feedback" id="mapsFeedback">
+        <strong class="${stage===3?'maps-finish':''}">
+          ${stage===3?'ค้นหาสำเร็จ':'กำลังค้นหาเส้นทาง'}
+        </strong>
+        ${mapFeedback || (
+          stage===3
+            ? 'การันต์กำลังเดินทางไปหาอชิ'
+            : 'เลื่อนแผนที่และแตะตำแหน่งที่คิดว่าถูกต้อง'
+        )}
+      </div>
+
+    </div>
+  `;
+}
+
+function selectMapPoint(id){
+
+  const stage=save.flags.ep4MapStage;
+
+  if(stage===0){
+
+    if(id==='pier'){
+      save.flags.ep4MapStage=1;
+      mapFeedback='พบท่าเรือแล้ว ต่อไปหาสถานี BTS';
+    }else{
+      mapFeedback='จุดนี้ยังไม่ใช่ท่าเรือ ลองมองหาคลอง';
+    }
+
+  }else if(stage===1){
+
+    if(id==='bts'){
+      save.flags.ep4MapStage=2;
+      mapFeedback='พบสถานี BTS แล้ว ต่อไปเลือกบ้านจากเบาะแส';
+    }else{
+      mapFeedback='ยังไม่ใช่สถานี BTS ที่ต้องการ';
+    }
+
+  }else if(stage===2){
+
+    if(id==='houseB'){
+      save.flags.ep4MapStage=3;
+      save.flags.ep4MapComplete=true;
+      mapFeedback='บ้านอยู่ใกล้คลองและสวนเล็ก ๆ ตรงกับเบาะแสของพี่ดุจ';
+    }else if(id.startsWith('house')){
+      mapFeedback='บ้านหลังนี้ไม่ตรงกับเบาะแส ลองตรวจตำแหน่งสวนและคลอง';
+    }else{
+      mapFeedback='ตอนนี้ต้องเลือกบ้าน ไม่ใช่จุดเดินทาง';
+    }
+
+  }else{
+    mapFeedback='คุณพบเส้นทางไปบ้านอชิแล้ว';
+  }
+
+  persist();
+  render();
+}
+
 function render(){
 let html='';
 
@@ -3091,6 +3472,9 @@ html=renderChat();
 else if(page==='ปฏิทิน'){
   html=renderCalendar();
 }
+else if(page==='Maps'){
+  html=renderMaps();
+}
 else if(page==='คำสั่งซื้อ'){
 html=appwrap('คำสั่งซื้อ','<div class="content"><div class="entry"><b>'+icon('cake')+' เค้กวันเกิด</b><small>สั่งล่วงหน้า · รับ 30 มกราคม</small><p>ผู้รับสินค้า: พี่ดุจ</p><button class="action" data-task="order">ตรวจสอบรายละเอียด</button></div><div class="entry"><b>อาหารเย็น</b><small>30 มกราคม · จัดส่งที่สำนักงาน</small><p>อาหาร 2 ชุด</p><button class="action" data-task="dinner">เปิดรายการอาหาร</button></div></div>');
 }
@@ -3164,7 +3548,28 @@ if(
     'พี่ดุจ: ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ'
   );
 }
+  showGameBanner(
+    'office',
+    'พี่ดุจ: ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ'
+  );
+}
 
+/* ===== EP.04 ACHI NOTIFICATION ===== */
+if(
+  save.flags.ep3OutingRead &&
+  !save.flags.ep4AchiBannerShown &&
+  (page==='home' || page==='LINE')
+){
+  save.flags.ep4AchiBannerShown=true;
+  persist();
+
+  showGameBanner(
+    'achi',
+    'วันนี้ผมป่วย ไม่สบาย'
+  );
+}
+
+}
 }
 
 let lastBubbleSender = null;
@@ -3439,10 +3844,66 @@ function renderChat(){
     b+=bubble('ได้เลยจ้า');
     b+=bubble('เดี๋ยวพี่จัดการให้');
     b+=bubble('ขอบคุณครับ',true);
+    if(save.flags.ep3OutingRead){
+
+  b+='<div class="day">13 เม.ย.</div>';
+
+  b+=bubble(
+    'พี่ดุจครับ พอจะมีที่อยู่บ้านอชิไหมครับ',true
+  );
+
+  b+=bubble(
+    'อชิไม่สบายเหรอจ๊ะ'
+  );
+
+  b+=bubble(
+    'ครับ ผมเป็นห่วง เลยอยากไปดูอาการหน่อย',true
+  );
+
+  b+=bubble(
+    'พี่ไม่แน่ใจเลขที่บ้านนะ แต่จำได้ว่าอยู่ในซอยใกล้คลอง'
+  );
+
+  b+=bubble(
+    'แถวทางเข้ามีสวนเล็ก ๆ ด้วยจ้ะ'
+  );
+
+  b+=bubble(
+    'ขอบคุณครับพี่ดุจ เดี๋ยวผมลองหาทางไปครับ',true
+  );
+}
   }
 
 if(chat==='achi'){
+  if(save.flags.ep4AchiCancelledRead){
 
+  b+='<div class="day">13 เม.ย.</div>';
+
+  b+=bubble('ยกเลิกข้อความแล้ว');
+
+  b+=bubble(
+    'อชิครับ เมื่อกี้ผมเห็นข้อความแล้วนะครับ',true
+  );
+
+  b+=bubble(
+    'ไม่สบายเหรอครับ เป็นอะไรมากหรือเปล่า',true
+  );
+
+}
+if(save.flags.ep3OutingRead){
+
+  b+='<div class="day">13 เม.ย.</div>';
+
+  b+=bubble('ยกเลิกข้อความแล้ว');
+
+  b+=bubble(
+    'อชิครับ ไม่สบายหรือเปล่าครับ',true
+  );
+
+  b+=bubble(
+    'ผมเป็นห่วงนะครับ',true
+  );
+}
   b+=bubble('สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',true);
   b+=bubble('ขอบคุณครับ');
 
@@ -3688,7 +4149,53 @@ document.addEventListener('input',function(e){
 });
 
 document.addEventListener('click',function(e){
+/* ===== EP.04 MAP INTERACTIONS ===== */
 
+const mapPoint=e.target.closest('[data-map-point]');
+
+if(mapPoint && page==='Maps'){
+  selectMapPoint(mapPoint.dataset.mapPoint);
+  return;
+}
+
+const mapZoomButton=e.target.closest('[data-map-zoom]');
+
+if(mapZoomButton && page==='Maps'){
+
+  const viewport=document.getElementById('mapsViewport');
+
+  const centerX=viewport
+    ? viewport.scrollLeft+viewport.clientWidth/2
+    : 360;
+
+  const centerY=viewport
+    ? viewport.scrollTop+viewport.clientHeight/2
+    : 360;
+
+  const previousZoom=mapZoom;
+
+  if(mapZoomButton.dataset.mapZoom==='in'){
+    mapZoom=Math.min(2.5,mapZoom+.25);
+  }else{
+    mapZoom=Math.max(.75,mapZoom-.25);
+  }
+
+  render();
+
+  const nextViewport=document.getElementById('mapsViewport');
+
+  if(nextViewport){
+    const ratio=mapZoom/previousZoom;
+
+    nextViewport.scrollLeft=
+      centerX*ratio-nextViewport.clientWidth/2;
+
+    nextViewport.scrollTop=
+      centerY*ratio-nextViewport.clientHeight/2;
+  }
+
+  return;
+}
 const calendarSearchToggle=e.target.closest('[data-calendar-search-toggle]');
 
 if(calendarSearchToggle && page==='ปฏิทิน'){
@@ -3741,17 +4248,44 @@ if(calendarDate && page==='ปฏิทิน'){
 const bannerChat=e.target.closest('[data-banner-chat]');
 
 if(bannerChat){
-  chat=bannerChat.dataset.bannerChat;
+
+  const targetChat=bannerChat.dataset.bannerChat;
+
+  chat=targetChat;
   page='chat';
 
   document.getElementById('gameBanner').innerHTML='';
-    if(chat==='office' && save.flags.ep2Completed){
+
+  if(chat==='office' && save.flags.ep2Completed){
     save.flags.ep3OutingRead=true;
     unlock('ปฏิทิน');
-    persist();
   }
-  
+
+  if(chat==='achi' && save.flags.ep4AchiBannerShown){
+
+    save.flags.ep4AchiCancelledRead=true;
+
+  }
+
+  persist();
   render();
+
+  /* เมื่ออ่านแชตอชิแล้ว พี่ดุจส่งข้อความตามมา */
+  if(
+    targetChat==='achi' &&
+    save.flags.ep4AchiCancelledRead &&
+    !save.flags.ep4DujBannerShown
+  ){
+
+    save.flags.ep4DujBannerShown=true;
+    persist();
+
+    showGameBanner(
+      'duj',
+      'การันต์จ๊ะ พี่มีเรื่องจะบอกเกี่ยวกับอชิ'
+    );
+  }
+
   return;
 }
 
@@ -3949,6 +4483,15 @@ if(lg && page==='LINE'){
 
 if(lc && page==='LINE'){
   chat=lc.dataset.lineChat;
+    if(chat==='duj' && save.flags.ep3OutingRead){
+
+    if(!save.flags.ep4MapUnlocked){
+      save.flags.ep4MapUnlocked=true;
+      unlock('Maps');
+      persist();
+    }
+
+  }
     if(chat==='office' && save.flags.ep2Completed){
     save.flags.ep3OutingRead=true;
     unlock('ปฏิทิน');

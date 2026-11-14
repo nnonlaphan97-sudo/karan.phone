@@ -3270,6 +3270,381 @@ button{
     animation-duration:.01ms;
   }
 }
+/* ===== EP.08 SAMSUNG PHONE / ONE UI ===== */
+
+.ep8-phone{
+  position:relative;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding-top:36px;
+  padding-bottom:24px;
+  background:#fafafa;
+  color:#19191d;
+  overflow:hidden;
+  font-family:Arial,'Noto Sans Thai',sans-serif;
+}
+
+.ep8-phone-header{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 22px;
+  min-height:54px;
+}
+
+.ep8-phone-header button,
+.ep8-phone-actions button{
+  border:0;
+  background:transparent;
+  color:#26262b;
+  display:grid;
+  place-items:center;
+  padding:8px;
+}
+
+.ep8-phone-header .ico{
+  width:23px;
+  height:23px;
+}
+
+.ep8-phone-title{
+  flex-shrink:0;
+  font-size:31px;
+  font-weight:700;
+  letter-spacing:-.8px;
+  padding:18px 24px 16px;
+}
+
+.ep8-phone-content{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  scrollbar-width:none;
+  padding:0 18px 18px;
+}
+
+.ep8-phone-content::-webkit-scrollbar{
+  display:none;
+}
+
+.ep8-phone-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#f0f0f2;
+  border-radius:28px;
+  padding:12px 15px;
+  margin:0 3px 15px;
+  color:#777981;
+}
+
+.ep8-phone-search input{
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#24242a;
+  font-size:15px;
+}
+
+.ep8-phone-contact{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:11px 5px;
+  background:transparent;
+  border:0;
+  text-align:left;
+  color:#202026;
+}
+
+.ep8-phone-avatar{
+  width:47px;
+  height:47px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#e7e8ed;
+  display:grid;
+  place-items:center;
+  color:#6f7480;
+}
+
+.ep8-phone-avatar .ico{
+  width:25px;
+  height:25px;
+}
+
+.ep8-phone-contact-info{
+  flex:1;
+  min-width:0;
+}
+
+.ep8-phone-contact-info strong{
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.ep8-phone-contact-info small{
+  display:block;
+  font-size:12px;
+  color:#888b94;
+  margin-top:5px;
+}
+
+.ep8-phone-callbtn{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#18a74d;
+  display:grid;
+  place-items:center;
+}
+
+.ep8-phone-callbtn .ico{
+  width:22px;
+  height:22px;
+}
+
+.ep8-phone-tabs{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  margin:8px 28px 10px;
+  padding:5px;
+  border-radius:35px;
+  background:#efeff2;
+}
+
+.ep8-phone-tabs button{
+  flex:1;
+  border:0;
+  background:transparent;
+  border-radius:28px;
+  padding:12px 4px;
+  font-size:13px;
+  color:#777981;
+}
+
+.ep8-phone-tabs button.active{
+  background:#fff;
+  color:#17171c;
+  font-weight:700;
+  box-shadow:0 2px 7px #0000000c;
+}
+
+.ep8-keypad{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100%;
+}
+
+.ep8-dial-display{
+  min-height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:29px;
+  color:#1c1d22;
+  letter-spacing:1px;
+}
+
+.ep8-dial-grid{
+  width:100%;
+  max-width:315px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px 17px;
+  margin-top:12px;
+}
+
+.ep8-dial-key{
+  min-height:64px;
+  border:0;
+  border-radius:22px;
+  background:transparent;
+  color:#18191d;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:29px;
+}
+
+.ep8-dial-key small{
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#777b83;
+  min-height:12px;
+}
+
+.ep8-dial-key:active{
+  background:#ececf0;
+}
+
+.ep8-dial-bottom{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:32px;
+  margin-top:15px;
+}
+
+.ep8-call-green{
+  width:65px;
+  height:65px;
+  border:0;
+  border-radius:50%;
+  background:#12bc51;
+  color:#fff;
+  display:grid;
+  place-items:center;
+}
+
+.ep8-call-green .ico{
+  width:29px;
+  height:29px;
+}
+
+.ep8-delete{
+  border:0;
+  background:transparent;
+  color:#555963;
+  padding:12px;
+}
+
+.ep8-call-screen{
+  position:relative;
+  height:100%;
+  padding:85px 22px 45px;
+  background:linear-gradient(160deg,#334055,#1b2433);
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.ep8-call-screen .ep8-phone-avatar{
+  width:92px;
+  height:92px;
+  background:#637187;
+  color:#fff;
+}
+
+.ep8-call-screen .ep8-phone-avatar .ico{
+  width:48px;
+  height:48px;
+}
+
+.ep8-call-screen h2{
+  font-size:23px;
+  line-height:1.4;
+  margin:22px 0 8px;
+}
+
+.ep8-call-screen small{
+  color:#c9d1dc;
+}
+
+.ep8-call-dialogue{
+  width:100%;
+  margin-top:25px;
+  padding:17px;
+  border-radius:18px;
+  background:#ffffff19;
+  line-height:1.65;
+  font-size:14px;
+  text-align:left;
+}
+
+.ep8-call-choice{
+  width:100%;
+  padding:13px;
+  margin-top:10px;
+  border:1px solid #ffffff55;
+  border-radius:15px;
+  background:#ffffff1c;
+  color:#fff;
+  text-align:left;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.ep8-call-controls{
+  display:flex;
+  justify-content:center;
+  gap:23px;
+  margin-top:auto;
+  margin-bottom:22px;
+}
+
+.ep8-call-controls span{
+  width:53px;
+  height:53px;
+  border-radius:50%;
+  background:#ffffff24;
+  display:grid;
+  place-items:center;
+}
+
+.ep8-hangup{
+  width:70px;
+  height:70px;
+  border:0;
+  border-radius:50%;
+  background:#f0444f;
+  color:#fff;
+  display:grid;
+  place-items:center;
+}
+
+.ep8-hangup .ico{
+  width:30px;
+  height:30px;
+}
+
+.ep8-empty{
+  padding:45px 20px;
+  color:#93949c;
+  text-align:center;
+  font-size:14px;
+}
+
+.ep8-call-status{
+  font-size:12px;
+  color:#91dcae;
+  margin-top:12px;
+}
+/* ===== EP.08 CALL STATUS BAR ===== */
+
+#phone:has(.ep8-call-screen) > .status{
+  color:#fff;
+}
+
+#phone:has(.ep8-call-screen) .nav span{
+  background:rgba(255,255,255,.75);
+}
+
+#phone:has(.ep8-phone) .nav span{
+  background:#25252a;
+}
+
+#phone:has(.ep8-call-screen) .nav span{
+  background:rgba(255,255,255,.75);
+}
 
 </style>
 </head>
@@ -3419,14 +3794,43 @@ function icon(n,cls=''){
           font-family="Arial" font-size="12"
           font-weight="bold" fill="#06C755">LINE</text>`);
 
-    case 'phone':
-      return app('#42C779',`
-        <path d="M20 13c-5 0-8 4-8 9
-          0 13 17 30 30 30 5 0 9-3 9-8v-5
-          l-12-6-6 6c-5-2-9-6-11-11l6-6-6-9Z"
-          fill="white"/>`);
+        case 'phone':
+      return `
+        <svg class="ico" viewBox="0 0 64 64"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <defs>
+            <linearGradient id="samsungPhoneGreen"
+              x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#00F12C"/>
+              <stop offset="1" stop-color="#00BF31"/>
+            </linearGradient>
+          </defs>
 
- 
+          <rect x="0" y="0" width="64" height="64"
+            rx="20" fill="url(#samsungPhoneGreen)"/>
+
+          <path
+            d="M29 10
+               C25.8 10 24 12.7 23.4 16
+               C21.8 26.5 21.8 37.5 23.4 48
+               C24 51.3 25.8 54 29 54
+               L35 54
+               C37.6 54 39 52.2 38.5 49.7
+               L37.2 43.4
+               C36.8 41.4 35.5 40.2 33.5 40.2
+               L31.6 40.2
+               C29.7 40.2 29.2 38.8 29.2 36.8
+               L29.2 27.2
+               C29.2 25.2 29.7 23.8 31.6 23.8
+               L33.5 23.8
+               C35.5 23.8 36.8 22.6 37.2 20.6
+               L38.5 14.3
+               C39 11.8 37.6 10 35 10 Z"
+            fill="#FFFFFF"/>
+        </svg>
+      `;
+      
     case 'gallery':
       return app('#FFFFFF',`
         <g transform="translate(32 32)">
@@ -3777,6 +4181,124 @@ save.flags.ep7AchiFaintedMessage ??= false;
 save.flags.ep7SunsetNotified ??= false;
 save.flags.ep7Wish ??= '';
 save.flags.ep7RainbowShown ??= false;
+/* ===== EP.08 THREE MILLION CHALLENGE ===== */
+
+save.flags.ep8Started ??= false;
+save.flags.ep8TanakaRead ??= false;
+save.flags.ep8ContactsReceived ??= false;
+save.flags.ep8PhoneUnlocked ??= false;
+save.flags.ep8Sales ??= [];
+save.flags.ep8Completed ??= false;
+save.flags.ep8TanakaFinalRead ??= false;
+
+if(!Array.isArray(save.flags.ep8Sales)){
+  save.flags.ep8Sales=[];
+}
+
+const EP8_TARGET=3000000;
+
+const ep8Customers=[
+  {
+    id:'sp',
+    name:'บริษัท เอสพี เทรดดิ้ง',
+    phone:'02-410-1041',
+    amount:450000,
+    product:'สินค้าล็อตใหม่',
+    reply:'ยืนยันคำสั่งซื้อ 450,000 บาท'
+  },
+  {
+    id:'nakamura',
+    name:'บริษัท นากามูระ',
+    phone:'02-410-2286',
+    amount:720000,
+    product:'ต่อสัญญาจัดซื้อ',
+    reply:'ยืนยันการต่อสัญญา 720,000 บาท'
+  },
+  {
+    id:'tn',
+    name:'บริษัท ทีเอ็น ซัพพลาย',
+    phone:'02-410-3508',
+    amount:380000,
+    product:'สินค้าสำหรับโครงการใหม่',
+    reply:'ตกลงสั่งซื้อ 380,000 บาท'
+  },
+  {
+    id:'hoshino',
+    name:'บริษัท โฮชิโนะ',
+    phone:'02-410-4412',
+    amount:650000,
+    product:'คำสั่งซื้อที่รอยืนยัน',
+    reply:'ยืนยันยอด 650,000 บาท'
+  },
+  {
+    id:'mk',
+    name:'บริษัท เอ็มเค อินเตอร์',
+    phone:'02-410-5073',
+    amount:800000,
+    product:'สินค้ารอบใหญ่',
+    reply:'ยืนยันรายการ 800,000 บาท'
+  },
+  {
+    id:'sakura',
+    name:'บริษัท ซากุระ คอร์ปอเรชั่น',
+    phone:'02-410-6124',
+    amount:510000,
+    product:'ต่อยอดคำสั่งซื้อเดิม',
+    reply:'ยืนยันคำสั่งซื้อ 510,000 บาท'
+  }
+];
+
+let ep8PhoneTab='keypad';
+let ep8PhoneSearch='';
+let ep8DialNumber='';
+let ep8Calling=null;
+let ep8CallStep=0;
+let ep8CallHistory=[];
+
+function ep8Money(amount){
+  return Number(amount).toLocaleString('en-US');
+}
+
+function ep8Total(){
+  return ep8Customers.reduce((sum,c)=>{
+    return sum+
+      (save.flags.ep8Sales.includes(c.id)
+        ? c.amount
+        : 0);
+  },0);
+}
+
+function ep8Start(){
+  if(save.flags.ep8Started)return;
+
+  save.flags.ep8Started=true;
+  persist();
+
+  ep8Banner(
+    'ทานากะซัง',
+    'ผมมีเรื่องสำคัญอยากคุยกับคุณการันต์และอชิ',
+    'tanaka'
+  );
+}
+
+function ep8Banner(name,message,target){
+  const host=document.getElementById('gameBanner');
+  if(!host)return;
+
+  host.innerHTML=`
+    <button class="game-banner"
+      data-ep8-banner="${target}">
+      <span class="game-banner-icon">
+        ${icon(target==='phone'?'phone':'line')}
+      </span>
+      <span class="game-banner-text">
+        <small>${target==='phone'?'Phone':'LINE'} · ข้อความใหม่</small>
+        <strong>${name}</strong>
+        <span>${message}</span>
+      </span>
+    </button>
+  `;
+}
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -6099,6 +6621,286 @@ function ep7MessagesPage(){
       </div>
     </div>`;
 }
+/* ===== EP.08 SAMSUNG PHONE UI ===== */
+
+function ep8PhoneSVG(name){
+  const shapes={
+    back:'<path d="M15 18 9 12l6-6M9 12h12"/>',
+    search:'<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/>',
+    more:'<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>',
+    user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3-8 8-8s8 3 8 8"/>',
+    call:'<path d="M6 3c-2 0-3 2-3 4 0 7 7 14 14 14 2 0 4-1 4-3v-3l-5-2-3 3c-3-1-5-3-6-6l3-3-2-4Z"/>',
+    hangup:'<path d="M3 13c5-5 13-5 18 0l-3 5-4-2v-3a13 13 0 0 0-4 0v3l-4 2-3-5Z"/>',
+    delete:'<path d="M9 4H21v16H9L2 12Z"/><path d="m12 9 5 6m0-6-5 6"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+    mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    speaker:'<path d="M4 9h4l5-4v14l-5-4H4Z"/><path d="M17 8q5 4 0 8"/>',
+    keypad:'<circle cx="5" cy="5" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="19" cy="5" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="19" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="19" cy="19" r="1"/>'
+  };
+
+  return `<svg class="ico"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true">
+    ${shapes[name]||shapes.user}
+  </svg>`;
+}
+
+function renderEp8Phone(){
+
+  const f=save.flags;
+
+  if(ep8Calling){
+    const c=ep8Customers.find(x=>x.id===ep8Calling);
+
+    if(!c){
+      ep8Calling=null;
+      return renderEp8Phone();
+    }
+
+    const already=f.ep8Sales.includes(c.id);
+
+    return `
+      <div class="ep8-call-screen">
+        <div class="ep8-phone-avatar">
+          ${ep8PhoneSVG('user')}
+        </div>
+
+        <h2>${c.name}</h2>
+        <small>${c.phone}</small>
+
+        <div class="ep8-call-dialogue">
+          ${ep8CallStep===0
+            ? `สวัสดีครับคุณการันต์
+               เรื่อง${c.product}
+               ที่ติดต่อมาครั้งก่อนใช่ไหมครับ`
+            : ep8CallStep===1
+            ? `ทางเราตรวจสอบรายละเอียดแล้ว
+               สามารถยืนยันคำสั่งซื้อได้ครับ`
+            : already
+            ? `รายการนี้ได้รับการบันทึกยอดขายไปแล้วครับ`
+            : `ตกลงครับ ทางเรายืนยันยอด
+               ${ep8Money(c.amount)} บาท
+               รบกวนส่งเอกสารตามมาได้เลยครับ`
+          }
+        </div>
+
+        ${ep8CallStep===0
+          ? `
+            <button class="ep8-call-choice"
+              data-ep8-call-choice="confirm">
+              ครับ ผมโทรมาติดตามรายการนี้
+              ไม่ทราบว่าสามารถยืนยันคำสั่งซื้อได้ไหมครับ
+            </button>
+
+            <button class="ep8-call-choice"
+              data-ep8-call-choice="later">
+              ถ้ายังไม่สะดวก ผมติดต่อกลับภายหลังได้ครับ
+            </button>
+          `
+          : ep8CallStep===1
+          ? `
+            <button class="ep8-call-choice"
+              data-ep8-call-choice="close">
+              ขอบคุณมากครับ
+              ผมจะส่งเอกสารยืนยันให้ทันที
+            </button>
+          `
+          : `
+            <div class="ep8-call-status">
+              ${ep8CallStep===2
+                ? 'ลูกค้ายืนยันคำสั่งซื้อแล้ว'
+                : 'ยังไม่ได้ปิดการขาย'}
+            </div>
+          `
+        }
+
+        <div class="ep8-call-controls">
+          <span>${ep8PhoneSVG('mic')}</span>
+          <span>${ep8PhoneSVG('keypad')}</span>
+          <span>${ep8PhoneSVG('speaker')}</span>
+        </div>
+
+        <button class="ep8-hangup"
+          data-ep8-hangup="1"
+          aria-label="วางสาย">
+          ${ep8PhoneSVG('hangup')}
+        </button>
+      </div>
+    `;
+  }
+
+  const tabs=`
+    <div class="ep8-phone-tabs">
+      <button data-ep8-tab="keypad"
+        class="${ep8PhoneTab==='keypad'?'active':''}">
+        แป้นโทรศัพท์
+      </button>
+      <button data-ep8-tab="recents"
+        class="${ep8PhoneTab==='recents'?'active':''}">
+        ล่าสุด
+      </button>
+      <button data-ep8-tab="contacts"
+        class="${ep8PhoneTab==='contacts'?'active':''}">
+        รายชื่อ
+      </button>
+    </div>
+  `;
+
+  let content='';
+
+  if(ep8PhoneTab==='keypad'){
+
+    const keys=[
+      ['1',''],['2','ABC'],['3','DEF'],
+      ['4','GHI'],['5','JKL'],['6','MNO'],
+      ['7','PQRS'],['8','TUV'],['9','WXYZ'],
+      ['*',''],['0','+'],['#','']
+    ];
+
+    content=`
+      <div class="ep8-keypad">
+        <div class="ep8-dial-display">
+          ${ep8DialNumber||'&nbsp;'}
+        </div>
+
+        <div class="ep8-dial-grid">
+          ${keys.map(k=>`
+            <button class="ep8-dial-key"
+              data-ep8-digit="${k[0]}">
+              ${k[0]}
+              <small>${k[1]}</small>
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="ep8-dial-bottom">
+          <button class="ep8-call-green"
+            data-ep8-dial-call="1"
+            aria-label="โทรออก">
+            ${ep8PhoneSVG('call')}
+          </button>
+
+          <button class="ep8-delete"
+            data-ep8-delete="1"
+            aria-label="ลบตัวเลข">
+            ${ep8PhoneSVG('delete')}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  if(ep8PhoneTab==='contacts'){
+
+    const filtered=ep8Customers.filter(c=>
+      c.name.toLowerCase().includes(
+        ep8PhoneSearch.toLowerCase()
+      ) ||
+      c.phone.includes(ep8PhoneSearch)
+    );
+
+    content=`
+      <div class="ep8-phone-search">
+        ${ep8PhoneSVG('search')}
+        <input id="ep8PhoneSearch"
+          value="${ep8PhoneSearch}"
+          placeholder="ค้นหาชื่อหรือหมายเลข"
+          autocomplete="off">
+      </div>
+
+      ${f.ep8ContactsReceived
+        ? filtered.map(c=>`
+          <div class="ep8-phone-contact">
+            <div class="ep8-phone-avatar">
+              ${ep8PhoneSVG('user')}
+            </div>
+
+            <div class="ep8-phone-contact-info">
+              <strong>${c.name}</strong>
+              <small>${c.phone}</small>
+            </div>
+
+            <button class="ep8-phone-callbtn"
+              data-ep8-call="${c.id}"
+              aria-label="โทรหา ${c.name}">
+              ${ep8PhoneSVG('call')}
+            </button>
+          </div>
+        `).join('')
+        : `<div class="ep8-empty">
+             ยังไม่มีรายชื่อลูกค้าสำหรับภารกิจนี้
+           </div>`
+      }
+    `;
+  }
+
+  if(ep8PhoneTab==='recents'){
+
+    content=ep8CallHistory.length
+      ? ep8CallHistory.slice().reverse().map(id=>{
+          const c=ep8Customers.find(x=>x.id===id);
+          if(!c)return '';
+
+          return `
+            <div class="ep8-phone-contact">
+              <div class="ep8-phone-avatar">
+                ${ep8PhoneSVG('clock')}
+              </div>
+
+              <div class="ep8-phone-contact-info">
+                <strong>${c.name}</strong>
+                <small>โทรออก · วันนี้</small>
+              </div>
+
+              <button class="ep8-phone-callbtn"
+                data-ep8-call="${c.id}">
+                ${ep8PhoneSVG('call')}
+              </button>
+            </div>
+          `;
+        }).join('')
+      : `<div class="ep8-empty">
+           ยังไม่มีประวัติการโทรใหม่
+         </div>`;
+  }
+
+  return `
+    <div class="ep8-phone">
+
+      <div class="ep8-phone-header">
+        <button data-go="home"
+          aria-label="กลับหน้าหลัก">
+          ${ep8PhoneSVG('back')}
+        </button>
+
+        <div class="ep8-phone-actions">
+          <button data-ep8-tab="contacts"
+            aria-label="ค้นหารายชื่อ">
+            ${ep8PhoneSVG('search')}
+          </button>
+        </div>
+      </div>
+
+      <div class="ep8-phone-title">
+        ${ep8PhoneTab==='keypad'
+          ? 'แป้นโทรศัพท์'
+          : ep8PhoneTab==='recents'
+          ? 'ล่าสุด'
+          : 'รายชื่อ'}
+      </div>
+
+      <div class="ep8-phone-content">
+        ${content}
+      </div>
+      ${tabs}
+    </div>
+  `;
+}
 
 function render(){
 let html='';
@@ -6264,9 +7066,8 @@ else if(page==='คำสั่งซื้อ'){
 html=appwrap('คำสั่งซื้อ','<div class="content"><div class="entry"><b>'+icon('cake')+' เค้กวันเกิด</b><small>สั่งล่วงหน้า · รับ 30 มกราคม</small><p>ผู้รับสินค้า: พี่ดุจ</p><button class="action" data-task="order">ตรวจสอบรายละเอียด</button></div><div class="entry"><b>อาหารเย็น</b><small>30 มกราคม · จัดส่งที่สำนักงาน</small><p>อาหาร 2 ชุด</p><button class="action" data-task="dinner">เปิดรายการอาหาร</button></div></div>');
 }
 else if(page==='โทรศัพท์'){
-html=appwrap('โทรศัพท์','<div class="content"><div class="entry"><b>ประวัติการโทร</b><small>30 มกราคม</small><p>09:12 · ลูกค้าบริษัท · โทรออก</p><p>13:45 · ฝ่ายขาย · สายเข้า</p><p>19:27 · พนักงานจัดส่ง · สายเข้า</p></div></div>');
+  html=renderEp8Phone();
 }
-
 else if(page==='โน้ต'){
     html='<div class="notes-page">'+appwrap('โน้ต',`
     <div class="content">
@@ -6901,8 +7702,61 @@ if(chat==='tanaka'){
     'ครับ ผมมีเรื่องสำคัญที่ต้องไปทำที่นั่นด้วย',
     true
   );
-
   b+=bubble('เข้าใจแล้วครับ ฝากด้วยนะครับ');
+}
+
+/* ===== EP.08 TANAKA ===== */
+
+if(chat==='tanaka' && save.flags.ep8Started){
+
+  b+='<div class="day">19 เม.ย.</div>';
+
+  b+=bubble(
+    'คุณการันต์ ผมทราบเรื่องที่คุณกับอชิคบกันแล้วนะครับ'
+  );
+
+  b+=bubble(
+    'บริษัทของเรามีกฎไม่ให้พนักงานคบกัน'
+  );
+
+  b+=bubble(
+    'ผมอยากให้คุณทั้งสองพิสูจน์ว่า สามารถแยกเรื่องงานกับเรื่องส่วนตัวได้'
+  );
+
+  b+=bubble(
+    'ถ้าคุณทำยอดขายให้ได้ 3 ล้านบาท ผมจะยอมรับเรื่องนี้'
+  );
+
+  b+=bubble(
+    'แต่ถ้าทำไม่ได้ คุณต้องเป็นฝ่ายลาออกจากบริษัท'
+  );
+
+  b+=bubble(
+    'ผมเข้าใจครับ ผมจะทำให้ได้',
+    true
+  );
+
+  if(save.flags.ep8Completed){
+
+    b+='<div class="day">หลังสรุปยอดขาย</div>';
+
+    b+=bubble(
+      'ผมตรวจสอบยอดขายแล้ว คุณทำได้ครบ 3 ล้านบาทจริง ๆ'
+    );
+
+    b+=bubble(
+      'ผมเห็นความพยายามของคุณ และเห็นว่าอชิก็ช่วยงานโดยไม่ละเลยหน้าที่ของตัวเอง'
+    );
+
+    b+=bubble(
+      'ผมจะยกเลิกกฎห้ามพนักงานคบกัน'
+    );
+
+    b+=bubble(
+      'ขอบคุณมากครับทานากะซัง',
+      true
+    );
+  }
 }
 
   if(chat==='duj'){
@@ -7204,10 +8058,102 @@ if(chat==='office'){
   }
 }
   if(chat==='sales'){
-    b+=bubble('ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ');
-    b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
-  }
 
+    b+=bubble(
+      'ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ'
+    );
+
+    b+=bubble(
+      'การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',
+      true
+    );
+
+    if(save.flags.ep8PhoneUnlocked){
+
+      b+='<div class="day">19 เม.ย. · ติดตามยอดขาย</div>';
+
+      b+=groupBubble(
+        'ทีมฝ่ายขาย',
+        'เป้าหมายยอดขายรอบนี้ 3,000,000 บาท'
+      );
+
+      let runningTotal=0;
+
+      save.flags.ep8Sales.forEach(id=>{
+
+        const c=ep8Customers.find(x=>x.id===id);
+        if(!c)return;
+
+        runningTotal+=c.amount;
+
+        b+=groupBubble(
+          'ทีมฝ่ายขาย',
+          'ยืนยันคำสั่งซื้อจาก '+c.name+
+          '\nยอดขาย +'+ep8Money(c.amount)+' บาท'+
+          '\nยอดสะสม '+ep8Money(runningTotal)+
+          ' / 3,000,000 บาท'
+        );
+
+      });
+
+      if(save.flags.ep8Completed){
+
+        b+=groupBubble(
+          'ทีมฝ่ายขาย',
+          'สรุปยอดขายเรียบร้อยแล้ว\nยอดรวม '+
+          ep8Money(ep8Total())+
+          ' บาท\nทำยอดถึงเป้าหมาย 3 ล้านบาทแล้ว'
+        );
+      }
+    }
+  }
+/* ===== EP.08 ACHI HELPS KARAN ===== */
+
+if(
+  chat==='achi' &&
+  save.flags.ep8TanakaRead
+){
+
+  b+='<div class="day">19 เม.ย.</div>';
+
+  b+=bubble(
+    'การันต์ เรื่องยอดขาย 3 ล้าน ผมช่วยหาข้อมูลลูกค้าเก่าให้นะ'
+  );
+
+  b+=bubble(
+    'ผมลองค้นจากรายชื่อลูกค้าที่เคยติดต่อบริษัทไว้แล้ว'
+  );
+
+  b+=bubble(
+    'มีอยู่ 6 รายที่น่าจะยังสนใจสั่งซื้อสินค้า'
+  );
+
+  b+=bubble(
+    'ผมส่งรายชื่อกับเบอร์โทรให้แล้วนะ'
+  );
+
+  b+=bubble(
+    'ขอบคุณนะอชิ เดี๋ยวผมจะลองติดต่อดู',
+    true
+  );
+
+  if(!save.flags.ep8ContactsReceived){
+
+    choices=`
+      <button class="choice"
+        data-ep8-receive-contacts="1">
+        บันทึกรายชื่อลูกค้าลงใน Phone
+      </button>
+    `;
+
+  }else{
+
+    b+=bubble(
+      'บันทึกรายชื่อเรียบร้อยแล้ว',
+      true
+    );
+  }
+}
 /* ===== EP.06 ACHI CONFESSION ===== */
 
 if(chat==='achi' && save.flags.ep6Stage>=2){
@@ -7555,7 +8501,214 @@ document.addEventListener('change',function(e){
   }
 });
 document.addEventListener('click',function(e){
+/* ===== EP.08 INTERACTIONS ===== */
 
+// เปิดแจ้งเตือน EP.08
+const ep8Notice=e.target.closest('[data-ep8-banner]');
+
+if(ep8Notice){
+
+  const target=ep8Notice.dataset.ep8Banner;
+
+  document.getElementById('gameBanner').innerHTML='';
+
+  if(target==='phone'){
+    goApp('โทรศัพท์');
+    return;
+  }
+
+  chat=target;
+  page='chat';
+
+  render();
+  return;
+}
+
+// บันทึกรายชื่อลูกค้าที่อชิส่งมา
+const ep8Receive=e.target.closest(
+  '[data-ep8-receive-contacts]'
+);
+
+if(
+  ep8Receive &&
+  page==='chat' &&
+  chat==='achi' &&
+  save.flags.ep8TanakaRead &&
+  !save.flags.ep8ContactsReceived
+){
+
+  save.flags.ep8ContactsReceived=true;
+  save.flags.ep8PhoneUnlocked=true;
+
+  unlock('โทรศัพท์');
+  persist();
+
+  render();
+
+  ep8Banner(
+    'Phone',
+    'เพิ่มรายชื่อลูกค้า 6 รายเรียบร้อยแล้ว',
+    'phone'
+  );
+
+  return;
+}
+
+// เปลี่ยนแท็บ Phone
+const ep8Tab=e.target.closest('[data-ep8-tab]');
+
+if(ep8Tab && page==='โทรศัพท์'){
+
+  ep8PhoneTab=ep8Tab.dataset.ep8Tab;
+  render();
+
+  return;
+}
+
+// กดแป้นหมายเลข
+const ep8Digit=e.target.closest('[data-ep8-digit]');
+
+if(ep8Digit && page==='โทรศัพท์'){
+
+  ep8DialNumber+=ep8Digit.dataset.ep8Digit;
+  render();
+
+  return;
+}
+
+// ลบหมายเลข
+const ep8Delete=e.target.closest('[data-ep8-delete]');
+
+if(ep8Delete && page==='โทรศัพท์'){
+
+  ep8DialNumber=ep8DialNumber.slice(0,-1);
+  render();
+
+  return;
+}
+
+// โทรจากแป้นหมายเลข
+const ep8DialCall=e.target.closest(
+  '[data-ep8-dial-call]'
+);
+
+if(ep8DialCall && page==='โทรศัพท์'){
+
+  const customer=ep8Customers.find(
+    c=>c.phone.replace(/\D/g,'')===
+       ep8DialNumber.replace(/\D/g,'')
+  );
+
+  if(!customer){
+    popup(
+      'ไม่พบหมายเลข',
+      'หมายเลขนี้ไม่อยู่ในรายชื่อลูกค้าที่อชิส่งมา'
+    );
+    return;
+  }
+
+  ep8Calling=customer.id;
+  ep8CallStep=0;
+  render();
+
+  return;
+}
+
+// โทรจากรายชื่อ
+const ep8Call=e.target.closest('[data-ep8-call]');
+
+if(ep8Call && page==='โทรศัพท์'){
+
+  ep8Calling=ep8Call.dataset.ep8Call;
+  ep8CallStep=0;
+  render();
+
+  return;
+}
+
+// เลือกคำตอบระหว่างสนทนา
+const ep8Choice=e.target.closest(
+  '[data-ep8-call-choice]'
+);
+
+if(
+  ep8Choice &&
+  page==='โทรศัพท์' &&
+  ep8Calling
+){
+
+  const answer=ep8Choice.dataset.ep8CallChoice;
+
+  if(answer==='confirm'){
+    ep8CallStep=1;
+  }
+
+  if(answer==='close'){
+    ep8CallStep=2;
+  }
+
+  if(answer==='later'){
+    ep8CallStep=3;
+  }
+
+  render();
+  return;
+}
+
+// วางสาย
+const ep8Hangup=e.target.closest('[data-ep8-hangup]');
+
+if(
+  ep8Hangup &&
+  page==='โทรศัพท์' &&
+  ep8Calling
+){
+
+  const customer=ep8Customers.find(
+    c=>c.id===ep8Calling
+  );
+
+  const successful=ep8CallStep===2;
+
+  ep8CallHistory.push(ep8Calling);
+
+  if(
+    successful &&
+    customer &&
+    !save.flags.ep8Sales.includes(customer.id)
+  ){
+
+    save.flags.ep8Sales.push(customer.id);
+
+    if(ep8Total()>=EP8_TARGET){
+      save.flags.ep8Completed=true;
+    }
+
+    persist();
+
+    ep8Calling=null;
+    ep8CallStep=0;
+    ep8PhoneTab='recents';
+
+    render();
+
+    ep8Banner(
+      'ทีมฝ่ายขาย',
+      'อัปเดตยอดขายล่าสุด +'+
+      ep8Money(customer.amount)+' บาท',
+      'sales'
+    );
+
+    return;
+  }
+
+  ep8Calling=null;
+  ep8CallStep=0;
+  ep8PhoneTab='recents';
+
+  render();
+  return;
+}
 /* ===== EP.07 INTERACTIONS ===== */
 /* ===== EP.07 ASK ACHI TO BE BOYFRIEND ===== */
 
@@ -8822,6 +9975,52 @@ if(ep7LeavingAchi){
   if(leavingDuj){
     showGameBanner('achi','ขอบคุณครับ');
   }
+    /* ===== EP.08 STORY TRANSITIONS ===== */
+
+  // หลังอชิตอบรับเป็นแฟน และการันต์กลับหน้า LINE
+  if(
+    page==='LINE' &&
+    chat==='achi' &&
+    save.flags.ep7Wish &&
+    !save.flags.ep8Started
+  ){
+    ep8Start();
+  }
+
+  // อ่านเงื่อนไขทานากะซังแล้วกลับ LINE
+  else if(
+    page==='LINE' &&
+    chat==='tanaka' &&
+    save.flags.ep8Started &&
+    !save.flags.ep8TanakaRead
+  ){
+    save.flags.ep8TanakaRead=true;
+    persist();
+    render();
+
+    ep8Banner(
+      'อชิ',
+      'ผมหารายชื่อลูกค้าเก่าไว้ให้แล้วนะ',
+      'achi'
+    );
+  }
+
+  // หลังทำยอดครบและกลับจากกลุ่มฝ่ายขาย
+  else if(
+    page==='LINE' &&
+    chat==='sales' &&
+    save.flags.ep8Completed &&
+    !save.flags.ep8TanakaFinalRead
+  ){
+    save.flags.ep8TanakaFinalRead=true;
+    persist();
+
+    ep8Banner(
+      'ทานากะซัง',
+      'ผมตรวจสอบยอดขายเรียบร้อยแล้ว',
+      'tanaka'
+    );
+  }
 }
 
 else if(btn.dataset.app){
@@ -8876,6 +10075,30 @@ popup('รายการอาหาร','จัดส่งเรียบร�
 });
 
 document.addEventListener('input',function(e){
+    /* ===== EP.08 PHONE SEARCH ===== */
+
+  if(
+    e.target.id==='ep8PhoneSearch' &&
+    page==='โทรศัพท์'
+  ){
+
+    ep8PhoneSearch=e.target.value;
+
+    const position=e.target.selectionStart;
+
+    render();
+
+    const input=document.getElementById(
+      'ep8PhoneSearch'
+    );
+
+    if(input){
+      input.focus();
+      input.setSelectionRange(position,position);
+    }
+
+    return;
+  }
   if(e.target.id!=='lineSearchInput')return;
 
   lineSearch=e.target.value;

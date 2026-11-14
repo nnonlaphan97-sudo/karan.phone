@@ -2686,6 +2686,60 @@ button{
 .ig-placeholder p {font-size:13px}
 #phone:has(.ig-app) .nav span {background:#222}
 
+/* ===== EP.06 CLOCK ===== */
+.ep6-clock {
+  height:100%;
+  padding:55px 20px 25px;
+  background:#f7f7fa;
+  color:#1c1d24;
+}
+.ep6-clock header {
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.ep6-clock header button {
+  border:0;
+  background:transparent;
+  color:inherit;
+}
+.ep6-clock header strong {font-size:21px}
+.ep6-clock-title {
+  font-size:28px;
+  font-weight:700;
+  margin:45px 0 22px;
+}
+.ep6-alarm-card {
+  background:#fff;
+  border-radius:24px;
+  padding:25px;
+  box-shadow:0 4px 20px #00000009;
+}
+.ep6-alarm-time {
+  font-size:56px;
+  font-weight:300;
+}
+.ep6-alarm-detail {
+  color:#7c7d8b;
+  font-size:14px;
+  margin-top:8px;
+}
+.ep6-clock-button {
+  margin-top:25px;
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:15px;
+  background:#5c5ac7;
+  color:white;
+  font-weight:700;
+}
+.ep6-clock-success {
+  margin-top:20px;
+  color:#397b57;
+}
+
+
 </style>
 </head>
 <body>
@@ -3140,6 +3194,10 @@ save.flags.ep5BagSent ??= false;
 save.flags.ep5BagItems ??= [];
 save.flags.ep5InstagramNotified ??= false;
 save.flags.ep5PaReply ??= '';
+/* EP.06 */
+save.flags.ep6Stage ??=
+  (save.flags.ep5PaReply !== '' ? 1 : 0);
+save.flags.ep6AlarmUnlocked ??= false;
 
 let mapZoom=0.55;
 let mapFeedback='';
@@ -3302,6 +3360,8 @@ let lineGroup='office';
 let lineOpenchat='';
 
 const linePeople=[
+  {
+  id:'tanaka',name:'ทานากะซัง',status:'ผมจะต้้งใจทำงานอย่างหนัก'},
   {id:'achi',name:'อชิ',status:'ขอบคุณสำหรับทุกอย่างนะครับ'},
   {id:'duj',name:'พี่ดุจ',status:'มีความสุขกับทุกวัน'},
   {id:'pai',name:'ปาย',status:'ทีมโปรโมชั่น'},
@@ -3430,7 +3490,11 @@ function lineChatsHTML(){
     {id:'office',name:'TOYOKAWA'},
     {id:'sales',name:'ทีมฝ่ายขาย'}
   ];
-
+if(save.flags.ep6Stage >= 1){
+  availableChats.push({
+    id:'tanaka',name:'ทานากะซัง'
+  });
+}
   if(save.flags.ep4KarinShown){
     availableChats.push({
       id:'karin',
@@ -4896,6 +4960,85 @@ function renderInstagram() {
     </div>`;
 }
 
+/* ===== EP.06 CLOCK ===== */
+
+
+function renderEp6Clock(){
+  const ringing =
+    save.flags.ep6Stage === 3 &&
+    !save.flags.ep6AlarmUnlocked;
+
+  return `
+  <div class="ep6-clock">
+    <header>
+      <button data-go="home" aria-label="กลับ">
+        ${lineIcon('back')}
+      </button>
+      <strong>นาฬิกา</strong>
+    </header>
+
+    <div class="ep6-clock-title">นาฬิกาปลุก</div>
+
+    <div class="ep6-alarm-card">
+      <div class="ep6-alarm-time">06:00</div>
+
+      <div class="ep6-alarm-detail">
+        18 เมษายน · เชียงใหม่
+      </div>
+
+      ${ringing ? `
+        <div class="ep6-alarm-detail">
+          กำลังปลุก
+        </div>
+
+        <button
+          class="ep6-clock-button"
+          data-ep6-alarm="1">
+          ปิดนาฬิกาปลุก
+        </button>
+      ` : `
+        <div class="ep6-clock-success">
+          ปิดนาฬิกาปลุกแล้ว
+        </div>
+      `}
+    </div>
+  </div>`;
+}
+
+/* ===== EP.06 NOTIFICATION ===== */
+
+function ep6Notify(name,message,target){
+  const el=document.getElementById('gameBanner');
+  if(!el)return;
+
+  el.innerHTML=`
+    <button class="game-banner"
+      data-ep6-notify="${target}">
+      <span class="game-banner-icon">
+        ${icon('line')}
+      </span>
+      <span class="game-banner-text">
+        <small>LINE · ข้อความใหม่</small>
+        <strong>${name}</strong>
+        <span>${message}</span>
+      </span>
+    </button>`;
+}
+
+/* ===== EP.06 PROGRESS ===== */
+
+function ep6Advance(stage){
+  if(save.flags.ep6Stage>=stage)return;
+
+  save.flags.ep6Stage=stage;
+
+  if(stage===3){
+    unlock('นาฬิกา');
+  }
+
+  persist();
+}
+
 function render(){
 let html='';
 
@@ -5017,6 +5160,9 @@ else if(page==='LINE'){
 }
 else if(page==='Instagram'){
   html=renderInstagram();
+}
+else if(page==='นาฬิกา'){
+  html=renderEp6Clock();
 }
 else if(page==='GrabFood'){
   html=renderGrab();
@@ -5471,12 +5617,37 @@ function renderChat(){
     duj:'พี่ดุจ',
     achi:'อชิ',
     karin:'พี่การิน',
+    tanaka:'ทานากะซัง',
     office:'TOYOKAWA',
     sales:'ทีมฝ่ายขาย'
   };
 
   let b='<div class="day">30 ม.ค.</div>';
   let choices='';
+  
+/* ===== EP.06 TANAKA CHAT ===== */
+
+if(chat==='tanaka'){
+  b='<div class="day">17 เม.ย.</div>';
+
+  b+=bubble(
+    'พรุ่งนี้ผมจะไปดูงานที่เชียงใหม่นะครับ ฝากคุณการันต์ช่วยคุยงานทางนี้ให้ด้วย'
+  );
+
+  b+=bubble(
+    'ถ้าอย่างนั้นผมขอไปดูงานที่เชียงใหม่แทนได้ไหมครับ',
+    true
+  );
+
+  b+=bubble('คุณการันต์จะไปเองเหรอครับ');
+
+  b+=bubble(
+    'ครับ ผมมีเรื่องสำคัญที่ต้องไปทำที่นั่นด้วย',
+    true
+  );
+
+  b+=bubble('เข้าใจแล้วครับ ฝากด้วยนะครับ');
+}
 
   if(chat==='duj'){
     b+=bubble('เห็นน้องปายบอกการันต์ตามหาพี่');
@@ -5781,6 +5952,61 @@ if(chat==='office'){
     b+=bubble('การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',true);
   }
 
+/* ===== EP.06 ACHI CONFESSION ===== */
+
+if(chat==='achi' && save.flags.ep6Stage>=2){
+
+  b+='<div class="day">17 เม.ย.</div>';
+
+  b+=bubble('อชิครับ ผมมีเรื่องอยากบอก',true);
+
+  b+=bubble('ผมชอบอชิครับ',true);
+
+  b+=bubble(
+    'ผมไม่ได้อยากให้อชิต้องตอบตอนนี้ แค่อยากบอกความรู้สึกของผมให้รู้ครับ',
+    true
+  );
+
+  if(save.flags.ep6Stage>=5){
+
+    b+='<div class="day">18 เม.ย.</div>';
+
+    b+=bubble('พี่การันต์ครับ');
+
+    b+=bubble(
+      'ผมเองก็มีเรื่องอยากบอกพี่เหมือนกันครับ'
+    );
+
+    b+=bubble('ผมชอบพี่การันต์ครับ');
+  }
+}
+
+/* ===== EP.06 PAI CHAT ===== */
+
+if(chat==='pai' && save.flags.ep6Stage>=4){
+
+  b+='<div class="day">18 เม.ย.</div>';
+
+  b+=bubble('พี่การันต์ เจอพี่อชิหรือยังครับ');
+
+  if(save.flags.ep6Stage>=5){
+
+    b+=bubble('ที่ไหนครับ',true);
+
+    b+=bubble(
+      'พี่ลองดูข้อความจากพี่อชิก่อนนะครับ'
+    );
+
+  }else{
+
+    choices=`
+      <button class="choice"
+        data-ep6-pai-reply="1">
+        ที่ไหนครับ
+      </button>`;
+  }
+}
+
   const chatIcon=(type)=>{
     const shapes={
       clock:'<circle cx="11" cy="11" r="8"/><path d="M11 6v5l4 3M17 17l5 5"/>',
@@ -5945,6 +6171,95 @@ document.addEventListener('change',function(e){
   }
 });
 document.addEventListener('click',function(e){
+
+/* ===== EP.06 INTERACTIONS ===== */
+
+// เปิดนาฬิกาปลุก
+const ep6OpenClock=e.target.closest(
+  '[data-ep6-open-clock]'
+);
+
+if(ep6OpenClock){
+  document.getElementById('gameBanner').innerHTML='';
+  page='นาฬิกา';
+  render();
+  return;
+}
+
+// เปิดข้อความแจ้งเตือน
+const ep6Banner=e.target.closest(
+  '[data-ep6-notify]'
+);
+
+if(ep6Banner){
+  document.getElementById('gameBanner').innerHTML='';
+
+  chat=ep6Banner.dataset.ep6Notify;
+
+  if(chat==='achi' && save.flags.ep6Stage===5){
+    ep6Advance(6);
+  }
+
+  page='chat';
+  render();
+  return;
+}
+
+
+/* ===== EP.06 ปิดนาฬิกาปลุก ===== */
+
+const ep6Alarm=e.target.closest(
+  '[data-ep6-alarm]'
+);
+
+if(
+  ep6Alarm &&
+  page==='นาฬิกา' &&
+  save.flags.ep6Stage===3
+){
+  // บันทึกว่าปิดนาฬิกาปลุกแล้ว
+  save.flags.ep6AlarmUnlocked=true;
+
+  // ไปยังเหตุการณ์ที่ปายส่งข้อความ
+  ep6Advance(4);
+
+  // อัปเดตหน้านาฬิกา
+  render();
+
+  // ปายส่ง LINE มาทันที
+  ep6Notify(
+    'ปาย',
+    'พี่การันต์ เจอพี่อชิหรือยังครับ',
+    'pai'
+  );
+
+  return;
+}
+
+
+// ตอบข้อความปาย
+const ep6Pai=e.target.closest(
+  '[data-ep6-pai-reply]'
+);
+
+if(
+  ep6Pai &&
+  page==='chat' &&
+  chat==='pai' &&
+  save.flags.ep6Stage===4
+){
+  ep6Advance(5);
+  render();
+
+  ep6Notify(
+    'อชิ',
+    'การันต์ครับ ผมมีเรื่องอยากบอก',
+    'achi'
+  );
+
+  return;
+}
+
 /* ===== EP.05 INTERACTIONS ===== */
 
 // ส่งรายการของให้พี่การิน วันที่ 15
@@ -6016,9 +6331,18 @@ if(paReply && page==='Instagram'){
 
   if(![0,1,2].includes(index))return;
 
-  save.flags.ep5PaReply=String(index);
-  persist();
-  render();
+ save.flags.ep5PaReply=String(index);
+
+ep6Advance(1);
+
+persist();
+render();
+
+ep6Notify(
+  'ทานากะซัง',
+  'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
+  'tanaka'
+);
 
   return;
 }
@@ -6373,7 +6697,9 @@ if(lg && page==='LINE'){
 
 if(lc && page==='LINE'){
   chat=lc.dataset.lineChat;
-
+  if(chat==='achi' && save.flags.ep6Stage===5){
+  ep6Advance(6);
+}
   if(chat==='karin' && save.flags.ep4KarinShown){
     save.flags.ep4KarinRead=true;
     unlock('กล้อง');
@@ -6665,7 +6991,12 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
-
+    const ep6LeavingTanaka =
+    page === 'chat' &&
+    chat === 'tanaka' &&
+    save.flags.ep6Stage === 1 &&
+    btn.dataset.go === 'LINE';
+    
   const leavingDuj=
     page==='chat' &&
     chat==='duj' &&
@@ -6681,12 +7012,41 @@ if(btn.dataset.go){
     lineSearch='';
   }
 
+
   if(leavingDuj){
     save.flags.achiThanked=true;
     persist();
   }
 
+  
+  // EP.06: กลับจากแชตทานากะซัง
+  if(ep6LeavingTanaka){
+    // ปลดล็อกแอปนาฬิกา
+    ep6Advance(3);
+  }
+
+  // อัปเดตหน้าจอหลังปลดล็อกแอป
   render();
+
+  // แจ้งเตือนนาฬิกาปลุก
+  if(ep6LeavingTanaka){
+    const el=document.getElementById('gameBanner');
+
+    if(el){
+      el.innerHTML=`
+        <button class="game-banner"
+          data-ep6-open-clock="1">
+          <span class="game-banner-icon">
+            ${lineIcon('calendar')}
+          </span>
+          <span class="game-banner-text">
+            <small>นาฬิกา</small>
+            <strong>นาฬิกาปลุก</strong>
+            <span>06:00 · แตะเพื่อปิดนาฬิกาปลุก</span>
+          </span>
+        </button>`;
+    }
+  }
 
   if(leavingDuj){
     showGameBanner('achi','ขอบคุณครับ');

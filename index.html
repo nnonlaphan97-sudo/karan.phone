@@ -2071,7 +2071,7 @@ const appdefs=[
 ['เบราว์เซอร์','web','#6d9fc4'],
 ['นาฬิกา','clock','#938dcf'],
 ['ไฟล์','file','#899cb7'],
-['Maps','map','#ffffff']
+['Maps','map','#ef3124']
 ];
 
 const key='karan_phone_v2';
@@ -2206,7 +2206,7 @@ save.flags.ep4MapUnlocked ??= false;
 save.flags.ep4MapStage ??= 0;
 save.flags.ep4MapComplete ??= false;
 
-let mapZoom=0.65;
+let mapZoom=0.55;
 let mapFeedback='';
 let pinInput='';
 const PHONE_PIN='1906';
@@ -3177,34 +3177,41 @@ function renderCalendar(){
 
 /* ===== EP.04 MAPS ===== */
 const mapLocations=[
-  {id:'pier',name:'ท่าเรือฝั่งบ้าน',x:36,y:75},
-  {id:'bts',name:'สถานี BTS',x:72,y:20},
-  {id:'houseA',name:'บ้าน A',x:22,y:82},
-  {id:'houseB',name:'บ้าน B',x:72,y:85},
-  {id:'houseC',name:'บ้าน C',x:44,y:92}
+  {id:'pier',name:'ท่าเรือฝั่งบ้าน',x:39,y:66},
+  {id:'pierBts',name:'ท่าเรือฝั่ง BTS',x:39,y:43},
+  {id:'bts',name:'สถานี BTS',x:76,y:17},
+
+  // บ้านหลอกฝั่งเดียวกับ BTS
+  {id:'houseA',name:'บ้าน A',x:20,y:30},
+  {id:'houseD',name:'บ้าน D',x:69,y:34},
+
+  // บ้านฝั่งตรงข้าม BTS
+  {id:'houseB',name:'บ้าน B',x:75,y:83},
+  {id:'houseC',name:'บ้าน C',x:20,y:80},
+  {id:'houseE',name:'บ้าน E',x:47,y:92}
 ];
 
-function renderMaps(){
 
-  const stage=save.flags.ep4MapStage;
+function renderMaps(){
+  const stage=save.flags.ep4MapStage || 0;
   const size=Math.round(720*mapZoom);
 
   const clues=[
     {
       title:'เบาะแสที่ 1 · เส้นทางเรือ',
-      text:'อชิใช้เรือเป็นส่วนหนึ่งของการเดินทางไปทำงาน ลองหาท่าเรือบนแผนที่'
+      text:'อชิเดินทางจากบ้านด้วยเรือข้ามคลอง ก่อนต่อ BTS ไปทำงาน ลองหาท่าเรือฝั่งบ้าน'
     },
     {
       title:'เบาะแสที่ 2 · รถไฟฟ้า',
-      text:'หลังจากนั่งเรือ อชิเดินทางต่อด้วย BTS ลองหาสถานีที่เชื่อมกับเส้นทาง'
+      text:'ข้ามคลองแล้วต้องเดินต่อไปขึ้น BTS ลองหาสถานีที่อยู่คนละฝั่งกับบ้าน'
     },
     {
       title:'เบาะแสที่ 3 · บ้านอชิ',
-      text:'พี่ดุจบอกว่าบ้านอยู่ในซอยใกล้คลอง มีสวนเล็ก ๆ อยู่ใกล้ทางเข้า และไม่ใช่บ้านติดถนนใหญ่'
+      text:'บ้านอชิอยู่คนละฝั่งคลองกับ BTS อยู่ในซอย ไม่ติดถนนใหญ่ และมีสวนเล็กอยู่ใกล้ทางเข้า ลองเลือกบ้านที่ตรงกับเบาะแส'
     },
     {
       title:'พบจุดหมายแล้ว',
-      text:'คุณการันต์ค้นพบเส้นทางไปบ้านอชิแล้ว'
+      text:'การันต์พบเส้นทางไปบ้านอชิแล้ว'
     }
   ];
 
@@ -3214,7 +3221,7 @@ function renderMaps(){
     const active=
       (stage===0 && p.id==='pier') ||
       (stage===1 && p.id==='bts') ||
-      (stage===2 && p.id.startsWith('house'));
+      (stage>=2 && p.id.startsWith('house'));
 
     return `
       <button
@@ -3224,6 +3231,21 @@ function renderMaps(){
       >${p.name}</button>
     `;
   }).join('');
+
+  const route=stage===3 ? `
+    <g fill="none" stroke-linecap="round"
+       stroke-linejoin="round">
+      <path d="M540 598 L460 580 L350 560 L281 475"
+        stroke="#4285f4" stroke-width="9"
+        stroke-dasharray="14 10"/>
+      <path d="M281 475 L281 310"
+        stroke="#1976b6" stroke-width="10"
+        stroke-dasharray="9 12"/>
+      <path d="M281 310 L395 225 L547 122"
+        stroke="#4285f4" stroke-width="9"
+        stroke-dasharray="14 10"/>
+    </g>
+  ` : '';
 
   return `
     <div class="maps-app">
@@ -3241,229 +3263,150 @@ function renderMaps(){
       </div>
 
       <div class="maps-viewport" id="mapsViewport">
-
         <div class="maps-world"
              style="width:${size}px;height:${size}px">
 
-         <svg viewBox="0 0 720 720"
-     xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 720 720"
+               xmlns="http://www.w3.org/2000/svg">
 
-  <rect width="720" height="720" fill="#e9efe6"/>
-
-  <!-- ถนนฝั่ง BTS -->
-  <g fill="none" stroke="#fff" stroke-width="30">
-    <path d="M0 110H720"/>
-    <path d="M0 230H720"/>
-    <path d="M180 0V325"/>
-    <path d="M510 0V325"/>
-  </g>
-
-  <!-- ถนนฝั่งบ้าน -->
-  <g fill="none" stroke="#fff" stroke-width="24">
-    <path d="M0 520H720"/>
-    <path d="M0 650H720"/>
-    <path d="M180 470V720"/>
-    <path d="M510 470V720"/>
-  </g>
-
-  <!-- คลองคั่นกลาง -->
-  <path d="M-30 390 Q170 335 350 395 T750 385"
-        fill="none" stroke="#9bcde4"
-        stroke-width="112"/>
-
-  <path d="M-30 390 Q170 335 350 395 T750 385"
-        fill="none" stroke="#c7e9f5"
-        stroke-width="86"/>
-
-  <!-- แนว BTS อยู่ฝั่งเหนือเท่านั้น -->
-  <path d="M0 125H720"
-        fill="none"
-        stroke="#68a287"
-        stroke-width="10"
-        stroke-dasharray="18 7"/>
-
-  <!-- ท่าเรือสองฝั่ง -->
-  <g fill="#b9a28c" stroke="#fff" stroke-width="3">
-    <rect x="242" y="312" width="75" height="55" rx="4"/>
-    <rect x="242" y="437" width="75" height="55" rx="4"/>
-  </g>
-
-  <!-- เส้นทางจากบ้านไป BTS -->
-  <path d="M518 612 L395 552 L280 475"
-        stroke="#4285f4" stroke-width="8"
-        fill="none" stroke-dasharray="13 10"
-        stroke-linecap="round"/>
-
-  <!-- ช่วงนั่งเรือข้ามคลอง -->
-  <path d="M280 475 L280 340"
-        stroke="#237db4" stroke-width="9"
-        fill="none" stroke-dasharray="8 12"
-        stroke-linecap="round"/>
-
-  <!-- เดินต่อไป BTS -->
-  <path d="M280 340 L410 230 L518 145"
-        stroke="#4285f4" stroke-width="8"
-        fill="none" stroke-dasharray="13 10"
-        stroke-linecap="round"/>
-
-  <!-- บ้านและอาคาร -->
-  <g fill="#f8f5ec" stroke="#d5d8d0" stroke-width="3">
-    <rect x="55" y="535" width="155" height="90" rx="12"/>
-    <rect x="460" y="565" width="175" height="100" rx="12"/>
-    <rect x="265" y="650" width="160" height="60" rx="10"/>
-    <rect x="50" y="35" width="100" height="65" rx="8"/>
-    <rect x="300" y="35" width="140" height="65" rx="8"/>
-    <rect x="570" y="190" width="115" height="90" rx="8"/>
-  </g>
-
-  <!-- สวนใกล้บ้าน B -->
-  <rect x="580" y="505" width="95" height="52"
-        rx="14" fill="#add6a5"/>
-
-  <g fill="#72aa72">
-    <circle cx="605" cy="524" r="12"/>
-    <circle cx="643" cy="535" r="14"/>
-  </g>
-
-  <g font-family="Arial,sans-serif"
-     font-size="18" fill="#60737c">
-    <text x="30" y="295">ฝั่งสถานีรถไฟฟ้า</text>
-    <text x="45" y="405">คลอง</text>
-    <text x="310" y="410">เรือข้ามฝั่ง</text>
-    <text x="40" y="495">ฝั่งบ้านอชิ</text>
-    <text x="585" y="495">สวนเล็ก</text>
-  </g>
-
-</svg>
-
+            <!-- พื้นหลัง -->
             <rect width="720" height="720"
-                  fill="#e8eee4"/>
+                  fill="#e8eee5"/>
 
-            <!-- พื้นที่ชุมชน -->
-            <g fill="#f8f3e8" stroke="#d7d7cc"
-               stroke-width="2">
-              <rect x="40" y="60" width="170" height="135" rx="12"/>
-              <rect x="280" y="45" width="190" height="165" rx="12"/>
-              <rect x="515" y="75" width="150" height="140" rx="12"/>
-              <rect x="45" y="310" width="155" height="180" rx="12"/>
-              <rect x="280" y="310" width="180" height="160" rx="12"/>
-              <rect x="520" y="335" width="145" height="130" rx="12"/>
-              <rect x="290" y="545" width="180" height="130" rx="12"/>
-              <rect x="520" y="540" width="155" height="130" rx="12"/>
+            <!-- ชุมชนฝั่ง BTS -->
+            <g fill="#f7f4ec"
+               stroke="#d8d9d1" stroke-width="3">
+              <rect x="45" y="65" width="160"
+                    height="135" rx="13"/>
+              <rect x="275" y="45" width="170"
+                    height="150" rx="13"/>
+              <rect x="505" y="65" width="170"
+                    height="145" rx="13"/>
+              <rect x="48" y="230" width="155"
+                    height="110" rx="13"/>
+              <rect x="500" y="230" width="175"
+                    height="105" rx="13"/>
             </g>
 
-            <!-- ถนน -->
-            <g stroke="#fff" fill="none"
-               stroke-linecap="round">
-              <path d="M0 245H720" stroke-width="35"/>
-              <path d="M250 0V720" stroke-width="30"/>
-              <path d="M490 0V720" stroke-width="28"/>
-              <path d="M0 515H720" stroke-width="28"/>
+            <!-- ชุมชนฝั่งบ้าน -->
+            <g fill="#f7f4ec"
+               stroke="#d8d9d1" stroke-width="3">
+              <rect x="45" y="530" width="165"
+                    height="115" rx="13"/>
+              <rect x="305" y="540" width="145"
+                    height="95" rx="13"/>
+              <rect x="485" y="555" width="185"
+                    height="110" rx="13"/>
+              <rect x="65" y="660" width="140"
+                    height="45" rx="10"/>
+              <rect x="285" y="655" width="170"
+                    height="50" rx="10"/>
             </g>
 
-            <g stroke="#d3d7d9" stroke-width="2"
-               stroke-dasharray="8 9" fill="none">
-              <path d="M0 245H720"/>
-              <path d="M250 0V720"/>
-              <path d="M490 0V720"/>
+            <!-- ถนนฝั่งสถานี -->
+            <g fill="none" stroke="#fff"
+               stroke-width="24">
+              <path d="M0 220H720"/>
+              <path d="M250 0V325"/>
+              <path d="M470 0V325"/>
+            </g>
+
+            <!-- ถนนฝั่งบ้าน -->
+            <g fill="none" stroke="#fff"
+               stroke-width="22">
+              <path d="M0 690H720"/>
+              <path d="M250 475V720"/>
+              <path d="M470 475V720"/>
               <path d="M0 515H720"/>
             </g>
 
-            <!-- คลอง -->
-            <path
-              d="M0 560 C130 490 160 590 280 540
-                 S500 490 720 580"
-              fill="none"
-              stroke="#94d0e7"
-              stroke-width="43"
-              stroke-linecap="round"
-            />
+            <!-- คลองกั้นระหว่างสองฝั่ง -->
+            <path d="M-35 402
+                     C130 355 210 440 355 395
+                     S575 355 755 410"
+                  fill="none"
+                  stroke="#94cbe3"
+                  stroke-width="135"/>
 
-            <path
-              d="M0 560 C130 490 160 590 280 540
-                 S500 490 720 580"
-              fill="none"
-              stroke="#bde5f3"
-              stroke-width="29"
-              stroke-linecap="round"
-            />
-<!-- เส้นทางจากบ้านไปท่าเรือ -->
-<path d="M554 518 L470 518 L330 518 L260 518"
-      fill="none"
-      stroke="#4285f4"
-      stroke-width="8"
-      stroke-linecap="round"
-      stroke-dasharray="12 9"/>
+            <path d="M-35 402
+                     C130 355 210 440 355 395
+                     S575 355 755 410"
+                  fill="none"
+                  stroke="#c8e9f5"
+                  stroke-width="105"/>
 
-<!-- เส้นทางเรือข้ามคลอง -->
-<path d="M260 518 Q325 590 382 540"
-      fill="none"
-      stroke="#147db1"
-      stroke-width="7"
-      stroke-linecap="round"
-      stroke-dasharray="4 12"/>
+            <!-- แนวรถไฟฟ้าเฉพาะฝั่งเหนือ -->
+            <path d="M15 125H705"
+                  fill="none"
+                  stroke="#76a18a"
+                  stroke-width="9"
+                  stroke-dasharray="20 9"/>
 
-<!-- เส้นทางจากท่าเรืออีกฝั่งไป BTS -->
-<path d="M382 540 L440 430 L490 245"
-      fill="none"
-      stroke="#4285f4"
-      stroke-width="8"
-      stroke-linecap="round"
-      stroke-dasharray="12 9"/>
-
-<g font-family="Arial,sans-serif"
-   font-size="17" font-weight="700">
-  <text x="265" y="620" fill="#147db1">เรือข้ามคลอง</text>
-  <text x="450" y="390" fill="#315f9c">ต่อ BTS</text>
-</g>
-            <!-- แนวรถไฟฟ้า -->
-            <path
-              d="M40 100 L690 315"
-              stroke="#7194d3"
-              stroke-width="9"
-              fill="none"
-              stroke-dasharray="15 8"
-            />
-
-            <!-- สวนสาธารณะ -->
-            <rect x="535" y="425"
-                  width="105" height="75"
-                  rx="14" fill="#a9d6a4"/>
-
-            <g fill="#6dab76">
-              <circle cx="555" cy="445" r="12"/>
-              <circle cx="603" cy="449" r="15"/>
-              <circle cx="581" cy="476" r="13"/>
+            <!-- ท่าเรือสองฝั่ง -->
+            <g fill="#bca48c"
+               stroke="#fff" stroke-width="3">
+              <rect x="251" y="286"
+                    width="61" height="51" rx="5"/>
+              <rect x="251" y="463"
+                    width="61" height="51" rx="5"/>
             </g>
 
-            <!-- อาคาร -->
-            <g fill="#ddd8ca">
-              <rect x="80" y="110" width="65" height="43" rx="5"/>
-              <rect x="325" y="100" width="82" height="60" rx="5"/>
-              <rect x="550" y="125" width="65" height="55" rx="5"/>
-              <rect x="82" y="370" width="65" height="70" rx="5"/>
-              <rect x="326" y="355" width="83" height="63" rx="5"/>
-              <rect x="325" y="590" width="88" height="54" rx="5"/>
-              <rect x="550" y="593" width="74" height="48" rx="5"/>
+            <!-- สวนเล็กใกล้บ้าน B -->
+            <rect x="575" y="514"
+                  width="94" height="48"
+                  rx="13" fill="#add8a8"/>
+
+            <g fill="#75ad77">
+              <circle cx="596" cy="533" r="12"/>
+              <circle cx="627" cy="544" r="14"/>
+              <circle cx="652" cy="529" r="11"/>
             </g>
 
+            <!-- สวนหลอกฝั่ง BTS -->
+            <rect x="65" y="265"
+                  width="80" height="42"
+                  rx="12" fill="#c1dfb8"/>
+
+            <!-- อาคารย่อย -->
+            <g fill="#ddd9ce">
+              <rect x="88" y="105"
+                    width="65" height="49" rx="6"/>
+              <rect x="324" y="89"
+                    width="77" height="65" rx="6"/>
+              <rect x="545" y="106"
+                    width="75" height="54" rx="6"/>
+              <rect x="90" y="563"
+                    width="70" height="50" rx="6"/>
+              <rect x="340" y="566"
+                    width="75" height="46" rx="6"/>
+              <rect x="540" y="588"
+                    width="77" height="49" rx="6"/>
+            </g>
+
+            <!-- ป้ายพื้นที่ -->
             <g font-family="Arial,sans-serif"
-               font-size="16" fill="#687781">
-              <text x="35" y="290">ถนนสายหลัก</text>
-              <text x="90" y="605">คลอง</text>
-              <text x="520" y="412">สวนเล็ก</text>
-              <text x="285" y="75">ย่านชุมชน</text>
+               font-size="17" fill="#657681">
+              <text x="26" y="25">ฝั่งรถไฟฟ้า</text>
+              <text x="29" y="387">คลอง</text>
+              <text x="319" y="407">เรือข้ามคลอง</text>
+              <text x="27" y="490">ฝั่งชุมชน</text>
+              <text x="580" y="505">สวนเล็ก</text>
+              <text x="530" y="35">แนว BTS</text>
             </g>
+
+            ${route}
+
           </svg>
 
           ${pins}
-
         </div>
       </div>
 
       <div class="maps-zoom">
-        <button data-map-zoom="in" aria-label="ซูมเข้า">+</button>
-        <button data-map-zoom="out" aria-label="ซูมออก">−</button>
+        <button data-map-zoom="in"
+                aria-label="ซูมเข้า">+</button>
+        <button data-map-zoom="out"
+                aria-label="ซูมออก">−</button>
       </div>
 
       <div class="maps-feedback" id="mapsFeedback">
@@ -3473,7 +3416,7 @@ function renderMaps(){
         ${mapFeedback || (
           stage===3
             ? 'การันต์กำลังเดินทางไปหาอชิ'
-            : 'เลื่อนแผนที่และแตะตำแหน่งที่คิดว่าถูกต้อง'
+            : 'เลื่อนแผนที่ ซูม และแตะจุดที่ตรงกับเบาะแส'
         )}
       </div>
 
@@ -3481,38 +3424,45 @@ function renderMaps(){
   `;
 }
 
-function selectMapPoint(id){
 
-  const stage=save.flags.ep4MapStage;
+function selectMapPoint(id){
+  const stage=save.flags.ep4MapStage || 0;
 
   if(stage===0){
-
     if(id==='pier'){
       save.flags.ep4MapStage=1;
-      mapFeedback='พบท่าเรือแล้ว ต่อไปหาสถานี BTS';
+      mapFeedback='พบท่าเรือฝั่งบ้านแล้ว ข้ามคลองไปแล้วต้องต่อ BTS';
+    }else if(id==='pierBts'){
+      mapFeedback='นี่คือท่าเรือฝั่ง BTS ลองหาท่าเรือฝั่งบ้านก่อน';
     }else{
-      mapFeedback='จุดนี้ยังไม่ใช่ท่าเรือ ลองมองหาคลอง';
+      mapFeedback='ยังไม่ใช่ท่าเรือฝั่งบ้าน ลองดูริมคลอง';
     }
 
   }else if(stage===1){
-
     if(id==='bts'){
       save.flags.ep4MapStage=2;
-      mapFeedback='พบสถานี BTS แล้ว ต่อไปเลือกบ้านจากเบาะแส';
+      mapFeedback='พบสถานี BTS แล้ว ลองหาบ้านที่อยู่ฝั่งตรงข้ามคลอง';
+    }else if(id==='pierBts'){
+      mapFeedback='พบท่าเรือฝั่ง BTS แล้ว ลองหาสถานีรถไฟฟ้าต่อ';
     }else{
-      mapFeedback='ยังไม่ใช่สถานี BTS ที่ต้องการ';
+      mapFeedback='ยังไม่ใช่สถานี BTS ลองดูแนวรถไฟฟ้า';
     }
 
   }else if(stage===2){
-
     if(id==='houseB'){
       save.flags.ep4MapStage=3;
       save.flags.ep4MapComplete=true;
-      mapFeedback='บ้านอยู่ใกล้คลองและสวนเล็ก ๆ ตรงกับเบาะแสของพี่ดุจ';
+      mapFeedback='บ้านหลังนี้อยู่ฝั่งตรงข้าม BTS และมีสวนเล็กใกล้ทางเข้า ตรงกับเบาะแสของพี่ดุจ';
     }else if(id.startsWith('house')){
-      mapFeedback='บ้านหลังนี้ไม่ตรงกับเบาะแส ลองตรวจตำแหน่งสวนและคลอง';
+      const location=mapLocations.find(p=>p.id===id);
+
+      if(location && location.y<45){
+        mapFeedback='บ้านหลังนี้อยู่ฝั่งเดียวกับ BTS แต่อชิต้องนั่งเรือข้ามคลองก่อนขึ้นรถไฟฟ้า';
+      }else{
+        mapFeedback='บ้านหลังนี้อยู่ฝั่งที่ถูกต้อง แต่ตำแหน่งไม่ตรงกับเบาะแสเรื่องสวนเล็ก';
+      }
     }else{
-      mapFeedback='ตอนนี้ต้องเลือกบ้าน ไม่ใช่จุดเดินทาง';
+      mapFeedback='ตอนนี้ต้องเลือกบ้านจากเบาะแส';
     }
 
   }else{
@@ -3522,6 +3472,7 @@ function selectMapPoint(id){
   persist();
   render();
 }
+
 
 function render(){
 let html='';
@@ -3617,20 +3568,26 @@ html=`
          <span class="calendar-icon-day">30</span>
        </span>`
   : open && a[0]==='Maps'
-  ? `<svg viewBox="0 0 64 64"
-          width="52" height="52"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="Google Maps">
-       <path fill="#34a853"
-             d="M32 4C17 4 7 15 7 29c0 18 25 33 25 33s25-15 25-33C57 15 47 4 32 4Z"/>
-       <path fill="#4285f4"
-             d="M32 4C17 4 7 15 7 29c0 7 4 14 9 20l18-20 16-16C45 7 39 4 32 4Z"/>
-       <path fill="#fbbc04"
-             d="M50 13 34 29l-18 20c5 6 11 10 16 13 0 0 25-15 25-33 0-6-2-12-7-16Z"/>
-       <path fill="#ea4335"
-             d="M32 4c-9 0-16 4-21 11l21 21 18-23C45 7 39 4 32 4Z"/>
-       <circle cx="32" cy="29" r="10" fill="#fff"/>
-       <circle cx="32" cy="29" r="5" fill="#4285f4"/>
+  ? `<svg
+       viewBox="0 0 64 64"
+       width="60"
+       height="60"
+       xmlns="http://www.w3.org/2000/svg"
+       aria-label="Samsung Maps">
+
+       <path
+         fill="#ffffff"
+         d="M32 12
+            C21.5 12 13 20.5 13 31
+            C13 44 32 55 32 55
+            S51 44 51 31
+            C51 20.5 42.5 12 32 12Z"/>
+
+       <circle
+         cx="32"
+         cy="30"
+         r="8.5"
+         fill="#ef3124"/>
      </svg>`
   : icon(open?a[1]:'lock')}
 </span>
@@ -4343,7 +4300,7 @@ if(mapZoomButton && page==='Maps'){
   if(mapZoomButton.dataset.mapZoom==='in'){
     mapZoom=Math.min(4,mapZoom+.2);
   }else{
-    mapZoom=Math.max(.35,mapZoom-.2);
+    mapZoom=Math.max(.25,mapZoom-.2);
   }
 
   render();

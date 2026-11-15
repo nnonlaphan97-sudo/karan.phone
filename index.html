@@ -5235,16 +5235,19 @@ const EP10_KRATHONGS=[
   }
 ];
 
+
 function ep10Start(){
   if(save.flags.ep10Started)return;
 
   save.flags.ep10Started=true;
   persist();
 
+  render();
+
   ep8Banner(
-    'ปาย',
-    'พี่การันต์ครับ เรื่องกระทงที่ถามผมไว้',
-    'pai'
+    'อชิ',
+    'ถึงบ้านแล้วนะการันต์',
+    'achi'
   );
 }
 
@@ -5388,7 +5391,6 @@ function ep10IncomingCallBanner(){
     </button>
   `;
 }
-
 function ep8Banner(name,message,target){
   const host=document.getElementById('gameBanner');
   if(!host)return;
@@ -5406,7 +5408,6 @@ function ep8Banner(name,message,target){
       </span>
     </button>
   `;
-
   const currentBanner=host.firstElementChild;
 
   setTimeout(()=>{
@@ -9316,6 +9317,44 @@ if(chat==='pai' && save.flags.ep10Started){
   }
 }
 
+/* ===== EP.09 ROCK PROMOTION ===== */
+if(
+  chat==='rock' &&
+  save.flags.ep9Started
+){
+  b+='<div class="day">20 เม.ย. · ข่าวดีของร็อค</div>';
+
+  b+=bubble(
+    'พี่การันต์ครับ ผมมีข่าวดีจะบอกครับ'
+  );
+
+  b+=bubble(
+    'ผมได้เลื่อนตำแหน่งแล้วนะครับ!'
+  );
+
+  b+=bubble(
+    'จริงเหรอร็อค ยินดีด้วยนะครับ',
+    true
+  );
+
+  b+=bubble(
+    'ขอบคุณครับพี่การันต์'
+  );
+
+  b+=bubble(
+    'ตอนแรกผมไม่คิดว่าจะได้รับโอกาสนี้เลยครับ'
+  );
+
+  b+=bubble(
+    'ร็อคทำงานหนักมาตลอด สมควรได้รับแล้วครับ',
+    true
+  );
+
+  b+=bubble(
+    'ผมจะตั้งใจทำงานให้มากขึ้นครับ'
+  );
+}
+
 // ร็อคถามการันต์
 if(
   chat==='rock' &&
@@ -10703,10 +10742,15 @@ if(
 
   persist();
 
+
   chat='achi';
   page='chat';
 
-  render();
+  if(!save.flags.ep10Started){
+    ep10Start();
+  }else{
+    render();
+  }
   return;
 }
 
@@ -12291,7 +12335,7 @@ if(ep9LeavingAchi){
 
 /* ===== EP.10 STORY TRANSITIONS ===== */
 
-if(ep10StartFromAchi){
+if(ep10StartFromAchi && !save.flags.ep10Started){
   ep10Start();
 }
 

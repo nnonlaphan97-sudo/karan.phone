@@ -11497,7 +11497,16 @@ function ep7MessagesPage(){
     </div>
   `;
 }
+document.addEventListener('input',function(e){
+  if(e.target.id !== 'ksmsSearch') return;
 
+  const keyword=e.target.value.trim().toLowerCase();
+
+  document.querySelectorAll('.ksms-thread').forEach(row=>{
+    const text=row.textContent.toLowerCase();
+    row.style.display=text.includes(keyword)?'':'none';
+  });
+});
 /* ===== EP.08 SAMSUNG PHONE UI ===== */
 
 function ep8PhoneSVG(name){
@@ -16674,9 +16683,10 @@ if(ep7Notification){
   page='Instagram';
 }
 
-  if(target==='sms'){
-    page='Messages';
-  }
+if(target==='sms'){
+  samsungSmsChat='helicopter';
+  page='Messages';
+}
 
   render();
   return;

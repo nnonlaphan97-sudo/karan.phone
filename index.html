@@ -12819,7 +12819,10 @@ if(save.flags.ep3SickShown){
 
   b+='<div class="day">13 เม.ย.</div>';
 
-  if(save.flags.ep4AchiCancelledRead){
+ if(
+  save.flags.ep4AchiCancelledRead ||
+  save.flags.ep3SickBannerSeen
+){
 
     // เมื่อเปิดอ่านข้อความแล้ว ให้เห็นว่าอชิยกเลิกข้อความ
     b+=cancelledMessage();
@@ -15875,7 +15878,8 @@ if(
     'ลงมาเจอชั้นหน่อย'
   );
   return;
-}// EP.03 — วันที่ 13 เมษายน อชิแจ้งว่าป่วย
+}
+// EP.03 — วันที่ 13 เมษายน อชิแจ้งว่าป่วย
 if(
   targetChat==='karin' &&
   save.flags.ep3KarinMessageRead &&

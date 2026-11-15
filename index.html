@@ -11420,14 +11420,20 @@ function bubble(text,out=false,senderId=''){
       senderName=match[1].trim();
       text=match[2];
 
-      const senderMap={
-        'พี่ดุจ':'duj',
-        'ปาย':'pai',
-        'ร็อค':'rock',
-        'อชิ':'achi',
-        'การันต์':'me',
-        'ฝ่ายขาย':'sales'
-      };
+     
+const senderMap={
+  'พี่ดุจ':'duj',
+  'พี่ดุจดาว':'duj',
+  'ปาย':'pai',
+  'ร็อค':'rock',
+  'อชิ':'achi',
+  'การันต์':'me',
+  'ทานากะซัง':'tanaka',
+  'ทีมฝ่ายขาย':'sales',
+  'ฝ่ายขาย':'sales',
+  'sale office':'sales'
+};
+
 
       avatarId=senderMap[senderName]||'office';
     }
@@ -11627,17 +11633,20 @@ function groupBubble(sender,text,out=false){
     return bubble(text,true);
   }
 
-  const senderMap={
-    'พี่ดุจ':'duj',
-    'พี่ดุจดาว':'duj',
-    'ปาย':'pai',
-    'ร็อค':'rock',
-    'อชิ':'achi',
-    'การันต์':'me',
-    'ทานากะซัง':'tanaka',
-    'ทีมฝ่ายขาย':'sales',
-    'ฝ่ายขาย':'sales'
-  };
+  
+const senderMap={
+  'พี่ดุจ':'duj',
+  'พี่ดุจดาว':'duj',
+  'ปาย':'pai',
+  'ร็อค':'rock',
+  'อชิ':'achi',
+  'การันต์':'me',
+  'ทานากะซัง':'tanaka',
+  'ทีมฝ่ายขาย':'sales',
+  'ฝ่ายขาย':'sales',
+  'sale office':'sales'
+};
+
 
   const senderId=senderMap[sender]||'office';
 
@@ -12121,34 +12130,15 @@ if(chat==='achi'){
     ).join('');
   }
 
-  // EP.02 — 31 มกราคม
-  if(save.flags.ep2Started){
-
-    b+='<div class="day">31 ม.ค.</div>';
-
-    b+=bubble(
-      'คุณการันต์ครับ เมื่อวานขอบคุณที่ช่วยงานนะครับ'
-    );
-
-    if(save.flags.ep2CouponReady){
-
-      b+=bubble(
-        'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
-      );
-
-      b+=ep2InviteMessages();
-      choices=ep2InviteChoices();
-
-    }else{
-
-      b+=bubble(
-        'ผมต้องจัดการงานที่ร็อคฝากไว้ให้เสร็จก่อนครับ'
-      );
-
-      b+=bubble('เดี๋ยวผมช่วยดูให้นะครับ',true);
-    }
-  }
-
+ // EP.02 — 31 มกราคม
+if(save.flags.ep2Started && save.flags.ep2CouponReady){
+  b+='<div class="day">31 ม.ค.</div>';
+  b+=bubble(
+    'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
+  );
+  b+=ep2InviteMessages();
+  choices=ep2InviteChoices();
+}
    // EP.04 — 13 เมษายน
   if(save.flags.ep4AchiCancelledRead){
 
@@ -12359,9 +12349,10 @@ if(chat==='office'){
   }
 }
   if(chat==='sales'){
-    b+=bubble(
-      'ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ'
-    );
+    b+=groupBubble(
+  'sale office',
+  'ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ'
+);
     b+=bubble(
       'ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',
       true
@@ -13614,6 +13605,7 @@ function lineBannerAvatar(id){
   return icon('line');
 }
 
+
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
   if(!banner)return;
@@ -13621,12 +13613,12 @@ function showGameBanner(who,message){
   const names={
     office:'TOYOKAWA',
     sales:'ทีมฝ่ายขาย',
-    achi:'อชิ',
-    pai:'ปาย',
-    rock:'ร็อค',
-    duj:'พี่ดุจ',
-    karin:'พี่การิน',
-    tanaka:'ทานากะซัง'
+    achi:'Achi rawit',
+    pai:'Pai',
+    rock:'Rock',
+    duj:'พี่ดุจดาว',
+    karin:'Karin',
+    tanaka:'Tanaka san'
   };
 
   const sender=names[who]||who;
@@ -13634,8 +13626,8 @@ function showGameBanner(who,message){
   banner.innerHTML=`
     <button class="game-banner" data-banner-chat="${who}">
       <span class="game-banner-icon"
-        style="background:transparent">
-        ${lineBannerAvatar(who)}
+            style="background:#06c755">
+        ${icon('line')}
       </span>
       <span class="game-banner-text">
         <small>LINE · ตอนนี้</small>

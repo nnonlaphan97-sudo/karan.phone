@@ -7749,7 +7749,7 @@ const initialChatTimes = {
       (dateValue(latestDate) ?? 0) <= dateValue(initial.date);
 
     const displayDate = useInitial ? initial.date : latestDate;
-    const displayTime = useInitial ? initial.time : '18:00';
+    const displayTime = useInitial ? initial.time : '00:00';
 
     const sortTime =
       (dateValue(displayDate) ?? 0) * 10000 +
@@ -12035,10 +12035,19 @@ const senderMap={
       '</div>'+
     '</div>';
 
-  const meta=out
-    ? '<div class="line-message-meta">อ่านแล้ว<br>18:00</div>'
-    : '<div class="line-message-meta">18:00</div>';
+ const initialBubbleTimes = {
+  office:'09:12',
+  sales:'09:26',
+  duj:'11:18',
+  achi:'17:34',
+  pai:'21:16'
+};
 
+const bubbleTime = initialBubbleTimes[chat] || '';
+
+const meta=out
+  ? `<div class="line-message-meta">อ่านแล้ว${bubbleTime ? '<br>'+bubbleTime : ''}</div>`
+  : `<div class="line-message-meta">${bubbleTime}</div>`;
   return '<div class="line-message '+(out?'sent':'received')+'">'+
     (out?meta+message:avatar+message+meta)+
   '</div>';
@@ -15734,13 +15743,7 @@ if(ep2Logo && page==='chat' && chat==='pai'){
     return;
   }
 
-  render();
-
-  popup(
-    'ส่งข้อมูลสำเร็จ',
-    'ปายได้รับข้อมูลสีโลโก้แล้ว และมีข้อความใหม่จากอชิ'
-  );
-
+    render();
   return;
 }
 

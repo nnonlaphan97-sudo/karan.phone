@@ -5293,6 +5293,378 @@ button{
   overflow:hidden;
 }
 
+/* ===== GRABFOOD REDESIGN ===== */
+
+.grab-app.gf-app{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  min-height:0;
+  background:#fff;
+  color:#202525;
+  overflow:hidden;
+}
+
+.gf-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding-bottom:18px;
+}
+
+.gf-hero{
+  padding:65px 18px 24px;
+  background:linear-gradient(165deg,#e5f7f5,#f3fcff 72%,#fff);
+}
+
+.gf-address{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:14px 0;
+}
+
+.gf-address svg{color:#007d60;flex-shrink:0}
+
+.gf-address div{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.gf-address small,
+.gf-address span{
+  color:#777;
+  font-size:12px;
+}
+
+.gf-address strong{font-size:18px}
+
+.gf-search{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:17px;
+  margin:18px 0;
+  background:#fff;
+  color:#a3a3a3;
+  border-radius:18px;
+  box-shadow:0 6px 20px #0000000b;
+}
+
+.gf-hero-title{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.gf-hero-title strong{
+  font-size:29px;
+  color:#007f5f;
+}
+
+.gf-hero-title span{color:#667}
+
+.gf-section{padding:20px 18px}
+
+.gf-section h2{font-size:23px;margin:8px 0 14px}
+.gf-section h3{font-size:18px;margin:26px 0 14px}
+.gf-section p{color:#777;line-height:1.5}
+
+.gf-delivery-types{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  white-space:nowrap;
+}
+
+.gf-delivery-types span{
+  padding:10px 14px;
+  background:#eff7f7;
+  border-radius:30px;
+  font-size:13px;
+}
+
+.gf-delivery-types .selected{
+  background:#005a4b;
+  color:white;
+}
+
+.gf-promo{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:24px;
+  padding:24px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#006a49,#00a86b);
+  color:white;
+}
+
+.gf-promo small{font-size:12px}
+.gf-promo strong{font-size:23px}
+.gf-promo span{font-size:13px}
+
+.gf-categories{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.gf-categories div{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:9px;
+  font-size:12px;
+  text-align:center;
+}
+
+.gf-categories svg{
+  width:55px;
+  height:55px;
+  padding:12px;
+  color:#007f60;
+  background:#edf9f3;
+  border-radius:50%;
+}
+
+.gf-shop{
+  width:100%;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  padding:12px;
+  border:1px solid #eee;
+  border-radius:18px;
+  background:#fff;
+  color:inherit;
+  text-align:left;
+}
+
+.gf-shop-art,
+.gf-shop-banner,
+.gf-detail-art{
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#ffe1e9,#fff0d7);
+  color:#c75c79;
+}
+
+.gf-shop-art{
+  width:90px;
+  height:90px;
+  border-radius:14px;
+  flex-shrink:0;
+}
+
+.gf-shop-art svg{width:48px;height:48px}
+
+.gf-shop>div:last-child{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.gf-shop small{color:#777}
+.gf-shop span{color:#00855d;font-size:12px}
+
+.gf-products{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.gf-cake{
+  padding:0 0 12px;
+  border:1px solid #eee;
+  border-radius:16px;
+  background:#fff;
+  color:inherit;
+  text-align:left;
+  overflow:hidden;
+}
+
+.gf-cake-image{
+  height:125px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  background:linear-gradient(135deg,#ffe5ec,#fff0d8);
+  color:#c75c79;
+}
+
+.gf-cake-image svg{width:45px;height:45px}
+.gf-cake-image span{font-size:11px}
+
+.gf-cake-info{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding:12px;
+}
+
+.gf-cake-info strong{font-size:14px}
+.gf-cake-info small{font-size:12px;color:#888}
+.gf-cake-price{font-weight:700;color:#00855d}
+
+.gf-bottom{
+  flex-shrink:0;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  padding:10px 4px 15px;
+  background:#fff;
+  border-top:1px solid #eee;
+}
+
+.gf-bottom button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  border:0;
+  background:transparent;
+  color:#888;
+  font-size:11px;
+}
+
+.gf-bottom button.active{
+  color:#00a86b;
+  font-weight:700;
+}
+
+.gf-bottom svg{width:23px;height:23px}
+
+.gf-page{padding-top:76px}
+
+.gf-shop-header,
+.gf-detail-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:65px 18px 18px;
+}
+
+.gf-shop-header button,
+.gf-detail-header button,
+.gf-text-back{
+  border:0;
+  background:transparent;
+  color:inherit;
+}
+
+.gf-shop-banner{
+  height:160px;
+}
+
+.gf-shop-banner svg,
+.gf-detail-art svg{
+  width:80px;
+  height:80px;
+}
+
+.gf-detail-art{height:210px}
+
+.gf-green{color:#00855d}
+
+.gf-primary{
+  width:100%;
+  margin-top:20px;
+  padding:16px;
+  border:0;
+  border-radius:12px;
+  background:#00a86b;
+  color:white;
+  font-size:15px;
+  font-weight:700;
+}
+
+.gf-order-summary{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #eee;
+}
+
+.gf-total{font-size:18px}
+
+.gf-tracking-mark{
+  color:#00a86b;
+  margin:24px 0;
+}
+
+.gf-tracking-mark svg{
+  width:70px;
+  height:70px;
+}
+
+.gf-message-row,
+.gf-order-list{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  width:100%;
+  padding:16px 0;
+  background:#fff;
+  border:0;
+  border-bottom:1px solid #eee;
+  color:inherit;
+  text-align:left;
+}
+
+.gf-message-row>div:nth-child(2),
+.gf-order-list>div{
+  flex:1;
+}
+
+.gf-message-row p,
+.gf-order-list p{
+  margin:5px 0;
+  font-size:13px;
+}
+
+.gf-message-avatar{
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#e7f8ee;
+  color:#00a86b;
+}
+
+.gf-chat-bubble{
+  max-width:90%;
+  padding:16px;
+  margin-top:25px;
+  border-radius:16px 16px 16px 4px;
+  background:#edf3f1;
+  line-height:1.6;
+}
+
+.gf-finance{
+  padding:20px;
+  border-radius:16px;
+  background:#eff8f4;
+}
+
+.gf-empty{
+  padding:35px 0;
+  text-align:center;
+}
+
+.gf-text-back{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
 </style>
 </head>
 <body>
@@ -5845,6 +6217,8 @@ try{
 let page='lock',chat='';
 let grabScreen='home';
 let selectedCake=null;
+let grabTab='home';
+let grabSearch='';
 
 const cakes=[
   {id:'strawberry',name:'Strawberry Shortcake',price:390,detail:'ครีมนมสด สตรอว์เบอร์รี หวานน้อย'},
@@ -7291,111 +7665,345 @@ lineAvatar('me')+
     (lineTab==='profile'?'':lineBottom())+
     '</div>';
 }
-function renderGrab(){
 
+/* ===== GRABFOOD EP.01 ===== */
+
+function grabIcon(type){
+  const paths={
+    home:'<path d="m3 10 9-7 9 7v11H3Z"/><path d="M9 21v-7h6v7"/>',
+    moments:'<circle cx="12" cy="12" r="9"/><path d="m8 13 3 3 5-7"/>',
+    wallet:'<circle cx="12" cy="12" r="9"/><path d="M15 8H11a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4H9M12 6v12"/>',
+    orders:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5M8 16h5"/>',
+    messages:'<path d="M4 4h16v13H9l-5 4Z"/><path d="M8 9h8M8 13h5"/>',
+    search:'<circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/>',
+    back:'<path d="m15 5-7 7 7 7"/>',
+    cake:'<path d="M4 11h16v10H4Z"/><path d="M4 15h16M8 11V6M12 11V6M16 11V6"/>',
+    cart:'<circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l3 13h11l3-9H6"/>',
+    pin:'<path d="M12 22s8-8 8-13a8 8 0 1 0-16 0c0 5 8 13 8 13Z"/><circle cx="12" cy="9" r="2.5"/>'
+  };
+  return '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
+    (paths[type]||paths.home)+'</svg>';
+}
+
+function grabBottom(){
+  const tabs=[
+    ['home','home','หน้าแรก'],
+    ['moments','moments','โมเมนต์'],
+    ['wallet','wallet','การเงิน'],
+    ['orders','orders','รายการ'],
+    ['messages','messages','ข้อความ']
+  ];
+
+  return '<nav class="gf-bottom">'+
+    tabs.map(([id,ico,label])=>
+      '<button class="'+(grabTab===id?'active':'')+
+      '" data-gf-tab="'+id+'">'+
+      grabIcon(ico)+'<span>'+label+'</span></button>'
+    ).join('')+
+  '</nav>';
+}
+
+function grabCakeList(){
+  return cakes.map((c,i)=>`
+    <button class="gf-cake" data-grab-cake="${c.id}">
+      <div class="gf-cake-image">
+        ${grabIcon('cake')}
+        <span>เค้กวันเกิด</span>
+      </div>
+      <div class="gf-cake-info">
+        <strong>${c.name}</strong>
+        <small>${c.detail}</small>
+        <div class="gf-cake-price">฿${c.price}</div>
+      </div>
+    </button>
+  `).join('');
+}
+
+function renderGrab(){
   const f=save.flags;
 
-  const top=`
-    <div class="grab-header">
-      <button data-grab="home" class="grab-back">
-        ${icon('back')}
-      </button>
+  const address=`
+    <div class="gf-address">
+      ${grabIcon('pin')}
       <div>
-        <small>จัดส่งไปยัง</small>
-        <strong>สำนักงานการันต์</strong>
+        <small>จัดส่งตอนนี้</small>
+        <strong>TOYOKAWA</strong>
+        <span>สำนักงานบริษัท · กรุงเทพฯ</span>
       </div>
     </div>
   `;
 
-  if(grabScreen==='home'){
-    return `<div class="grab-app">
-      ${top}
-      <div class="grab-content">
-        <h2>GrabFood</h2>
-        <div class="grab-search">ค้นหาร้านอาหารและเค้ก</div>
-        <div class="grab-banner">
-          <strong>Birthday Cakes</strong>
-          <span>เค้กสำหรับวันพิเศษ</span>
-        </div>
-        <h3>เค้กแนะนำ</h3>
-        <div class="grab-products">
-          ${cakes.map(c=>`
-            <button class="grab-product" data-grab-cake="${c.id}">
-              <div class="grab-cake-art">
-                ${icon('cake')}
-              </div>
-              <strong>${c.name}</strong>
-              <small>${c.detail}</small>
-              <b>฿${c.price}</b>
-            </button>
-          `).join('')}
-        </div>
-      </div>
-    </div>`;
-  }
-
+  // รายละเอียดเค้ก
   if(grabScreen==='detail'){
     const c=cakes.find(x=>x.id===selectedCake);
-    if(!c)return '';
+    if(!c){
+      grabScreen='home';
+      return renderGrab();
+    }
 
-    return `<div class="grab-app">
-      ${top}
-      <div class="grab-content">
-        <div class="grab-cake-large">${icon('cake')}</div>
-        <h2>${c.name}</h2>
-        <p>${c.detail}</p>
-        <h3>฿${c.price}</h3>
-        <p>จัดส่งถึงสำนักงาน</p>
-        <button class="grab-primary" data-grab="order">
-          สั่งซื้อเค้ก
-        </button>
+    return `
+      <div class="grab-app gf-app">
+        <div class="gf-scroll">
+          <div class="gf-detail-header">
+            <button data-grab="home">${grabIcon('back')}</button>
+            <strong>รายละเอียดสินค้า</strong>
+          </div>
+          <div class="gf-detail-art">${grabIcon('cake')}</div>
+          <div class="gf-section">
+            <small class="gf-green">ร้านเค้ก · Birthday Cake Studio</small>
+            <h2>${c.name}</h2>
+            <p>${c.detail}</p>
+            <h2>฿${c.price}</h2>
+            ${address}
+            <div class="gf-order-summary">
+              <span>เค้ก 1 ชิ้น</span>
+              <strong>฿${c.price}</strong>
+            </div>
+            <div class="gf-order-summary">
+              <span>ค่าจัดส่ง (จำลอง)</span>
+              <strong>฿35</strong>
+            </div>
+            <div class="gf-order-summary gf-total">
+              <span>รวม</span>
+              <strong>฿${c.price+35}</strong>
+            </div>
+            <button class="gf-primary" data-grab="order">
+              ยืนยันสั่งเค้ก · ฿${c.price+35}
+            </button>
+          </div>
+        </div>
       </div>
-    </div>`;
+    `;
   }
 
+  // ติดตามคำสั่งซื้อ — ใช้ระบบ EP.01 เดิม
   if(grabScreen==='tracking'){
+    const c=cakes.find(x=>x.id===f.orderedCake);
     const status=f.deliveryStatus;
 
-    return `<div class="grab-app">
-      ${top}
-      <div class="grab-content">
-        <h2>ติดตามคำสั่งซื้อ</h2>
-        <div class="grab-order-card">
-          <strong>${cakes.find(c=>c.id===f.orderedCake)?.name||'Birthday Cake'}</strong>
-          <p>สถานที่จัดส่ง: สำนักงานการันต์</p>
-          <div class="grab-status">
+    return `
+      <div class="grab-app gf-app">
+        <div class="gf-scroll">
+          <div class="gf-detail-header">
+            <button data-grab="home">${grabIcon('back')}</button>
+            <strong>ติดตามคำสั่งซื้อ</strong>
+          </div>
+          <div class="gf-section">
+            <div class="gf-tracking-mark">${grabIcon('cart')}</div>
+            <h2>${
+              status==='delivered'?'จัดส่งสำเร็จ':
+              status==='delayed'?'การจัดส่งล่าช้า':
+              'พนักงานกำลังจัดส่ง'
+            }</h2>
+            ${address}
+            <div class="gf-order-summary">
+              <span>${c?.name||'Birthday Cake'}</span>
+              <strong>1 ชิ้น</strong>
+            </div>
             ${
-              status==='delivered'
-              ? 'จัดส่งสำเร็จ'
-              : status==='delayed'
-              ? 'การจัดส่งล่าช้า'
-              : 'พนักงานกำลังจัดส่ง'
+              status==='delayed'
+              ? `<p>พนักงานไม่สามารถติดต่อผู้รับได้</p>
+                 <button class="gf-primary" data-grab="contact">
+                   ติดต่อพนักงานจัดส่ง
+                 </button>`
+              : status==='delivered'
+              ? `<p>เค้กส่งถึง TOYOKAWA แล้ว</p>
+                 <button class="gf-primary" data-go="LINE">
+                   กลับไป LINE
+                 </button>`
+              : `<p>พนักงานจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>
+                 <button class="gf-primary" data-grab="incoming">
+                   ดูสายเรียกเข้า
+                 </button>`
             }
           </div>
         </div>
-
-        ${
-          status==='delayed'
-          ? `<p>พนักงานไม่สามารถติดต่อผู้รับได้ และการจราจรติดขัด</p>
-             <button class="grab-primary" data-grab="contact">
-               ติดต่อพนักงานจัดส่ง
-             </button>`
-          : status==='delivered'
-          ? `<p>พนักงานส่งเค้กถึงสำนักงานเรียบร้อยแล้ว</p>
-             <button class="grab-primary" data-go="LINE">
-               กลับไป LINE
-             </button>`
-          : `<p>พนักงานจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>
-             <button class="grab-primary" data-grab="incoming">
-               ดูสายเรียกเข้า
-             </button>`
-        }
+        ${grabBottom()}
       </div>
-    </div>`;
+    `;
   }
 
-  return '';
+  let body='';
+
+  if(grabTab==='home'){
+    body=`
+      <div class="gf-hero">
+        ${address}
+        <div class="gf-search">
+          ${grabIcon('search')}
+          <span>ค้นหาร้านอาหารและเค้ก</span>
+        </div>
+        <div class="gf-hero-title">
+          <strong>GrabFood</strong>
+          <span>อร่อยทุกวัน ส่งถึงที่</span>
+        </div>
+      </div>
+
+      <div class="gf-section">
+        <div class="gf-delivery-types">
+          <span class="selected">จัดส่ง</span>
+          <span>รับเองที่ร้าน</span>
+          <span>ดีลที่ร้าน</span>
+        </div>
+
+        <div class="gf-promo">
+          <small>HAPPY BIRTHDAY</small>
+          <strong>เค้กสำหรับคนพิเศษ</strong>
+          <span>เลือกเค้กส่งตรงถึง TOYOKAWA</span>
+        </div>
+
+        <h3>หมวดหมู่ยอดนิยม</h3>
+        <div class="gf-categories">
+          <div>${grabIcon('cake')}<span>เบเกอรี่</span></div>
+          <div>${grabIcon('cake')}<span>เค้กวันเกิด</span></div>
+          <div>${grabIcon('cart')}<span>ของหวาน</span></div>
+        </div>
+
+        <h3>ร้านเค้กแนะนำ</h3>
+        <button class="gf-shop" data-gf-open-shop="1">
+          <div class="gf-shop-art">${grabIcon('cake')}</div>
+          <div>
+            <strong>Birthday Cake Studio</strong>
+            <small>เค้กวันเกิด · เบเกอรี่</small>
+            <span>★ 4.8 · ร้านจำลองในเกม</span>
+          </div>
+        </button>
+
+        <h3>เค้กยอดนิยม</h3>
+        <div class="gf-products">${grabCakeList()}</div>
+      </div>
+    `;
+  }
+
+  if(grabTab==='shop'){
+    body=`
+      <div class="gf-shop-header">
+        <button data-gf-tab="home">${grabIcon('back')}</button>
+        <strong>Birthday Cake Studio</strong>
+      </div>
+      <div class="gf-shop-banner">${grabIcon('cake')}</div>
+      <div class="gf-section">
+        <h2>Birthday Cake Studio</h2>
+        <p>เค้กวันเกิดและเบเกอรี่</p>
+        ${address}
+        <h3>เมนูเค้กวันเกิด</h3>
+        <div class="gf-products">${grabCakeList()}</div>
+      </div>
+    `;
+  }
+
+  if(grabTab==='messages'){
+    body=`
+      <div class="gf-section gf-page">
+        <h2>ข้อความ</h2>
+        <button class="gf-message-row" data-gf-message="delivery">
+          <div class="gf-message-avatar">${grabIcon('cart')}</div>
+          <div>
+            <strong>GrabFood · การจัดส่ง</strong>
+            <p>${
+              f.cakeOrdered
+              ? 'มีข้อมูลคำสั่งซื้อเค้กของคุณ'
+              : 'ยินดีต้อนรับสู่ GrabFood'
+            }</p>
+          </div>
+          <span>›</span>
+        </button>
+        <button class="gf-message-row" data-gf-message="help">
+          <div class="gf-message-avatar">${grabIcon('messages')}</div>
+          <div>
+            <strong>ศูนย์ช่วยเหลือ Grab</strong>
+            <p>สอบถามเกี่ยวกับการสั่งอาหาร</p>
+          </div>
+          <span>›</span>
+        </button>
+      </div>
+    `;
+  }
+
+  if(grabTab==='message-detail'){
+    body=`
+      <div class="gf-section gf-page">
+        <button class="gf-text-back" data-gf-tab="messages">
+          ${grabIcon('back')} กลับ
+        </button>
+        <h2>${grabMessage==='help'?'ศูนย์ช่วยเหลือ Grab':'GrabFood · การจัดส่ง'}</h2>
+        <div class="gf-chat-bubble">
+          ${
+            grabMessage==='help'
+            ? 'สวัสดีค่ะ สามารถติดตามคำสั่งซื้อได้ในเมนูรายการ'
+            : f.cakeOrdered
+            ? 'ได้รับคำสั่งซื้อเค้กแล้ว กำลังดำเนินการจัดส่งไปยัง TOYOKAWA'
+            : 'สวัสดีค่ะ ยินดีต้อนรับสู่ GrabFood'
+          }
+        </div>
+        ${
+          f.cakeOrdered
+          ? '<button class="gf-primary" data-gf-tracking="1">ดูคำสั่งซื้อ</button>'
+          : ''
+        }
+      </div>
+    `;
+  }
+
+  if(grabTab==='orders'){
+    body=`
+      <div class="gf-section gf-page">
+        <h2>รายการ</h2>
+        ${
+          f.cakeOrdered
+          ? `<button class="gf-order-list" data-gf-tracking="1">
+               ${grabIcon('cake')}
+               <div>
+                 <strong>Birthday Cake Studio</strong>
+                 <p>จัดส่งไปยัง TOYOKAWA</p>
+                 <small>แตะเพื่อติดตามคำสั่งซื้อ</small>
+               </div>
+             </button>`
+          : '<p class="gf-empty">ยังไม่มีคำสั่งซื้อ</p>'
+        }
+      </div>
+    `;
+  }
+
+  if(grabTab==='wallet'){
+    body=`
+      <div class="gf-section gf-page">
+        <h2>การเงิน</h2>
+        <div class="gf-finance">
+          <strong>วิธีชำระเงิน</strong>
+          <p>บัญชีจำลองของการันต์</p>
+          <small>การสั่งซื้อในเกมไม่มีการชำระเงินจริง</small>
+        </div>
+      </div>
+    `;
+  }
+
+  if(grabTab==='moments'){
+    body=`
+      <div class="gf-section gf-page">
+        <h2>โมเมนต์</h2>
+        <div class="gf-promo">
+          <small>GRABFOOD MOMENTS</small>
+          <strong>วันนี้มีอะไรน่ากิน?</strong>
+          <span>เค้กวันเกิดและของหวานสำหรับคนพิเศษ</span>
+        </div>
+        <button class="gf-primary" data-gf-tab="shop">
+          ดูร้านเค้ก
+        </button>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="grab-app gf-app">
+      <div class="gf-scroll">${body}</div>
+      ${grabBottom()}
+    </div>
+  `;
 }
+
+let grabMessage='delivery';
+
 /* ===== CALENDAR DATA ===== */
 
 const calendarEvents=[
@@ -14272,6 +14880,42 @@ if(birthday && page==='LINE'){
   return;
 }
 
+/* ===== GRABFOOD NEW NAVIGATION ===== */
+
+const gfTab=e.target.closest('[data-gf-tab]');
+const gfShop=e.target.closest('[data-gf-open-shop]');
+const gfMessage=e.target.closest('[data-gf-message]');
+const gfTracking=e.target.closest('[data-gf-tracking]');
+
+if(gfTab && page==='GrabFood'){
+  grabTab=gfTab.dataset.gfTab;
+  grabScreen='home';
+  render();
+  return;
+}
+
+if(gfShop && page==='GrabFood'){
+  grabTab='shop';
+  grabScreen='home';
+  render();
+  return;
+}
+
+if(gfMessage && page==='GrabFood'){
+  grabMessage=gfMessage.dataset.gfMessage;
+  grabTab='message-detail';
+  grabScreen='home';
+  render();
+  return;
+}
+
+if(gfTracking && page==='GrabFood'){
+  grabScreen='tracking';
+  grabTab='orders';
+  render();
+  return;
+}
+
 const cakeBtn=e.target.closest('[data-grab-cake]');
 const grabBtn=e.target.closest('[data-grab]');
 
@@ -14285,11 +14929,12 @@ if(cakeBtn && page==='GrabFood'){
 if(grabBtn && page==='GrabFood'){
   const action=grabBtn.dataset.grab;
 
-  if(action==='home'){
-    grabScreen=save.flags.cakeOrdered?'tracking':'home';
-    render();
-    return;
-  }
+ if(action==='home'){
+  grabScreen='home';
+  grabTab=save.flags.cakeOrdered?'orders':'shop';
+  render();
+  return;
+}
 
   if(action==='order'){
     save.flags.cakeOrdered=true;

@@ -12755,14 +12755,17 @@ if(save.flags.ep3DujQuestionShown){
   }
 }
 
-// เนื้อเรื่อง EP.04 เดิม
-if(save.flags.ep4AchiCancelledRead){
+// EP.04 — 13 เมษายน
+if(
+  save.flags.ep4AchiCancelledRead ||
+  save.flags.ep3SickBannerSeen
+){
   b+='<div class="day">13 เม.ย.</div>';
 
   b+=bubble(
     'พี่ดุจครับ พอจะมีที่อยู่บ้านอชิไหมครับ',true
   );
-b+=bubble('แผนที่บ้านอชิจ๊ะ');
+b+=bubble('นี่จ๊ะ ที่อยู่บ้านอชิ');
 
 b+=`
   <div class="line-map-link"

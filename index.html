@@ -12711,9 +12711,9 @@ if(chat==='achi'){
     ).join('');
   }
 
- // EP.02 — 31 มกราคม
+ // EP.02 — 1 กุมภาพันธ์
 if(save.flags.ep2Started && save.flags.ep2CouponReady){
-  b+='<div class="day">31 ม.ค.</div>';
+  b+='<div class="day">1 ก.พ.</div>';
   b+=bubble(
     'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
   );
@@ -14832,9 +14832,12 @@ if(ep8Notice){
     goApp('โทรศัพท์');
     return;
   }
-
   chat=target;
   page='chat';
+
+  if(target==='pai'){
+    unlock('โน้ต');
+  }
 
   render();
   return;
@@ -15657,12 +15660,15 @@ if(targetChat==='line-official'){
 
   return;
 }
+  chat=targetChat;
+  page='chat';
 
-    chat=targetChat;
-     page='chat';
+  // กดแบนเนอร์ปายแล้วปลดล็อก Samsung Notes
+  if(targetChat==='pai'){
+    unlock('โน้ต');
+  }
 
   document.getElementById('gameBanner').innerHTML='';
-
   if(chat==='karin' && save.flags.ep4KarinShown){
     save.flags.ep4KarinRead=true;
     unlock('กล้อง');
@@ -15736,15 +15742,22 @@ if(ep2Logo && page==='chat' && chat==='pai'){
   }
 
   if(!ep2CheckLogo(m,y)){
-    popup(
-      'ค่าสีไม่ถูกต้อง',
-      'ลองกลับไปตรวจสอบบันทึก GEMMHOUSE ในแอปโน้ตอีกครั้ง'
-    );
-    return;
-  }
-
-    render();
+  popup(
+    'ค่าสีไม่ถูกต้อง',
+    'ลองกลับไปตรวจสอบบันทึก GEMMHOUSE ในแอปโน้ตอีกครั้ง'
+  );
   return;
+}
+render();
+
+// ตอบค่าสีโลโก้ให้ปายสำเร็จ
+// แจ้งเตือน LINE จากอชิเรื่องคูปอง
+showGameBanner(
+  'achi',
+  'คุณการันต์ครับ เรื่องคูปองร้านอาหารที่ผมได้มา...'
+);
+
+return;
 }
 
 const birthday=e.target.closest('[data-line-birthday]');

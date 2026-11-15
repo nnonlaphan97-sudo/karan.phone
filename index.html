@@ -4398,45 +4398,17 @@ function icon(n,cls=''){
   switch(n){
         case 'spotify':
       return `
-      <svg class="ico ${cls}"
-        viewBox="0 0 64 64"
-        xmlns="http://www.w3.org/2000/svg">
+   switch(n){
 
-        <defs>
-          <linearGradient id="spotifyIconBg"
-            x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#29E66B"/>
-            <stop offset=".55" stop-color="#1DB954"/>
-            <stop offset="1" stop-color="#12933D"/>
-          </linearGradient>
-        </defs>
+  case 'spotify':
+    return `
+      // SVG ไอคอน Spotify ใหม่
+    `;
 
-        <rect x="1" y="1"
-          width="62" height="62"
-          rx="20"
-          fill="url(#spotifyIconBg)"/>
-
-        <path d="M12 25
-          C24 20 43 21 53 27"
-          fill="none"
-          stroke="#111"
-          stroke-width="5.5"
-          stroke-linecap="round"/>
-
-        <path d="M15 35
-          C27 31 41 33 50 38"
-          fill="none"
-          stroke="#111"
-          stroke-width="4.5"
-          stroke-linecap="round"/>
-
-        <path d="M18 44
-          C29 41 39 43 47 47"
-          fill="none"
-          stroke="#111"
-          stroke-width="3.8"
-          stroke-linecap="round"/>
-      </svg>`;
+  case 'message':
+    return `
+      // SVG ไอคอน Messages เดิม
+    `;
       case 'message':
   return `
   <svg class="ico ${cls}" viewBox="0 0 64 64"

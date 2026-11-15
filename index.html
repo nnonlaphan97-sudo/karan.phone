@@ -12984,6 +12984,15 @@ if(chat==='karin' && save.flags.ep3KarinMessageShown){
   b+=bubble('ลงมาเจอชั้นหน่อย',false,'','17:42');
 }
 if(chat==='karin' && save.flags.ep4KarinShown){
+
+  if(!save.flags.ep4PhotoSent){
+    b+='<div class="day">15 เม.ย.</div>';
+    b+=bubble('คุยด้วยหน่อยได้ไหม',false,'','09:15');
+    b+=bubble('ผมทำงานอยู่',true,'','09:16');
+    b+=bubble('ไม่เชื่อ ถ่ายรูปมาให้ดูหน่อย',false,'','09:17');
+  }
+
+  if(save.flags.ep4PhotoSent){
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');
 
     b+='<div class="day">15 เม.ย.</div>';
@@ -13017,7 +13026,8 @@ if(chat==='karin' && save.flags.ep4KarinShown){
 
     }else{
 
-      choices=renderEp5BagPicker();
+  choices=renderEp5BagPicker();
+    }
   }
 }
 if(chat==='office'){
@@ -16362,9 +16372,9 @@ if(breakfastBtn && page==='chat' && chat==='achi'){
   persist();
   render();
 
-  showGameBanner(
+ showGameBanner(
     'karin',
-    'การันต์ พี่ขอไปนอนคอนโดด้วยหน่อยสิ'
+    'คุยด้วยหน่อยได้ไหม'
   );
   return;
 }

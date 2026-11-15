@@ -5772,6 +5772,35 @@ button{
   background:#00bf71;
 }
 
+/* GrabFood cake product photos */
+.gf-cake-image{
+  position:relative;
+  width:100%;
+  height:145px;
+  overflow:hidden;
+  border-radius:12px;
+  background:#f4f4f4;
+}
+
+.gf-cake-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.gf-detail-art{
+  width:100%;
+  height:260px;
+  overflow:hidden;
+  background:#f4f4f4;
+}
+
+.gf-detail-art img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
 
 </style>
 </head>
@@ -6328,11 +6357,36 @@ let selectedCake=null;
 let grabTab='home';
 let grabSearch='';
 
+
 const cakes=[
-  {id:'strawberry',name:'Strawberry Shortcake',price:390,detail:'ครีมนมสด สตรอว์เบอร์รี หวานน้อย'},
-  {id:'chocolate',name:'Chocolate Fudge',price:450,detail:'ช็อกโกแลตเข้มข้น เนื้อเค้กนุ่ม'},
-  {id:'vanilla',name:'Vanilla Birthday Cake',price:420,detail:'วานิลลา ครีมสด ตกแต่งเรียบง่าย'},
-  {id:'matcha',name:'Matcha Cream Cake',price:460,detail:'ชาเขียวมัทฉะ หวานน้อย'}
+  {
+    id:'strawberry',
+    name:'Strawberry Shortcake',
+    price:390,
+    detail:'ครีมนมสด สตรอว์เบอร์รี หวานน้อย',
+    image:'https://i.ibb.co/pBwJdm5h/IMG-4987.jpg'
+  },
+  {
+    id:'chocolate',
+    name:'Chocolate Fudge',
+    price:450,
+    detail:'ช็อกโกแลตเข้มข้น เนื้อเค้กนุ่ม',
+    image:'https://i.ibb.co/zW06qkmk/IMG-4986.jpg'
+  },
+  {
+    id:'vanilla',
+    name:'Vanilla Birthday Cake',
+    price:420,
+    detail:'วานิลลา ครีมสด ตกแต่งเรียบง่าย',
+    image:'https://i.ibb.co/5xB01mT1/IMG-4984.jpg'
+  },
+  {
+    id:'matcha',
+    name:'Matcha Cream Cake',
+    price:460,
+    detail:'ชาเขียวมัทฉะ หวานน้อย',
+    image:'https://i.ibb.co/qL3jRfSw/IMG-4981.jpg'
+  }
 ];
 
 save.flags.birthdaySeen ??= false;
@@ -7870,10 +7924,13 @@ function grabBottom(){
 function grabCakeList(){
   return cakes.map((c,i)=>`
     <button class="gf-cake" data-grab-cake="${c.id}">
-      <div class="gf-cake-image">
-        ${grabIcon('cake')}
-        <span>เค้กวันเกิด</span>
-      </div>
+      
+<div class="gf-cake-image">
+  <img src="${c.image}"
+       alt="${c.name}"
+       loading="lazy"
+       style="width:100%;height:100%;object-fit:cover;display:block;">
+</div>
       <div class="gf-cake-info">
         <strong>${c.name}</strong>
         <small>${c.detail}</small>
@@ -7912,7 +7969,12 @@ function renderGrab(){
             <button data-grab="home">${grabIcon('back')}</button>
             <strong>รายละเอียดสินค้า</strong>
           </div>
-          <div class="gf-detail-art">${grabIcon('cake')}</div>
+          
+<div class="gf-detail-art">
+  <img src="${c.image}"
+       alt="${c.name}"
+       style="width:100%;height:100%;object-fit:cover;display:block;">
+</div>
           <div class="gf-section">
             <small class="gf-green">ร้านเค้ก · Birthday Cake Studio</small>
             <h2>${c.name}</h2>

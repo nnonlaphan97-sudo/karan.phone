@@ -3701,18 +3701,39 @@ button{
 }
 /* ===== EP.08 SHARED SAMSUNG NOTES ===== */
 
+
 .ep8-shared-link{
   display:flex;
   align-items:center;
-  gap:12px;
-  width:85%;
-  padding:14px;
-  margin:10px 0;
+  gap:10px;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  padding:12px;
+  margin:0;
   border:1px solid #d8dce6;
-  border-radius:16px;
+  border-radius:18px;
   background:#fff;
   color:#20232a;
   text-align:left;
+  font:inherit;
+  cursor:pointer;
+}
+
+.ep8-note-message .line-message-content{
+  min-width:0;
+  max-width:100%;
+}
+
+.ep8-note-message .ep8-shared-info{
+  flex:1;
+  min-width:0;
+}
+
+.ep8-note-message .ep8-shared-info strong,
+.ep8-note-message .ep8-shared-info small{
+  overflow-wrap:anywhere;
 }
 
 .ep8-shared-icon{
@@ -6277,6 +6298,12 @@ button{
 
 
 /* ===== SAMSUNG MESSAGES ===== */
+
+/* ซ่อนแถบสถานะเฉพาะแอปข้อความ */
+#phone:has(.ksms-app) > .status,
+#phone:has(.ksms-app) > .camera{
+  display:none;
+}
 
 .ksms-app{
   height:100%;
@@ -13927,9 +13954,9 @@ if(chat==='tanaka'){
 
 if(chat==='tanaka' && save.flags.ep8Started){
 
-  b+='<div class="day">19 เม.ย.</div>';
+  b+='<div class="day">19 พ.ย.</div>';
   b+=bubble(
-    'คุณการันต์ ผมทราบเรื่องที่คุณกับอชิคบกันแล้วนะครับ'
+    'การันต์ซัง ผมทราบเรื่องที่คุณกับอชิคบกันแล้ว'
   );
   b+=bubble(
     'บริษัทของเรามีกฎไม่ให้พนักงานคบกัน'
@@ -14587,20 +14614,24 @@ if(
 }
 
 /* ===== EP.07 ACHI AFTER HELICOPTER ===== */
+/* ===== EP.07 ACHI AFTER HELICOPTER ===== */
 
 if(
   chat==='achi' &&
   save.flags.ep7HelicopterConfirmed
 ){
-  b+=`<div class="day">18 เม.ย. · หลังขึ้นเฮลิคอปเตอร์</div>`;
+  b+='<div class="day">2 พ.ค.</div>';
 
-  b+=bubble(
-    'การันต์ครับ ขอโทษนะครับที่ผมเป็นลมไป'
-  );
+  b+=bubble('การันต์ ขอโทษนะครับที่ผมเป็นลมไป',false,'','09:00');
+  b+=bubble('ผมผิดเองที่ไม่ได้บอกการันต์ว่าผมกลัวความสูง',false,'','09:01');
 
-  b+=bubble(
-    'จริง ๆ แล้วผมกลัวความสูงครับ'
-  );
+  b+=bubble('ผมเองไม่เคยถามอชิเหมือนกัน',true,'','09:02');
+  b+=bubble('ว่าอชิชอบมันมั้ย',true,'','09:02');
+
+  b+=bubble('การันต์',false,'','09:03');
+  b+=bubble('จริงๆผมไม่ได้ต้องการอะไรพิเศษเลย',false,'','09:03');
+  b+=bubble('แค่ได้อยู่ด้วยกันแบบนี้',false,'','09:04');
+  b+=bubble('ก็วิเศษมากพอแล้ว',false,'','09:04');
 
   if(!save.flags.ep7Wish){
 
@@ -14610,19 +14641,16 @@ if(
           การันต์จะขออชิเป็นแฟนว่าอย่างไร?
         </div>
 
-        <button class="choice"
-          data-ep7-love="rainbow">
-          อชิครับ เป็นแฟนกับผมนะครับ
+        <button class="choice" data-ep7-love="rainbow">
+          อชิ เป็นแฟนกับนะ
         </button>
 
-        <button class="choice"
-          data-ep7-love="flowers">
+        <button class="choice" data-ep7-love="flowers">
           ต่อจากนี้ ให้ผมได้อยู่ข้าง ๆ
           อชิในฐานะแฟนได้ไหมครับ
         </button>
 
-        <button class="choice"
-          data-ep7-love="fireworks">
+        <button class="choice" data-ep7-love="fireworks">
           ผมอยากอยู่ข้าง ๆ อชิ
           ไม่ใช่แค่วันนี้ แต่ทุกวันเลยครับ
           เป็นแฟนกับผมนะ
@@ -14632,20 +14660,14 @@ if(
 
   }else{
 
-    b+=bubble(
-      save.flags.ep7Wish,
-      true
-    );
+    b+=bubble(save.flags.ep7Wish,true);
 
-    b+=bubble(
-      'ตกลงครับ การันต์'
-    );
+    b+=bubble('ครับ');
 
-    b+=bubble(
-      'ผมก็อยากเป็นแฟนการันต์เหมือนกันครับ'
-    );
+    b+=bubble('☺️');
   }
 }
+
 /* ===== EP.08 ACHI SHARED NOTE ===== */
 
 if(
@@ -14656,7 +14678,10 @@ if(
     save.flags.ep8NoteJoined
   )
 ){
-  b+='<div class="day">19 เม.ย.</div>';
+   b+='<div class="day">20 พ.ย.</div>';
+
+  // เริ่มวันใหม่ ให้แสดงรูปโปรไฟล์อชิอีกครั้ง
+  lastBubbleSender=null;
 
   b+=bubble(
     'การันต์ ผมลองย้อนดูรายชื่อลูกค้าเก่าที่เคยติดต่อบริษัทไว้แล้วนะ'
@@ -14670,26 +14695,40 @@ if(
     'ผมแชร์ลิงก์ให้แล้วนะ ลองเปิดดูได้เลย'
   );
 
+ 
   b+=`
-    <button class="ep8-shared-link"
-      data-ep8-open-note="1">
+    <div class="line-message received ep8-note-message">
 
-      <span class="ep8-shared-icon">
-        ${ep8PhoneSVG('note')}
-      </span>
+      <div class="line-message-avatar">
+        ${lineAvatar('achi')}
+      </div>
 
-      <span class="ep8-shared-info">
-        <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
-        <small>Samsung Notes · แชร์โดยอชิ</small>
-        <small>8 บริษัท · เปิดโน้ตที่แชร์</small>
-      </span>
+      <div class="line-message-content">
+        <button
+          type="button"
+          class="ep8-shared-link"
+          data-ep8-open-note="1"
+        >
+          <span class="ep8-shared-icon">
+            ${ep8PhoneSVG('note')}
+          </span>
 
-    </button>
+          <span class="ep8-shared-info">
+            <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+            <small>Samsung Notes · แชร์โดยอชิ</small>
+            <small>8 บริษัท · เปิดโน้ตที่แชร์</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="line-message-meta">09:05</div>
+
+    </div>
   `;
 
   if(save.flags.ep8ContactsReceived){
     b+=bubble(
-      'ผมบันทึกรายชื่อแล้วนะ ขอบคุณมากอชิ',
+      'ผมได้รายชื่อแล้วนะ ขอบคุณมากอชิ',
       true
     );
   }
@@ -16598,7 +16637,7 @@ if(
 ){
   const loveMessages={
     rainbow:
-      'อชิครับ เป็นแฟนกับผมนะครับ',
+      'อชิ เป็นแฟนกันนะ',
 
     flowers:
       'ต่อจากนี้ ให้ผมได้อยู่ข้าง ๆ อชิในฐานะแฟนได้ไหมครับ',
@@ -16618,11 +16657,18 @@ if(
   persist();
   render();
 
-  // แสดงเอฟเฟกต์ตามตัวเลือกหลังอชิตอบตกลง
+
+  // แสดงเอฟเฟกต์หลังอชิตอบตกลง
   ep7PlayLoveEffect(type);
 
+  // รอ 5 วินาที แล้วให้ทานากะซังส่งข้อความ
+  setTimeout(()=>{
+    if(!save.flags.ep8Started){
+      ep8Start();
+    }
+  },5000);
+
   return;
-}
 
 const ep7IGOpen=e.target.closest(
   '[data-ep7-ig-open]'
@@ -16887,6 +16933,7 @@ if(ksmsHome && page==='Messages'){
   return;
 }
 
+
 /* ยืนยันเฮลิคอปเตอร์ */
 const ep7Helicopter=e.target.closest(
   '[data-ep7-helicopter]'
@@ -16898,23 +16945,24 @@ if(
   save.flags.ep7Stage>=4 &&
   !save.flags.ep7HelicopterConfirmed
 ){
-save.flags.ep7HelicopterConfirmed=true;
-save.flags.ep7AchiFaintedMessage=true;
+  save.flags.ep7HelicopterConfirmed=true;
+  save.flags.ep7AchiFaintedMessage=true;
 
-ep7Next(5);
-persist();
-render();
+  ep7Next(5);
+  persist();
+  render();
 
-showGameBanner(
-  'achi',
-  'พี่การันต์ครับ ขอโทษนะครับที่ผมเป็นลมไป'
-);
-
-return;
+  // รอ 3 วินาที ก่อนแสดงแจ้งเตือนจากอชิ
+  setTimeout(()=>{
+    showGameBanner(
+      'achirawit',
+      'การันต์ ขอโทษนะครับที่ผมเป็นลมไป'
+    );
+  },3000);
+  return;
 }
 
 /* ย้อนกลับจาก Instagram DM ของ EP.07 */
-
 const ep7IGBack=e.target.closest(
   '[data-ep7-ig-back]'
 );
@@ -18375,11 +18423,6 @@ if(ep7LeavingAchi){
     showGameBanner('achi','ขอบคุณครับ');
   }
   /* ===== EP.08 STORY TRANSITIONS ===== */
-
-if(ep8LeavingAchi){
-  ep8Start();
-}
-
 if(ep8LeavingTanaka){
   save.flags.ep8TanakaRead=true;
   persist();

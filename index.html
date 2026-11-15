@@ -15943,9 +15943,53 @@ document.addEventListener('change',function(e){
     ep5BagDraft=ep5BagDraft.filter(x=>x!==id);
   }
 });
+
 document.addEventListener('click',function(e){
-  
-/* ===== EP.12 FILES INTERACTIONS ===== */
+
+  // จัดการปุ่ม PIN ก่อนคำสั่งอื่นทั้งหมด
+  const pinButton = e.target.closest(
+    '.pin-key, .pin-action'
+  );
+
+  if(page === 'pin' && pinButton){
+
+    const action = pinButton.dataset.pinAction;
+    const digit = pinButton.dataset.pin;
+
+    if(action === 'cancel'){
+      pinInput = '';
+      page = 'lock';
+      render();
+      return;
+    }
+
+    if(action === 'delete'){
+      pinInput = pinInput.slice(0, -1);
+      render();
+      return;
+    }
+
+    if(digit !== undefined){
+
+      pinInput += digit;
+
+      if(pinInput.length === 4){
+
+        if(pinInput === PHONE_PIN){
+          pinInput = '';
+          page = 'home';
+        }else{
+          pinInput = '';
+          alert('รหัส PIN ไม่ถูกต้อง');
+        }
+      }
+
+      render();
+      return;
+    }
+  }
+
+  /* ===== EP.12 FILES INTERACTIONS ===== */
 
 const ep12Folder=e.target.closest('[data-ep12-folder]');
 

@@ -18594,6 +18594,7 @@ unlock('โน้ต');
 popup('รายการอาหาร','จัดส่งเรียบร้อยแล้ว มีข้อมูลเพิ่มเติมในโน้ต');
 }
 }
+}
 });
 
 document.addEventListener('input',function(e){
@@ -18750,7 +18751,6 @@ setInterval(()=>{
 },250);
 
 /* ===== EP.12 LIVE CARD EDITING ===== */
-
 document.addEventListener('input',function(e){
   const field=e.target.closest('[data-ep12-field]');
   if(!field || page!=='ไฟล์')return;

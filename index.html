@@ -5665,6 +5665,114 @@ button{
   gap:5px;
 }
 
+/* GRABFOOD INCOMING CALL */
+
+.grab-call-overlay{
+  position:absolute;
+  inset:0;
+  z-index:99999;
+  background:#101b19;
+  color:#fff;
+}
+
+.grab-call-screen{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  height:100%;
+  min-height:0;
+  padding:75px 25px 45px;
+  background:linear-gradient(180deg,#163d32,#0d1815);
+  text-align:center;
+}
+
+.grab-call-top{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.grab-call-top span{
+  font-size:17px;
+  font-weight:700;
+  color:#45db92;
+}
+
+.grab-call-top small{
+  color:#c4d5ce;
+}
+
+.grab-call-center{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.grab-call-avatar{
+  display:grid;
+  place-items:center;
+  width:112px;
+  height:112px;
+  border-radius:50%;
+  background:#00a86b;
+  margin-bottom:15px;
+}
+
+.grab-call-avatar svg{
+  width:56px;
+  height:56px;
+}
+
+.grab-call-center h2{
+  margin:0;
+  font-size:26px;
+  color:white;
+}
+
+.grab-call-center p{
+  margin:0;
+  color:#c5d6d0;
+}
+
+.grab-call-center small{
+  color:#9cbbb0;
+}
+
+.grab-call-actions{
+  display:flex;
+  justify-content:space-around;
+  gap:30px;
+}
+
+.grab-call-actions button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  border:0;
+  background:none;
+  color:white;
+  font-size:13px;
+}
+
+.grab-call-actions button svg{
+  width:68px;
+  height:68px;
+  padding:19px;
+  border-radius:50%;
+  box-sizing:border-box;
+}
+
+.grab-reject svg{
+  background:#ed4545;
+}
+
+.grab-accept svg{
+  background:#00bf71;
+}
+
+
 </style>
 </head>
 <body>
@@ -7791,9 +7899,11 @@ function renderGrab(){
           <div class="gf-section">
             <div class="gf-tracking-mark">${grabIcon('cart')}</div>
             <h2>${
-              status==='delivered'?'จัดส่งสำเร็จ':
-              status==='delayed'?'การจัดส่งล่าช้า':
-              'พนักงานกำลังจัดส่ง'
+            status==='preparing'?'ร้านกำลังเตรียมเค้ก':
+            status==='shipping'?'พนักงานกำลังจัดส่ง':
+            status==='delayed'?'การจัดส่งล่าช้า':
+            status==='delivered'?'จัดส่งสำเร็จ':
+            'รอยืนยันคำสั่งซื้อ'
             }</h2>
             ${address}
             <div class="gf-order-summary">
@@ -7811,10 +7921,9 @@ function renderGrab(){
                  <button class="gf-primary" data-go="LINE">
                    กลับไป LINE
                  </button>`
-              : `<p>พนักงานจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>
-                 <button class="gf-primary" data-grab="incoming">
-                   ดูสายเรียกเข้า
-                 </button>`
+              : status==='preparing'
+  ? `<p>ร้านกำลังเตรียมเค้กของคุณ กรุณารอสักครู่</p>`
+  : `<p>พนักงานกำลังนำเค้กไปส่งที่ TOYOKAWA และจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>`
             }
           </div>
         </div>
@@ -8004,8 +8113,164 @@ function renderGrab(){
 
 let grabMessage='delivery';
 
-/* ===== CALENDAR DATA ===== */
+/* ===== GRABFOOD AUTOMATIC DELIVERY CALL ===== */
 
+let grabPrepareTimer=null;
+let grabFirstCallTimer=null;
+let grabSecondCallTimer=null;
+let grabCallRound=0;
+
+function clearGrabTimers(){
+  clearTimeout(grabPrepareTimer);
+  clearTimeout(grabFirstCallTimer);
+  clearTimeout(grabSecondCallTimer);
+
+  grabPrepareTimer=null;
+  grabFirstCallTimer=null;
+  grabSecondCallTimer=null;
+}
+
+function grabStartDelivery(){
+  clearGrabTimers();
+  grabCallRound=0;
+
+  save.flags.deliveryStatus='preparing';
+  persist();
+  render();
+
+  // หลัง 2 วินาที เปลี่ยนเป็นกำลังจัดส่ง
+  grabPrepareTimer=setTimeout(()=>{
+    if(save.flags.deliveryStatus!=='preparing') return;
+
+    save.flags.deliveryStatus='shipping';
+    persist();
+    render();
+  },2000);
+
+  // หลังสั่งซื้อครบ 5 วินาที โทรเข้าครั้งแรก
+  grabFirstCallTimer=setTimeout(()=>{
+    if(save.flags.deliveryStatus!=='shipping') return;
+
+    grabIncomingCall(1);
+  },5000);
+}
+
+function grabIncomingCall(round){
+  if(save.flags.deliveryStatus==='delivered') return;
+
+  grabCallRound=round;
+
+  const modal=document.getElementById('modal');
+  if(!modal) return;
+
+  modal.innerHTML=`
+    <div class="grab-call-overlay">
+      <div class="grab-call-screen">
+
+        <div class="grab-call-top">
+          <span>GrabFood</span>
+          <small>สายเรียกเข้า</small>
+        </div>
+
+        <div class="grab-call-center">
+          <div class="grab-call-avatar">
+            ${grabIcon('cart')}
+          </div>
+
+          <h2>พนักงานจัดส่ง</h2>
+          <p>GrabFood Delivery</p>
+          <small>กำลังโทรหาคุณ...</small>
+        </div>
+
+        <div class="grab-call-actions">
+          <button class="grab-reject"
+                  data-delivery-call="miss">
+            ${grabPhoneIcon(false)}
+            <span>ไม่รับสาย</span>
+          </button>
+
+          <button class="grab-accept"
+                  data-delivery-call="answer">
+            ${grabPhoneIcon(true)}
+            <span>รับสาย</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+function grabPhoneIcon(accept){
+  return `
+    <svg viewBox="0 0 24 24"
+         width="30" height="30"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2.2"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         style="${accept?'':'transform:rotate(135deg)'}">
+      <path d="M22 16.9v3a2 2 0 0 1-2.2 2
+        19.8 19.8 0 0 1-8.6-3.1
+        19.5 19.5 0 0 1-6-6
+        19.8 19.8 0 0 1-3.1-8.7
+        A2 2 0 0 1 4.1 2h3
+        a2 2 0 0 1 2 1.7
+        c.12.96.35 1.9.68 2.8
+        a2 2 0 0 1-.45 2.1L8.1 9.9
+        a16 16 0 0 0 6 6l1.3-1.3
+        a2 2 0 0 1 2.1-.45
+        c.9.33 1.84.56 2.8.68
+        A2 2 0 0 1 22 16.9Z"/>
+    </svg>
+  `;
+}
+
+function grabMissedDeliveryCall(){
+  document.getElementById('modal').innerHTML='';
+
+  save.flags.deliveryStatus='delayed';
+  persist();
+  render();
+
+  // แจ้งเตือน GrabFood
+  popup(
+    'GrabFood · การจัดส่งล่าช้า',
+    'พนักงานจัดส่งไม่สามารถติดต่อคุณได้ กรุณารับสายครั้งถัดไป'
+  );
+
+  // อีก 2 วินาที โทรซ้ำ
+  grabSecondCallTimer=setTimeout(()=>{
+    if(save.flags.deliveryStatus==='delayed'){
+      document.getElementById('modal').innerHTML='';
+      grabIncomingCall(2);
+    }
+  },2000);
+}
+
+function grabCompleteDelivery(){
+  clearGrabTimers();
+
+  save.flags.deliveryStatus='delivered';
+  persist();
+
+  document.getElementById('modal').innerHTML='';
+  render();
+
+  popup(
+    'GrabFood · จัดส่งสำเร็จ',
+    'พนักงานจัดส่งเค้กถึง TOYOKAWA เรียบร้อยแล้ว'
+  );
+
+  // ต่อเนื้อเรื่องเดิมหลังส่งเค้ก
+  showGameBanner(
+    'duj',
+    'เห็นน้องปายบอกการันต์ตามหาพี่'
+  );
+}
+
+/* ===== CALENDAR DATA ===== */
 const calendarEvents=[
   {
     date:'2026-01-28',
@@ -14936,15 +15201,18 @@ if(grabBtn && page==='GrabFood'){
   return;
 }
 
-  if(action==='order'){
-    save.flags.cakeOrdered=true;
-    save.flags.orderedCake=selectedCake;
-    save.flags.deliveryStatus='shipping';
-    grabScreen='tracking';
-    persist();
-    render();
-    return;
-  }
+if(action==='order'){
+  if(save.flags.cakeOrdered) return;
+
+  save.flags.cakeOrdered=true;
+  save.flags.orderedCake=selectedCake;
+
+  grabScreen='tracking';
+  grabTab='orders';
+
+  grabStartDelivery();
+  return;
+}
 
   if(action==='incoming'){
     document.getElementById('modal').innerHTML=`
@@ -14979,29 +15247,27 @@ if(action==='contact'){
 
 const deliveryCall=e.target.closest('[data-delivery-call]');
 
+const deliveryCall=e.target.closest('[data-delivery-call]');
+
 if(deliveryCall){
-  const answered=deliveryCall.dataset.deliveryCall==='answer';
+  const action=deliveryCall.dataset.deliveryCall;
 
-  save.flags.deliveryStatus=answered?'delivered':'delayed';
-  persist();
-
-  document.getElementById('modal').innerHTML='';
-
-  render();
-
-  if(answered){
-    showGameBanner(
-      'duj',
-      'เห็นน้องปายบอกการันต์ตามหาพี่'
-    );
-  }else{
-    popup(
-      'จัดส่งล่าช้า',
-      'พนักงานติดต่อไม่ได้และรถติด กรุณาติดต่อผ่าน GrabFood อีกครั้ง'
-    );
+  if(action==='answer'){
+    grabCompleteDelivery();
+    return;
   }
 
-  return;
+  if(action==='miss'){
+    if(grabCallRound===1){
+      grabMissedDeliveryCall();
+    }else{
+      document.getElementById('modal').innerHTML='';
+      save.flags.deliveryStatus='delayed';
+      persist();
+      render();
+    }
+    return;
+  }
 }
 
 /* ===== LINE PROFILE INTERACTIONS ===== */

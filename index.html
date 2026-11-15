@@ -12081,7 +12081,7 @@ const senderMap={
   pai:'21:16'
 };
 
-const bubbleTime = initialBubbleTimes[chat] || '';
+const bubbleTime = customTime || initialBubbleTimes[chat] || '';
 
 const meta=out
   ? `<div class="line-message-meta">อ่านแล้ว${bubbleTime ? '<br>'+bubbleTime : ''}</div>`
@@ -12288,7 +12288,7 @@ const senderMap={
 function cancelledMessage(){
   return `
     <div class="line-cancelled-message">
-      <div> Aci ยกเลิกข้อความแล้ว</div>
+      <div> Acirawit ยกเลิกข้อความแล้ว</div>
     </div>
   `;
 }
@@ -12814,22 +12814,28 @@ if(save.flags.ep2Started && save.flags.ep2CouponReady){
   b+=ep2InviteMessages();
   choices=ep2InviteChoices();
 }
-// EP.03 — 13 เมษายน
+// EP.03–04 — 13 เมษายน อชิส่งข้อความตอนเช้า
 if(save.flags.ep3SickShown){
 
   b+='<div class="day">13 เม.ย.</div>';
-  b+=bubble(
-    'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
-  );
-}
-   // EP.04 — 13 เมษายน
+
   if(save.flags.ep4AchiCancelledRead){
 
-    b+='<div class="day">13 เม.ย.</div>';
+    // เมื่อเปิดอ่านข้อความแล้ว ให้เห็นว่าอชิยกเลิกข้อความ
     b+=cancelledMessage();
 
-    choices='';
+  }else{
+
+    // ก่อนเปิดแบนเนอร์ ยังเป็นข้อความแจ้งว่าป่วย
+    b+=bubble(
+      'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ',
+      false,
+      '',
+      '08:36'
+    );
   }
+  choices='';
+}
 
   // หลังการันต์หาบ้านอชิสำเร็จ
   if(save.flags.ep4HomeBannerRead){

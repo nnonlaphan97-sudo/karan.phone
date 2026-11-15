@@ -6262,6 +6262,18 @@ button{
   width:100%;
   border-radius:15px;
 }
+/* EP.07 — ป้องกันรูปดอกไม้ล้นกรอบ */
+.ep7-flower-card{
+  overflow:hidden;
+}
+
+.ep7-flower-card img{
+  width:100%;
+  height:100%;
+  max-height:100%;
+  object-fit:cover;
+  display:block;
+}
 
 </style>
 </head>
@@ -9790,27 +9802,28 @@ function renderInstagramDM(){
         ` : ''}
       </div>
 
-      ${save.flags.ep7Stage>=3 ? `
-        <div class="ep5-ig-date">เตรียมเดตกับอชิ</div>
+      
+${save.flags.ep7Stage>=3 ? `
+  <div class="ep5-ig-date">1 พฤษภาคม</div>
 
-        <div class="ep5-ig-bubble received">
-          พรุ่งนี้จะเข้ามาที่ร้านเหรอ
-        </div>
+  <div class="ep5-ig-bubble received">
+    พรุ่งนี้มึงจะเข้ามาที่ร้านกี่โมง
+  </div>
 
-        ${save.flags.ep7CoffeeConfirmed ? `
-          <div class="ep5-ig-bubble sent">
-            ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
-          </div>
+  ${save.flags.ep7FriendTime ? `
+    <div class="ep5-ig-bubble sent">
+      ${save.flags.ep7FriendTime}
+    </div>
 
-          <div class="ep5-ig-bubble sent">
-            ขอเมล็ดกาแฟจากลำพูน
-          </div>
+    <div class="ep5-ig-bubble sent">
+      ขอเมล็ดกาแฟจากลำพูนนะ
+    </div>
 
-          <div class="ep5-ig-bubble received">
-            ได้เลย เดี๋ยวเตรียมไว้ให้
-          </div>
-        ` : ''}
-      ` : ''}
+    <div class="ep5-ig-bubble received">
+      ได้เลย เดี๋ยวเตรียมไว้ให้
+    </div>
+  ` : ''}
+` : ''}
 
       ${!chosen ? `
         <div class="ep5-ig-replies">
@@ -9826,7 +9839,11 @@ function renderInstagramDM(){
           !save.flags.ep7CoffeeConfirmed ? `
           <div class="ep5-ig-replies">
             <div>ตอบข้อความป่า</div>
-            <button data-ep7-coffee="1">
+            ${['11:00 AM','12:00 PM','01:00 PM'].map(time=>`
+  <button data-ep7-coffee="${time}">
+    ${time}
+  </button>
+`).join('')}
               ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
               ขอเมล็ดกาแฟจากลำพูน
             </button>
@@ -10080,9 +10097,9 @@ function renderInstagram() {
     <span>
       <strong>ร้านเสื้อผ้า</strong>
       <small>
-        ${save.flags.ep7Shirt
-          ? 'ยืนยันเสื้อเรียบร้อยแล้ว'
-          : 'ส่งแบบเสื้อมาให้เลือกแล้วค่ะ'}
+        ${save.flags.ep7ClothesTime
+  ? 'ยืนยันนัดหมาย '+save.flags.ep7ClothesTime+' เรียบร้อยแล้วค่ะ'
+  : 'ขอคอนเฟิร์มเวลานัดหมายค่ะ'}
       </small>
     </span>
   </button>
@@ -10095,7 +10112,7 @@ function renderInstagram() {
   ${save.flags.ep7CoffeeConfirmed
     ? 'ได้เลย เดี๋ยวเตรียมไว้ให้'
     : save.flags.ep7Stage>=3
-      ? 'พรุ่งนี้จะเข้ามาที่ร้านเหรอ'
+      ? 'พรุ่งนี้มึงจะเข้ามาที่ร้านกี่โมง'
       : 'มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย'}
 </small>  </span>
             <span class="ig-chat-arrow">›</span>
@@ -10735,9 +10752,12 @@ function ep6Advance(stage){
 }
 
 /* ===== EP.07 FIRST DATE SYSTEM ===== */
-
 let ep7FlowerDraft='';
 let ep7ShirtDraft='';
+
+save.flags.ep7FlowerPickup ??= '';
+save.flags.ep7ClothesTime ??= '';
+save.flags.ep7FriendTime ??= '';
 
 function ep7Next(stage){
   if(save.flags.ep7Stage>=stage)return;
@@ -10823,9 +10843,10 @@ function ep7FlowerPage(){
             data-ep7-flower="${id}">
             <span class="ep7-product-art">
               <img
+  <img
   src="${photo}"
   alt="${name}"
-  style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block"
+  style="width:100%;height:100%;max-height:100%;object-fit:cover;border-radius:12px;display:block"
 >
             </span>
             <span class="ep7-product-info">
@@ -10876,15 +10897,12 @@ function ep7FlowerArt(type){
     </svg>`;
 }
 
-function ep7InstagramPage(){
-  const shop=igScreen==='ep7shop';
 
-  if(shop){
-    const shirts=[
-      ['white','เสื้อเชิ้ตสีขาว','#f8f8f5'],
-      ['blue','เสื้อเชิ้ตสีฟ้า','#a7c9e8'],
-      ['cream','เสื้อสีครีม','#e7d8b9']
-    ];
+function ep7InstagramPage(){
+
+  if(igScreen==='ep7shop'){
+
+    const selected=save.flags.ep7ClothesTime;
 
     return `
       <div class="ep7-page">
@@ -10897,51 +10915,39 @@ function ep7InstagramPage(){
         </header>
 
         <div class="ep7-scroll">
+
           <div class="ep7-dm received">
             สวัสดีค่ะคุณการันต์
-            ทางร้านส่งแบบเสื้อมาให้เลือกแล้วนะคะ
+            ทางร้านขอคอนเฟิร์มเวลานัดหมายค่ะ
           </div>
 
           <div class="ep7-dm received">
-            ต้องการให้ทางร้านเตรียมตัวไหนไว้ให้คะ
+            คุณการันต์สะดวกเข้ามาที่ร้านกี่โมงคะ
           </div>
 
-          <h3>เลือกเสื้อให้อชิ</h3>
+          ${selected ? `
+            <div class="ep7-dm sent">${selected}</div>
+            <div class="ep7-dm received">
+              ยืนยันนัดหมายเวลา ${selected}
+              เรียบร้อยแล้วค่ะ
+            </div>
+          ` : `
+            <h3>เลือกเวลานัดหมาย</h3>
 
-          <div class="ep7-shirt-grid">
-            ${shirts.map(([id,name,color])=>`
-              <button class="ep7-shirt
-                ${ep7ShirtDraft===id?'selected':''}"
-                data-ep7-shirt="${id}">
-                <svg viewBox="0 0 100 110"
-                  width="100%" height="115"
-                  aria-hidden="true">
-                  <path d="M31 12L42 7H58L69 12
-                    L94 30L79 55L69 48
-                    V103H31V48L21 55
-                    L6 30Z"
-                    fill="${color}"
-                    stroke="#8f929c"
-                    stroke-width="2"/>
-                  <path d="M42 7L50 21L58 7
-                    M50 21V101"
-                    fill="none"
-                    stroke="#8f929c"
-                    stroke-width="2"/>
-                </svg>
-                <strong>${name}</strong>
+            ${['08:00 AM','09:00 AM','10:00 AM'].map(time=>`
+              <button
+                class="ep7-primary"
+                data-ep7-clothes-time="${time}"
+                style="margin-bottom:12px;">
+                ${time}
               </button>
             `).join('')}
-          </div>
+          `}
 
-          <button class="ep7-primary"
-            data-ep7-shirt-confirm="1"
-            ${!ep7ShirtDraft?'disabled':''}>
-            ยืนยันเสื้อ
-          </button>
         </div>
       </div>`;
   }
+
   return renderInstagramDM();
 }
 
@@ -14437,38 +14443,55 @@ if(
   }
 }
 /* ===== EP.07 FLOWER SHOP CHAT ===== */
+
+/* ===== EP.07 FLOWER SHOP CHAT ===== */
 if(chat==='flowerShop' && save.flags.ep7Stage>=1){
+
   b='<div class="day">1 พ.ค.</div>';
-  b+=bubble(
-  'สวัสดีค่ะคุณการันต์ ทางร้านส่งแบบช่อดอกไม้มาให้เลือกแล้วนะคะ',
-  false,'','09:00'
-);
-  
-  b+=bubble(`
-    <div style="font-size:14px;color:#666;margin-bottom:6px;">
-      Bloom & Beyond Flower Shop
-    </div>
-
-    <a href="#flower-catalog"
-       data-ep7-open-flowers="1"
-       style="color:#1687d9;text-decoration:underline;font-size:15px;overflow-wrap:anywhere;">
-      bloomandbeyond.com/catalog
-    </a>
-  `,false,'','09:01');
-
-
-if(save.flags.ep7Flower){
 
   b+=bubble(
-    'ผมเลือกแบบนี้ครับ',
-    true,'','09:02'
+    'สวัสดีค่ะคุณการันต์ ทางร้านส่งแบบช่อดอกไม้มาให้เลือกแล้วนะคะ',
+    false,'','09:00'
   );
 
   b+=bubble(
-    'รับทราบค่ะ ทางร้านจะจัดเตรียมให้เรียบร้อยนะคะ',
-    false,'','09:03'
+    '<a href="#flower-catalog" data-ep7-open-flowers="1" style="color:#1687d9;text-decoration:underline;font-size:14px;">bloomandbeyond.com/catalog</a>',
+    false,'','09:01'
   );
-}
+
+  if(save.flags.ep7Flower){
+
+    b+=bubble('ผมเลือกแบบนี้ครับ',true,'','09:02');
+
+    b+=bubble(
+      'รับทราบค่ะ คุณการันต์สะดวกมารับช่อดอกไม้กี่โมงคะ',
+      false,'','09:03'
+    );
+
+    if(save.flags.ep7FlowerPickup){
+
+      b+=bubble(
+        save.flags.ep7FlowerPickup,
+        true,'','09:04'
+      );
+
+      b+=bubble(
+        'ยืนยันเวลารับช่อดอกไม้ '+save.flags.ep7FlowerPickup+' เรียบร้อยค่ะ',
+        false,'','09:05'
+      );
+
+    }else{
+
+      choices=`
+        <div class="tinylabel">เลือกเวลารับช่อดอกไม้</div>
+        ${['03:30 AM','04:00 AM','04:30 AM'].map(time=>`
+          <button class="choice" data-ep7-pickup="${time}">
+            ${time}
+          </button>
+        `).join('')}
+      `;
+    }
+  }
 }
 
 /* ===== EP.06 PAI CHAT — 30 เมษายน ===== */
@@ -16200,8 +16223,8 @@ if(ep7FlowerConfirm && page==='EP7Flowers'){
     return;
   }
 
-  save.flags.ep7Flower='lotus';
-  ep7Next(2);
+save.flags.ep7Flower='lotus';
+persist();
 
   page='LINE';
   lineTab='chats';
@@ -16219,39 +16242,62 @@ if(ep7FlowerConfirm && page==='EP7Flowers'){
   return;
 }
 
+/* EP.07 — เลือกเวลารับดอกไม้ */
 
-/* เลือกเสื้อให้อชิ */
+const ep7Pickup=e.target.closest('[data-ep7-pickup]');
 
-const ep7Shirt=e.target.closest(
-  '[data-ep7-shirt]'
-);
+if(ep7Pickup && page==='chat' && chat==='flowerShop'){
 
-if(
-  ep7Shirt &&
-  page==='Instagram' &&
-  igScreen==='ep7shop'
-){
-  ep7ShirtDraft=ep7Shirt.dataset.ep7Shirt;
+  const time=ep7Pickup.dataset.ep7Pickup;
+
+  if(time!=='04:30 AM'){
+    popup(
+      'ลองเลือกเวลาอีกครั้ง',
+      'การันต์ต้องไปรับดอกไม้เวลา 04:30 AM'
+    );
+    return;
+  }
+
+  save.flags.ep7FlowerPickup=time;
+  ep7Next(2);
+  persist();
   render();
+
+  ep7Banner(
+    'Instagram',
+    'ร้านเสื้อผ้า',
+    'ขอคอนเฟิร์มเวลานัดหมายค่ะ',
+    'shop'
+  );
+
   return;
 }
 
+/* EP.07 — คอนเฟิร์มนัดร้านเสื้อผ้า */
 
-/* ยืนยันเสื้อ */
-
-const ep7ShirtConfirm=e.target.closest(
-  '[data-ep7-shirt-confirm]'
+const ep7Clothes=e.target.closest(
+  '[data-ep7-clothes-time]'
 );
 
 if(
-  ep7ShirtConfirm &&
+  ep7Clothes &&
   page==='Instagram' &&
   igScreen==='ep7shop'
 ){
-  if(!ep7ShirtDraft)return;
 
-  save.flags.ep7Shirt=ep7ShirtDraft;
+  const time=ep7Clothes.dataset.ep7ClothesTime;
+
+  if(time!=='09:00 AM'){
+    popup(
+      'ลองเลือกเวลาอีกครั้ง',
+      'ตรวจสอบเวลานัดหมายที่การันต์เตรียมไว้'
+    );
+    return;
+  }
+
+  save.flags.ep7ClothesTime=time;
   ep7Next(3);
+  persist();
 
   igScreen='inbox';
   render();
@@ -16259,27 +16305,40 @@ if(
   ep7Banner(
     'Instagram',
     'ป่า',
-    'พรุ่งนี้จะเข้ามาที่ร้านเหรอ',
+    'พรุ่งนี้มึงจะเข้ามาที่ร้านกี่โมง',
     'pa'
   );
+
   return;
 }
 
 
-/* การันต์ฝากป่าเตรียมกาแฟจากลำพูน */
+/* EP.07 — เลือกเวลาเข้าร้านของป่า */
 
-const ep7Coffee=e.target.closest(
-  '[data-ep7-coffee]'
-);
+const ep7Coffee=e.target.closest('[data-ep7-coffee]');
 
 if(
   ep7Coffee &&
   page==='Instagram' &&
-  igScreen==='dm'
+  igScreen==='dm' &&
+  save.flags.ep7Stage>=3
 ){
-  save.flags.ep7CoffeeConfirmed=true;
-  ep7Next(4);
 
+  const time=ep7Coffee.dataset.ep7Coffee;
+
+  if(time!=='01:00 PM'){
+    popup(
+      'ลองเลือกเวลาอีกครั้ง',
+      'ตรวจสอบเวลาที่การันต์จะเข้าร้านของป่า'
+    );
+    return;
+  }
+
+  save.flags.ep7FriendTime=time;
+  save.flags.ep7CoffeeConfirmed=true;
+
+  ep7Next(4);
+  persist();
   render();
 
   ep7Banner(

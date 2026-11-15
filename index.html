@@ -3872,6 +3872,410 @@ button{
   stroke:currentColor;
   fill:none;
 }
+/* ===== EP.09 SPOTIFY ===== */
+
+.ep9-spotify{
+  position:relative;
+  height:100%;
+  padding-top:36px;
+  padding-bottom:24px;
+  display:flex;
+  flex-direction:column;
+  background:linear-gradient(
+    180deg,
+    #24392d 0%,
+    #171717 40%,
+    #121212 100%
+  );
+  color:#fff;
+  overflow:hidden;
+  font-family:Arial,'Noto Sans Thai',sans-serif;
+}
+
+.ep9-spotify-homehead{
+  padding:16px 18px;
+  flex-shrink:0;
+}
+
+.ep9-spotify-tabs{
+  display:flex;
+  gap:9px;
+}
+
+.ep9-spotify-tabs span{
+  padding:9px 15px;
+  background:#333;
+  border-radius:25px;
+  font-size:12px;
+}
+
+.ep9-spotify-tabs .active{
+  background:#1ed760;
+  color:#101010;
+  font-weight:700;
+}
+
+.ep9-spotify-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:8px 18px 30px;
+  scrollbar-width:none;
+}
+
+.ep9-spotify-greeting h2{
+  font-size:25px;
+  margin:8px 0;
+}
+
+.ep9-spotify-greeting p{
+  color:#b9b9b9;
+  font-size:13px;
+  margin-bottom:23px;
+}
+
+.ep9-spotify-feature{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  background:#303a33;
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:30px;
+}
+
+.ep9-feature-cover{
+  width:95px;
+  height:95px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#779783,#263b2e);
+  color:white;
+  border-radius:4px;
+}
+
+.ep9-feature-cover svg{
+  width:48px;
+  height:48px;
+}
+
+.ep9-spotify-feature small,
+.ep9-spotify-feature strong,
+.ep9-spotify-feature span{
+  display:block;
+}
+
+.ep9-spotify-feature small{
+  color:#c5c5c5;
+  font-size:11px;
+}
+
+.ep9-spotify-feature strong{
+  font-size:21px;
+  margin:8px 0;
+}
+
+.ep9-spotify-feature span{
+  color:#bbb;
+  font-size:11px;
+}
+
+.ep9-spotify-scroll h3{
+  font-size:19px;
+  margin:0 0 17px;
+}
+
+.ep9-spotify-songlist{
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+}
+
+.ep9-spotify-song{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:#fff;
+  text-align:left;
+}
+
+.ep9-spotify-cover{
+  width:60px;
+  height:60px;
+  border-radius:4px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  flex-shrink:0;
+  box-shadow:0 7px 18px #0003;
+}
+
+.ep9-spotify-cover svg{
+  width:26px;
+  height:26px;
+}
+
+.ep9-spotify-cover span{
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.ep9-cover-circle{
+  display:grid;
+  place-items:center;
+}
+
+.ep9-spotify-songtext{
+  flex:1;
+  min-width:0;
+}
+
+.ep9-spotify-songtext strong{
+  display:block;
+  font-size:14px;
+}
+
+.ep9-spotify-songtext small{
+  display:block;
+  color:#aaa;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.ep9-spotify-songmore{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+}
+
+.ep9-spotify-songmore svg{
+  width:20px;
+  height:20px;
+}
+
+.ep9-spotify-hint{
+  color:#aaa;
+  text-align:center;
+  margin-top:28px;
+  font-size:12px;
+}
+
+.ep9-spotify-bottom{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  flex-shrink:0;
+  height:60px;
+  border-top:1px solid #ffffff12;
+  background:#121212;
+  font-size:11px;
+  color:#888;
+}
+
+.ep9-spotify-bottom .active{
+  color:#fff;
+  font-weight:700;
+}
+
+/* หน้ากำลังเล่น */
+
+.ep9-spotify.player{
+  background:linear-gradient(
+    180deg,
+    var(--song-color),
+    #242424 65%,
+    #121212
+  );
+  padding-left:23px;
+  padding-right:23px;
+}
+
+.ep9-spotify-top{
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  gap:5px;
+  position:relative;
+  padding:20px 0;
+  font-size:11px;
+}
+
+.ep9-spotify-top button{
+  position:absolute;
+  left:0;
+  top:14px;
+  border:0;
+  background:transparent;
+  color:white;
+}
+
+.ep9-spotify-top strong{
+  font-size:13px;
+}
+
+.ep9-player-cover{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex:1;
+  min-height:0;
+}
+
+.ep9-spotify-cover.large{
+  width:min(100%,290px);
+  height:auto;
+  aspect-ratio:1;
+  border-radius:5px;
+  gap:18px;
+  box-shadow:0 15px 35px #0005;
+}
+
+.ep9-spotify-cover.large svg{
+  width:95px;
+  height:95px;
+}
+
+.ep9-spotify-cover.large span{
+  font-size:14px;
+  letter-spacing:3px;
+}
+
+.ep9-player-info{
+  padding-top:22px;
+}
+
+.ep9-player-info h2{
+  font-size:23px;
+  margin:0 0 6px;
+}
+
+.ep9-player-info p{
+  color:#ddd;
+  font-size:13px;
+  margin:0;
+}
+
+.ep9-player-progress{
+  margin-top:25px;
+}
+
+.ep9-progress-track{
+  height:4px;
+  border-radius:4px;
+  background:#ffffff50;
+  overflow:hidden;
+}
+
+.ep9-progress-track span{
+  display:block;
+  width:0%;
+  height:100%;
+  background:white;
+}
+
+.ep9-progress-time{
+  display:flex;
+  justify-content:space-between;
+  color:#ddd;
+  font-size:10px;
+  margin-top:8px;
+}
+
+.ep9-player-controls{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  padding:20px 0;
+  font-size:24px;
+}
+
+.ep9-player-play{
+  width:65px;
+  height:65px;
+  border:0;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  display:grid;
+  place-items:center;
+}
+
+.ep9-player-play svg{
+  width:30px;
+  height:30px;
+}
+
+.ep9-spotify-send{
+  width:100%;
+  border:0;
+  border-radius:30px;
+  padding:15px;
+  background:#1ed760;
+  color:#101010;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+/* การ์ดเพลงที่แชร์ใน LINE */
+
+.ep9-line-song{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  width:fit-content;
+  max-width:85%;
+  margin:12px 0 12px auto;
+  padding:10px;
+  border-radius:14px;
+  background:#a9e88d;
+  color:#171717;
+}
+
+.ep9-line-song-cover{
+  width:58px;
+  height:58px;
+  flex-shrink:0;
+  border-radius:5px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+}
+
+.ep9-line-song-cover svg{
+  width:28px;
+  height:28px;
+}
+
+.ep9-line-song small,
+.ep9-line-song strong,
+.ep9-line-song span{
+  display:block;
+}
+
+.ep9-line-song small{
+  font-size:10px;
+  color:#3c5541;
+}
+
+.ep9-line-song strong{
+  font-size:13px;
+  margin:5px 0;
+}
+
+.ep9-line-song span{
+  font-size:10px;
+  color:#3c5541;
+}
+
 </style>
 </head>
 <body>
@@ -3992,6 +4396,47 @@ function icon(n,cls=''){
     </svg>`;
 
   switch(n){
+        case 'spotify':
+      return `
+      <svg class="ico ${cls}"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <defs>
+          <linearGradient id="spotifyIconBg"
+            x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#29E66B"/>
+            <stop offset=".55" stop-color="#1DB954"/>
+            <stop offset="1" stop-color="#12933D"/>
+          </linearGradient>
+        </defs>
+
+        <rect x="1" y="1"
+          width="62" height="62"
+          rx="20"
+          fill="url(#spotifyIconBg)"/>
+
+        <path d="M12 25
+          C24 20 43 21 53 27"
+          fill="none"
+          stroke="#111"
+          stroke-width="5.5"
+          stroke-linecap="round"/>
+
+        <path d="M15 35
+          C27 31 41 33 50 38"
+          fill="none"
+          stroke="#111"
+          stroke-width="4.5"
+          stroke-linecap="round"/>
+
+        <path d="M18 44
+          C29 41 39 43 47 47"
+          fill="none"
+          stroke="#111"
+          stroke-width="3.8"
+          stroke-linecap="round"/>
+      </svg>`;
       case 'message':
   return `
   <svg class="ico ${cls}" viewBox="0 0 64 64"
@@ -4332,7 +4777,8 @@ const appdefs=[
 ['เบราว์เซอร์','web','#6d9fc4'],
 ['นาฬิกา','clock','#938dcf'],
 ['ไฟล์','file','#899cb7'],
-['Maps','map','#ef3124']
+['Maps','map','#ef3124'],
+['Spotify','spotify','#1DB954']
 ];
 
 const key='karan_phone_v2';
@@ -4504,6 +4950,65 @@ save.flags.ep8PhoneUnlocked ??= false;
 save.flags.ep8Sales ??= [];
 save.flags.ep8Completed ??= false;
 save.flags.ep8TanakaFinalRead ??= false;
+/* ===== EP.09 ACHI'S NEXT STEP ===== */
+
+save.flags.ep9Started ??= false;
+save.flags.ep9TanakaRead ??= false;
+save.flags.ep9AchiTalkRead ??= false;
+save.flags.ep9SpotifyUnlocked ??= false;
+save.flags.ep9SongSent ??= false;
+save.flags.ep9AchiAccepted ??= false;
+
+let ep9SpotifyScreen='home';
+let ep9SelectedSong='';
+
+const EP9_SONGS=[
+  {
+    id:'believe',
+    title:'เชื่อในตัวเธอ',
+    artist:'KARAN PLAYLIST',
+    album:'For Achi',
+    color:'#7189A7',
+    message:'ไม่ว่าอชิจะเลือกทางไหน ผมก็เชื่อในตัวอชิเสมอนะครับ'
+  },
+  {
+    id:'beside',
+    title:'อยู่ตรงนี้เสมอ',
+    artist:'KARAN PLAYLIST',
+    album:'For Achi',
+    color:'#A68192',
+    message:'ถึงเราจะไม่ได้อยู่ใกล้กันทุกวัน แต่ผมจะอยู่ข้าง ๆ อชิเสมอครับ'
+  },
+  {
+    id:'brave',
+    title:'ก้าวต่อไป',
+    artist:'KARAN PLAYLIST',
+    album:'For Achi',
+    color:'#7B9A83',
+    message:'ลองทำสิ่งที่อยากทำดูนะครับ ผมจะคอยเป็นกำลังใจให้'
+  }
+];
+
+function ep9Start(){
+  if(save.flags.ep9Started)return;
+
+  save.flags.ep9Started=true;
+  persist();
+
+  ep8Banner(
+    'ทานากะซัง',
+    'การันต์ อชิให้คำตอบเรื่องนครศรีธรรมราชหรือยัง',
+    'tanaka'
+  );
+}
+
+function ep9UnlockSpotify(){
+  if(!save.flags.ep9SpotifyUnlocked){
+    save.flags.ep9SpotifyUnlocked=true;
+    unlock('Spotify');
+    persist();
+  }
+}
 
 if(!Array.isArray(save.flags.ep8Sales)){
   save.flags.ep8Sales=[];
@@ -7171,6 +7676,173 @@ if(ep8PhoneTab==='contacts'){
     </div>
   `;
 }
+/* ===== EP.09 SPOTIFY ===== */
+
+function ep9MusicSVG(type){
+  const paths={
+    note:`
+      <path d="M9 18V5l12-2v13"/>
+      <ellipse cx="6" cy="18" rx="3" ry="2"/>
+      <ellipse cx="18" cy="16" rx="3" ry="2"/>
+    `,
+    play:`
+      <path d="M8 5L20 12L8 19Z"
+        fill="currentColor" stroke="none"/>
+    `,
+    back:`
+      <path d="M15 18L9 12L15 6"/>
+    `,
+    check:`
+      <path d="M4 12L10 18L20 6"/>
+    `
+  };
+
+  return `
+    <svg viewBox="0 0 24 24"
+      width="24" height="24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.9"
+      stroke-linecap="round"
+      stroke-linejoin="round">
+      ${paths[type]||paths.note}
+    </svg>
+  `;
+}
+
+function ep9SpotifyCover(song,size='small'){
+  return `
+    <div class="ep9-spotify-cover ${size}"
+      style="background:${song.color}">
+      <div class="ep9-cover-circle">
+        ${ep9MusicSVG('note')}
+      </div>
+      <span>FOR ACHI</span>
+    </div>
+  `;
+}
+
+function renderSpotify(){
+  const selected=EP9_SONGS.find(
+    s=>s.id===ep9SelectedSong
+  );
+
+  if(ep9SpotifyScreen==='player' && selected){
+    return `
+      <div class="ep9-spotify player"
+        style="--song-color:${selected.color}">
+
+        <div class="ep9-spotify-top">
+          <button data-ep9-spotify-back="1">
+            ${ep9MusicSVG('back')}
+          </button>
+
+          <span>กำลังเล่นจากเพลย์ลิสต์</span>
+          <strong>For Achi</strong>
+        </div>
+
+        <div class="ep9-player-cover">
+          ${ep9SpotifyCover(selected,'large')}
+        </div>
+
+        <div class="ep9-player-info">
+          <h2>${selected.title}</h2>
+          <p>${selected.artist}</p>
+        </div>
+
+        <div class="ep9-player-progress">
+          <div class="ep9-progress-track">
+            <span></span>
+          </div>
+          <div class="ep9-progress-time">
+            <span>0:00</span>
+            <span>3:24</span>
+          </div>
+        </div>
+
+        <div class="ep9-player-controls">
+          <span>−</span>
+          <button class="ep9-player-play"
+            data-ep9-play="1">
+            ${ep9MusicSVG('play')}
+          </button>
+          <span>+</span>
+        </div>
+
+        <button class="ep9-spotify-send"
+          data-ep9-send-song="${selected.id}">
+          ส่งเพลงนี้ให้อชิผ่าน LINE
+        </button>
+
+      </div>
+    `;
+  }
+
+  return `
+    <div class="ep9-spotify">
+
+      <div class="ep9-spotify-homehead">
+        <div class="ep9-spotify-tabs">
+          <span class="active">ทั้งหมด</span>
+          <span>เพลง</span>
+          <span>เพลย์ลิสต์</span>
+        </div>
+      </div>
+
+      <div class="ep9-spotify-scroll">
+
+        <div class="ep9-spotify-greeting">
+          <h2>สวัสดี การันต์</h2>
+          <p>เพลงที่อยากส่งให้คนสำคัญ</p>
+        </div>
+
+        <div class="ep9-spotify-feature">
+          <div class="ep9-feature-cover">
+            ${ep9MusicSVG('note')}
+          </div>
+          <div>
+            <small>เพลย์ลิสต์ของคุณ</small>
+            <strong>For Achi</strong>
+            <span>3 เพลง · สร้างโดยการันต์</span>
+          </div>
+        </div>
+
+        <h3>เลือกเพลงให้กำลังใจอชิ</h3>
+
+        <div class="ep9-spotify-songlist">
+          ${EP9_SONGS.map(song=>`
+            <button class="ep9-spotify-song"
+              data-ep9-song="${song.id}">
+
+              ${ep9SpotifyCover(song)}
+
+              <span class="ep9-spotify-songtext">
+                <strong>${song.title}</strong>
+                <small>${song.artist}</small>
+              </span>
+
+              <span class="ep9-spotify-songmore">
+                ${ep9MusicSVG('play')}
+              </span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="ep9-spotify-hint">
+          เลือกเพลงที่อยากส่งให้อชิ
+        </div>
+
+      </div>
+
+      <div class="ep9-spotify-bottom">
+        <span class="active">หน้าหลัก</span>
+        <span>ค้นหา</span>
+        <span>คลังของคุณ</span>
+      </div>
+
+    </div>
+  `;
+}
 
 function render(){
 let html='';
@@ -7299,6 +7971,9 @@ else if(page==='LINE'){
 }
 else if(page==='Instagram'){
   html=renderInstagram();
+}
+else if(page==='Spotify'){
+  html=renderSpotify();
 }
 else if(page==='นาฬิกา'){
   html=renderEp6Clock();
@@ -8065,6 +8740,57 @@ if(chat==='tanaka' && save.flags.ep8Started){
     );
   }
 }
+/* ===== EP.09 TANAKA CHAT ===== */
+
+if(
+  chat==='tanaka' &&
+  save.flags.ep9Started
+){
+  b+='<div class="day">20 เม.ย.</div>';
+
+  b+=bubble(
+    'การันต์ ผมขอถามเรื่องอชิหน่อย'
+  );
+
+  b+=bubble(
+    'อชิให้คำตอบคุณหรือยังว่าเขาจะไปนครศรีธรรมราชไหม'
+  );
+
+  b+=bubble(
+    'นครศรีธรรมราชเหรอครับ?',
+    true
+  );
+
+  b+=bubble(
+    'อชิยังไม่ได้พูดเรื่องนี้กับผมเลยครับ',
+    true
+  );
+
+  b+=bubble(
+    'อย่างนั้นเหรอ'
+  );
+
+  b+=bubble(
+    'ผมเสนอให้อชิไปรับผิดชอบงานที่นครศรีธรรมราช'
+  );
+
+  b+=bubble(
+    'ผมคิดว่าเขามีความสามารถ และอยากให้เขาได้ลองทำงานที่ท้าทายขึ้น'
+  );
+
+  b+=bubble(
+    'แต่เขายังไม่ให้คำตอบ ผมนึกว่าเขาปรึกษาคุณแล้ว'
+  );
+
+  b+=bubble(
+    'เข้าใจแล้วครับ เดี๋ยวผมลองคุยกับอชิดู',
+    true
+  );
+
+  b+=bubble(
+    'ขอบคุณนะ แต่ผมอยากให้อชิเป็นคนตัดสินใจด้วยตัวเอง'
+  );
+}
 
   if(chat==='duj'){
     b+=bubble('เห็นน้องปายบอกการันต์ตามหาพี่');
@@ -8583,6 +9309,262 @@ if(
     );
   }
 }
+/* ===== EP.09 ACHI AND KARAN ===== */
+
+if(
+  chat==='achi' &&
+  save.flags.ep9TanakaRead
+){
+  b+='<div class="day">20 เม.ย. · ตอนเย็น</div>';
+
+  b+=bubble(
+    'อชิครับ วันนี้ผมคุยกับทานากะซังมา',
+    true
+  );
+
+  b+=bubble(
+    'เรื่องที่เขาเสนอให้อชิไปทำงานที่นครศรีธรรมราช',
+    true
+  );
+
+  b+=bubble(
+    'อ๋อ... เรื่องนั้น'
+  );
+
+  b+=bubble(
+    'ผมยังไม่รู้จะบอกการันต์ยังไงดี'
+  );
+
+  b+=bubble(
+    'ผมไม่ได้โกรธนะครับ แค่อยากรู้ว่าอชิคิดยังไง',
+    true
+  );
+
+  b+=bubble(
+    'จริง ๆ ผมดีใจนะที่ทานากะซังเลือกผม'
+  );
+
+  b+=bubble(
+    'แต่ผมก็กลัวว่าจะทำได้ไม่ดี'
+  );
+
+  b+=bubble(
+    'วันนี้ร็อคได้เลื่อนตำแหน่งด้วยนะ'
+  );
+
+  b+=bubble(
+    'จินตะเองก็ได้โอกาสทำโปรเจกต์ใหญ่'
+  );
+
+  b+=bubble(
+    'ทุกคนกำลังก้าวหน้าไปหมดเลย'
+  );
+
+  b+=bubble(
+    'แต่ผมยังเป็นแค่แอดมินธรรมดาอยู่เลย'
+  );
+
+  b+=bubble(
+    'ทำไมอชิถึงคิดว่าตัวเองเป็นแค่แอดมินธรรมดาล่ะครับ',
+    true
+  );
+
+  b+=bubble(
+    'ตอนที่ผมต้องทำยอดขายสามล้าน อชิเป็นคนช่วยหารายชื่อลูกค้าให้ผมนะ',
+    true
+  );
+
+  b+=bubble(
+    'ถ้าไม่ได้อชิช่วย ผมคงเหนื่อยกว่านั้นมาก',
+    true
+  );
+
+  b+=bubble(
+    'ผมก็แค่ช่วยหาข้อมูลเอง'
+  );
+
+  b+=bubble(
+    'อชิชอบคิดว่าสิ่งที่ตัวเองทำเป็นเรื่องเล็ก ๆ',
+    true
+  );
+
+  b+=bubble(
+    'แต่สำหรับผม สิ่งที่อชิทำมีความหมายมากนะครับ',
+    true
+  );
+
+  b+=bubble(
+    'งานแอดมินก็สำคัญไม่แพ้งานของคนอื่นเลย',
+    true
+  );
+
+  b+=bubble(
+    'การันต์พูดแบบนี้เพราะเป็นแฟนผมหรือเปล่า'
+  );
+
+  b+=bubble(
+    'ต่อให้เราไม่ได้เป็นแฟนกัน ผมก็ยังคิดเหมือนเดิมครับ',
+    true
+  );
+
+  b+=bubble(
+    'แล้วจริง ๆ อชิอยากไปนครศรีธรรมราชไหมครับ',
+    true
+  );
+
+  b+=bubble(
+    'อยากลองไปนะ'
+  );
+
+  b+=bubble(
+    'ผมอยากพิสูจน์ว่าตัวเองทำอะไรได้มากกว่านี้'
+  );
+
+  b+=bubble(
+    'แต่ผมกลัวอีกเรื่องหนึ่ง'
+  );
+
+  b+=bubble(
+    'เรื่องอะไรครับ',
+    true
+  );
+
+  b+=bubble(
+    'ถ้าผมไป เราก็คงต้องอยู่ห่างกัน'
+  );
+
+  b+=bubble(
+    'เราเพิ่งคบกันเองนะการันต์'
+  );
+
+  b+=bubble(
+    'ผมยังอยากเจอการันต์ทุกวันอยู่เลย'
+  );
+
+  b+=bubble(
+    'ผมก็อยากเจออชิทุกวันเหมือนกันครับ',
+    true
+  );
+
+  b+=bubble(
+    'แต่ผมไม่อยากให้อชิต้องปฏิเสธโอกาสดี ๆ เพราะเป็นห่วงผม',
+    true
+  );
+
+  b+=bubble(
+    'เราโทรหากันได้ วิดีโอคอลกันได้',
+    true
+  );
+
+  b+=bubble(
+    'วันไหนว่าง ผมก็ไปหาอชิได้ครับ',
+    true
+  );
+
+  b+=bubble(
+    'ระยะทางไม่ได้ทำให้ผมรักอชิน้อยลงหรอกนะ',
+    true
+  );
+
+  b+=bubble(
+    'พูดจริงนะ'
+  );
+
+  b+=bubble(
+    'จริงครับ',
+    true
+  );
+
+  b+=bubble(
+    'ผมอยากเห็นอชิได้ทำสิ่งที่ตัวเองอยากทำ',
+    true
+  );
+
+  b+=bubble(
+    'แล้วถ้าวันไหนเหนื่อย ก็โทรหาผมได้เสมอนะครับ',
+    true
+  );
+
+  b+=bubble(
+    'การันต์...'
+  );
+
+  b+=bubble(
+    'ขอบคุณนะ'
+  );
+
+  if(!save.flags.ep9SongSent){
+
+    b+=bubble(
+      'เดี๋ยวผมส่งเพลงให้อชิฟังเพลงหนึ่งนะครับ',
+      true
+    );
+
+    b+=`
+      <button class="choice"
+        data-ep9-open-spotify="1">
+        เปิด Spotify เพื่อเลือกเพลงให้อชิ
+      </button>
+    `;
+
+  }else{
+
+    const song=EP9_SONGS.find(
+      s=>s.id===save.flags.ep9SongSent
+    ) || EP9_SONGS[0];
+
+    b+=`
+      <div class="ep9-line-song">
+        <div class="ep9-line-song-cover"
+          style="background:${song.color}">
+          ${ep9MusicSVG('note')}
+        </div>
+
+        <div>
+          <small>Spotify · แชร์เพลง</small>
+          <strong>${song.title}</strong>
+          <span>${song.artist}</span>
+        </div>
+      </div>
+    `;
+
+    b+=bubble(song.message,true);
+
+    b+=bubble(
+      'เพลงเพราะจัง'
+    );
+
+    b+=bubble(
+      'ขอบคุณนะการันต์'
+    );
+
+    b+=bubble(
+      'ผมคิดดูแล้วนะ'
+    );
+
+    b+=bubble(
+      'ผมจะลองรับข้อเสนอของทานากะซังดู'
+    );
+
+    b+=bubble(
+      'ผมไม่รู้ว่าจะทำได้ดีแค่ไหน แต่ก็อยากลองพัฒนาตัวเอง'
+    );
+
+    b+=bubble(
+      'ดีแล้วครับ ผมเป็นกำลังใจให้นะ',
+      true
+    );
+
+    b+=bubble(
+      'ขอบคุณที่คอยเชื่อในตัวผมนะการันต์'
+    );
+
+    b+=bubble(
+      'ผมเชื่อในตัวอชิเสมอครับ',
+      true
+    );
+  }
+}
 /* ===== EP.07 FLOWER SHOP CHAT ===== */
 if(chat==='flowerShop' && save.flags.ep7Stage>=1){
   b='<div class="day">เตรียมเดต</div>';
@@ -8808,6 +9790,99 @@ document.addEventListener('change',function(e){
   }
 });
 document.addEventListener('click',function(e){
+/* ===== EP.09 SPOTIFY INTERACTIONS ===== */
+const ep9Play=e.target.closest('[data-ep9-play]');
+
+if(ep9Play && page==='Spotify'){
+  const playing=ep9Play.dataset.playing==='1';
+
+  ep9Play.dataset.playing=playing?'0':'1';
+  ep9Play.setAttribute(
+    'aria-label',
+    playing?'เล่น':'หยุดชั่วคราว'
+  );
+
+  ep9Play.innerHTML=playing
+    ? ep9MusicSVG('play')
+    : `<svg viewBox="0 0 24 24"
+         width="30" height="30"
+         fill="currentColor">
+         <rect x="6" y="4" width="4" height="16" rx="1"/>
+         <rect x="14" y="4" width="4" height="16" rx="1"/>
+       </svg>`;
+
+  return;
+}
+// เปิด Spotify จากแชตอชิ
+const ep9OpenSpotify=e.target.closest(
+  '[data-ep9-open-spotify]'
+);
+
+if(ep9OpenSpotify){
+  ep9UnlockSpotify();
+
+  ep9SpotifyScreen='home';
+  ep9SelectedSong='';
+  page='Spotify';
+
+  render();
+  return;
+}
+
+// เลือกเพลง
+const ep9Song=e.target.closest(
+  '[data-ep9-song]'
+);
+
+if(ep9Song && page==='Spotify'){
+  ep9SelectedSong=ep9Song.dataset.ep9Song;
+  ep9SpotifyScreen='player';
+
+  render();
+  return;
+}
+
+// ย้อนกลับไปหน้ารายการเพลง
+const ep9SpotifyBack=e.target.closest(
+  '[data-ep9-spotify-back]'
+);
+
+if(ep9SpotifyBack && page==='Spotify'){
+  ep9SpotifyScreen='home';
+  render();
+  return;
+}
+
+// ส่งเพลงให้กำลังใจอชิ
+const ep9SendSong=e.target.closest(
+  '[data-ep9-send-song]'
+);
+
+if(
+  ep9SendSong &&
+  page==='Spotify' &&
+  !save.flags.ep9SongSent
+){
+  const songId=ep9SendSong.dataset.ep9SendSong;
+
+  const song=EP9_SONGS.find(
+    s=>s.id===songId
+  );
+
+  if(!song)return;
+
+  save.flags.ep9SongSent=songId;
+  save.flags.ep9AchiAccepted=true;
+
+  persist();
+
+  chat='achi';
+  page='chat';
+
+  render();
+  return;
+}
+
 /* ===== EP.08 INTERACTIONS ===== */
 // เปิดลิงก์ Samsung Notes จาก LINE
 const ep8OpenNote=e.target.closest(
@@ -10238,7 +11313,31 @@ if(btn.dataset.go){
     btn.dataset.go==='LINE' &&
     save.flags.ep8Completed &&
     !save.flags.ep8TanakaFinalRead;
-  page=btn.dataset.go;
+      /* ===== EP.09 TRANSITIONS ===== */
+
+  const ep9StartAfterTanaka=
+    page==='chat' &&
+    chat==='tanaka' &&
+    btn.dataset.go==='LINE' &&
+    save.flags.ep8Completed &&
+    save.flags.ep8TanakaFinalRead &&
+    !save.flags.ep9Started;
+
+  const ep9LeavingTanaka=
+    page==='chat' &&
+    chat==='tanaka' &&
+    btn.dataset.go==='LINE' &&
+    save.flags.ep9Started &&
+    !save.flags.ep9TanakaRead;
+
+  const ep9LeavingAchi=
+    page==='chat' &&
+    chat==='achi' &&
+    btn.dataset.go==='LINE' &&
+    save.flags.ep9TanakaRead &&
+    !save.flags.ep9SongSent;
+    
+    page=btn.dataset.go;
 
   if(page==='LINE'){
     lineTab='chats';
@@ -10314,6 +11413,31 @@ if(ep8LeavingSales){
     'tanaka'
   );
 }
+/* ===== EP.09 STORY TRANSITIONS ===== */
+
+// เริ่ม EP.09 หลังอ่านผลสรุปยอดขาย EP.08
+if(ep9StartAfterTanaka){
+  ep9Start();
+}
+
+// หลังอ่านแชตทานากะซังเรื่องนครศรีธรรมราช
+if(ep9LeavingTanaka){
+  save.flags.ep9TanakaRead=true;
+  persist();
+
+  ep8Banner(
+    'อชิ',
+    'การันต์ ว่างคุยกันหน่อยไหม',
+    'achi'
+  );
+}
+
+// หลังอ่านแชตให้กำลังใจอชิ
+if(ep9LeavingAchi){
+  save.flags.ep9AchiTalkRead=true;
+  persist();
+}
+
 }
 else if(btn.dataset.app){
 goApp(btn.dataset.app);

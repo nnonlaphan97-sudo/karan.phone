@@ -4589,6 +4589,14 @@ function ep8Banner(name,message,target){
       </span>
     </button>
   `;
+
+  const currentBanner=host.firstElementChild;
+
+  setTimeout(()=>{
+    if(host.firstElementChild===currentBanner){
+      host.innerHTML='';
+    }
+  },5000);
 }
 
 let mapZoom=0.55;
@@ -7083,11 +7091,6 @@ if(ep8PhoneTab==='contacts'){
         <div class="ep8-phone-contact-info">
           <strong>${c.name}</strong>
           <small>${c.phone}</small>
-          <small>
-            ${c.source==='อชิ'
-              ? 'รายชื่อจากอชิ'
-              : 'รายชื่อลูกค้าเดิม'}
-          </small>
         </div>
 
         <button class="ep8-phone-callbtn"

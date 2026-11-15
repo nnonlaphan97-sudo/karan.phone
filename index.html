@@ -12021,8 +12021,7 @@ if(
 }
 
 let lastBubbleSender = null;
-function bubble(text,out=false,senderId=''){
-  const isGroup = chat==='office' || chat==='sales';
+function bubble(text,out=false,senderId='',customTime=''){  const isGroup = chat==='office' || chat==='sales';
 
   let senderName='';
   let avatarId=chat;
@@ -12963,15 +12962,13 @@ if(chat==='karin' && save.flags.ep3KarinMessageShown){
 
   b+='<div class="day">12 เม.ย.</div>';
 
-  // บทสนทนาตอนเช้า
-  b+=bubble('การัน ชั้นขอไปนอนห้องแกได้ไหม',false,'09:24');
-  b+=bubble('มาทำไม',true,'09:25');
-  b+=bubble('ฉันทะเลาะกับแฟน',false,'09:26');
-  b+=bubble('แล้วเกี่ยวอะไรกับผม',true,'09:28');
-  b+=bubble('ผมทำงานก่อน',true,'09:29');
+  b+=bubble('การัน ชั้นขอไปนอนห้องแกได้ไหม',false,'','09:24');
+  b+=bubble('มาทำไม',true,'','09:25');
+  b+=bubble('ฉันทะเลาะกับแฟน',false,'','09:26');
+  b+=bubble('แล้วเกี่ยวอะไรกับผม',true,'','09:28');
+  b+=bubble('ผมทำงานก่อน',true,'','09:29');
 
-  // ข้อความตอนเย็น
-  b+=bubble('ลงมาเจอชั้นหน่อย',false,'17:42');
+  b+=bubble('ลงมาเจอชั้นหน่อย',false,'','17:42');
 }
 if(chat==='karin' && save.flags.ep4KarinShown){
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');

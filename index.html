@@ -8237,15 +8237,24 @@ function dateValue(label){
           '.group-sender, .line-sender-name'
         );
 
-        latestSender=isSent
-          ? 'me'
-          : (senderEl
-              ? senderEl.textContent.trim()
-              : 'other');
+  
+const messageDateValue=dateValue(currentDate) ?? 0;
+const latestDateValue=dateValue(latestDate) ?? 0;
 
-        latestText=text;
-        latestDate=currentDate;
-        messageIndex++;
+if(
+  !latestText ||
+  messageDateValue>=latestDateValue
+){
+  latestSender=isSent
+    ? 'me'
+    : (senderEl
+        ? senderEl.textContent.trim()
+        : 'other');
+
+  latestText=text;
+  latestDate=currentDate;
+  messageIndex++;
+}
       });
     }
 
@@ -8278,8 +8287,7 @@ const initialChatTimes = {
       (dateValue(latestDate) ?? 0) <= dateValue(initial.date);
 
     let displayDate = useInitial ? initial.date : latestDate;
-let displayTime = useInitial ? initial.time : '00:00';
-
+let displayTime = useInitial ? initial.time : '17:34';
 // 6 มีนาคม — พี่ดุจถามวันว่าง
 if(
   c.id==='duj' &&

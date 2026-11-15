@@ -13671,13 +13671,13 @@ function showGameBanner(who,message){
     tanaka:'ทานากะซัง'
   };
 
-  const sender=names[who]||who;
+  const sender=who==='line-official'?'LINE':(names[who]||who);
 
   banner.innerHTML=`
     <button class="game-banner" data-banner-chat="${who}">
       <span class="game-banner-icon"
-            style="background:transparent;overflow:hidden">
-        ${lineBannerAvatar(who)}
+            style="background:${who==='line-official'?'#06c755':'transparent'};overflow:hidden"
+       ${who==='line-official'?icon('line'):lineBannerAvatar(who)}
       </span>
       <span class="game-banner-text">
         <small>LINE · ตอนนี้</small>
@@ -13718,10 +13718,10 @@ if(name==='LINE' && !save.flags.birthdaySeen){
   unlock('GrabFood');
   persist();
 
-  showGameBanner(
-    'achi',
-    'วันนี้วันเกิดอชิ · 30 มกราคม อย่าลืมซื้อเค้กให้อชิด้วยนะ!'
-  );
+showGameBanner(
+  'line-official',
+  'วันนี้วันเกิดอชิ! มีเค้กมากมายให้เลือกบน GrabFood'
+);
 }
 }
 
@@ -15115,8 +15115,19 @@ if(bannerChat){
 
   const targetChat=bannerChat.dataset.bannerChat;
 
+if(targetChat==='line-official'){
+  document.getElementById('gameBanner').innerHTML='';
+
+  popup(
+    'LINE · Birthday Surprise',
+    'วันนี้วันเกิดอชิ! มีเค้กมากมายให้เลือกบน GrabFood ลองเข้าไปเลือกเค้กที่ถูกใจ แล้วส่งไปเซอร์ไพรส์อชิที่ TOYOKAWA กัน'
+  );
+
+  return;
+}
+
     chat=targetChat;
-  page='chat';
+     page='chat';
 
   document.getElementById('gameBanner').innerHTML='';
 

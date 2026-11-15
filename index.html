@@ -13823,6 +13823,17 @@ if(chat==='karin' && save.flags.ep4KarinShown){
     }
   }
 }
+// EP.06 — แชทการิน วันที่ 17 เมษายน
+// แสดงหลังเข้าสู่เหตุการณ์วันที่ 17 แล้ว
+if(chat==='karin' && save.flags.ep6Stage>=2){
+
+  b+='<div class="day">17 เม.ย.</div>';
+
+  b+=bubble('ผมกลับไปนอนห้องนะ',true,'','19:05');
+  b+=bubble('ฉันออกมาตั้งนานแล้ว',false,'','19:06');
+  b+=bubble('แฟนชั้นมาง้อแล้วย่ะ',false,'','19:06');
+  b+=bubble('ครับ',true,'','19:07');
+}
 if(chat==='office'){
   b='<div class="day">29 ม.ค.</div>';
 
@@ -13920,29 +13931,38 @@ if(save.flags.ep3OfficePosterShown){
 
 /* ===== EP.06 ACHI CONFESSION ===== */
 
+/* ===== EP.06 ACHI CONFESSION ===== */
+
 if(chat==='achi' && save.flags.ep6Stage>=2){
 
   b+='<div class="day">17 เม.ย.</div>';
 
-  b+=bubble('อชิครับ ผมมีเรื่องอยากบอก',true);
+  b+=bubble('อชิ',true);
+  b+=bubble('ครับ การันต์');
+  b+=bubble('ผมชอบอชินะ',true);
+  b+=bubble('ครับ?');
+  b+=bubble('ชอบแบบที่ไม่ใช่ในฐานะเพื่อน',true);
+  b+=bubble('หรือเพื่อนร่วมงาน',true);
+  b+=bubble('เคยคิดว่าแค่ได้เห็นได้ทักทายก็ดีใจแล้ว',true);
+  b+=bubble('แต่พอได้อยู่ใกล้กัน ผมก็พอคิดไปไกลทุกที',true);
+  b+=bubble('ทั้งที่อชิไว้ใจผม',true);
+  b+=bubble('แล้วก็ดีกับผมเพราะเห็นว่าผมเป็นเพื่อนแท้ๆ',true);
+  b+=bubble('ผมขอโทษนะ',true);
+  b+=bubble('ขอโทษ?');
+  b+=bubble('ผมรู้สึกผิดที่ใช้ความไว้ใจของอชิมาคิดเกินเลย',true);
+  b+=bubble('ทั้งที่อชิดูมีความสุขมากกว่า เวลาที่ได้อยู่กับคนอื่นๆ',true);
+  b+=bubble('ผมคิดว่าถ้าบอกอชิไปตรงๆแบบนี้น่าจะดีกับอชิมากกว่า',true);
+  b+=bubble('คือ…');
+  b+=bubble('วันนี้ผมกลับไปนอนบ้านผม',true);
+  b+=bubble('อชิกลับบ้านดีๆ นะ',true);
 
-  b+=bubble('ผมชอบอชิครับ',true);
-
-  b+=bubble(
-    'ผมไม่ได้อยากให้อชิต้องตอบตอนนี้ แค่อยากบอกความรู้สึกของผมให้รู้ครับ',
-    true
-  );
-
+  // เก็บบทสนทนาวันที่ 18 เมษายนของ EP.06 ไว้
   if(save.flags.ep6Stage>=5){
 
     b+='<div class="day">18 เม.ย.</div>';
 
     b+=bubble('พี่การันต์ครับ');
-
-    b+=bubble(
-      'ผมเองก็มีเรื่องอยากบอกพี่เหมือนกันครับ'
-    );
-
+    b+=bubble('ผมเองก็มีเรื่องอยากบอกพี่เหมือนกันครับ');
     b+=bubble('ผมชอบพี่การันต์ครับ');
   }
 }
@@ -16237,6 +16257,15 @@ if(ep6Banner){
 
   page='chat';
   render();
+  if(chat==='tanaka' && save.flags.ep6Stage===1){
+  ep6Advance(2);
+
+  ep6Notify(
+    'Achi rawit',
+    'ขอโทษ?',
+    'achi'
+  );
+}
   return;
 }
 
@@ -16529,7 +16558,7 @@ persist();
 render();
 
 ep6Notify(
-  'ทานากะซัง',
+  'Tanaka San',
   'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
   'tanaka'
 );
@@ -17492,6 +17521,11 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
+  const ep6LeavingAchiConfession =
+  page==='chat' &&
+  chat==='achi' &&
+  save.flags.ep6Stage===2 &&
+  btn.dataset.go==='LINE';
     const ep6LeavingTanaka =
     page === 'chat' &&
     chat === 'tanaka' &&
@@ -17598,38 +17632,36 @@ const ep10LeavingRock=
     persist();
   }
 
-  // EP.06: กลับจากแชตทานากะซัง
-  if(ep6LeavingTanaka){
-    // ปลดล็อกแอปนาฬิกา
-    ep6Advance(3);
-  }
+// EP.06 — อ่านแชททานากะแล้ว อชิส่ง "ขอโทษ?"
 
+if(ep6LeavingAchiConfession){
+  ep6Advance(3);
+}
   // อัปเดตหน้าจอหลังปลดล็อกแอป
   render();
+  if(ep6LeavingAchiConfession){
+  const el=document.getElementById('gameBanner');
+
+  if(el){
+    el.innerHTML=`
+      <button class="game-banner" data-ep6-open-clock="1">
+        <span class="game-banner-icon">
+          ${lineIcon('calendar')}
+        </span>
+        <span class="game-banner-text">
+          <small>นาฬิกา</small>
+          <strong>นาฬิกาปลุก</strong>
+          <span>06:00 · แตะเพื่อปิดนาฬิกาปลุก</span>
+        </span>
+      </button>
+    `;
+  }
+}
 if(ep7LeavingAchi){
   save.flags.ep7SunsetNotified=true;
   persist();
   ep7SunsetBanner();
 }
-  // แจ้งเตือนนาฬิกาปลุก
-  if(ep6LeavingTanaka){
-    const el=document.getElementById('gameBanner');
-
-    if(el){
-      el.innerHTML=`
-        <button class="game-banner"
-          data-ep6-open-clock="1">
-          <span class="game-banner-icon">
-            ${lineIcon('calendar')}
-          </span>
-          <span class="game-banner-text">
-            <small>นาฬิกา</small>
-            <strong>นาฬิกาปลุก</strong>
-            <span>06:00 · แตะเพื่อปิดนาฬิกาปลุก</span>
-          </span>
-        </button>`;
-    }
-  }
 
   if(leavingDuj){
     showGameBanner('achi','ขอบคุณครับ');

@@ -10107,12 +10107,21 @@ function renderInstagram() {
   
 if (igTab === 'home') {
   content = `
-    <div class="ig-stories">
-      ${igStoryItem('achi')}
-      ${igStoryItem('pai')}
-      ${igStoryItem('rock')}
-    </div>
+   <div class="ig-stories">
 
+  <button class="ig-story-item" data-ig-own-story="1">
+    <span class="ig-own-story-wrap">
+      ${igAvatar('K',58)}
+      <span class="ig-own-story-plus">+</span>
+    </span>
+    <small>สตอรี่ของคุณ</small>
+  </button>
+
+  ${igStoryItem('achi')}
+  ${igStoryItem('pai')}
+  ${igStoryItem('rock')}
+
+</div>
     <div class="ig-feed">
       ${igFeedPost('achi')}
       ${igFeedPost('pai')}
@@ -10228,7 +10237,7 @@ igStoryStyle.textContent = `
   width:70px;
   height:70px;
   border-radius:50%;
-  padding:3px;
+  padding:1.5px;
   display:grid;
   place-items:center;
   background:linear-gradient(
@@ -10407,7 +10416,31 @@ igStoryStyle.textContent = `
   border-radius:25px;
   font-size:13px;
 }
+/* สตอรี่ของการันต์ */
+.ig-own-story-wrap{
+  width:70px;
+  height:70px;
+  position:relative;
+  display:grid;
+  place-items:center;
+}
 
+.ig-own-story-plus{
+  position:absolute;
+  right:0;
+  bottom:0;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:#0095f6;
+  border:2px solid white;
+  color:white;
+  display:grid;
+  place-items:center;
+  font-size:17px;
+  font-weight:600;
+  line-height:1;
+}
 `;
 document.head.appendChild(igStoryStyle);
 

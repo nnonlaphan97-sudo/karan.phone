@@ -15253,17 +15253,9 @@ if(deliveryCall){
     return;
   }
 
-  if(action==='miss'){
-    if(grabCallRound===1){
-      grabMissedDeliveryCall();
-    }else{
-      document.getElementById('modal').innerHTML='';
-      save.flags.deliveryStatus='delayed';
-      persist();
-      render();
-    }
-    return;
-  }
+if(action==='miss'){
+  grabMissedDeliveryCall();
+  return;
 }
 
 /* ===== LINE PROFILE INTERACTIONS ===== */

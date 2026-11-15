@@ -14415,30 +14415,50 @@ if(chat==='flowerShop' && save.flags.ep7Stage>=1){
   }
 }
 
-/* ===== EP.06 PAI CHAT ===== */
+
+/* ===== EP.06 PAI CHAT — 30 เมษายน ===== */
 if(chat==='pai' && save.flags.ep6Stage>=4){
 
-  b+='<div class="day">18 เม.ย.</div>';
+  b+='<div class="day">30 เม.ย.</div>';
 
-  b+=bubble('พี่การันต์ เจอพี่อชิหรือยังครับ');
+  b+=bubble('พี่การันต์เจอพี่อชิรึยังคะ',false,'','19:20');
+  b+=bubble('ที่ไหนครับ',true,'','19:21');
+
+  b+=bubble(
+    'พี่อชิบอกว่ามีเรื่องอยากคุยกับพี่การันต์',
+    false,'','19:22'
+  );
+
+  b+=bubble(
+    'เลยไปหาพี่ที่สนามบินค่ะ',
+    false,'','19:22'
+  );
 
   if(save.flags.ep6Stage>=5){
 
-    b+=bubble('ที่ไหนครับ',true);
+    const reply=save.flags.ep6PaiSearchReply ||
+      'เดี๋ยวผมลองตามหาอชิดูครับ';
 
-    b+=bubble(
-      'พี่ลองดูข้อความจากพี่อชิก่อนนะครับ'
-    );
+    b+=bubble(reply,true,'','19:23');
 
   }else{
 
     choices=`
-      <button class="choice"
-        data-ep6-pai-reply="1">
-        ที่ไหนครับ
-      </button>`;
+      <button class="choice" data-ep6-pai-reply="1">
+        เดี๋ยวผมลองตามหาอชิดูครับ
+      </button>
+
+      <button class="choice" data-ep6-pai-reply="2">
+        ผมจะลองติดต่ออชิดูครับ
+      </button>
+
+      <button class="choice" data-ep6-pai-reply="3">
+        ขอบคุณที่บอกนะครับ ผมจะรีบไปหาอชิ
+      </button>
+    `;
   }
 }
+
 /* ===== EP.10 LINE STORY ===== */
 
 // ประวัติแชตอชิหลังกลับไปอยู่บ้านตัวเอง
@@ -16411,20 +16431,18 @@ if(
   render();
 
   // ปายส่ง LINE มาทันที
-  ep6Notify(
-    'ปาย',
-    'พี่การันต์ เจอพี่อชิหรือยังครับ',
-    'pai'
-  );
+ep6Notify(
+  'Pai',
+  'พี่การันต์เจอพี่อชิรึยังคะ',
+  'pai'
+);
 
   return;
 }
 
 
-// ตอบข้อความปาย
-const ep6Pai=e.target.closest(
-  '[data-ep6-pai-reply]'
-);
+// EP.06 — การันต์เลือกคำตอบเรื่องตามหาอชิ
+const ep6Pai=e.target.closest('[data-ep6-pai-reply]');
 
 if(
   ep6Pai &&
@@ -16432,17 +16450,30 @@ if(
   chat==='pai' &&
   save.flags.ep6Stage===4
 ){
+
+  const replies={
+    '1':'เดี๋ยวผมลองตามหาอชิดูครับ',
+    '2':'ผมจะลองติดต่ออชิดูครับ',
+    '3':'ขอบคุณที่บอกนะครับ ผมจะรีบไปหาอชิ'
+  };
+
+  const selected=ep6Pai.dataset.ep6PaiReply;
+
+  save.flags.ep6PaiSearchReply=replies[selected] || replies['1'];
+
   ep6Advance(5);
+  persist();
   render();
 
+  // คงการแจ้งเตือนอชิที่เชื่อมกับเนื้อเรื่องเดิม
   ep6Notify(
-    'อชิ',
+    'Acirawit',
     'การันต์ครับ ผมมีเรื่องอยากบอก',
     'achi'
   );
-
   return;
 }
+
 
 /* ===== EP.05 INTERACTIONS ===== */
 

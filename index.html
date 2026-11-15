@@ -6805,9 +6805,12 @@ function ep8Banner(name,message,target){
   host.innerHTML=`
     <button class="game-banner"
       data-ep8-banner="${target}">
-      <span class="game-banner-icon">
-        ${icon(target==='phone'?'phone':'line')}
-      </span>
+     <span class="game-banner-icon"
+  style="background:${target==='phone'?'#06c755':'transparent'}">
+  ${target==='phone'
+    ? icon('phone')
+    : lineBannerAvatar(target)}
+</span>
       <span class="game-banner-text">
         <small>${target==='phone'?'Phone':'LINE'} · ข้อความใหม่</small>
         <strong>${name}</strong>
@@ -7382,15 +7385,15 @@ if(save.flags.ep6Stage >= 1){
 
     let preview=latestText;
 
-    if(latestSender==='me'){
-      preview='คุณ: '+latestText;
-    }else if(
-      latestSender!=='other' &&
-      latestSender!=='cancelled' &&
-      latestSender
-    ){
-      preview=latestSender+': '+latestText;
-    }
+if(latestSender==='me'){
+  preview=latestText;
+}else if(
+  latestSender!=='other' &&
+  latestSender!=='cancelled' &&
+  latestSender
+){
+  preview=latestSender+': '+latestText;
+}
 
     return {
       ...c,
@@ -9432,8 +9435,8 @@ function ep6Notify(name,message,target){
   el.innerHTML=`
     <button class="game-banner"
       data-ep6-notify="${target}">
-      <span class="game-banner-icon">
-        ${icon('line')}
+      <span class="game-banner-icon" style="background:transparent">
+        ${lineBannerAvatar(target)}
       </span>
       <span class="game-banner-text">
         <small>LINE · ข้อความใหม่</small>
@@ -9485,8 +9488,10 @@ function ep7Banner(app,name,message,target){
     <button class="game-banner"
       data-ep7-open="${target}">
       <span class="game-banner-icon"
-        style="background:${isIG?'#C13584':isSMS?'#2479E8':'#06c755'}">
-        ${icon(isSMS?'message':'line')}
+  style="background:${app==='LINE'?'transparent':isIG?'#C13584':isSMS?'#2479E8':'#06c755'}">
+  ${app==='LINE'
+  ? lineBannerAvatar(target)
+  : icon(isSMS?'message':'line')}
       </span>
       <span class="game-banner-text">
         <small>${app} · ข้อความใหม่</small>
@@ -13579,21 +13584,66 @@ function showEp5InstagramBanner(){
   `;
 }
 
+function lineBannerAvatar(id){
+  const names={
+    'อชิ':'achi',
+    'Achi rawit':'achi',
+    'ปาย':'pai',
+    'Pai':'pai',
+    'ร็อค':'rock',
+    'Rock':'rock',
+    'พี่ดุจ':'duj',
+    'พี่ดุจดาว':'duj',
+    'ทานากะซัง':'tanaka',
+    'Tanaka san':'tanaka',
+    'พี่การิน':'karin',
+    'การิน':'karin',
+    'TOYOKAWA':'office',
+    'ทีมฝ่ายขาย':'sales'
+  };
+
+  const key=names[id]||id;
+  const photo=lineProfilePhotos[key];
+
+  if(photo){
+    return `<img src="${photo}" alt=""
+      style="width:40px;height:40px;border-radius:50%;object-fit:cover;display:block;">`;
+  }
+
+  return icon('line');
+}
+
+
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
+  if(!banner)return;
 
-  banner.innerHTML=
-    '<button class="game-banner" data-banner-chat="'+who+'">'+
-      '<span class="game-banner-icon">'+icon('line')+'</span>'+
-      '<span class="game-banner-text">'+
-        '<small>LINE · ตอนนี้</small>'+
-        '<strong>'+
- (who==='office'?'TOYOKAWA':
- who==='duj'?'พี่ดุจ':
- who==='karin'?'พี่การิน':'อชิ')+'</strong>'+
-        '<span>'+message+'</span>'+
-      '</span>'+
-    '</button>';
+  const names={
+    office:'TOYOKAWA',
+    sales:'ทีมฝ่ายขาย',
+    achi:'อชิ',
+    pai:'ปาย',
+    rock:'ร็อค',
+    duj:'พี่ดุจ',
+    karin:'พี่การิน',
+    tanaka:'ทานากะซัง'
+  };
+
+  const sender=names[who]||who;
+
+  banner.innerHTML=`
+    <button class="game-banner" data-banner-chat="${who}">
+      <span class="game-banner-icon"
+        style="background:transparent">
+        ${lineBannerAvatar(who)}
+      </span>
+      <span class="game-banner-text">
+        <small>LINE · ตอนนี้</small>
+        <strong>${sender}</strong>
+        <span>${message}</span>
+      </span>
+    </button>
+  `;
 }
 
 function goApp(name){
@@ -15252,12 +15302,11 @@ if(deliveryCall){
     grabCompleteDelivery();
     return;
   }
-
 if(action==='miss'){
   grabMissedDeliveryCall();
   return;
 }
-
+}
 /* ===== LINE PROFILE INTERACTIONS ===== */
 
 const openLineProfile=e.target.closest(

@@ -5880,6 +5880,180 @@ button{
   top:0 !important;
 }
 
+/* ===== SAMSUNG NOTES ===== */
+#phone:has(.snote-app) .status,
+#phone:has(.snote-app) .camera{
+  display:none !important;
+}
+
+.snote-app{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:#f8f8fa;
+  color:#202127;
+  overflow:hidden;
+}
+
+.snote-top{
+  height:65px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 13px;
+  background:#f8f8fa;
+}
+
+.snote-top-title{
+  flex:1;
+  font-size:17px;
+  font-weight:600;
+}
+
+.snote-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#292a30;
+}
+
+.snote-icon:active{
+  background:#e9e9ee;
+}
+
+.snote-list-scroll,
+.snote-detail-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:14px 20px 80px;
+  scrollbar-width:none;
+}
+
+.snote-list-scroll h1{
+  font-size:34px;
+  font-weight:750;
+  margin:18px 0 5px;
+}
+
+.snote-count{
+  color:#92939c;
+  font-size:13px;
+  margin-bottom:23px;
+}
+
+.snote-search{
+  width:100%;
+  padding:13px 16px;
+  margin-bottom:18px;
+  border:0;
+  border-radius:16px;
+  background:#ececf1;
+  color:#24252b;
+  outline:none;
+}
+
+.snote-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.snote-card{
+  height:176px;
+  min-width:0;
+  padding:17px 15px;
+  border:1px solid #e9e9ee;
+  border-radius:19px;
+  background:#fff;
+  color:#25252a;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 2px 8px rgba(0,0,0,.025);
+}
+
+.snote-card strong{
+  font-size:15px;
+  line-height:1.45;
+  font-weight:700;
+}
+
+.snote-card p{
+  flex:1;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:4;
+  font-size:12px;
+  line-height:1.6;
+  color:#777983;
+  margin:10px 0;
+}
+
+.snote-card small{
+  font-size:11px;
+  color:#a0a1a8;
+}
+
+.snote-paper{
+  min-height:100%;
+  padding:18px 5px 50px;
+  background:#f8f8fa;
+}
+
+.snote-paper h2{
+  font-size:25px;
+  line-height:1.45;
+  margin:4px 0 10px;
+  font-weight:700;
+}
+
+.snote-date{
+  font-size:12px;
+  color:#a0a1a8;
+  margin-bottom:30px;
+}
+
+.snote-body{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-size:16px;
+  line-height:1.9;
+  color:#292a30;
+}
+
+.snote-fab{
+  position:absolute;
+  right:23px;
+  bottom:38px;
+  width:57px;
+  height:57px;
+  border:0;
+  border-radius:19px;
+  display:grid;
+  place-items:center;
+  background:#e5e4f8;
+  color:#5855b6;
+  box-shadow:0 5px 16px #0002;
+}
+
+.snote-primary{
+  padding:13px 18px;
+  border:0;
+  border-radius:13px;
+  background:#625dc5;
+  color:#fff;
+  font-weight:600;
+}
+
 </style>
 </head>
 <body>
@@ -11330,6 +11504,9 @@ function ep12ExportPNG(){
 
   img.src=url;
 }
+let notesSelected = null;
+let notesSearchVisible = false;
+const notesEdits = {};
 
 function render(){
 let html='';
@@ -11517,125 +11694,235 @@ html=appwrap('คำสั่งซื้อ','<div class="content"><div class="
 else if(page==='โทรศัพท์'){
   html=renderEp8Phone();
 }
+
 else if(page==='โน้ต'){
-    html='<div class="notes-page">'+appwrap('โน้ต',`
-    <div class="content">
-          ${save.flags.ep8TanakaRead ? `
-        <div class="entry ep8-shared-note-entry">
+  const notes = [
+    {
+      id:'work',
+      title:'งานประจำสัปดาห์',
+      date:'31 ม.ค.',
+      body:`ติดตามรายงานฝ่ายขาย
+ตรวจเอกสารเสนอราคา
+ยืนยันนัดหมายลูกค้า`
+    },
+    {
+      id:'gemm',
+      title:'GEMMHOUSE — โลโก้ใหม่',
+      date:'30 ม.ค.',
+      body:`ลูกค้าขอปรับสีโลโก้ใหม่
 
-          <b>รายชื่อลูกค้าบิ๊กแบ็ก</b>
+CMYK: C0 M100 Y100 K0
 
-          <small>
-            Samsung Notes · แชร์โดยอชิ
-          </small>
+ตรวจสอบค่าสีก่อนส่งไฟล์ให้ทีมโปรโมชั่น`
+    },
+    {
+      id:'egg',
+      title:'วิธีทำไข่ออนเซ็น',
+      date:'28 ม.ค.',
+      body:`วัตถุดิบ
+ไข่ไก่ 2 ฟอง น้ำสะอาด
 
-          ${!save.flags.ep8NoteJoined ? `
-            <p>อชิเชิญคุณเข้าร่วมโน้ตที่แชร์</p>
+1. นำไข่ออกจากตู้เย็น พักไว้สักครู่
+2. เตรียมน้ำอุณหภูมิประมาณ 65–68°C
+3. แช่ไข่ประมาณ 25–30 นาที โดยรักษาอุณหภูมิน้ำให้คงที่
+4. นำไข่ขึ้นมาแช่น้ำเย็นเพื่อหยุดความร้อน
+5. ตอกใส่ถ้วย เสิร์ฟพร้อมโชยุหรือน้ำซุปตามชอบ
 
-            <button class="action"
-              data-ep8-join-note="1">
-              เข้าร่วมโน้ตที่แชร์
-            </button>
-          ` : `
-            <p>รายชื่อลูกค้าเก่า 8 บริษัท</p>
+หมายเหตุ: ใช้ไข่พาสเจอร์ไรซ์เพื่อลดความเสี่ยงจากไข่ที่สุกไม่ทั่วถึง`
+    },
+    {
+      id:'embroidery',
+      title:'วิธีปักผ้าเบื้องต้น',
+      date:'26 ม.ค.',
+      body:`อุปกรณ์ที่ต้องเตรียม
+ผ้า สะดึง เข็มปักผ้า ไหมปัก กรรไกร และดินสอเขียนผ้า
 
-            ${ep8Customers
-              .filter(c=>c.source==='อชิ')
-              .map(c=>`
-                <div class="ep8-note-company">
-                  <strong>${c.name}</strong>
-                  <span>${c.phone}</span>
-                  <small>${c.product}</small>
-                </div>
-              `).join('')}
+1. วาดลายที่ต้องการลงบนผ้า
+2. ขึงผ้ากับสะดึงให้ตึงพอดี
+3. ร้อยไหมปักเข้ากับเข็ม
+4. เริ่มปักตามลายด้วยฝีเข็มด้นหรือฝีเข็มเดินเส้น
+5. หากต้องการเติมสีให้ใช้ฝีเข็มซาติน
+6. เก็บปลายด้ายด้านหลังให้เรียบร้อย
 
-            ${!save.flags.ep8ContactsReceived ? `
-              <button class="action"
-                data-ep8-receive-contacts="1">
-                บันทึก 8 บริษัทลงในรายชื่อ
-              </button>
-            ` : `
-              <p class="ep8-note-done">
-                บันทึกรายชื่อเรียบร้อยแล้ว
-              </p>
-            `}
-          `}
+อย่าดึงไหมแรงเกินไป เดี๋ยวผ้าย่น`
+    },
+    {
+      id:'achi-time',
+      title:'เรื่องที่ต้องจำเกี่ยวกับอชิ',
+      date:'30 ม.ค.',
+      body:`08:50 น. — มาถึงบริษัท
+อชิมาถึงบริษัทประมาณเวลานี้ ชอบให้คนอื่นออกจากลิฟต์ก่อน จนตัวเองเกือบโดนประตูลิฟต์หนีบ
 
-        </div>
-      ` : ''}
-      <div class="entry">
-        <b>งานประจำสัปดาห์</b>
-        <p>ติดตามรายงานฝ่ายขาย</p>
-        <p>ตรวจเอกสารเสนอราคา</p>
-        <p>ยืนยันนัดหมายลูกค้า</p>
-      </div>
+13:30 น. — เวลากาแฟ
+อชิชอบลงมาดื่มกาแฟช่วงบ่าย จำเวลาไว้ เผื่อได้เจอกัน
 
-      <div class="entry">
-        <b>GEMMHOUSE — โลโก้ใหม่</b>
-        <small>บันทึกเกี่ยวกับงานลูกค้า</small>
-        <p>ลูกค้าขอปรับสีโลโก้ใหม่</p>
-        <p><b>CMYK: C0 M100 Y100 K0</b></p>
-        <p>ตรวจสอบค่าสีก่อนส่งไฟล์ให้ทีมโปรโมชั่น</p>
-      </div>
+16:40 น. — ปิดม่าน
+พระอาทิตย์เริ่มลดต่ำลง ต้องปิดม่านตรงโต๊ะอชิ`
+    },
+    {
+      id:'achi',
+      title:'เรื่องของอชิ',
+      date:'29 ม.ค.',
+      body:`อชิเป็นคนตั้งใจทำงานมาก
 
+บางครั้งก็ดูเหมือนจะรับงานของคนอื่นมาทำมากเกินไป
 
-<div class="entry">
-  <b>วิธีทำไข่ออนเซ็น</b>
-  <small>บันทึกสูตรอาหาร</small>
-  <p>วัตถุดิบ</p>
-  <p>ไข่ไก่ 2 ฟอง น้ำสะอาด</p>
-  <p>1. นำไข่ออกจากตู้เย็น พักไว้สักครู่</p>
-  <p>2. เตรียมน้ำอุณหภูมิประมาณ 65–68°C</p>
-  <p>3. แช่ไข่ประมาณ 25–30 นาที โดยรักษาอุณหภูมิน้ำให้คงที่</p>
-  <p>4. นำไข่ขึ้นมาแช่น้ำเย็นเพื่อหยุดความร้อน</p>
-  <p>5. ตอกใส่ถ้วย เสิร์ฟพร้อมโชยุหรือน้ำซุปตามชอบ</p>
-  <small>หมายเหตุ: ใช้ไข่พาสเจอร์ไรซ์เพื่อลดความเสี่ยงจากไข่ที่สุกไม่ทั่วถึง</small>
-</div>
+อยากช่วยให้เขาได้พักบ้าง`
+    },
+    {
+      id:'article',
+      title:'บทความที่เคยเขียน',
+      date:'24 ม.ค.',
+      body:`เรื่องเล็ก ๆ ที่ทำให้วันธรรมดาพิเศษขึ้น
 
-<div class="entry">
-  <b>วิธีปักผ้าเบื้องต้น</b>
-  <small>บันทึกงานอดิเรก</small>
-  <p>อุปกรณ์ที่ต้องเตรียม</p>
-  <p>ผ้า สะดึง เข็มปักผ้า ไหมปัก กรรไกร และดินสอเขียนผ้า</p>
-  <p>1. วาดลายที่ต้องการลงบนผ้า</p>
-  <p>2. ขึงผ้ากับสะดึงให้ตึงพอดี</p>
-  <p>3. ร้อยไหมปักเข้ากับเข็ม</p>
-  <p>4. เริ่มปักตามลายด้วยฝีเข็มด้นหรือฝีเข็มเดินเส้น</p>
-  <p>5. หากต้องการเติมสีให้ใช้ฝีเข็มซาติน</p>
-  <p>6. เก็บปลายด้ายด้านหลังให้เรียบร้อย</p>
-  <p>อย่าดึงไหมแรงเกินไป เดี๋ยวผ้าย่น</p>
-</div>
+บางครั้งความใส่ใจเล็กน้อยก็ทำให้ใครบางคนมีความสุขได้`
+    }
+  ];
 
-<div class="entry">
-  <b>เรื่องที่ต้องจำเกี่ยวกับอชิ</b>
-  <small>บันทึกส่วนตัวของการันต์</small>
+  const escapeNote = s => String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
 
-  <p><b>08:50 น. — มาถึงบริษัท</b></p>
-  <p>อชิมาถึงบริษัทประมาณเวลานี้ ชอบให้คนอื่นออกจากลิฟต์ก่อน จนตัวเองเกือบโดนประตูลิฟต์หนีบ</p>
+  const selected = notes.find(n=>n.id===notesSelected);
 
-  <p><b>13:30 น. — เวลากาแฟ</b></p>
-  <p>อชิชอบลงมาดื่มกาแฟช่วงบ่าย จำเวลาไว้ เผื่อได้เจอกัน</p>
+  const sharedVisible = save.flags.ep8TanakaRead;
 
-<p><b>16:40 น. — ปิดม่าน</b></p>
-<p>พระอาทิตย์เริ่มลดต่ำลง ต้องปิดม่านตรงโต๊ะอชิ</p>
-</div>
-      <div class="entry">
-        <b>เรื่องของอชิ</b>
-        <small>บันทึกส่วนตัว</small>
-        <p>อชิเป็นคนตั้งใจทำงานมาก</p>
-        <p>บางครั้งก็ดูเหมือนจะรับงานของคนอื่นมาทำมากเกินไป</p>
-        <p>อยากช่วยให้เขาได้พักบ้าง</p>
-      </div>
+  const sharedBody = `
+    <div class="snote-paper">
+      <h2>รายชื่อลูกค้าบิ๊กแบ็ก</h2>
+      <div class="snote-date">แชร์โดยอชิ</div>
 
-      <div class="entry">
-        <b>บทความที่เคยเขียน</b>
-        <small>บันทึกเก่า</small>
-        <p>เรื่องเล็ก ๆ ที่ทำให้วันธรรมดาพิเศษขึ้น</p>
-        <p>บางครั้งความใส่ใจเล็กน้อยก็ทำให้ใครบางคนมีความสุขได้</p>
-      </div>
+      ${!save.flags.ep8NoteJoined ? `
+        <p>อชิเชิญคุณเข้าร่วมโน้ตที่แชร์</p>
+        <button class="snote-primary" data-ep8-join-note="1">
+          เข้าร่วมโน้ตที่แชร์
+        </button>
+      ` : `
+        <p>รายชื่อลูกค้าเก่า 8 บริษัท</p>
 
+        ${ep8Customers.filter(c=>c.source==='อชิ').map(c=>`
+          <div class="ep8-note-company">
+            <strong>${escapeNote(c.name)}</strong>
+            <span>${escapeNote(c.phone)}</span>
+            <small>${escapeNote(c.product)}</small>
+          </div>
+        `).join('')}
+
+        ${!save.flags.ep8ContactsReceived ? `
+          <button class="snote-primary" data-ep8-receive-contacts="1">
+            บันทึก 8 บริษัทลงในรายชื่อ
+          </button>
+        ` : `
+          <p class="ep8-note-done">บันทึกรายชื่อเรียบร้อยแล้ว</p>
+        `}
+      `}
     </div>
-  `)+'</div>';
+  `;
+
+  const noteIcon = name => {
+    const paths = {
+      back:'<path d="M15 18 9 12l6-6"/>',
+      search:'<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/>',
+      more:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+      note:'<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h4M9 12h7M9 16h7"/>',
+      edit:'<path d="m4 20 4-.8L20 7l-3-3L5 16z"/>',
+      check:'<path d="m5 12 5 5L20 7"/>'
+    };
+    return `<svg viewBox="0 0 24 24" width="24" height="24"
+      fill="none" stroke="currentColor" stroke-width="1.8"
+      stroke-linecap="round" stroke-linejoin="round">
+      ${paths[name]||paths.note}
+    </svg>`;
+  };
+
+  const isDetail = notesSelected!==null;
+  const isShared = notesSelected==='shared';
+
+  html=`
+    <div class="notes-page snote-app">
+      <div class="snote-top">
+        <button class="snote-icon" data-notes-back="1">
+          ${noteIcon('back')}
+        </button>
+
+        <div class="snote-top-title">
+          ${isDetail ? 'Samsung Notes' : 'โน้ตทั้งหมด'}
+        </div>
+
+        ${isDetail ? `
+          <button class="snote-icon" data-notes-edit="1">
+            ${noteIcon('edit')}
+          </button>
+        ` : `
+          <button class="snote-icon" data-notes-search-toggle="1">
+            ${noteIcon('search')}
+          </button>
+        `}
+
+        <button class="snote-icon" data-notes-menu="1">
+          ${noteIcon('more')}
+        </button>
+      </div>
+
+      ${!isDetail ? `
+        <div class="snote-list-scroll">
+          <h1>โน้ต</h1>
+          <div class="snote-count">
+            ${notes.length+(sharedVisible?1:0)} โน้ต
+          </div>
+
+          <input id="notesSearch" class="snote-search"
+            placeholder="ค้นหาโน้ต"
+            style="${notesSearchVisible?'':'display:none'}">
+
+          <div class="snote-grid">
+            ${sharedVisible ? `
+              <button class="snote-card" data-note-open="shared">
+                <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+                <p>Samsung Notes · แชร์โดยอชิ</p>
+                <small>โน้ตที่แชร์</small>
+              </button>
+            ` : ''}
+
+            ${notes.map(n=>`
+              <button class="snote-card" data-note-open="${n.id}">
+                <strong>${escapeNote(n.title)}</strong>
+                <p>${escapeNote(n.body).replace(/\n/g,' ')}</p>
+                <small>${n.date}</small>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <button class="snote-fab" data-notes-new="1">
+          ${noteIcon('edit')}
+        </button>
+      ` : isShared ? `
+        <div class="snote-detail-scroll">
+          ${sharedBody}
+        </div>
+      ` : selected ? `
+        <div class="snote-detail-scroll">
+          <div class="snote-paper">
+            <h2>${escapeNote(selected.title)}</h2>
+            <div class="snote-date">${selected.date}</div>
+            <div class="snote-body">${escapeNote(
+              notesEdits[selected.id] ?? selected.body
+            )}</div>
+          </div>
+        </div>
+      ` : `
+        <div class="snote-detail-scroll">
+          <div class="snote-paper">
+            <h2>โน้ตใหม่</h2>
+            <div class="snote-body">ยังไม่มีข้อความ</div>
+          </div>
+        </div>
+      `}
+    </div>
+  `;
 }
 
 else{
@@ -15984,6 +16271,60 @@ if(ep4Reply){
   );
   return;
 }
+
+const noteOpen=e.target.closest('[data-note-open]');
+if(noteOpen){
+  notesSelected=noteOpen.dataset.noteOpen;
+  render();
+  return;
+}
+
+const noteBack=e.target.closest('[data-notes-back]');
+if(noteBack){
+  if(notesSelected!==null){
+    notesSelected=null;
+    render();
+  }else{
+    page='home';
+    render();
+  }
+  return;
+}
+
+const noteSearch=e.target.closest('[data-notes-search-toggle]');
+if(noteSearch){
+  notesSearchVisible=!notesSearchVisible;
+  render();
+  return;
+}
+
+const noteEdit=e.target.closest('[data-notes-edit]');
+if(noteEdit){
+  if(notesSelected && notesSelected!=='shared'){
+    const body=document.querySelector('.snote-body');
+    if(body){
+      body.contentEditable='true';
+      body.focus();
+      body.addEventListener('blur',()=>{
+        notesEdits[notesSelected]=body.innerText;
+      },{once:true});
+    }
+  }
+  return;
+}
+
+const noteNew=e.target.closest('[data-notes-new]');
+if(noteNew){
+  notesSelected='new';
+  render();
+  return;
+}
+
+const noteMenu=e.target.closest('[data-notes-menu]');
+if(noteMenu){
+  return;
+}
+
 const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-task]');
 if(!btn)return;
 

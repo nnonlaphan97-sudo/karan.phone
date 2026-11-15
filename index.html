@@ -8775,13 +8775,6 @@ const calendarEvents=[
     time:'18:30',
     detail:'นัดกินข้าวกับอชิสองคน',
     type:'personal'
-  },
-  {
-    date:'2026-04-09',
-    title:'Company Outing — toyokawa',
-    time:'08:00',
-    detail:'เอ้าติ้งบริษัทก่อนสงกรานต์',
-    type:'work'
   }
 ];
 
@@ -12725,26 +12718,30 @@ if(save.flags.ep3DujQuestionShown){
   }else{
 
     choices=`
-      <div class="tinylabel">
-        เปิดปฏิทินตรวจสอบวันว่าง แล้วกรอกวันที่
-      </div>
+  <div class="tinylabel">
+    เปิดปฏิทินตรวจสอบวันว่าง แล้วกรอกวันที่
+  </div>
 
-      <div style="display:flex;gap:8px;padding:8px 0">
+  <div style="display:flex;align-items:center;gap:8px;padding:8px 0;">
 
-        <input
-          id="ep3FreeDate"
-          inputmode="text"
-          placeholder="เช่น 9 เมษายน"
-          aria-label="วันที่ว่าง"
-          style="min-width:0;flex:1;padding:12px;border:1px solid #ddd;border-radius:12px;font-size:16px"
-        >
+    <span style="white-space:nowrap;font-size:16px;color:#222;">
+      ผมว่างวันที่
+    </span>
 
-        <button class="choice" data-ep3-answer="1">
-          ส่ง
-        </button>
+    <input
+      id="ep3FreeDate"
+      type="text"
+      placeholder="วันที่"
+      autocomplete="off"
+      style="width:65px;min-width:0;padding:12px 8px;border:1px solid #ddd;border-radius:12px;font-size:16px;text-align:center;"
+    >
 
-      </div>
-    `;
+    <button class="choice" data-ep3-answer="1">
+      ส่ง
+    </button>
+
+  </div>
+`;
   }
 }
 
@@ -15713,13 +15710,13 @@ if(ep3AnswerBtn && page==='chat' && chat==='duj'){
   const input=document.getElementById('ep3FreeDate');
   const answer=(input?.value || '').trim();
 
-  if(!/^(9|09)(\s*เม\.?ย\.?|\s*เมษายน|\s*\/\s*4)?$/.test(answer)){
-    popup(
-      'ตรวจสอบวันว่างอีกครั้ง',
-      'ลองเปิดปฏิทินดูนัดลูกค้าระหว่างวันที่ 1–9 เมษายน'
-    );
-    return;
-  }
+  if(!/^(9|เก้า)$/.test(answer)){
+  popup(
+    'วันที่ไม่ถูกต้อง',
+    'ลองตรวจสอบวันว่างในปฏิทินอีกครั้ง'
+  );
+  return;
+}
 save.flags.ep3DujAnswer=true;
 save.flags.ep3OfficePosterShown=true;
 persist();

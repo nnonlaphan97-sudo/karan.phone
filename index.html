@@ -6055,6 +6055,214 @@ button{
   font-weight:600;
 }
 
+/* Samsung Gallery — EP.04 */
+.sg-gallery-home {
+  padding-top:60px;
+}
+.sg-gallery-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.sg-gallery-heading h2 {
+  margin:0 0 24px;
+  font-size:30px;
+}
+.sg-gallery-heading span {
+  font-size:24px;
+  padding:0 10px;
+}
+.sg-viewer {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:#101114;
+  color:#fff;
+  position:relative;
+}
+.sg-viewer-top {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:55px 18px 16px;
+}
+.sg-viewer-top button,
+.sg-viewer-bottom button,
+.sg-recipient-header button {
+  border:0;
+  background:transparent;
+  color:inherit;
+  cursor:pointer;
+}
+.sg-viewer-top strong,
+.sg-viewer-top small {
+  display:block;
+}
+.sg-viewer-top small {
+  color:#aaa;
+  margin-top:4px;
+}
+.sg-viewer-image {
+  flex:1;
+  min-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.sg-viewer-image img {
+  width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+.sg-viewer-bottom {
+  display:flex;
+  justify-content:center;
+  padding:18px 20px 45px;
+}
+.sg-viewer-bottom button {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+}
+.sg-share-overlay {
+  position:absolute;
+  inset:0;
+  z-index:20;
+}
+.sg-share-dim {
+  position:absolute;
+  inset:0;
+  width:100%;
+  border:0;
+  background:rgba(0,0,0,.55);
+}
+.sg-share-sheet {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#f7f7fa;
+  color:#202124;
+  border-radius:28px 28px 0 0;
+  padding:12px 24px 45px;
+}
+.sg-share-handle {
+  width:36px;
+  height:4px;
+  background:#b9bac0;
+  border-radius:8px;
+  margin:0 auto 22px;
+}
+.sg-share-sheet h3 {
+  font-size:21px;
+  margin:0 0 18px;
+}
+.sg-share-preview {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding-bottom:24px;
+}
+.sg-share-preview img {
+  width:64px;
+  height:64px;
+  object-fit:cover;
+  border-radius:10px;
+}
+.sg-share-app {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  border:0;
+  background:transparent;
+  color:#202124;
+}
+.sg-line-icon {
+  width:55px;
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#06c755;
+  color:#fff;
+  border-radius:17px;
+  font-size:12px;
+  font-weight:800;
+}
+.sg-recipient {
+  height:100%;
+  padding:55px 20px 30px;
+  background:#fff;
+  color:#222;
+  display:flex;
+  flex-direction:column;
+}
+.sg-recipient-header {
+  display:flex;
+  align-items:center;
+  gap:20px;
+  font-size:20px;
+}
+.sg-recipient-photo {
+  text-align:center;
+  padding:22px 0;
+}
+.sg-recipient-photo img {
+  width:115px;
+  height:115px;
+  object-fit:cover;
+  border-radius:12px;
+}
+.sg-contact {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  padding:14px 4px;
+  border:0;
+  background:#fff;
+  color:#222;
+  text-align:left;
+  font-size:17px;
+}
+.sg-contact img {
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  object-fit:cover;
+}
+.sg-radio {
+  margin-left:auto;
+  width:20px;
+  height:20px;
+  border:2px solid #06c755;
+  border-radius:50%;
+}
+.sg-send {
+  margin-top:auto;
+  border:0;
+  border-radius:24px;
+  padding:16px;
+  background:#06c755;
+  color:#fff;
+  font-size:17px;
+  font-weight:700;
+}
+.karin-sent-photo {
+  display:flex;
+  justify-content:flex-end;
+  margin:10px 12px 10px auto;
+  max-width:68%;
+}
+.karin-sent-photo img {
+  display:block;
+  width:100%;
+  border-radius:15px;
+}
+
 </style>
 </head>
 <body>
@@ -9297,56 +9505,110 @@ function renderSamsungCamera(){
   `;
 }
 
+
+let samsungGalleryView='grid';
+let samsungShareOpen=false;
+
 function renderSamsungGallery(){
   const taken=save.flags.ep4PhotoTaken;
+  const photo='videos/IMG_3258.jpeg';
+
+  const backIcon=`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
+  const shareIcon=`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4M8.7 13.3l6.6 4.4"/></svg>`;
+
+  if(samsungGalleryView==='photo' && taken){
+    return `
+      <div class="sg-viewer">
+        <div class="sg-viewer-top">
+          <button data-sg-back="1" aria-label="กลับ">${backIcon}</button>
+          <div><strong>14 เมษายน</strong><small>รูปภาพ · 09:18</small></div>
+          <span></span>
+        </div>
+
+        <div class="sg-viewer-image">
+          <img src="${photo}" alt="รูปที่ถ่ายจากกล้อง">
+        </div>
+
+        <div class="sg-viewer-bottom">
+          <button data-sg-share="1">
+            ${shareIcon}
+            <span>แชร์</span>
+          </button>
+        </div>
+
+        ${samsungShareOpen ? `
+          <div class="sg-share-overlay">
+            <button class="sg-share-dim" data-sg-close-share="1" aria-label="ปิด"></button>
+            <div class="sg-share-sheet">
+              <div class="sg-share-handle"></div>
+              <h3>แชร์</h3>
+              <div class="sg-share-preview">
+                <img src="${photo}" alt="รูปที่จะแชร์">
+                <span>1 รูปภาพ</span>
+              </div>
+              <button class="sg-share-app" data-sg-share-line="1">
+                <span class="sg-line-icon">LINE</span>
+                <span>LINE</span>
+              </button>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  if(samsungGalleryView==='recipient' && taken){
+    return `
+      <div class="sg-recipient">
+        <div class="sg-recipient-header">
+          <button data-sg-back-photo="1">${backIcon}</button>
+          <strong>ส่งไปยัง</strong>
+        </div>
+        <div class="sg-recipient-photo">
+          <img src="${photo}" alt="รูปที่จะแชร์">
+        </div>
+        <p>เลือกผู้รับใน LINE</p>
+        <button class="sg-contact" data-sg-select-karin="1">
+          <img src="https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg" alt="">
+          <span>พี่การิน</span>
+          <span class="sg-radio"></span>
+        </button>
+        <button class="sg-send" data-ep4-send-photo="1">
+          ส่ง
+        </button>
+      </div>
+    `;
+  }
 
   return `
-    <div class="samsung-gallery">
-
-      <div class="samsung-gallery-title">
+    <div class="samsung-gallery sg-gallery-home">
+      <div class="sg-gallery-heading">
         <h2>รูปภาพ</h2>
-        ${icon('gallery')}
+        <span>⋮</span>
       </div>
 
-      <div class="samsung-gallery-date">
-        14 เมษายน
-      </div>
+      <div class="samsung-gallery-date">14 เมษายน</div>
 
       <div class="samsung-photo-grid">
-        ${
-          taken
-          ? `<button class="samsung-photo"
-                     data-ep4-photo="1">
-             <img src="videos/IMG_3258.jpeg"
-     alt="ภาพที่ถ่าย"
-     style="width:100%;height:100%;object-fit:cover;display:block">
-             </button>`
-          : `<div class="samsung-gallery-empty">
-               ยังไม่มีรูปภาพ
-             </div>`
-        }
+        ${taken ? `
+          <button class="samsung-photo" data-ep4-photo="1">
+            <img src="${photo}" alt="ภาพล่าสุด"
+              style="width:100%;height:100%;object-fit:cover;display:block">
+          </button>
+        ` : `
+          <div class="samsung-gallery-empty">ยังไม่มีรูปภาพ</div>
+        `}
       </div>
-
-      ${
-        taken
-        ? `<div class="samsung-photo-send">
-             <p>ภาพถ่ายขณะทำงาน</p>
-             <button data-ep4-send-photo="1">
-               ส่งรูปให้พี่การิน
-             </button>
-           </div>`
-        : ''
-      }
 
       <div class="samsung-gallery-tabs">
         <span class="selected">รูปภาพ</span>
         <span>อัลบั้ม</span>
         <span>เรื่องราว</span>
       </div>
-
     </div>
   `;
 }
+
 function renderInstagramDM(){
   const options=[
     {
@@ -12983,29 +13245,49 @@ if(chat==='karin' && save.flags.ep3KarinMessageShown){
 
   b+=bubble('ลงมาเจอชั้นหน่อย',false,'','17:42');
 }
+
 if(chat==='karin' && save.flags.ep4KarinShown){
 
-  if(!save.flags.ep4PhotoSent){
-    b+='<div class="day">15 เม.ย.</div>';
-    b+=bubble('คุยด้วยหน่อยได้ไหม',false,'','09:15');
-    b+=bubble('ผมทำงานอยู่',true,'','09:16');
-    b+=bubble('ไม่เชื่อ ถ่ายรูปมาให้ดูหน่อย',false,'','09:17');
-  }
+  // ===== 14 เมษายน — การินขอรูปยืนยันว่าทำงาน =====
+  b+='<div class="day">14 เม.ย.</div>';
 
+  b+=bubble('คุยด้วยหน่อยได้ไหม',false,'','09:15');
+  b+=bubble('ผมทำงานอยู่',true,'','09:16');
+  b+=bubble('ไม่เชื่อ ถ่ายรูปมาให้ดูหน่อย',false,'','09:17');
+
+  // แสดงรูปเฉพาะเมื่อถ่ายและส่งให้การินสำเร็จแล้ว
   if(save.flags.ep4PhotoSent){
-    b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');
 
+    b+=`
+      <div class="karin-sent-photo">
+        <img
+          src="videos/IMG_3258.jpeg"
+          alt="รูปภาพที่การันต์ส่งให้พี่การิน"
+        >
+      </div>
+    `;
+
+    // บทสนทนาหลังส่งรูป
+    b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน',false,'','09:20');
+
+    b+=bubble('คนในรูปนี่อชิเหรอ',false,'','09:21');
+    b+=bubble('ทำไมไม่ไปนอนบ้านอชิเลยล่ะ',false,'','09:21');
+    b+=bubble('ลำบากอชิเขาครับ',true,'','09:22');
+    b+=bubble('เดี๋ยวชั้นไปหาแกดีกว่า',false,'','09:23');
+    b+=bubble('มาทำไมครับ',true,'','09:24');
+
+    // ===== 15 เมษายน — เรื่องกระเป๋า =====
     b+='<div class="day">15 เม.ย.</div>';
 
-    b+=bubble('คนในรูปนี่อชิเหรอ');
-    b+=bubble('ทำไมไม่ไปนอนบ้านอชิเลยล่ะ');
-    b+=bubble('ลำบากอชิเขาครับ',true);
-    b+=bubble('เดี๋ยวชั้นไปหาแกดีกว่า');
-    b+=bubble('มาทำไมครับ',true);
+    b+=bubble(
+      'แล้วจะให้ชั้นเอาอะไรใส่กระเป๋าไปให้บ้าง',
+      false,
+      '',
+      '17:10'
+    );
 
-    b+='<div class="day">15 เม.ย. · ตอนเย็น</div>';
+    // เก็บโค้ด if(save.flags.ep5BagSent) เดิมต่อจากนี้
 
-    b+=bubble('แล้วจะให้ชั้นเอาอะไรใส่กระเป๋าไปให้บ้าง');
 
     if(save.flags.ep5BagSent){
 
@@ -16439,36 +16721,94 @@ if(flipCamera && page==='กล้อง'){
   return;
 }
 
-// เปิดภาพในแกลเลอรี่
+
+// EP.04 — เปิดรูปเต็มจอ
 const photo=e.target.closest('[data-ep4-photo]');
 
 if(photo && page==='แกลเลอรี'){
-
   if(!save.flags.ep4PhotoTaken)return;
 
-  popup(
-    'ภาพถ่ายวันที่ 14 เมษายน',
-    'ภาพอชิกำลังทำงานอยู่ที่สำนักงาน'
-  );
-
+  samsungGalleryView='photo';
+  samsungShareOpen=false;
+  render();
   return;
 }
 
-// ส่งภาพให้พี่การิน
+// กลับจากหน้าดูรูป
+const galleryBack=e.target.closest('[data-sg-back]');
+
+if(galleryBack && page==='แกลเลอรี'){
+  samsungGalleryView='grid';
+  samsungShareOpen=false;
+  render();
+  return;
+}
+
+// เปิด Samsung Share Sheet
+const galleryShare=e.target.closest('[data-sg-share]');
+
+if(galleryShare && page==='แกลเลอรี'){
+  samsungShareOpen=true;
+  render();
+  return;
+}
+
+// ปิดแผงแชร์
+const closeGalleryShare=e.target.closest('[data-sg-close-share]');
+
+if(closeGalleryShare && page==='แกลเลอรี'){
+  samsungShareOpen=false;
+  render();
+  return;
+}
+
+// แชร์ผ่าน LINE
+const shareToLine=e.target.closest('[data-sg-share-line]');
+
+if(shareToLine && page==='แกลเลอรี'){
+  samsungShareOpen=false;
+  samsungGalleryView='recipient';
+  render();
+  return;
+}
+
+// กลับจากหน้าเลือกผู้รับ
+const backToPhoto=e.target.closest('[data-sg-back-photo]');
+
+if(backToPhoto && page==='แกลเลอรี'){
+  samsungGalleryView='photo';
+  render();
+  return;
+}
+
+// เลือกพี่การินเป็นผู้รับ
+const selectKarin=e.target.closest('[data-sg-select-karin]');
+
+if(selectKarin && page==='แกลเลอรี'){
+  const sendButton=document.querySelector('[data-ep4-send-photo]');
+  if(sendButton){
+    sendButton.disabled=false;
+    sendButton.style.opacity='1';
+  }
+  return;
+}
+
+// ส่งรูปเข้า LINE พี่การิน
 const sendPhoto=e.target.closest('[data-ep4-send-photo]');
 
 if(sendPhoto && page==='แกลเลอรี'){
-
   if(!save.flags.ep4PhotoTaken)return;
 
-   save.flags.ep4PhotoSent=true;
+  save.flags.ep4PhotoSent=true;
   persist();
+
+  samsungGalleryView='grid';
+  samsungShareOpen=false;
 
   chat='karin';
   page='chat';
   render();
 
-  // วันที่ 15 พี่การินทักมาต่อจากรูปที่ส่ง
   showGameBanner(
     'karin',
     'คนในรูปนี่อชิเหรอ ทำไมไม่ไปนอนบ้านอชิเลยล่ะ'
@@ -16476,6 +16816,7 @@ if(sendPhoto && page==='แกลเลอรี'){
 
   return;
 }
+
 // EP.04 — เลือกคำตอบสุดท้ายให้อชิ
 const ep4Reply=e.target.closest('[data-ep4-achi-reply]');
 
@@ -16494,11 +16835,7 @@ if(ep4Reply){
 
   persist();
   render();
-
-  showGameBanner(
-    'achi',
-    'คุณการันต์ครับ ผมถึงที่ทำงานแล้วนะครับ'
-  );
+  
   return;
 }
 

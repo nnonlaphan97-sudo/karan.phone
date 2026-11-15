@@ -4398,12 +4398,19 @@ function icon(n,cls=''){
   switch(n){
         case 'spotify':
       return `
-   switch(n){
-
-  case 'spotify':
-    return `
-      // SVG ไอคอน Spotify ใหม่
-    `;
+    <svg class="ico ${cls}" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="20" fill="#090909"/>
+      <circle cx="32" cy="32" r="24" fill="#1ED760"/>
+      <path d="M17 25 C27 21 40 22 48 27"
+        fill="none" stroke="#101010"
+        stroke-width="4.6" stroke-linecap="round"/>
+      <path d="M19 33 C28 30 39 31 46 36"
+        fill="none" stroke="#101010"
+        stroke-width="3.8" stroke-linecap="round"/>
+      <path d="M21 41 C29 38.5 38 40 44 44"
+        fill="none" stroke="#101010"
+        stroke-width="3.2" stroke-linecap="round"/>
+    </svg>`;
 
   case 'message':
     return `

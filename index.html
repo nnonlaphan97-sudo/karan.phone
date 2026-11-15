@@ -12735,10 +12735,20 @@ if(save.flags.ep3DujQuestionShown){
       style="flex:1;width:0;min-width:0;padding:12px 8px;border:1px solid #ddd;border-radius:12px;font-size:16px;text-align:center;"
     >
 
-    <button class="choice" data-ep3-answer="1"
-      style="flex:0 0 52px;width:52px;min-width:52px;padding:12px 4px;white-space:nowrap;">
-      ส่ง
-    </button>
+  <button class="choice" data-ep3-answer="1"
+  style="
+    flex:0 0 52px;
+    width:52px;
+    min-width:52px;
+    height:44px;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    white-space:nowrap;
+    box-sizing:border-box;
+  ">ส่ง</button>
 
   </div>
 `;
@@ -12953,16 +12963,15 @@ if(chat==='karin' && save.flags.ep3KarinMessageShown){
 
   b+='<div class="day">12 เม.ย.</div>';
 
-  // ช่วงเช้า
-  b+=bubble('การัน ชั้นขอไปนอนห้องแกได้ไหม');
-  b+=bubble('มาทำไม',true);
-  b+=bubble('ฉันทะเลาะกับแฟน');
-  b+=bubble('แล้วเกี่ยวอะไรกับผม',true);
-  b+=bubble('ผมทำงานก่อน',true);
+  // บทสนทนาตอนเช้า
+  b+=bubble('การัน ชั้นขอไปนอนห้องแกได้ไหม',false,'09:24');
+  b+=bubble('มาทำไม',true,'09:25');
+  b+=bubble('ฉันทะเลาะกับแฟน',false,'09:26');
+  b+=bubble('แล้วเกี่ยวอะไรกับผม',true,'09:28');
+  b+=bubble('ผมทำงานก่อน',true,'09:29');
 
-  // ช่วงเย็น
-  b+='<div class="day">ช่วงเย็น</div>';
-  b+=bubble('ลงมาเจอชั้นหน่อย');
+  // ข้อความตอนเย็น
+  b+=bubble('ลงมาเจอชั้นหน่อย',false,'17:42');
 }
 if(chat==='karin' && save.flags.ep4KarinShown){
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');

@@ -7426,28 +7426,47 @@ if(latestSender==='me'){
 ){
   preview=latestSender+': '+latestText;
 }
+const initialChatTimes = {
+  office: {date:'29 ม.ค.', time:'09:12'},
+  sales:  {date:'30 ม.ค.', time:'09:26'},
+  duj:    {date:'30 ม.ค.', time:'11:18'},
+  achi:   {date:'30 ม.ค.', time:'17:34'},
+  pai:    {date:'31 ม.ค.', time:'21:16'}
+};
+
+    const initial = initialChatTimes[c.id];
+
+    // ใช้เวลาที่กำหนดเฉพาะช่วงต้นเรื่อง
+    // ถ้าแชทมีข้อความจากวันหลังจากนั้น ให้ใช้วันจริงของข้อความใหม่
+    const useInitial = initial &&
+      (dateValue(latestDate) ?? 0) <= dateValue(initial.date);
+
+    const displayDate = useInitial ? initial.date : latestDate;
+    const displayTime = useInitial ? initial.time : '18:00';
+
+    const sortTime =
+      (dateValue(displayDate) ?? 0) * 10000 +
+      Number(displayTime.replace(':',''));
 
     return {
       ...c,
       preview,
-      date:latestDate,
-      dateOrder:dateValue(latestDate) ?? 0,
-      messageIndex,
-      activityOrder:save.flags.lineChatActivity?.[c.id] || 0,
+      date:displayDate,
+      time:displayTime,
+      sortTime,
       originalIndex:index
     };
   });
 
   chat=previousChat;
   lastBubbleSender=previousSender;
-   results.sort((a,b)=>{
-  return (
-    b.dateOrder-a.dateOrder ||
-    b.activityOrder-a.activityOrder ||
-    b.messageIndex-a.messageIndex ||
-    a.originalIndex-b.originalIndex
-  );
-});
+  results.sort((a,b)=>{
+    return (
+      b.sortTime-a.sortTime ||
+      a.originalIndex-b.originalIndex
+    );
+  });
+
 
   return results
     .filter(c=>c.name.toLowerCase().includes(q))

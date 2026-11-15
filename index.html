@@ -5009,6 +5009,139 @@ button{
   color:#fff;
 }
 
+/* ===== LINE FULL SCREEN PROFILE ===== */
+
+.line-full-profile{
+  position:absolute;
+  inset:0;
+  z-index:30;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  color:#fff;
+  background:#111;
+  isolation:isolate;
+}
+
+.line-full-profile::before{
+  content:"";
+  position:absolute;
+  inset:-25px;
+  z-index:-2;
+  background-image:var(--line-profile-photo);
+  background-position:center;
+  background-size:cover;
+  filter:blur(22px) brightness(.36);
+  transform:scale(1.1);
+}
+
+.line-full-profile::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,.38) 0%,
+    rgba(0,0,0,.08) 35%,
+    rgba(0,0,0,.38) 72%,
+    rgba(0,0,0,.8) 100%
+  );
+}
+
+.line-full-profile-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:54px 22px 0;
+}
+
+.line-full-profile-top button,
+.line-full-profile-actions button{
+  border:0;
+  background:transparent;
+  color:inherit;
+  cursor:pointer;
+}
+
+.line-full-profile-top button{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+}
+
+.line-full-profile-top-right{
+  display:flex;
+  gap:12px;
+}
+
+.line-full-profile-center{
+  position:absolute;
+  top:48%;
+  left:0;
+  right:0;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+
+.line-full-profile-avatar{
+  width:112px !important;
+  height:112px !important;
+  border-radius:50%;
+  overflow:hidden;
+  background:#ddd;
+}
+
+.line-full-profile-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.line-full-profile-center h2{
+  margin:0;
+  font-size:26px;
+  font-weight:600;
+  text-align:center;
+  text-shadow:0 2px 8px #0007;
+}
+
+.line-full-profile-actions{
+  position:absolute;
+  bottom:72px;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:space-evenly;
+  align-items:flex-start;
+  padding:0 12px;
+}
+
+.line-full-profile-actions button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  width:30%;
+  font-size:13px;
+}
+
+.line-full-profile-actions svg{
+  width:32px;
+  height:32px;
+  filter:drop-shadow(0 2px 3px #0006);
+}
+
+.line-full-profile-actions span{
+  white-space:nowrap;
+}
+
 </style>
 </head>
 <body>
@@ -6218,13 +6351,32 @@ let lineProfile='achi';
 let lineGroup='office';
 let lineOpenchat='';
 
-const linePeople=[
+const linePeople = [
   {
-  id:'tanaka',name:'ทานากะซัง',status:'ผมจะต้้งใจทำงานอย่างหนัก'},
-  {id:'achi',name:'อชิ',status:'ขอบคุณสำหรับทุกอย่างนะครับ'},
-  {id:'duj',name:'พี่ดุจ',status:'มีความสุขกับทุกวัน'},
-  {id:'pai',name:'ปาย',status:'ทีมโปรโมชั่น'},
-  {id:'rock',name:'ร็อค',status:'สมาชิกใหม่ทีมโปรโมชั่น'}
+    id:'tanaka',
+    name:'Tanaka san',
+    status:'TOYOKAWA Fighting!!'
+  },
+  {
+    id:'achi',
+    name:'Achi rawit',
+    status:'คนที่ไม่วิเศษ'
+  },
+  {
+    id:'duj',
+    name:'พี่ดุจดาว',
+    status:'มีความสุขกับทุกวัน'
+  },
+  {
+    id:'pai',
+    name:'Pai',
+    status:'เกิด แก่ เจ็บ เติมเกย์'
+  },
+  {
+    id:'rock',
+    name:'Rock',
+    status:'อย่ายอมแพ้ดิวะ!'
+  }
 ];
 
 const lineGroups=[
@@ -6263,15 +6415,59 @@ function lineIcon(name){
   return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(shapes[name]||shapes.user)+'</svg>';
 }
 
-function lineAvatar(id=''){
-  const colors={
-    achi:'#dce9e2',
-    duj:'#f1e1d9',
-    pai:'#e4def3',
-    rock:'#dce8f5',
-    office:'#e5e9ed',
-    sales:'#e5e9ed'
-  };
+/* ===== LINE PROFILE PHOTOS ===== */
+
+const lineProfilePhotos = {
+  me: 'https://i.ibb.co/DPjtZYL9/r07qxo-R-Download.jpg',
+  achi: 'https://i.ibb.co/twQNSqNM/r07qxo-R-Download.jpg',
+  pai: 'https://i.ibb.co/ZpSXR7nh/r07qxo-R-Download.jpg',
+  duj: 'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
+  tanaka: 'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
+  karin: 'https://i.ibb.co/d4zWtjdL/r07qxo-R-Download.jpg',
+  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg'
+};
+
+function lineAvatar(id='') {
+  const personId = id || 'me';
+
+  // กลุ่ม LINE ใช้รูปสมาชิกแบบรวม
+  if (personId === 'office' || personId === 'sales') {
+    const members = personId === 'office'
+      ? ['me', 'achi', 'pai', 'rock']
+      : ['me', 'tanaka', 'achi', 'duj'];
+
+    return `
+      <div class="line-avatar line-group-photo">
+        ${members.map(member => `
+          <img
+            src="${lineProfilePhotos[member]}"
+            alt=""
+            loading="lazy"
+          >
+        `).join('')}
+      </div>
+    `;
+  }
+
+  const photo = lineProfilePhotos[personId];
+
+  if (photo) {
+    return `
+      <div class="line-avatar line-photo">
+        <img
+          src="${photo}"
+          alt=""
+          loading="lazy"
+        >
+      </div>
+    `;
+  }
+  return `
+    <div class="line-avatar">
+      ${lineIcon('user')}
+    </div>
+  `;
+}};
 
   const group=id==='office'||id==='sales';
   const bg=colors[id]||'#e5eaf1';
@@ -6279,6 +6475,98 @@ function lineAvatar(id=''){
   return '<div class="line-avatar" style="background:'+bg+'">'+
     lineIcon(group?'group':'user')+
     '</div>';
+}
+
+/* ===== LINE FULL SCREEN PROFILE ===== */
+
+const lineProfileImages={
+  me:'https://i.ibb.co/DPjtZYL9/r07qxo-R-Download.jpg',
+  achi:'https://i.ibb.co/twQNSqNM/r07qxo-R-Download.jpg',
+  pai:'https://i.ibb.co/ZpSXR7nh/r07qxo-R-Download.jpg',
+  duj:'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
+  tanaka:'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
+  karin:'https://i.ibb.co/d4zWtjdL/r07qxo-R-Download.jpg',
+  rock:'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg'
+};
+
+const lineProfileNames={
+  me:'karan',
+  achi:'Achi rawit',
+  pai:'Pai',
+  duj:'พี่ดุจดาว',
+  tanaka:'Tanaka san',
+  karin:'Karin',
+  rock:'Rock'
+};
+
+let lineProfilePreviousTab='directory';
+
+function lineProfileIcon(type){
+  const shapes={
+    close:'<path d="M5 5l14 14M19 5L5 19"/>',
+    chat:'<path d="M20 11a8 8 0 0 1-8 8H5l-2 2v-9a9 9 0 1 1 17-1Z"/><circle cx="8" cy="11" r=".8" fill="currentColor"/><circle cx="12" cy="11" r=".8" fill="currentColor"/><circle cx="16" cy="11" r=".8" fill="currentColor"/>',
+    phone:'<path d="M6 3H4a2 2 0 0 0-2 2c0 9 8 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
+    video:'<rect x="2" y="5" width="14" height="14" rx="2"/><path d="m16 10 6-4v12l-6-4"/>',
+    star:'<path d="m12 2 3.1 6.5 7.1 1-5.1 5 1.2 7-6.3-3.3-6.3 3.3 1.2-7-5.1-5 7.1-1Z"/>'
+  };
+
+  return '<svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
+    (shapes[type]||'')+
+    '</svg>';
+}
+
+function renderLineFullProfile(){
+  const id=lineProfile;
+  const name=lineProfileNames[id]||
+    linePeople.find(p=>p.id===id)?.name||id;
+  const photo=lineProfileImages[id]||'';
+
+  return `
+    <div class="line-full-profile"
+      style="--line-profile-photo:url('${photo}')">
+
+      <div class="line-full-profile-top">
+        <button data-line-profile-close="1"
+          aria-label="ปิด">
+          ${lineProfileIcon('close')}
+        </button>
+
+        <div class="line-full-profile-top-right">
+          <button data-line-profile-favorite="1"
+            aria-label="รายการโปรด">
+            <span style="color:#06c755">
+              ${lineProfileIcon('star')}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="line-full-profile-center">
+        <div class="line-avatar line-full-profile-avatar">
+          <img src="${photo}" alt="">
+        </div>
+        <h2>${name}</h2>
+      </div>
+
+      <div class="line-full-profile-actions">
+
+        <button data-line-profile-chat="${id}">
+          ${lineProfileIcon('chat')}
+          <span>แชท</span>
+        </button>
+
+        <button data-line-profile-call="phone">
+          ${lineProfileIcon('phone')}
+          <span>โทร</span>
+        </button>
+
+        <button data-line-profile-call="video">
+          ${lineProfileIcon('video')}
+          <span>วิดีโอคอล</span>
+        </button>
+      </div>
+    </div>
+  `;
 }
 
 function lineBottom(){
@@ -6510,7 +6798,9 @@ if(save.flags.ep6Stage >= 1){
       '<button class="line-row" data-line-chat="'+c.id+'">'+
         lineAvatar(c.id)+
         '<div class="line-row-body">'+
-          '<div class="line-name">'+c.name+'</div>'+
+'<div class="line-name" data-line-open-profile="'+c.id+'">'+
+  c.name+
+'</div>'+
           '<div class="line-preview">'+c.preview+'</div>'+
         '</div>'+
         '<div class="line-time">'+c.date+'</div>'+
@@ -6575,7 +6865,7 @@ function renderLine(){
 
     '<button class="line-home-profile" data-line-action="myprofile">'+
       '<div>'+
-        '<div class="line-home-profile-name">การันต์</div>'+
+        '<div class="line-home-profile-name">karan</div>'+
         '<div class="line-home-profile-status">พร้อมทำงาน</div>'+
       '</div>'+
       '<div class="line-home-profile-right">'+
@@ -6781,27 +7071,16 @@ else if(lineTab==='directory'){
   else if(lineTab==='myprofile'){
     content=lineHeader('โปรไฟล์',
       lineButton('back','home','ย้อนกลับ'))+
-      '<div class="line-profile"><div class="line-avatar large">'+
-      lineIcon('user')+'</div><div><b>การันต์</b>'+
+'<div class="line-profile">'+
+lineAvatar('me')+
+'<div><b>karan</b>'+
       '<div class="line-sub">บัญชี LINE ของการันต์</div></div></div>'+
       '<div class="line-card">สถานะ: พร้อมทำงาน</div>';
   }
 
-  else if(lineTab==='profile'){
-    const p=linePeople.find(x=>x.id===lineProfile);
-    if(p){
-      content=lineHeader('โปรไฟล์',
-        lineButton('back','friends','ย้อนกลับ'))+
-        '<div class="line-profile"><div class="line-avatar large">'+
-        lineIcon('user')+'</div><div><b>'+p.name+
-        '</b><div class="line-sub">'+p.status+'</div></div></div>'+
-        '<div class="line-card"><div class="line-buttons">'+
-        '<button class="line-primary" data-line-chat="'+p.id+'">แชต</button>'+
-        '<button class="line-secondary" data-line-action="call">โทร</button>'+
-        '</div></div>';
-    }
+    else if(lineTab==='profile'){
+    content=renderLineFullProfile();
   }
-
   else if(lineTab==='groups'){
     content=lineHeader('กลุ่ม',
       lineButton('back','friends','ย้อนกลับ'))+
@@ -6849,9 +7128,9 @@ else if(lineTab==='directory'){
   }
 
   return '<div class="line-app">'+
-  '<div class="line-scroll">'+content+'</div>'+
-  lineBottom()+
-  '</div>';
+    '<div class="line-scroll">'+content+'</div>'+
+    (lineTab==='profile'?'':lineBottom())+
+    '</div>';
 }
 function renderGrab(){
 
@@ -10598,17 +10877,17 @@ function ep7PlayLoveEffect(type){
 
 function renderChat(){
   lastBubbleSender=null;
-   const names={
-    pai:'ปาย',
-    rock:'ร็อค',
-    duj:'พี่ดุจ',
-    achi:'อชิ',
-    karin:'พี่การิน',
-    tanaka:'ทานากะซัง',
-    flowerShop:'ร้านดอกไม้',
-    office:'TOYOKAWA',
-    sales:'ทีมฝ่ายขาย'
-  };
+   const names = {
+  pai:'Pai',
+  rock:'Rock',
+  duj:'พี่ดุจดาว',
+  achi:'Achi rawit',
+  karin:'Karin',
+  tanaka:'Tanaka san',
+  flowerShop:'ร้านดอกไม้',
+  office:'TOYOKAWA',
+  sales:'ทีมฝ่ายขาย'
+};
 
   let b='<div class="day">30 ม.ค.</div>';
   let choices='';
@@ -12203,7 +12482,9 @@ if(chat==='achi' && save.flags.ep12Stage>=1){
       '<button data-go="LINE" aria-label="ย้อนกลับ">'+
         lineIcon('back')+
       '</button>'+
-      '<b>'+names[chat]+'</b>'+
+      '<b data-line-open-profile="'+chat+'">'+
+  names[chat]+
+'</b>'+
       '<button data-chat-tool="search" aria-label="ค้นหา">'+
         chatIcon('clock')+
       '</button>'+
@@ -13792,17 +14073,18 @@ if(ep2Logo && page==='chat' && chat==='pai'){
 
   return;
 }
-
 const birthday=e.target.closest('[data-line-birthday]');
+
 if(birthday && page==='LINE'){
   save.flags.birthdaySeen=true;
   unlock('GrabFood');
   persist();
 
-  popup(
-    'วันเกิดอชิ',
-    '30 มกราคม วันนี้เป็นวันเกิดของอชิ'
-  );
+  lineProfile=birthday.dataset.lineBirthday;
+  lineProfilePreviousTab=lineTab;
+  lineTab='profile';
+
+  render();
   return;
 }
 const cakeBtn=e.target.closest('[data-grab-cake]');
@@ -13892,6 +14174,72 @@ if(deliveryCall){
   return;
 }
 
+/* ===== LINE PROFILE INTERACTIONS ===== */
+
+const openLineProfile=e.target.closest(
+  '[data-line-open-profile]'
+);
+
+if(openLineProfile){
+  const id=openLineProfile.dataset.lineOpenProfile;
+
+  if(lineProfileImages[id]){
+    lineProfile=id;
+    lineProfilePreviousTab=lineTab;
+    page='LINE';
+    lineTab='profile';
+    render();
+  }
+  return;
+}
+
+const closeLineProfile=e.target.closest(
+  '[data-line-profile-close]'
+);
+
+if(closeLineProfile && page==='LINE'){
+  lineTab=lineProfilePreviousTab==='profile'
+    ? 'chats'
+    : lineProfilePreviousTab;
+  render();
+  return;
+}
+
+const profileChat=e.target.closest(
+  '[data-line-profile-chat]'
+);
+
+if(profileChat && page==='LINE'){
+  chat=profileChat.dataset.lineProfileChat;
+  page='chat';
+  render();
+  return;
+}
+
+const profileCall=e.target.closest(
+  '[data-line-profile-call]'
+);
+
+if(profileCall && page==='LINE'){
+  const type=profileCall.dataset.lineProfileCall;
+
+  popup(
+    type==='video'?'วิดีโอคอล':'โทรผ่าน LINE',
+    'ระบบจำลองการโทรยังไม่เปิดใช้งาน'
+  );
+  return;
+}
+
+const profileFavorite=e.target.closest(
+  '[data-line-profile-favorite]'
+);
+
+if(profileFavorite && page==='LINE'){
+  popup('รายการโปรด','ผู้ติดต่อนี้อยู่ในรายการโปรด');
+  return;
+}
+
+
 /* LINE 2026 interactions */
 const ld=e.target.closest('[data-line-directory]');
 const lt=e.target.closest('[data-line-tab]');
@@ -13927,6 +14275,7 @@ if(ls && page==='LINE'){
 
 if(lp && page==='LINE'){
   lineProfile=lp.dataset.lineProfile;
+  lineProfilePreviousTab=lineTab;
   lineTab='profile';
   render();
   return;

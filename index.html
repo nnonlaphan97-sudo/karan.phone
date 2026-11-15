@@ -8099,9 +8099,9 @@ function renderGrab(){
                  <button class="gf-primary" data-grab="contact">
                    ติดต่อพนักงานจัดส่ง
                  </button>`
-              : status==='delivered'
-              ? `<p>เค้กส่งถึง TOYOKAWA แล้ว</p>,
-              : status==='preparing'
+            : status==='delivered'
+? `<p>เค้กส่งถึง TOYOKAWA แล้ว</p>`
+: status==='preparing'
   ? `<p>ร้านกำลังเตรียมเค้กของคุณ กรุณารอสักครู่</p>`
   : `<p>พนักงานกำลังนำเค้กไปส่งที่ TOYOKAWA และจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>`
             }

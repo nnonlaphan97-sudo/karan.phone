@@ -8411,48 +8411,7 @@ if(chat==='office'){
       }
     }
   }
-/* ===== EP.08 ACHI SHARED NOTE ===== */
 
-if(chat==='achi' && save.flags.ep8TanakaRead){
-
-  b+='<div class="day">19 เม.ย.</div>';
-
-  b+=bubble(
-    'การันต์ ผมลองย้อนดูรายชื่อลูกค้าเก่าที่เคยติดต่อบริษัทไว้แล้วนะ'
-  );
-
-  b+=bubble(
-    'มีอยู่ 8 บริษัทที่เคยสั่งซื้อยอดใหญ่ ผมรวบรวมไว้ใน Samsung Notes แล้ว'
-  );
-
-  b+=bubble(
-    'ผมแชร์ลิงก์ให้แล้วนะ ลองเปิดดูได้เลย'
-  );
-
-  b+=`
-    <button class="ep8-shared-link"
-      data-ep8-open-note="1">
-
-      <span class="ep8-shared-icon">
-        ${ep8PhoneSVG('note')}
-      </span>
-
-      <span class="ep8-shared-info">
-        <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
-        <small>Samsung Notes · แชร์โดยอชิ</small>
-        <small>8 บริษัท · เปิดโน้ตที่แชร์</small>
-      </span>
-
-    </button>
-  `;
-
-  if(save.flags.ep8ContactsReceived){
-    b+=bubble(
-      'ผมบันทึกรายชื่อแล้วนะ ขอบคุณมากอชิ',
-      true
-    );
-  }
-}
 /* ===== EP.06 ACHI CONFESSION ===== */
 
 if(chat==='achi' && save.flags.ep6Stage>=2){
@@ -8512,7 +8471,6 @@ if(
     );
   }
 }
-
 
 /* ===== EP.07 ACHI AFTER HELICOPTER ===== */
 
@@ -8574,7 +8532,54 @@ if(
     );
   }
 }
+/* ===== EP.08 ACHI SHARED NOTE ===== */
 
+if(
+  chat==='achi' &&
+  (
+    save.flags.ep8TanakaRead ||
+    save.flags.ep8ContactsReceived ||
+    save.flags.ep8NoteJoined
+  )
+){
+  b+='<div class="day">19 เม.ย.</div>';
+
+  b+=bubble(
+    'การันต์ ผมลองย้อนดูรายชื่อลูกค้าเก่าที่เคยติดต่อบริษัทไว้แล้วนะ'
+  );
+
+  b+=bubble(
+    'มีอยู่ 8 บริษัทที่เคยสั่งซื้อยอดใหญ่ ผมรวบรวมไว้ใน Samsung Notes แล้ว'
+  );
+
+  b+=bubble(
+    'ผมแชร์ลิงก์ให้แล้วนะ ลองเปิดดูได้เลย'
+  );
+
+  b+=`
+    <button class="ep8-shared-link"
+      data-ep8-open-note="1">
+
+      <span class="ep8-shared-icon">
+        ${ep8PhoneSVG('note')}
+      </span>
+
+      <span class="ep8-shared-info">
+        <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+        <small>Samsung Notes · แชร์โดยอชิ</small>
+        <small>8 บริษัท · เปิดโน้ตที่แชร์</small>
+      </span>
+
+    </button>
+  `;
+
+  if(save.flags.ep8ContactsReceived){
+    b+=bubble(
+      'ผมบันทึกรายชื่อแล้วนะ ขอบคุณมากอชิ',
+      true
+    );
+  }
+}
 /* ===== EP.07 FLOWER SHOP CHAT ===== */
 if(chat==='flowerShop' && save.flags.ep7Stage>=1){
   b='<div class="day">เตรียมเดต</div>';

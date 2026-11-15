@@ -9892,15 +9892,12 @@ html=`
 }
 
 else if(page==='LINE'){
-  html=renderLine();
-}
-else if(page==='LINE'){
   if(
     save.flags.ep11Completed &&
     !save.flags.ep12Stage
   ){
-    save.flags.ep12Stage=1;
-    persist();
+    ep12Start();
+    return;
   }
   html=renderLine();
 }

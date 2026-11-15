@@ -1531,7 +1531,7 @@ button{
   font-size:25px;
   font-weight:700;
   letter-spacing:-1.5px;
-}}
+}
 #phone:has(.notes-page) > .status,
 #phone:has(.notes-page) > .camera{
   display:none;
@@ -6734,7 +6734,7 @@ save.flags.ep3OutingAnnounced ??= false;
 save.flags.ep3OutingRead ??= false;
 save.flags.ep3NotificationShown ??= false;
 
-// EP.03 — 6 มี.ค. ถึง 13 มี.ค.
+// EP.03 — 6 มี.ค. ถึง 13 เม.ย.
 save.flags.ep3DujQuestionShown ??= false;
 save.flags.ep3DujAnswer ??= false;
 save.flags.ep3CalendarOpened ??= false;
@@ -7775,13 +7775,13 @@ if(
   displayTime=save.flags.ep3DujAnswer?'10:18':'09:42';
 }
 
-// 12 มีนาคม — ประกาศ Outing
+// 12 เมษายน — ส่งรูปจาก Outing
 if(
   c.id==='office' &&
   save.flags.ep3OfficePosterShown &&
   !save.flags.ep8Started
 ){
-  displayDate='12 มี.ค.';
+  displayDate='12 เม.ย.';
   displayTime='09:15';
 }
 
@@ -7791,17 +7791,17 @@ if(
   save.flags.ep3KarinMessageShown &&
   !save.flags.ep4KarinShown
 ){
-  displayDate='12 มี.ค.';
+  displayDate='12 เม.ย.';
   displayTime='10:24';
 }
 
-// 13 มีนาคม — อชิป่วย
+// 13 เมษายน — อชิป่วย
 if(
   c.id==='achi' &&
   save.flags.ep3SickShown &&
   !save.flags.ep4AchiCancelledRead
 ){
-  displayDate='13 มี.ค.';
+  displayDate='13 เม.ย.';
   displayTime='08:36';
 }
     const sortTime =
@@ -12807,11 +12807,10 @@ if(save.flags.ep2Started && save.flags.ep2CouponReady){
   b+=ep2InviteMessages();
   choices=ep2InviteChoices();
 }
-// EP.03 — 13 มีนาคม
+// EP.03 — 13 เมษายน
 if(save.flags.ep3SickShown){
 
-  b+='<div class="day">13 มี.ค.</div>';
-
+  b+='<div class="day">13 เม.ย.</div>';
   b+=bubble(
     'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
   );
@@ -13013,21 +13012,30 @@ if(chat==='office'){
   // ข้อความของการันต์
   b+=bubble('ยินดีต้อนรับครับ',true);
 
-  // EP.03 เริ่มหลังจาก EP.02 จบ
-  if(save.flags.ep2Completed){
+// EP.03 — วันที่ 12 เมษายน ส่งรูปหลังกลับจาก Outing
+if(save.flags.ep3OfficePosterShown){
 
-    b+='<div class="day">9 เม.ย.</div>';
+  b+='<div class="day">12 เม.ย.</div>';
 
-    b+=groupBubble(
-      'พี่ดุจ',
-      'ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ ปีนี้เราจะจัดกันก่อนช่วงสงกรานต์ รายละเอียดวันและเวลาพี่ลงไว้ในปฏิทินแล้ว ทุกคนเข้าไปตรวจสอบกันด้วยนะ'
-    );
+  b+=groupBubble(
+    'พี่ดุจ',
+    'พี่เอารูปจาก Company Outing วันที่ 9 เมษายนมาฝากจ้ะ ขอบคุณทุกคนที่ไปร่วมสนุกกันนะ'
+  );
 
-    b+=groupBubble('ปาย','รับทราบค่ะพี่ดุจ');
-    b+=groupBubble('ร็อค','รับทราบครับ');
-    b+=groupBubble('อชิ','รับทราบครับ');
+  b+=`
+    <div style="margin:10px 12px 16px 52px;max-width:270px;">
+      <img
+        src="images/company-outing.jpg"
+        alt="รูปจาก Company Outing"
+        style="width:100%;border-radius:14px;display:block;"
+      >
+    </div>
+  `;
 
-  }
+  b+=groupBubble('ปาย','ขอบคุณค่ะพี่ดุจ');
+  b+=groupBubble('ร็อค','สนุกมากเลยครับ');
+  b+=groupBubble('อชิ','ขอบคุณครับ');
+}
 }
   if(chat==='sales'){
     b+=groupBubble(
@@ -15696,6 +15704,33 @@ if(mapZoomButton && page==='Maps'){
 
   return;
 }
+// EP.03 — ส่งคำตอบวันว่างให้พี่ดุจ
+const ep3AnswerBtn=e.target.closest('[data-ep3-answer]');
+
+if(ep3AnswerBtn && page==='chat' && chat==='duj'){
+
+  const input=document.getElementById('ep3FreeDate');
+  const answer=(input?.value || '').trim();
+
+  if(!/^(9|09)(\s*เม\.?ย\.?|\s*เมษายน|\s*\/\s*4)?$/.test(answer)){
+    popup(
+      'ตรวจสอบวันว่างอีกครั้ง',
+      'ลองเปิดปฏิทินดูนัดลูกค้าระหว่างวันที่ 1–9 เมษายน'
+    );
+    return;
+  }
+save.flags.ep3DujAnswer=true;
+save.flags.ep3OfficePosterShown=true;
+persist();
+render();
+
+showGameBanner(
+  'office',
+  'พี่ดุจส่งรูปจาก Company Outing วันที่ 9 เมษายนมาในกลุ่ม'
+);
+
+return;
+}
 const calendarSearchToggle=e.target.closest('[data-calendar-search-toggle]');
 
 if(calendarSearchToggle && page==='ปฏิทิน'){
@@ -15715,8 +15750,8 @@ const calendarToday=e.target.closest('[data-calendar-today]');
 
 if(calendarToday && page==='ปฏิทิน'){
   calendarYear=2026;
-  calendarMonth=0;
-  calendarSelected='2026-01-30';
+calendarMonth=2;
+calendarSelected='2026-03-06';
   render();
   return;
 }
@@ -15770,15 +15805,26 @@ if(targetChat==='line-official'){
   }
 
   document.getElementById('gameBanner').innerHTML='';
+  // EP.03 — เปิดแชทการินหลังได้รับแจ้งเตือน
+if(chat==='karin' && save.flags.ep3KarinMessageShown){
+  save.flags.ep3KarinMessageRead=true;
+  save.flags.ep3SickShown=true;
+  persist();
+}
   if(chat==='karin' && save.flags.ep4KarinShown){
     save.flags.ep4KarinRead=true;
     unlock('กล้อง');
     persist();
   }
-  if(chat==='office' && save.flags.ep2Completed){
-    save.flags.ep3OutingRead=true;
-    unlock('ปฏิทิน');
+  if(chat==='office' && save.flags.ep3OfficePosterShown){
+
+  save.flags.ep3OfficePosterRead=true;
+  save.flags.ep3OutingRead=true;
+
+  if(!save.flags.ep3KarinMessageShown){
+    save.flags.ep3KarinMessageShown=true;
   }
+}
 
  if(chat==='achi'){
 
@@ -15794,7 +15840,35 @@ if(targetChat==='line-official'){
 }
   persist();
   render();
+  // EP.03 — หลังอ่านรูป Outing การินส่ง LINE มา
+if(
+  targetChat==='office' &&
+  save.flags.ep3OfficePosterRead &&
+  !save.flags.ep3KarinBannerSeen
+){
+  save.flags.ep3KarinBannerSeen=true;
+  persist();
 
+  showGameBanner(
+    'karin',
+    'ลงมาเจอชั้นหน่อย'
+  );
+  return;
+}// EP.03 — วันที่ 13 เมษายน อชิแจ้งว่าป่วย
+if(
+  targetChat==='karin' &&
+  save.flags.ep3KarinMessageRead &&
+  !save.flags.ep3SickBannerSeen
+){
+  save.flags.ep3SickBannerSeen=true;
+  persist();
+
+  showGameBanner(
+    'achi',
+    'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
+  );
+  return;
+}
   /* เมื่ออ่านแชตอชิแล้ว พี่ดุจส่งข้อความตามมา */
   if(
     targetChat==='achi' &&

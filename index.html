@@ -4837,6 +4837,178 @@ button{
   background:#34A853;
   color:white;
 }
+
+/* ===== EP.12 MY FILES ===== */
+
+.ep12-files,
+.ep12-editor{
+  height:100%;
+  padding-top:36px;
+  background:#f8f9fd;
+  color:#22252e;
+  overflow:hidden;
+}
+
+.ep12-files-head{
+  height:58px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 18px;
+  background:#fff;
+  border-bottom:1px solid #e9eaf0;
+}
+
+.ep12-files-head button{
+  border:0;
+  background:transparent;
+  font-size:32px;
+  color:#222;
+}
+
+.ep12-files-head strong{
+  font-size:19px;
+}
+
+.ep12-files-content{
+  padding:20px;
+}
+
+.ep12-files-content h2{
+  font-size:18px;
+  margin:0 0 20px;
+}
+
+.ep12-folder{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  width:100%;
+  padding:17px 14px;
+  margin-bottom:12px;
+  border:1px solid #e8e9ef;
+  border-radius:16px;
+  background:#fff;
+  color:#222;
+  text-align:left;
+}
+
+.ep12-folder-icon{
+  width:49px;
+  height:49px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:#e8eaff;
+  color:#7774d8;
+  font-size:28px;
+}
+
+.ep12-folder b{
+  display:block;
+  font-size:15px;
+}
+
+.ep12-folder small{
+  display:block;
+  color:#888;
+  margin-top:5px;
+  font-size:12px;
+}
+
+.ep12-editor-scroll{
+  height:calc(100% - 58px);
+  overflow-y:auto;
+  padding-bottom:60px;
+}
+
+.ep12-preview{
+  display:flex;
+  justify-content:center;
+  padding:22px 16px;
+  background:#ececf2;
+}
+
+.ep12-preview svg{
+  width:min(100%,300px);
+  height:auto;
+  border-radius:3px;
+  box-shadow:0 10px 28px #0002;
+}
+
+.ep12-editor-controls{
+  padding:20px;
+  display:grid;
+  gap:15px;
+}
+
+.ep12-control{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:13px;
+  font-weight:600;
+}
+
+.ep12-control select,
+.ep12-control input:not([type="range"]){
+  width:100%;
+  padding:12px;
+  border:1px solid #d9dce6;
+  border-radius:12px;
+  background:#fff;
+  color:#222;
+}
+
+.ep12-control input[type="range"]{
+  width:100%;
+  accent-color:#8371ba;
+}
+
+.ep12-color-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.ep12-color-row label{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:11px;
+}
+
+.ep12-color-row input{
+  width:100%;
+  height:43px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  background:white;
+}
+
+.ep12-editor-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding-bottom:30px;
+}
+
+.ep12-editor-actions button{
+  padding:14px 8px;
+  border:0;
+  border-radius:12px;
+  background:#e7e3f3;
+  color:#473b63;
+  font-size:13px;
+  font-weight:600;
+}
+
+.ep12-editor-actions .ep12-finish{
+  grid-column:1/-1;
+  background:#51436c;
+  color:#fff;
+}
+
 </style>
 </head>
 <body>
@@ -5564,6 +5736,35 @@ let ep11MailScreen='inbox';
 let ep11MailOpen='';
 let ep11MailAnswer='';
 let ep11CallState='incoming';
+/* ===== EP.12 NEW YEAR & WEDDING ===== */
+
+save.flags.ep12Stage ??= 0;
+save.flags.ep12Completed ??= false;
+
+function ep12Advance(stage){
+  if(stage <= save.flags.ep12Stage)return;
+
+  save.flags.ep12Stage=stage;
+
+  if(stage===4){
+    unlock('ไฟล์');
+  }
+
+  persist();
+  render();
+}
+
+function ep12Start(){
+  if(!save.flags.ep11Completed)return;
+  if(save.flags.ep12Stage>0)return;
+
+  save.flags.ep12Stage=1;
+  persist();
+
+  page='chat';
+  chat='achi';
+  render();
+}
 
 const EP11_EMAILS=[
   {
@@ -9136,6 +9337,438 @@ function renderSpotify(){
   `;
 }
 
+/* ===== EP.12 MY FILES & WEDDING CARD STUDIO ===== */
+
+let ep12FileScreen='folders';
+
+const ep12CardDefaults={
+  template:'classic',
+  background:'gradient',
+  color1:'#fff1e9',
+  color2:'#e6c5d7',
+  textColor:'#65455b',
+  font:'Georgia',
+  decoration:'flowers',
+  size:36,
+  ornamentSize:1,
+  title:'THE WEDDING OF',
+  name1:'Karan',
+  name2:'Achi',
+  date:'19 JUNE',
+  year:'2027',
+  message:'Together, always and forever'
+};
+
+let ep12Card={
+  ...ep12CardDefaults,
+  ...(save.flags.ep12Card||{})
+};
+
+const ep12Fonts={
+  Georgia:'Georgia,serif',
+  Classic:'Times New Roman,serif',
+  Modern:'Arial,sans-serif',
+  Elegant:'Palatino Linotype,serif',
+  Script:'Brush Script MT,cursive',
+  Mono:'Courier New,monospace'
+};
+
+function ep12Escape(value){
+  return String(value??'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function ep12SaveCard(){
+  save.flags.ep12Card={...ep12Card};
+  persist();
+}
+
+function ep12Decorations(){
+  const c=ep12Card;
+  const s=Number(c.ornamentSize)||1;
+
+  const art={
+    flowers:`
+      <g fill="none" stroke="${c.textColor}"
+         stroke-width="2.5" opacity=".65">
+        <path d="M15 160 Q65 85 130 55"/>
+        <path d="M345 380 Q290 470 220 490"/>
+        <path d="M40 125 Q5 95 32 72 Q62 65 65 100"/>
+        <path d="M315 420 Q345 395 355 425 Q350 455 325 445"/>
+      </g>
+      <g fill="#e9a9b8" opacity=".8">
+        <circle cx="125" cy="58" r="12"/>
+        <circle cx="112" cy="45" r="10"/>
+        <circle cx="140" cy="45" r="10"/>
+        <circle cx="126" cy="31" r="10"/>
+        <circle cx="225" cy="485" r="12"/>
+        <circle cx="210" cy="470" r="10"/>
+        <circle cx="240" cy="470" r="10"/>
+      </g>`,
+    stars:`
+      <g fill="${c.textColor}" opacity=".45">
+        <path d="M55 80 l8 24 24 8-24 8-8 24-8-24-24-8 24-8z"/>
+        <path d="M320 420 l7 20 20 7-20 7-7 20-7-20-20-7 20-7z"/>
+        <circle cx="300" cy="85" r="4"/>
+        <circle cx="65" cy="410" r="4"/>
+      </g>`,
+    hearts:`
+      <g fill="#d992a6" opacity=".65">
+        <path d="M70 110 C35 75 10 115 70 165 C130 115 105 75 70 110Z"/>
+        <path d="M290 405 C255 370 230 410 290 460 C350 410 325 370 290 405Z"/>
+      </g>`,
+    leaves:`
+      <g fill="none" stroke="#75947b" stroke-width="3">
+        <path d="M25 185 Q75 85 155 40"/>
+        <path d="M335 335 Q295 430 215 485"/>
+        <path d="M65 115 Q20 80 30 55 Q65 60 65 115"/>
+        <path d="M90 88 Q85 45 120 35 Q125 70 90 88"/>
+        <path d="M295 400 Q340 390 350 360 Q310 355 295 400"/>
+      </g>`,
+    ribbons:`
+      <g fill="none" stroke="${c.textColor}"
+         stroke-width="3" opacity=".55">
+        <path d="M25 95 Q100 20 175 90 Q220 130 260 65"/>
+        <path d="M335 420 Q260 495 185 420 Q140 380 100 450"/>
+        <path d="M260 65 l-8 28 27-12"/>
+      </g>`,
+    minimal:''
+  };
+
+  return `<g transform="translate(180 260) scale(${s}) translate(-180 -260)">
+    ${art[c.decoration]||''}
+  </g>`;
+}
+
+function ep12CardSVG(){
+  const c=ep12Card;
+  const safe=ep12Escape;
+  const font=ep12Fonts[c.font]||ep12Fonts.Georgia;
+
+  const backgrounds={
+    classic:'#fff9f2',
+    blush:'#fce9ed',
+    sage:'#e9f2e9',
+    blue:'#e9efff',
+    lavender:'#f0e8ff',
+    peach:'#ffeadb'
+  };
+
+  const bg=c.background==='gradient'
+    ? 'url(#ep12Gradient)'
+    : (backgrounds[c.background]||c.color1);
+
+  const border=c.template==='minimal'
+    ? ''
+    : `<rect x="18" y="18" width="324" height="484"
+       rx="${c.template==='modern'?0:12}"
+       fill="none" stroke="${c.textColor}"
+       stroke-opacity=".4" stroke-width="1.5"/>`;
+
+  const extra=c.template==='royal'
+    ? `<path d="M145 98 H215 M145 420 H215"
+       stroke="${c.textColor}" stroke-width="2"/>`
+    : '';
+
+  return `<svg xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 360 520" width="360" height="520">
+    <defs>
+      <linearGradient id="ep12Gradient" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${c.color1}"/>
+        <stop offset="100%" stop-color="${c.color2}"/>
+      </linearGradient>
+    </defs>
+
+    <rect width="360" height="520" fill="${bg}"/>
+    ${border}
+    ${ep12Decorations()}
+    ${extra}
+
+    <g text-anchor="middle"
+       fill="${c.textColor}"
+       font-family="${font}">
+      <text x="180" y="155"
+        font-size="13" letter-spacing="3">
+        ${safe(c.title)}
+      </text>
+
+      <text x="180" y="220"
+        font-size="${c.size}">
+        ${safe(c.name1)}
+      </text>
+
+      <text x="180" y="261"
+        font-size="23">&amp;</text>
+
+      <text x="180" y="310"
+        font-size="${c.size}">
+        ${safe(c.name2)}
+      </text>
+
+      <path d="M130 344 H230"
+        stroke="${c.textColor}" opacity=".5"/>
+
+      <text x="180" y="375"
+        font-size="18" letter-spacing="2">
+        ${safe(c.date)}
+      </text>
+
+      <text x="180" y="402"
+        font-size="15">${safe(c.year)}</text>
+
+      <text x="180" y="449"
+        font-size="12">
+        ${safe(c.message)}
+      </text>
+    </g>
+  </svg>`;
+}
+
+function ep12CardControl(label,field,options){
+  return `
+    <label class="ep12-control">
+      <span>${label}</span>
+      <select data-ep12-field="${field}">
+        ${options.map(([value,name])=>`
+          <option value="${value}"
+            ${ep12Card[field]===value?'selected':''}>
+            ${name}
+          </option>
+        `).join('')}
+      </select>
+    </label>`;
+}
+
+function ep12CardText(label,field){
+  return `
+    <label class="ep12-control">
+      <span>${label}</span>
+      <input data-ep12-field="${field}"
+        value="${ep12Escape(ep12Card[field])}"
+        maxlength="55">
+    </label>`;
+}
+
+function renderEp12Files(){
+  if(ep12FileScreen==='folders'){
+    return `
+      <div class="ep12-files">
+        <header class="ep12-files-head">
+          <button data-go="home">‹</button>
+          <strong>ไฟล์ของฉัน</strong>
+        </header>
+        <div class="ep12-files-content">
+          <h2>ที่เก็บข้อมูลภายใน</h2>
+          <button class="ep12-folder"
+            data-ep12-folder="wedding">
+            <span class="ep12-folder-icon">▱</span>
+            <span>
+              <b>Wedding</b>
+              <small>โฟลเดอร์งานแต่งงาน</small>
+            </span>
+          </button>
+          <button class="ep12-folder"
+            data-ep12-folder="documents">
+            <span class="ep12-folder-icon">▱</span>
+            <span>
+              <b>Documents</b>
+              <small>เอกสารส่วนตัว</small>
+            </span>
+          </button>
+        </div>
+      </div>`;
+  }
+
+  if(ep12FileScreen==='documents'){
+    return `
+      <div class="ep12-files">
+        <header class="ep12-files-head">
+          <button data-ep12-back="folders">‹</button>
+          <strong>Documents</strong>
+        </header>
+        <div class="ep12-files-content">
+          <p>ไม่มีเอกสารที่ต้องใช้สำหรับภารกิจนี้</p>
+        </div>
+      </div>`;
+  }
+
+  if(ep12FileScreen==='wedding'){
+    return `
+      <div class="ep12-files">
+        <header class="ep12-files-head">
+          <button data-ep12-back="folders">‹</button>
+          <strong>Wedding</strong>
+        </header>
+        <div class="ep12-files-content">
+          <h2>ไฟล์งานแต่งงาน</h2>
+          <button class="ep12-folder"
+            data-ep12-open-editor="1">
+            <span class="ep12-folder-icon">▤</span>
+            <span>
+              <b>Wedding Invitation</b>
+              <small>ออกแบบการ์ดแต่งงาน · 19 มิถุนายน</small>
+            </span>
+          </button>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="ep12-editor">
+      <header class="ep12-files-head">
+        <button data-ep12-back="wedding">‹</button>
+        <strong>Wedding Card Studio</strong>
+      </header>
+
+      <div class="ep12-editor-scroll">
+        <div class="ep12-preview">
+          ${ep12CardSVG()}
+        </div>
+
+        <div class="ep12-editor-controls">
+          ${ep12CardControl('รูปแบบการ์ด','template',[
+            ['classic','Classic'],
+            ['modern','Modern'],
+            ['royal','Royal'],
+            ['minimal','Minimal']
+          ])}
+
+          ${ep12CardControl('พื้นหลัง','background',[
+            ['gradient','ไล่สี'],
+            ['classic','ครีม'],
+            ['blush','ชมพู'],
+            ['sage','เขียวเซจ'],
+            ['blue','ฟ้า'],
+            ['lavender','ม่วงลาเวนเดอร์'],
+            ['peach','พีช']
+          ])}
+
+          <div class="ep12-color-row">
+            <label>สีพื้นหลัง 1
+              <input type="color"
+                data-ep12-field="color1"
+                value="${ep12Card.color1}">
+            </label>
+            <label>สีพื้นหลัง 2
+              <input type="color"
+                data-ep12-field="color2"
+                value="${ep12Card.color2}">
+            </label>
+            <label>สีตัวอักษร
+              <input type="color"
+                data-ep12-field="textColor"
+                value="${ep12Card.textColor}">
+            </label>
+          </div>
+
+          ${ep12CardControl('ฟอนต์','font',
+            Object.keys(ep12Fonts).map(f=>[f,f]))}
+
+          ${ep12CardControl('ของตกแต่ง','decoration',[
+            ['flowers','ดอกไม้'],
+            ['stars','ดวงดาว'],
+            ['hearts','หัวใจ'],
+            ['leaves','ใบไม้'],
+            ['ribbons','ริบบิ้น'],
+            ['minimal','ไม่มี']
+          ])}
+
+          <label class="ep12-control">
+            <span>ขนาดชื่อคู่แต่งงาน</span>
+            <input type="range" min="22" max="48"
+              data-ep12-field="size"
+              value="${ep12Card.size}">
+          </label>
+
+          <label class="ep12-control">
+            <span>ขนาดของตกแต่ง</span>
+            <input type="range" min=".5" max="1.5"
+              step=".1"
+              data-ep12-field="ornamentSize"
+              value="${ep12Card.ornamentSize}">
+          </label>
+
+          ${ep12CardText('ข้อความด้านบน','title')}
+          ${ep12CardText('ชื่อคนที่ 1','name1')}
+          ${ep12CardText('ชื่อคนที่ 2','name2')}
+          ${ep12CardText('วันแต่งงาน','date')}
+          ${ep12CardText('ปี','year')}
+          ${ep12CardText('ข้อความด้านล่าง','message')}
+
+          <div class="ep12-editor-actions">
+            <button data-ep12-download="png">
+              บันทึก PNG
+            </button>
+            <button data-ep12-download="svg">
+              บันทึก SVG
+            </button>
+            <button data-ep12-reset="1">
+              เริ่มออกแบบใหม่
+            </button>
+            <button class="ep12-finish"
+              data-ep12-finish="1">
+              ยืนยันการ์ดแต่งงาน
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function ep12DownloadFile(blob,filename){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+}
+
+function ep12ExportSVG(){
+  const blob=new Blob([ep12CardSVG()],{
+    type:'image/svg+xml;charset=utf-8'
+  });
+  ep12DownloadFile(blob,'Karan-Achi-Wedding.svg');
+}
+
+function ep12ExportPNG(){
+  const svg=ep12CardSVG();
+  const blob=new Blob([svg],{
+    type:'image/svg+xml;charset=utf-8'
+  });
+  const url=URL.createObjectURL(blob);
+  const img=new Image();
+
+  img.onload=()=>{
+    const canvas=document.createElement('canvas');
+    canvas.width=1080;
+    canvas.height=1560;
+
+    const ctx=canvas.getContext('2d');
+    ctx.drawImage(img,0,0,1080,1560);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob(file=>{
+      if(file){
+        ep12DownloadFile(file,'Karan-Achi-Wedding.png');
+      }
+    },'image/png');
+  };
+
+  img.onerror=()=>{
+    URL.revokeObjectURL(url);
+    alert('ไม่สามารถสร้าง PNG ได้');
+  };
+
+  img.src=url;
+}
+
 function render(){
 let html='';
 
@@ -9261,6 +9894,16 @@ html=`
 else if(page==='LINE'){
   html=renderLine();
 }
+else if(page==='LINE'){
+  if(
+    save.flags.ep11Completed &&
+    !save.flags.ep12Stage
+  ){
+    save.flags.ep12Stage=1;
+    persist();
+  }
+  html=renderLine();
+}
 else if(page==='Instagram'){
   html=renderInstagram();
 }
@@ -9305,6 +9948,9 @@ else if(page==='แกลเลอรี'){
 }
 else if(page==='Maps'){
   html=renderMaps();
+}
+else if(page==='ไฟล์'){
+  html=renderEp12Files();
 }
 else if(page==='คำสั่งซื้อ'){
 html=appwrap('คำสั่งซื้อ','<div class="content"><div class="entry"><b>'+icon('cake')+' เค้กวันเกิด</b><small>สั่งล่วงหน้า · รับ 30 มกราคม</small><p>ผู้รับสินค้า: พี่ดุจ</p><button class="action" data-task="order">ตรวจสอบรายละเอียด</button></div><div class="entry"><b>อาหารเย็น</b><small>30 มกราคม · จัดส่งที่สำนักงาน</small><p>อาหาร 2 ชุด</p><button class="action" data-task="dinner">เปิดรายการอาหาร</button></div></div>');
@@ -11234,6 +11880,310 @@ if(chat==='achi' && save.flags.ep11Started){
     );
   }
 }
+/* ===== EP.12 ACHI & KARAN STORY ===== */
+
+if(chat==='achi' && save.flags.ep12Stage>=1){
+
+  b+='<div class="day">1 มกราคม · วันปีใหม่</div>';
+
+  b+=bubble(
+    'การันต์ ถึงกรุงเทพฯ แล้วใช่ไหม'
+  );
+
+  b+=bubble(
+    'ถึงแล้วครับ แต่ผมยังคิดถึงอชิอยู่เลย',
+    true
+  );
+
+  b+=bubble(
+    'เพิ่งแยกกันเองนะครับ'
+  );
+
+  b+=bubble(
+    'สำหรับผม แค่ไม่ได้เห็นหน้าอชิก็คิดถึงแล้วครับ',
+    true
+  );
+
+  b+=bubble(
+    'พูดแบบนี้อีกแล้วนะ'
+  );
+
+  b+=bubble(
+    'ว่าแต่พรุ่งนี้การันต์ว่างไหม'
+  );
+
+  b+=bubble(
+    'ว่างครับ อชิมีอะไรหรือเปล่า',
+    true
+  );
+
+  b+=bubble(
+    'พ่อกับแม่อยากเจอการันต์น่ะ'
+  );
+
+  b+=bubble(
+    'ผมอยากพาการันต์ไปกินข้าวที่บ้าน'
+  );
+
+  b+=bubble(
+    'ได้สิครับ ผมเองก็อยากเจอครอบครัวของอชิเหมือนกัน',
+    true
+  );
+
+  if(save.flags.ep12Stage===1){
+    choices=`
+      <button class="choice" data-ep12-next="2">
+        ไปพบพ่อแม่อชิ
+      </button>
+    `;
+  }
+
+  if(save.flags.ep12Stage>=2){
+
+    b+='<div class="day">2 มกราคม · หลังพบครอบครัวอชิ</div>';
+
+    b+=bubble(
+      'วันนี้ขอบคุณมากนะครับที่มาหาพ่อกับแม่'
+    );
+
+    b+=bubble(
+      'พ่อกับแม่บอกว่าการันต์ดูแลผมดีมาก'
+    );
+
+    b+=bubble(
+      'ผมดีใจที่ได้เจอทุกคนครับ',
+      true
+    );
+
+    b+=bubble(
+      'ตอนแรกผมแอบกังวลเหมือนกัน',
+      true
+    );
+
+    b+=bubble(
+      'กังวลอะไรเหรอ'
+    );
+
+    b+=bubble(
+      'กลัวว่าพ่อกับแม่อชิจะไม่ไว้ใจให้ผมดูแลอชิ',
+      true
+    );
+
+    b+=bubble(
+      'แต่ตอนนี้ผมรู้แล้วว่าทุกคนรักอชิมากแค่ไหน',
+      true
+    );
+
+    b+=bubble(
+      'ผมก็รักครอบครัวของการันต์เหมือนกันนะ'
+    );
+
+    b+=bubble(
+      'งั้นพรุ่งนี้ไปหาพ่อกับแม่ผมกันไหมครับ',
+      true
+    );
+
+    b+=bubble(
+      'จริงเหรอครับ'
+    );
+
+    b+=bubble(
+      'จริงสิครับ ผมอยากให้ทุกคนรู้จักคนที่ผมรัก',
+      true
+    );
+
+    if(save.flags.ep12Stage===2){
+      choices=`
+        <button class="choice" data-ep12-next="3">
+          พาอชิไปพบครอบครัวการันต์
+        </button>
+      `;
+    }
+  }
+
+  if(save.flags.ep12Stage>=3){
+
+    b+='<div class="day">3 มกราคม · หลังพบครอบครัวการันต์</div>';
+
+    b+=bubble(
+      'วันนี้สนุกมากเลยครับ'
+    );
+
+    b+=bubble(
+      'ตอนแรกผมตื่นเต้นจนไม่รู้จะพูดอะไร'
+    );
+
+    b+=bubble(
+      'แต่คุณพ่อคุณแม่การันต์ใจดีมากเลย'
+    );
+
+    b+=bubble(
+      'ทุกคนชอบอชิมากครับ',
+      true
+    );
+
+    b+=bubble(
+      'โดยเฉพาะตอนที่อชิช่วยแม่ผมจัดโต๊ะอาหาร',
+      true
+    );
+
+    b+=bubble(
+      'ก็ผมอยากช่วยนี่ครับ'
+    );
+
+    b+=bubble(
+      'อชิครับ',
+      true
+    );
+
+    b+=bubble(
+      'ครับ?'
+    );
+
+    b+=bubble(
+      'ตลอดเวลาที่เราอยู่ด้วยกัน ผมมีความสุขมากจริง ๆ',
+      true
+    );
+
+    b+=bubble(
+      'ตอนที่อชิไปนคร ผมถึงได้รู้ว่าผมอยากใช้ทุกวันต่อจากนี้กับอชิ',
+      true
+    );
+
+    b+=bubble(
+      'ไม่ว่าจะอยู่ใกล้กันหรือไกลกัน ผมก็อยากเป็นคนที่อชิกลับมาหาเสมอ',
+      true
+    );
+
+    b+=bubble(
+      'การันต์...'
+    );
+
+    b+=bubble(
+      'ผมมีเรื่องสำคัญอยากถามครับ',
+      true
+    );
+
+    if(save.flags.ep12Stage===3){
+      choices=`
+        <button class="choice" data-ep12-next="4">
+          ขออชิแต่งงาน
+        </button>
+      `;
+    }
+  }
+
+  if(save.flags.ep12Stage>=4){
+
+    b+='<div class="day">คำขอแต่งงาน</div>';
+
+    b+=bubble(
+      'อชิครับ แต่งงานกับผมนะครับ',
+      true
+    );
+
+    b+=bubble(
+      'ผมอยากตื่นมาเจออชิทุกเช้า อยากกินข้าวด้วยกัน และอยากอยู่ข้าง ๆ อชิในทุกวันที่มีทั้งเรื่องดีและเรื่องไม่ดี',
+      true
+    );
+
+    b+=bubble(
+      'การันต์...'
+    );
+
+    b+=bubble(
+      'ผมไม่คิดเลยว่าจะมีใครรักผมได้มากขนาดนี้'
+    );
+
+    b+=bubble(
+      'ผมเองก็อยากใช้ชีวิตกับการันต์เหมือนกันครับ'
+    );
+
+    b+=bubble(
+      'ตกลงครับ ผมจะแต่งงานกับการันต์'
+    );
+
+    b+=bubble(
+      'ขอบคุณนะครับอชิ ผมรักอชินะครับ',
+      true
+    );
+
+    b+=bubble(
+      'ผมก็รักการันต์ครับ'
+    );
+
+    b+='<div class="day">หลังตกลงแต่งงาน</div>';
+
+    b+=bubble(
+      'การันต์ เรามีเรื่องต้องเตรียมอีกเยอะเลยนะ'
+    );
+
+    b+=bubble(
+      'ทั้งสถานที่ แขก แล้วก็การ์ดแต่งงาน'
+    );
+
+    b+=bubble(
+      'เรื่องการ์ดให้ผมจัดการเองนะครับ',
+      true
+    );
+
+    b+=bubble(
+      'ผมอยากทำการ์ดที่เป็นของเราสองคนจริง ๆ',
+      true
+    );
+
+    b+=bubble(
+      'งั้นผมฝากด้วยนะครับ'
+    );
+
+    b+=bubble(
+      'ผมรอดูการ์ดของเราอยู่นะ'
+    );
+
+    if(!save.flags.ep12Completed){
+      choices=`
+        <button class="choice" data-ep12-files="1">
+          เปิด My Files เพื่อออกแบบการ์ดแต่งงาน
+        </button>
+      `;
+    }
+  }
+
+  if(save.flags.ep12Completed){
+
+    b+='<div class="day">หลังออกแบบการ์ดแต่งงาน</div>';
+
+    b+=bubble(
+      'การันต์ ผมเห็นการ์ดแล้วนะ'
+    );
+
+    b+=bubble(
+      'สวยมากเลยครับ'
+    );
+
+    b+=bubble(
+      'ผมชอบมากจริง ๆ'
+    );
+
+    b+=bubble(
+      'ดีใจที่อชิชอบครับ',
+      true
+    );
+
+    b+=bubble(
+      'วันที่ 19 มิถุนายน ผมจะรออชิอยู่ตรงนั้นนะครับ',
+      true
+    );
+
+    b+=bubble(
+      'ผมจะไปหาการันต์แน่นอนครับ'
+    );
+
+    b+=bubble(
+      'แล้วเจอกันในวันแต่งงานของเรานะ'
+    );
+  }
+}
   const chatIcon=(type)=>{
     const shapes={
       clock:'<circle cx="11" cy="11" r="8"/><path d="M11 6v5l4 3M17 17l5 5"/>',
@@ -11408,6 +12358,90 @@ document.addEventListener('change',function(e){
   }
 });
 document.addEventListener('click',function(e){
+  
+/* ===== EP.12 FILES INTERACTIONS ===== */
+
+const ep12Folder=e.target.closest('[data-ep12-folder]');
+
+if(ep12Folder && page==='ไฟล์'){
+  ep12FileScreen=ep12Folder.dataset.ep12Folder;
+  render();
+  return;
+}
+
+const ep12Back=e.target.closest('[data-ep12-back]');
+
+if(ep12Back && page==='ไฟล์'){
+  ep12FileScreen=ep12Back.dataset.ep12Back;
+  render();
+  return;
+}
+
+const ep12Editor=e.target.closest('[data-ep12-open-editor]');
+
+if(ep12Editor && page==='ไฟล์'){
+  ep12FileScreen='editor';
+  render();
+  return;
+}
+
+const ep12Reset=e.target.closest('[data-ep12-reset]');
+
+if(ep12Reset && page==='ไฟล์'){
+  if(confirm('ต้องการเริ่มออกแบบการ์ดใหม่หรือไม่?')){
+    ep12Card={...ep12CardDefaults};
+    ep12SaveCard();
+    render();
+  }
+  return;
+}
+
+const ep12Download=e.target.closest('[data-ep12-download]');
+
+if(ep12Download && page==='ไฟล์'){
+  ep12SaveCard();
+
+  if(ep12Download.dataset.ep12Download==='svg'){
+    ep12ExportSVG();
+  }else{
+    ep12ExportPNG();
+  }
+  return;
+}
+
+const ep12Finish=e.target.closest('[data-ep12-finish]');
+
+if(ep12Finish && page==='ไฟล์'){
+  ep12SaveCard();
+
+  save.flags.ep12Completed=true;
+  persist();
+
+  popup(
+    'EP.12 COMPLETE',
+    'การ์ดแต่งงานของการันต์และอชิพร้อมแล้ว วันที่ 19 มิถุนายน'
+  );
+
+  return;
+}
+
+/* ===== EP.12 INTERACTIONS ===== */
+
+const ep12Next=e.target.closest('[data-ep12-next]');
+
+if(ep12Next){
+  ep12Advance(Number(ep12Next.dataset.ep12Next));
+  return;
+}
+
+const ep12Files=e.target.closest('[data-ep12-files]');
+
+if(ep12Files){
+  unlock('ไฟล์');
+  page='ไฟล์';
+  render();
+  return;
+}
 /* ===== EP.11 GMAIL INTERACTIONS ===== */
 
 const ep11Open=e.target.closest('[data-ep11-open]');
@@ -13655,6 +14689,41 @@ setInterval(()=>{
     }
   }
 },250);
+
+/* ===== EP.12 LIVE CARD EDITING ===== */
+
+document.addEventListener('input',function(e){
+  const field=e.target.closest('[data-ep12-field]');
+  if(!field || page!=='ไฟล์')return;
+
+  const name=field.dataset.ep12Field;
+
+  ep12Card[name]=
+    name==='size'||name==='ornamentSize'
+      ? Number(field.value)
+      : field.value;
+
+  ep12SaveCard();
+
+  const preview=document.querySelector('.ep12-preview');
+  if(preview){
+    preview.innerHTML=ep12CardSVG();
+  }
+});
+
+document.addEventListener('change',function(e){
+  const field=e.target.closest('[data-ep12-field]');
+  if(!field || page!=='ไฟล์')return;
+
+  ep12Card[field.dataset.ep12Field]=field.value;
+  ep12SaveCard();
+
+  const preview=document.querySelector('.ep12-preview');
+  if(preview){
+    preview.innerHTML=ep12CardSVG();
+  }
+});
+
 </script>
 </body>
 </html>

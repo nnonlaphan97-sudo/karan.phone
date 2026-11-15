@@ -4275,6 +4275,272 @@ button{
   font-size:10px;
   color:#3c5541;
 }
+/* ===== EP.10 FOUR-ICON DOCK ===== */
+
+.home-dock{
+  gap:12px;
+  padding:0 12px;
+}
+
+.home-dock .dock-camera{
+  width:60px;
+  height:60px;
+  flex:0 0 60px;
+}
+/* ===== EP.10 SAMSUNG INTERNET ===== */
+
+.ep10-browser{
+  height:100%;
+  padding-top:37px;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  color:#202124;
+  overflow:hidden;
+}
+
+.ep10-web-toolbar{
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+}
+
+.ep10-web-toolbar strong{
+  font-size:17px;
+}
+
+.ep10-web-toolbar span{
+  color:#777;
+  font-size:11px;
+}
+
+.ep10-web-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding-bottom:30px;
+}
+
+.ep10-web-hero{
+  padding:36px 20px;
+  text-align:center;
+  background:linear-gradient(
+    135deg,#F8E9ED,#F4EEDB
+  );
+}
+
+.ep10-web-hero small{
+  font-size:10px;
+  letter-spacing:2px;
+  color:#8B6774;
+}
+
+.ep10-web-hero h2{
+  font-size:23px;
+  margin:12px 0;
+}
+
+.ep10-web-hero p{
+  font-size:13px;
+  color:#786E74;
+}
+
+.ep10-web-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  padding:18px 14px;
+}
+
+.ep10-web-product{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
+  padding:10px;
+  border:2px solid #EEE;
+  border-radius:16px;
+  background:white;
+  color:#222;
+  text-align:left;
+}
+
+.ep10-web-product.selected{
+  border-color:#7957CC;
+  background:#FAF7FF;
+}
+
+.ep10-web-art{
+  height:120px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:#F5F1EA;
+}
+
+.ep10-web-product strong{
+  font-size:13px;
+}
+
+.ep10-web-product small{
+  min-height:34px;
+  color:#777;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.ep10-web-product b{
+  font-size:15px;
+}
+
+.ep10-web-product span{
+  display:block;
+  padding:10px;
+  border-radius:10px;
+  background:#EEEAF8;
+  color:#6045A6;
+  font-size:12px;
+  text-align:center;
+}
+
+.ep10-web-selected{
+  margin:8px 14px 25px;
+  padding:18px;
+  border-radius:16px;
+  background:#F5F0FC;
+}
+
+.ep10-web-selected p{
+  margin:10px 0 16px;
+}
+
+.ep10-web-selected button{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  padding:14px;
+  background:#7051BF;
+  color:white;
+  font-weight:700;
+}
+
+.ep10-browser-bottom{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 15px 22px;
+  background:#F8F8FB;
+  border-top:1px solid #EEE;
+}
+
+.ep10-browser-bottom button{
+  width:34px;
+  height:34px;
+  border:0;
+  background:transparent;
+  color:#333;
+}
+
+.ep10-address{
+  flex:1;
+  min-width:0;
+  padding:12px;
+  border-radius:25px;
+  background:#E9E9EF;
+  text-align:center;
+  font-size:11px;
+  color:#62626C;
+}
+/* ===== EP.10 CALL ===== */
+
+.ep10-call{
+  height:100%;
+  padding:115px 25px 55px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:linear-gradient(
+    180deg,#34455F,#1B2638
+  );
+  color:white;
+  text-align:center;
+}
+
+.ep10-call-avatar{
+  width:100px;
+  height:100px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#64748B;
+}
+
+.ep10-call-avatar svg{
+  width:48px;
+  height:48px;
+}
+
+.ep10-call h2{
+  margin:25px 0 5px;
+  font-size:29px;
+}
+
+.ep10-call>p{
+  color:#CBD5E1;
+  font-size:14px;
+}
+
+.ep10-call-dialogue{
+  width:100%;
+  margin-top:30px;
+  padding:20px;
+  border-radius:18px;
+  background:#FFFFFF15;
+  text-align:left;
+}
+
+.ep10-call-dialogue p{
+  font-size:13px;
+  line-height:1.7;
+}
+
+.ep10-call-actions{
+  margin-top:auto;
+}
+
+.ep10-call-actions button{
+  width:75px;
+  height:75px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:0;
+  border-radius:50%;
+  color:white;
+}
+
+.ep10-call-actions svg{
+  width:27px;
+  height:27px;
+}
+
+.ep10-call-actions span{
+  font-size:10px;
+}
+
+.ep10-answer{
+  background:#45B95A;
+}
+
+.ep10-hangup{
+  background:#E83F51;
+}
 
 </style>
 </head>
@@ -4933,6 +5199,54 @@ save.flags.ep9AchiTalkRead ??= false;
 save.flags.ep9SpotifyUnlocked ??= false;
 save.flags.ep9SongSent ??= false;
 save.flags.ep9AchiAccepted ??= false;
+/* ===== EP.10 DISTANCE ===== */
+
+save.flags.ep10Started ??= false;
+save.flags.ep10Krathong ??= '';
+save.flags.ep10PaiNewsRead ??= false;
+save.flags.ep10CallDone ??= false;
+save.flags.ep10RockReplied ??= false;
+save.flags.ep10FinalMessage ??= false;
+
+let ep10WebPage='shop';
+let ep10CallScreen='incoming';
+
+const EP10_KRATHONGS=[
+  {
+    id:'lotus',
+    name:'กระทงดอกบัว',
+    price:189,
+    color:'#E9A4BC',
+    desc:'ดอกบัวสีชมพู ตกแต่งด้วยใบตอง'
+  },
+  {
+    id:'orchid',
+    name:'กระทงกล้วยไม้',
+    price:229,
+    color:'#AE90D8',
+    desc:'กล้วยไม้สีม่วง ตกแต่งอย่างประณีต'
+  },
+  {
+    id:'banana',
+    name:'กระทงใบตอง',
+    price:129,
+    color:'#7AAE7B',
+    desc:'กระทงวัสดุธรรมชาติ เรียบง่าย'
+  }
+];
+
+function ep10Start(){
+  if(save.flags.ep10Started)return;
+
+  save.flags.ep10Started=true;
+  persist();
+
+  ep8Banner(
+    'ปาย',
+    'พี่การันต์ครับ เรื่องกระทงที่ถามผมไว้',
+    'pai'
+  );
+}
 
 let ep9SpotifyScreen='home';
 let ep9SelectedSong='';
@@ -5050,6 +5364,29 @@ function ep8Start(){
     'ผมมีเรื่องสำคัญอยากคุยกับคุณการันต์และอชิ',
     'tanaka'
   );
+}
+/* ===== EP.10 INCOMING CALL BANNER ===== */
+
+function ep10IncomingCallBanner(){
+  const host=document.getElementById('gameBanner');
+  if(!host)return;
+
+  host.innerHTML=`
+    <button class="game-banner"
+      data-ep10-call-notice="1">
+
+      <span class="game-banner-icon">
+        ${icon('phone')}
+      </span>
+
+      <span class="game-banner-text">
+        <small>โทรศัพท์ · สายเรียกเข้า</small>
+        <strong>อชิ</strong>
+        <span>แตะเพื่อรับสาย</span>
+      </span>
+
+    </button>
+  `;
 }
 
 function ep8Banner(name,message,target){
@@ -7696,7 +8033,187 @@ function ep9SpotifyCover(song,size='small'){
     </div>
   `;
 }
+/* ===== EP.10 SAMSUNG INTERNET ===== */
 
+function ep10KrathongArt(color){
+  return `
+    <svg viewBox="0 0 120 120"
+      width="100%" height="100%"
+      xmlns="http://www.w3.org/2000/svg">
+
+      <ellipse cx="60" cy="87" rx="46" ry="14"
+        fill="#497B58"/>
+
+      ${Array.from({length:8},(_,i)=>`
+        <g transform="rotate(${i*45} 60 65)">
+          <path d="M60 66
+            Q34 39 60 14
+            Q86 39 60 66Z"
+            fill="${color}"
+            stroke="#FFFFFF"
+            stroke-width="1.5"/>
+        </g>
+      `).join('')}
+
+      <circle cx="60" cy="65" r="13"
+        fill="#F6DB80"/>
+
+      <rect x="57" y="36"
+        width="6" height="29"
+        rx="2" fill="#FFF1C8"/>
+
+      <path d="M60 23
+        Q50 34 60 40
+        Q70 34 60 23Z"
+        fill="#F5A23D"/>
+    </svg>
+  `;
+}
+
+function renderEp10Internet(){
+  const selected=EP10_KRATHONGS.find(
+    k=>k.id===save.flags.ep10Krathong
+  );
+
+  return `
+    <div class="ep10-browser">
+
+      <div class="ep10-web-toolbar">
+        <strong>ร้านกระทงดอกไม้</strong>
+        <span>Samsung Internet</span>
+      </div>
+
+      <div class="ep10-web-scroll">
+
+        <div class="ep10-web-hero">
+          <small>LOY KRATHONG COLLECTION</small>
+          <h2>กระทงสำหรับคนพิเศษ</h2>
+          <p>เลือกแบบที่เหมาะกับค่ำคืนของคุณ</p>
+        </div>
+
+        <div class="ep10-web-grid">
+          ${EP10_KRATHONGS.map(k=>`
+            <button
+              class="ep10-web-product
+                ${selected?.id===k.id?'selected':''}"
+              data-ep10-krathong="${k.id}">
+
+              <div class="ep10-web-art">
+                ${ep10KrathongArt(k.color)}
+              </div>
+
+              <strong>${k.name}</strong>
+              <small>${k.desc}</small>
+              <b>฿${k.price}</b>
+
+              <span>
+                ${selected?.id===k.id
+                  ? 'เลือกแล้ว'
+                  : 'เลือกแบบนี้'}
+              </span>
+            </button>
+          `).join('')}
+        </div>
+
+        ${selected?`
+          <div class="ep10-web-selected">
+            <strong>กระทงที่ปายเลือก</strong>
+            <p>${selected.name}</p>
+
+            <button data-ep10-confirm="1">
+              ส่งคำแนะนำให้การันต์
+            </button>
+          </div>
+        `:''}
+
+      </div>
+
+      <div class="ep10-browser-bottom">
+        <button data-ep10-web-back="1"
+          aria-label="ย้อนกลับ">
+          ${icon('back')}
+        </button>
+
+        <div class="ep10-address">
+          <span>เว็บไซต์ร้านกระทง · จำลอง</span>
+        </div>
+
+        <button data-ep10-web-home="1"
+          aria-label="หน้าหลัก">
+          <svg viewBox="0 0 24 24"
+  width="23" height="23"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round">
+  <path d="M3 10L12 3L21 10V21H3Z"/>
+  <path d="M9 21V14H15V21"/>
+</svg>
+        </button>
+      </div>
+
+    </div>
+  `;
+}
+/* ===== EP.10 ACHI CALL ===== */
+
+function renderEp10Call(){
+  const connected=ep10CallScreen==='connected';
+
+  return `
+    <div class="ep10-call">
+
+      <div class="ep10-call-avatar">
+        <svg viewBox="0 0 24 24"
+  width="48" height="48"
+  fill="none"
+  stroke="white"
+  stroke-width="1.6"
+  stroke-linecap="round">
+  <circle cx="12" cy="8" r="4"/>
+  <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
+</svg>
+      </div>
+
+      <h2>อชิ</h2>
+
+      <p>
+        ${connected
+          ? 'กำลังสนทนา'
+          : 'สายเรียกเข้า'}
+      </p>
+
+      ${connected?`
+        <div class="ep10-call-dialogue">
+          <p>อชิ: การันต์ พรุ่งนี้ว่างไหม</p>
+          <p>การันต์: ว่างครับ</p>
+          <p>อชิ: พรุ่งนี้ไปกินข้าวกันนะ</p>
+          <p>การันต์: ได้ครับ ผมไปรับนะ</p>
+        </div>
+      `:''}
+
+      <div class="ep10-call-actions">
+
+        ${!connected?`
+          <button class="ep10-answer"
+            data-ep10-answer="1">
+            ${icon('phone')}
+            <span>รับสาย</span>
+          </button>
+        `:`
+          <button class="ep10-hangup"
+            data-ep10-hangup="1">
+            ${icon('phone')}
+            <span>วางสาย</span>
+          </button>
+        `}
+
+      </div>
+
+    </div>
+  `;
+}
 function renderSpotify(){
   const selected=EP9_SONGS.find(
     s=>s.id===ep9SelectedSong
@@ -7919,9 +8436,9 @@ html=`
   ${[
     ['โทรศัพท์','phone'],
     ['Messages','message'],
-    ['กล้อง','camera']
+    ['กล้อง','camera'],
+    ['เบราว์เซอร์','web']
   ].map(([name,iconName])=>{
-
     const open=save.unlock.includes(name);
 
     return `
@@ -7949,6 +8466,12 @@ else if(page==='Instagram'){
 }
 else if(page==='Spotify'){
   html=renderSpotify();
+}
+else if(page==='เบราว์เซอร์'){
+  html=renderEp10Internet();
+}
+else if(page==='ep10Call'){
+  html=renderEp10Call();
 }
 else if(page==='นาฬิกา'){
   html=renderEp6Clock();
@@ -8627,6 +9150,8 @@ function ep7PlayLoveEffect(type){
 function renderChat(){
   lastBubbleSender=null;
    const names={
+    pai:'ปาย',
+    rock:'ร็อค',
     duj:'พี่ดุจ',
     achi:'อชิ',
     karin:'พี่การิน',
@@ -8638,7 +9163,201 @@ function renderChat(){
 
   let b='<div class="day">30 ม.ค.</div>';
   let choices='';
-  
+  /* ===== EP.10 LINE STORY ===== */
+
+// ประวัติแชตอชิหลังกลับไปอยู่บ้านตัวเอง
+if(chat==='achi' && save.flags.ep10Started){
+
+  b+='<div class="day">หลังอชิกลับบ้าน</div>';
+
+  b+=bubble('ถึงบ้านแล้วนะการันต์');
+
+  b+=bubble(
+    'ครับ คืนนี้อย่าลืมโทรหาผมนะ',
+    true
+  );
+
+  b+=bubble(
+    'เราเพิ่งแยกกันไม่ถึงชั่วโมงเองนะ'
+  );
+
+  b+=bubble(
+    'ก็ผมคิดถึงแล้วนี่ครับ',
+    true
+  );
+
+  b+=bubble('การันต์ ตอนนี้อยู่ไหน');
+
+  b+=bubble(
+    'อยู่หน้าบ้านอชิครับ',
+    true
+  );
+
+  b+=bubble(
+    'ไหนบอกว่าจะลองอยู่ห่างกันไง'
+  );
+
+  b+=bubble(
+    'ผมแค่มาดูว่าอชิถึงบ้านปลอดภัยหรือเปล่า',
+    true
+  );
+
+  b+=bubble(
+    'เมื่อกี้เราเพิ่งวิดีโอคอลกันเองนะ'
+  );
+
+  if(save.flags.ep10CallDone){
+
+    b+='<div class="day">หลังวางสาย</div>';
+
+    b+=bubble(
+      'พรุ่งนี้ไปกินข้าวด้วยกันนะ'
+    );
+
+    b+=bubble(
+      'ได้ครับ ผมไปรับนะ',
+      true
+    );
+
+    b+=bubble('แล้วเจอกันนะ');
+  }
+
+  if(save.flags.ep10FinalMessage){
+
+    b+='<div class="day">ข้อความล่าสุด</div>';
+
+    b+=bubble(
+      'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์'
+    );
+  }
+}
+
+// การันต์ปรึกษาปาย
+if(chat==='pai' && save.flags.ep10Started){
+
+  b+='<div class="day">EP.10 · ลอยกระทง</div>';
+
+  b+=bubble(
+    'ปาย ช่วยผมเลือกกระทงหน่อยได้ไหมครับ',
+    true
+  );
+
+  b+=bubble(
+    'จะเอาไปลอยกับพี่อชิเหรอครับ'
+  );
+
+  b+=bubble(
+    'ใช่ครับ ผมอยากเตรียมไว้ก่อน',
+    true
+  );
+
+  b+=bubble(
+    'งั้นส่งแบบมาเลยครับ'
+  );
+
+  if(!save.flags.ep10Krathong){
+
+    b+=`
+      <button class="ep10-line-link"
+        data-ep10-open-web="1">
+
+        <strong>ร้านกระทงดอกไม้</strong>
+
+        <span>
+          ดูกระทง 3 แบบผ่าน Samsung Internet
+        </span>
+
+        <small>แตะเพื่อเปิดเว็บไซต์</small>
+
+      </button>
+    `;
+
+  }else{
+
+    const k=EP10_KRATHONGS.find(
+      item=>item.id===save.flags.ep10Krathong
+    );
+
+    b+=bubble(
+      'ผมเลือก'+k.name+'ครับพี่',
+    );
+
+    b+=bubble(
+      'ขอบคุณนะปาย แบบนี้สวยดี',
+      true
+    );
+
+    b+=bubble(
+      'แต่พี่การันต์ครับ พี่อชิจะได้ไปลอยกระทงด้วยเหรอครับ'
+    );
+
+    b+=bubble(
+      'ทำไมถามแบบนั้นล่ะ',
+      true
+    );
+
+    b+=bubble(
+      'เห็นว่ากำหนดเดินทางไปนครศรีธรรมราชถูกเลื่อนให้เร็วขึ้น'
+    );
+
+    b+=bubble(
+      'เลื่อนเหรอครับ?',
+      true
+    );
+
+    b+=bubble(
+      'ครับ ผมนึกว่าพี่อชิบอกพี่แล้ว'
+    );
+
+    b+=bubble(
+      'อชิยังไม่ได้บอกผมเลย',
+      true
+    );
+  }
+}
+
+// ร็อคถามการันต์
+if(
+  chat==='rock' &&
+  save.flags.ep10CallDone
+){
+
+  b+='<div class="day">EP.10 · ตอนเย็น</div>';
+
+  b+=bubble(
+    'พี่การันต์ครับ ตอนนี้พี่อยู่ไหนครับ'
+  );
+
+  if(!save.flags.ep10RockReplied){
+
+    choices=`
+      <button class="choice"
+        data-ep10-rock-reply="1">
+        ผมอยู่ข้างนอกครับ มีอะไรหรือเปล่า
+      </button>
+    `;
+
+  }else{
+
+    b+=bubble(
+      'ผมอยู่ข้างนอกครับ มีอะไรหรือเปล่า',
+      true
+    );
+
+    b+=bubble(
+      'ไม่มีอะไรครับ ผมจะถามเรื่องงานนิดหน่อย'
+    );
+
+    b+=bubble(
+      'พรุ่งนี้ค่อยคุยก็ได้ครับ'
+    );
+
+    b+=bubble(
+      'ได้ครับ พรุ่งนี้ค่อยคุยกัน',
+      true
+    );
+  }
+}
 /* ===== EP.06 TANAKA CHAT ===== */
 
 if(chat==='tanaka'){
@@ -9765,6 +10484,139 @@ document.addEventListener('change',function(e){
   }
 });
 document.addEventListener('click',function(e){
+/* ===== EP.10 INTERACTIONS ===== */
+
+// เปิดลิงก์ร้านกระทงจาก LINE
+const ep10OpenWeb=e.target.closest(
+  '[data-ep10-open-web]'
+);
+
+if(ep10OpenWeb){
+  unlock('เบราว์เซอร์');
+  ep10WebPage='shop';
+  page='เบราว์เซอร์';
+  render();
+  return;
+}
+
+// เลือกกระทง
+const ep10Pick=e.target.closest(
+  '[data-ep10-krathong]'
+);
+
+if(ep10Pick && page==='เบราว์เซอร์'){
+  save.flags.ep10Krathong=
+    ep10Pick.dataset.ep10Krathong;
+
+  persist();
+  render();
+  return;
+}
+
+// ยืนยันกระทง กลับ LINE
+const ep10Confirm=e.target.closest(
+  '[data-ep10-confirm]'
+);
+
+if(
+  ep10Confirm &&
+  page==='เบราว์เซอร์' &&
+  save.flags.ep10Krathong
+){
+  chat='pai';
+  page='chat';
+  render();
+  return;
+}
+
+// ย้อนกลับจากเบราว์เซอร์
+const ep10WebBack=e.target.closest(
+  '[data-ep10-web-back]'
+);
+
+if(ep10WebBack && page==='เบราว์เซอร์'){
+  chat='pai';
+  page='chat';
+  render();
+  return;
+}
+
+// ปุ่ม Home ในเบราว์เซอร์
+const ep10WebHome=e.target.closest(
+  '[data-ep10-web-home]'
+);
+
+if(ep10WebHome && page==='เบราว์เซอร์'){
+  page='home';
+  render();
+  return;
+}
+
+// รับสายอชิ
+const ep10Answer=e.target.closest(
+  '[data-ep10-answer]'
+);
+
+if(ep10Answer && page==='ep10Call'){
+  ep10CallScreen='connected';
+  render();
+  return;
+}
+
+// วางสายอชิ
+const ep10Hangup=e.target.closest(
+  '[data-ep10-hangup]'
+);
+
+if(ep10Hangup && page==='ep10Call'){
+  save.flags.ep10CallDone=true;
+  persist();
+
+  page='LINE';
+  lineTab='chats';
+  lineSubtab='chats';
+
+  render();
+
+  ep8Banner(
+    'ร็อค',
+    'พี่การันต์ครับ ตอนนี้พี่อยู่ไหนครับ',
+    'rock'
+  );
+
+  return;
+}
+
+// ตอบร็อค
+const ep10RockReply=e.target.closest(
+  '[data-ep10-rock-reply]'
+);
+
+if(
+  ep10RockReply &&
+  page==='chat' &&
+  chat==='rock'
+){
+  save.flags.ep10RockReplied=true;
+  persist();
+  render();
+  return;
+}
+
+// เปิดสายโทรศัพท์จากแบนเนอร์
+const ep10CallNotice=e.target.closest(
+  '[data-ep10-call-notice]'
+);
+
+if(ep10CallNotice){
+  document.getElementById('gameBanner').innerHTML='';
+
+  ep10CallScreen='incoming';
+  page='ep10Call';
+  render();
+  return;
+}
+
 /* ===== EP.09 SPOTIFY INTERACTIONS ===== */
 const ep9Play=e.target.closest('[data-ep9-play]');
 
@@ -11312,6 +12164,30 @@ if(btn.dataset.go){
     save.flags.ep9TanakaRead &&
     !save.flags.ep9SongSent;
     
+    /* ===== EP.10 PAGE TRANSITIONS ===== */
+
+const ep10StartFromAchi=
+  page==='chat' &&
+  chat==='achi' &&
+  btn.dataset.go==='LINE' &&
+  !!save.flags.ep9SongSent &&
+  save.flags.ep9AchiAccepted &&
+  !save.flags.ep10Started;
+
+const ep10LeavingPai=
+  page==='chat' &&
+  chat==='pai' &&
+  btn.dataset.go==='LINE' &&
+  !!save.flags.ep10Krathong &&
+  !save.flags.ep10PaiNewsRead;
+
+const ep10LeavingRock=
+  page==='chat' &&
+  chat==='rock' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep10RockReplied &&
+  !save.flags.ep10FinalMessage;
+    
     page=btn.dataset.go;
 
   if(page==='LINE'){
@@ -11411,6 +12287,30 @@ if(ep9LeavingTanaka){
 if(ep9LeavingAchi){
   save.flags.ep9AchiTalkRead=true;
   persist();
+}
+
+/* ===== EP.10 STORY TRANSITIONS ===== */
+
+if(ep10StartFromAchi){
+  ep10Start();
+}
+
+if(ep10LeavingPai){
+  save.flags.ep10PaiNewsRead=true;
+  persist();
+
+  ep10IncomingCallBanner();
+}
+
+if(ep10LeavingRock){
+  save.flags.ep10FinalMessage=true;
+  persist();
+
+  ep8Banner(
+    'อชิ',
+    'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์',
+    'achi'
+  );
 }
 
 }

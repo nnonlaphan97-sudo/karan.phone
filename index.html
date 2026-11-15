@@ -10199,6 +10199,9 @@ if (igTab === 'home') {
     </div>`;
 }
 
+const igStoryStyle = document.createElement("style");
+igStoryStyle.textContent = `
+
 /* ===== INSTAGRAM STORIES & FEED ===== */
 
 .ig-stories{
@@ -10404,6 +10407,9 @@ if (igTab === 'home') {
   border-radius:25px;
   font-size:13px;
 }
+
+`;
+document.head.appendChild(igStoryStyle);
 
 /* ===== CLOCK ALARMS ===== */
 

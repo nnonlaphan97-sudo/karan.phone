@@ -5801,6 +5801,70 @@ button{
   object-fit:cover;
 }
 
+/* GrabFood order history */
+.gf-history-item{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  width:100%;
+  margin-bottom:12px;
+  padding:16px;
+  box-sizing:border-box;
+  border:1px solid #ededed;
+  border-radius:16px;
+  background:#fff;
+}
+
+.gf-history-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:#e9f6ee;
+  color:#27965c;
+}
+
+.gf-history-info{
+  flex:1;
+  min-width:0;
+}
+
+.gf-history-info strong{
+  display:block;
+  font-size:15px;
+}
+
+.gf-history-info p{
+  margin:6px 0;
+  font-size:13px;
+  color:#555;
+}
+
+.gf-history-info small{
+  color:#999;
+  font-size:12px;
+}
+
+.gf-history-price{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+}
+
+.gf-history-price span{
+  font-size:12px;
+  color:#27965c;
+}
+
+.gf-history-price strong{
+  font-size:15px;
+  color:#222;
+}
 
 </style>
 </head>
@@ -6358,33 +6422,34 @@ let grabTab='home';
 let grabSearch='';
 
 
+
 const cakes=[
   {
     id:'strawberry',
-    name:'Strawberry Shortcake',
+    name:'Baby Bear Birthday Cake',
     price:390,
-    detail:'ครีมนมสด สตรอว์เบอร์รี หวานน้อย',
+    detail:'เค้กวันเกิดสีฟ้าพาสเทล ตกแต่งตุ๊กตาหมีและดวงดาวสุดน่ารัก',
     image:'https://i.ibb.co/pBwJdm5h/IMG-4987.jpg'
   },
   {
     id:'chocolate',
-    name:'Chocolate Fudge',
+    name:'Polcasan Cake',
     price:450,
-    detail:'ช็อกโกแลตเข้มข้น เนื้อเค้กนุ่ม',
+    detail:'เค้กสามมิติรูปน้องโพก้าซัง ดีไซน์ขี้เล่น เหมาะสำหรับวันพิเศษ',
     image:'https://i.ibb.co/zW06qkmk/IMG-4986.jpg'
   },
   {
     id:'vanilla',
-    name:'Vanilla Birthday Cake',
+    name:'Fluffy Puppy Cake',
     price:420,
-    detail:'วานิลลา ครีมสด ตกแต่งเรียบง่าย',
+    detail:'เค้กน้องหมาขนฟูสีขาว ตกแต่งสามมิติพร้อมอุ้งเท้าสุดคิวต์',
     image:'https://i.ibb.co/5xB01mT1/IMG-4984.jpg'
   },
   {
     id:'matcha',
-    name:'Matcha Cream Cake',
+    name:'Little Wishes Cake',
     price:460,
-    detail:'ชาเขียวมัทฉะ หวานน้อย',
+    detail:'เค้กวันเกิดมินิมอลสีขาว ตกแต่งลวดลายน่ารักและข้อความ Happy Birthday',
     image:'https://i.ibb.co/qL3jRfSw/IMG-4981.jpg'
   }
 ];
@@ -8035,10 +8100,7 @@ function renderGrab(){
                    ติดต่อพนักงานจัดส่ง
                  </button>`
               : status==='delivered'
-              ? `<p>เค้กส่งถึง TOYOKAWA แล้ว</p>
-                 <button class="gf-primary" data-go="LINE">
-                   กลับไป LINE
-                 </button>`
+              ? `<p>เค้กส่งถึง TOYOKAWA แล้ว</p>,
               : status==='preparing'
   ? `<p>ร้านกำลังเตรียมเค้กของคุณ กรุณารอสักครู่</p>`
   : `<p>พนักงานกำลังนำเค้กไปส่งที่ TOYOKAWA และจะโทรหาคุณเมื่อใกล้ถึงจุดหมาย</p>`
@@ -8172,26 +8234,84 @@ function renderGrab(){
     `;
   }
 
-  if(grabTab==='orders'){
-    body=`
-      <div class="gf-section gf-page">
-        <h2>รายการ</h2>
-        ${
-          f.cakeOrdered
-          ? `<button class="gf-order-list" data-gf-tracking="1">
-               ${grabIcon('cake')}
-               <div>
-                 <strong>Birthday Cake Studio</strong>
-                 <p>จัดส่งไปยัง TOYOKAWA</p>
-                 <small>แตะเพื่อติดตามคำสั่งซื้อ</small>
-               </div>
-             </button>`
-          : '<p class="gf-empty">ยังไม่มีคำสั่งซื้อ</p>'
-        }
-      </div>
-    `;
-  }
+  
+if(grabTab==='orders'){
+  const history=[
+    {
+      shop:'Daily Coffee',
+      item:'อเมริกาโน่เย็น · 1 แก้ว',
+      date:'28 ม.ค. · 08:42',
+      price:65
+    },
+    {
+      shop:'ครัวตามสั่ง',
+      item:'ข้าวกะเพราหมูสับไข่ดาว · 1 กล่อง',
+      date:'27 ม.ค. · 12:18',
+      price:89
+    },
+    {
+      shop:'Coffee Corner',
+      item:'มัทฉะลาเต้เย็น · 1 แก้ว',
+      date:'25 ม.ค. · 15:36',
+      price:95
+    },
+    {
+      shop:'Japanese Kitchen',
+      item:'ข้าวแกงกะหรี่ไก่ทอด · 1 กล่อง',
+      date:'23 ม.ค. · 19:24',
+      price:159
+    }
+  ];
 
+  const historyHTML=history.map(order=>`
+    <div class="gf-order-list gf-history-item">
+      <div class="gf-history-icon">
+        ${grabIcon('cart')}
+      </div>
+      <div class="gf-history-info">
+        <strong>${order.shop}</strong>
+        <p>${order.item}</p>
+        <small>${order.date}</small>
+        <div class="gf-history-price">
+          <span>จัดส่งสำเร็จ</span>
+          <strong>฿${order.price}</strong>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const cake=cakes.find(c=>c.id===f.orderedCake);
+
+  body=`
+    <div class="gf-section gf-page">
+      <h2>รายการ</h2>
+
+      ${
+        f.cakeOrdered
+        ? `
+          <h3>คำสั่งซื้อล่าสุด</h3>
+          <button class="gf-order-list"
+                  data-gf-tracking="1">
+            ${grabIcon('cake')}
+            <div>
+              <strong>Birthday Cake Studio</strong>
+              <p>${cake?.name||'Birthday Cake'} · 1 ชิ้น</p>
+              <small>จัดส่งไปยัง TOYOKAWA</small>
+              <small>แตะเพื่อติดตามคำสั่งซื้อ</small>
+            </div>
+          </button>
+        `
+        : ''
+      }
+
+      <h3 style="margin:24px 0 14px">
+        ประวัติคำสั่งซื้อ
+      </h3>
+
+      ${historyHTML}
+    </div>
+  `;
+}
   if(grabTab==='wallet'){
     body=`
       <div class="gf-section gf-page">

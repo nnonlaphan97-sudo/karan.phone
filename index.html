@@ -15990,6 +15990,16 @@ document.addEventListener('click',function(e){
   }
   /* ===== EP.12 FILES INTERACTIONS ===== */
 
+  // เปิดแอปจากหน้า Home ก่อนตรวจปุ่มของ EP ต่าง ๆ
+  if(page === 'home'){
+    const homeApp = e.target.closest('[data-app]');
+
+    if(homeApp){
+      goApp(homeApp.dataset.app);
+      return;
+    }
+  }
+
 const ep12Folder=e.target.closest('[data-ep12-folder]');
 
 if(ep12Folder && page==='ไฟล์'){

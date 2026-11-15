@@ -1980,17 +1980,18 @@ button{
 .maps-finish{
   color:#18794e;
 }
-.line-cancelled-message{
-  width:max-content;
-  max-width:90%;
-  margin:18px auto;
-  padding:12px 20px;
+.line-cancelled-message {
+  display:table;
+  width:fit-content;
+  max-width:85%;
+  margin:12px auto;
+  padding:8px 16px;
+  background:rgba(255,255,255,0.55);
   border-radius:18px;
-  background:rgba(110,119,140,.38);
-  color:#fff;
-  text-align:center;
+  color:#6b7280;
   font-size:13px;
-  line-height:1.6;
+  text-align:center;
+  line-height:1.5;
 }
 
 .line-cancelled-message span{
@@ -15895,18 +15896,18 @@ if(
   return;
 }
   /* เมื่ออ่านแชตอชิแล้ว พี่ดุจส่งข้อความตามมา */
-  if(
-    targetChat==='achi' &&
-    save.flags.ep4AchiCancelledRead &&
-    !save.flags.ep4DujBannerShown
-  ){
+if(
+  targetChat==='achi' &&
+  save.flags.ep3SickBannerSeen &&
+  !save.flags.ep4DujBannerShown
+){
 
     save.flags.ep4DujBannerShown=true;
     persist();
 
     showGameBanner(
       'duj',
-      'การันต์จ๊ะ พี่มีเรื่องจะบอกเกี่ยวกับอชิ'
+      'นี่จ๊ะ ที่อยู่บ้านของอชิ'
     );
   }
 

@@ -13677,8 +13677,10 @@ function showGameBanner(who,message){
     <button class="game-banner" data-banner-chat="${who}">
       <span class="game-banner-icon"
             style="background:${who==='line-official'?'#06c755':'transparent'};overflow:hidden"
-       ${who==='line-official'?icon('line'):lineBannerAvatar(who)}
-      </span>
+      ${who==='line-official'
+  ? `<span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800;">LINE</span>`
+  : lineBannerAvatar(who)}
+        </span>
       <span class="game-banner-text">
         <small>LINE · ตอนนี้</small>
         <strong>${sender}</strong>

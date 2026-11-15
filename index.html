@@ -7590,7 +7590,8 @@ const lineProfilePhotos = {
   tanaka: 'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
   karin:'https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg',  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
   office: 'https://i.ibb.co/MkYHgKhS/IMG-4977.jpg',
-  sales: 'https://i.ibb.co/mrw0qgHs/IMG-4976.jpg'
+  sales: 'https://i.ibb.co/mrw0qgHs/IMG-4976.jpg',
+  flowerShop: 'https://i.ibb.co/gByzbw6/IMG-5021.jpg'
 };
 
 function lineAvatar(id='') {
@@ -14442,12 +14443,19 @@ if(chat==='flowerShop' && save.flags.ep7Stage>=1){
   'สวัสดีค่ะคุณการันต์ ทางร้านส่งแบบช่อดอกไม้มาให้เลือกแล้วนะคะ',
   false,'','09:00'
 );
-  b+=`
-    <button class="choice"
-      data-ep7-open-flowers="1">
-      ดูแค็ตตาล็อกช่อดอกไม้
-    </button>
-  `;
+  
+  b+=bubble(`
+    <div style="font-size:14px;color:#666;margin-bottom:6px;">
+      Bloom & Beyond Flower Shop
+    </div>
+
+    <a href="#flower-catalog"
+       data-ep7-open-flowers="1"
+       style="color:#1687d9;text-decoration:underline;font-size:15px;overflow-wrap:anywhere;">
+      bloomandbeyond.com/catalog
+    </a>
+  `,false,'','09:01');
+
 
 if(save.flags.ep7Flower){
 

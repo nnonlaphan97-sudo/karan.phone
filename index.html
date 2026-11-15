@@ -7250,7 +7250,20 @@ function lineFriends(){
     '<div class="line-section">กลุ่ม ('+groups.length+')</div>'+
     groups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
 }
-  
+
+function lineMarkChatActivity(id){
+  if(!id)return;
+
+  save.flags.lineChatActivity ??= {};
+  save.flags.lineChatSequence ??= 0;
+
+  save.flags.lineChatSequence++;
+
+  save.flags.lineChatActivity[id]=
+    save.flags.lineChatSequence;
+
+  persist();
+}
 
 function lineChatsHTML(){
 
@@ -7420,6 +7433,7 @@ if(latestSender==='me'){
       date:latestDate,
       dateOrder:dateValue(latestDate) ?? 0,
       messageIndex,
+      activityOrder:save.flags.lineChatActivity?.[c.id] || 0,
       originalIndex:index
     };
   });
@@ -7427,12 +7441,13 @@ if(latestSender==='me'){
   chat=previousChat;
   lastBubbleSender=previousSender;
    results.sort((a,b)=>{
-    return (
-      b.dateOrder-a.dateOrder ||
-      b.messageIndex-a.messageIndex ||
-      a.originalIndex-b.originalIndex
-    );
-  });
+  return (
+    b.dateOrder-a.dateOrder ||
+    b.activityOrder-a.activityOrder ||
+    b.messageIndex-a.messageIndex ||
+    a.originalIndex-b.originalIndex
+  );
+});
 
   return results
     .filter(c=>c.name.toLowerCase().includes(q))
@@ -13629,12 +13644,12 @@ function showGameBanner(who,message){
   const names={
     office:'TOYOKAWA',
     sales:'ทีมฝ่ายขาย',
-    achi:'Achi rawit',
-    pai:'Pai',
-    rock:'Rock',
-    duj:'พี่ดุจดาว',
-    karin:'Karin',
-    tanaka:'Tanaka san'
+    achi:'อชิ',
+    pai:'ปาย',
+    rock:'ร็อค',
+    duj:'พี่ดุจ',
+    karin:'พี่การิน',
+    tanaka:'ทานากะซัง'
   };
 
   const sender=names[who]||who;
@@ -13642,8 +13657,8 @@ function showGameBanner(who,message){
   banner.innerHTML=`
     <button class="game-banner" data-banner-chat="${who}">
       <span class="game-banner-icon"
-            style="background:#06c755">
-        ${icon('line')}
+            style="background:transparent;overflow:hidden">
+        ${lineBannerAvatar(who)}
       </span>
       <span class="game-banner-text">
         <small>LINE · ตอนนี้</small>
@@ -13676,7 +13691,19 @@ if(name==='GrabFood'){
   grabScreen=save.flags.cakeOrdered?'tracking':'home';
 }
 
+
 render();
+
+if(name==='LINE' && !save.flags.birthdaySeen){
+  save.flags.birthdaySeen=true;
+  unlock('GrabFood');
+  persist();
+
+  showGameBanner(
+    'achi',
+    'วันนี้วันเกิดอชิ · 30 มกราคม อย่าลืมซื้อเค้กให้อชิด้วยนะ!'
+  );
+}
 }
 
 document.addEventListener('input',function(e){
@@ -15163,43 +15190,14 @@ if(ep2Logo && page==='chat' && chat==='pai'){
 
   return;
 }
+
 const birthday=e.target.closest('[data-line-birthday]');
 
-
 if(birthday && page==='LINE'){
-  save.flags.birthdaySeen=true;
-  unlock('GrabFood');
-  persist();
-
   lineProfile=birthday.dataset.lineBirthday;
   lineProfilePreviousTab=lineTab;
   lineTab='profile';
-
   render();
-
-  const banner=document.getElementById('gameBanner');
-
-  if(banner){
-    banner.innerHTML=`
-      <div class="game-banner" role="status">
-        <span class="game-banner-icon">
-          ${icon('line')}
-        </span>
-        <span class="game-banner-text">
-          <small>LINE · แจ้งเตือนวันเกิด</small>
-          <strong>วันเกิดอชิ · 30 มกราคม</strong>
-          <span>อย่าลืมซื้อเค้กวันเกิดให้อชิด้วยนะ!</span>
-        </span>
-      </div>
-    `;
-
-    setTimeout(()=>{
-      const current=document.getElementById('gameBanner');
-      if(current && current===banner){
-        current.innerHTML='';
-      }
-    },4000);
-  }
   return;
 }
 
@@ -15993,7 +15991,7 @@ else if(btn.dataset.reply){
 
 if(who==='achi'){
   save.replies[who]=opts[Number(btn.dataset.index)];
-
+  lineMarkChatActivity('achi');
   const startPaiChat=
     save.flags.achiThanked &&
     !save.flags.ep2Started;

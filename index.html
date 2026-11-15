@@ -6733,6 +6733,19 @@ save.flags.ep2InviteHistory ??= [];
 save.flags.ep3OutingAnnounced ??= false;
 save.flags.ep3OutingRead ??= false;
 save.flags.ep3NotificationShown ??= false;
+
+// EP.03 — 6 มี.ค. ถึง 13 มี.ค.
+save.flags.ep3DujQuestionShown ??= false;
+save.flags.ep3DujAnswer ??= false;
+save.flags.ep3CalendarOpened ??= false;
+save.flags.ep3OfficePosterShown ??= false;
+save.flags.ep3OfficePosterRead ??= false;
+save.flags.ep3KarinMessageShown ??= false;
+save.flags.ep3KarinMessageRead ??= false;
+save.flags.ep3KarinBannerSeen ??= false;
+save.flags.ep3SickShown ??= false;
+save.flags.ep3SickBannerSeen ??= false;
+
   /* ===== EP.04 NOTIFICATIONS ===== */
 save.flags.ep4AchiBannerShown ??= false;
 save.flags.ep4AchiCancelledRead ??= false;
@@ -7591,7 +7604,7 @@ if(save.flags.ep6Stage >= 1){
     id:'tanaka',name:'ทานากะซัง'
   });
 }
-  if(save.flags.ep4KarinShown){
+  if(save.flags.ep4KarinShown || save.flags.ep3KarinMessageShown){
     availableChats.push({
       id:'karin',
       name:'พี่การิน'
@@ -7607,6 +7620,7 @@ if(save.flags.ep6Stage >= 1){
 
   if(
     save.flags.deliveryStatus==='delivered' ||
+    save.flags.ep3DujQuestionShown ||
     save.flags.ep4DujBannerShown
   ){
     availableChats.push({
@@ -7748,9 +7762,48 @@ const initialChatTimes = {
     const useInitial = initial &&
       (dateValue(latestDate) ?? 0) <= dateValue(initial.date);
 
-    const displayDate = useInitial ? initial.date : latestDate;
-    const displayTime = useInitial ? initial.time : '00:00';
+    let displayDate = useInitial ? initial.date : latestDate;
+let displayTime = useInitial ? initial.time : '00:00';
 
+// 6 มีนาคม — พี่ดุจถามวันว่าง
+if(
+  c.id==='duj' &&
+  save.flags.ep3DujQuestionShown &&
+  !save.flags.ep4AchiCancelledRead
+){
+  displayDate='6 มี.ค.';
+  displayTime=save.flags.ep3DujAnswer?'10:18':'09:42';
+}
+
+// 12 มีนาคม — ประกาศ Outing
+if(
+  c.id==='office' &&
+  save.flags.ep3OfficePosterShown &&
+  !save.flags.ep8Started
+){
+  displayDate='12 มี.ค.';
+  displayTime='09:15';
+}
+
+// 12 มีนาคม — การินเรียกพบ
+if(
+  c.id==='karin' &&
+  save.flags.ep3KarinMessageShown &&
+  !save.flags.ep4KarinShown
+){
+  displayDate='12 มี.ค.';
+  displayTime='10:24';
+}
+
+// 13 มีนาคม — อชิป่วย
+if(
+  c.id==='achi' &&
+  save.flags.ep3SickShown &&
+  !save.flags.ep4AchiCancelledRead
+){
+  displayDate='13 มี.ค.';
+  displayTime='08:36';
+}
     const sortTime =
       (dateValue(displayDate) ?? 0) * 10000 +
       Number(displayTime.replace(':',''));
@@ -8695,6 +8748,13 @@ function grabCompleteDelivery(){
 
 /* ===== CALENDAR DATA ===== */
 const calendarEvents=[
+    ...Array.from({length:8},(_,i)=>({
+    date:`2026-04-${String(i+1).padStart(2,'0')}`,
+    title:'นัดลูกค้า',
+    time:'09:00–17:00',
+    detail:'มีนัดหมายกับลูกค้า ไม่สะดวกเข้าร่วม Outing',
+    type:'work'
+  })),
   {
     date:'2026-01-28',
     title:'นัดพบลูกค้า',
@@ -8725,9 +8785,9 @@ const calendarEvents=[
   }
 ];
 
-let calendarMonth=0;
+let calendarMonth=2;
 let calendarYear=2026;
-let calendarSelected='2026-01-30';
+let calendarSelected='2026-03-06';
 
 const thaiMonths=[
   'มกราคม','กุมภาพันธ์','มีนาคม','เมษายน',
@@ -8808,7 +8868,7 @@ function renderCalendar(){
           '<button class="calendar-iconbtn" data-calendar-search-toggle="1" aria-label="ค้นหานัดหมาย">'+
             calendarIcon('search')+
           '</button>'+
-          '<button class="calendar-iconbtn" data-calendar-today="1" aria-label="กลับไปวันที่ 30 มกราคม">'+
+          '<button class="calendar-iconbtn" data-calendar-today="1" aria-label="กลับไปวันที่ 6 มีนาคม">'+
             calendarIcon('today')+
           '</button>'+
         '</div>'+
@@ -11947,38 +12007,25 @@ if(page==='home'){
 }
 
 /* ===== EP.03 NOTIFICATION ===== */
+
+// 6 มีนาคม — หลังจบมื้ออาหารกับอชิ
+// พี่ดุจส่ง LINE มาถามวันว่าง
 if(
   save.flags.ep2Completed &&
-  !save.flags.ep3OutingRead &&
-  !save.flags.ep3NotificationShown &&
+  !save.flags.ep3DujQuestionShown &&
   (page==='home' || page==='LINE' || page==='chat')
 ){
-  save.flags.ep3NotificationShown=true;
-  save.flags.ep3OutingAnnounced=true;
+  save.flags.ep3DujQuestionShown=true;
   persist();
 
   showGameBanner(
-    'office',
-    'พี่ดุจ: ขอแจ้งเรื่อง Outing บริษัทนะจ๊ะ'
+    'duj',
+    'การันต์จ๊ะ ต้นเดือนเมษายน ระหว่างวันที่ 1–9 ว่างวันไหนบ้าง?'
   );
 }
 
-/* ===== EP.04 ACHI NOTIFICATION ===== */
-if(
-  save.flags.ep3OutingRead &&
-  !save.flags.ep4AchiBannerShown &&
-  (page==='home' || page==='LINE')
-){
-  save.flags.ep4AchiBannerShown=true;
-  persist();
-
-  showGameBanner(
-    'achi',
-    'วันนี้ผมป่วย ไม่สบาย'
-  );
-}
-
-}
+// EP.04 เดิมไม่ให้แจ้งเตือนอชิป่วยก่อนเวลา
+// อชิป่วยวันที่ 13 มีนาคม จะถูกเรียกหลังเปิดแชทการิน}
 
 let lastBubbleSender = null;
 function bubble(text,out=false,senderId=''){
@@ -11994,7 +12041,6 @@ function bubble(text,out=false,senderId=''){
       senderName=match[1].trim();
       text=match[2];
 
-     
 const senderMap={
   'พี่ดุจ':'duj',
   'พี่ดุจดาว':'duj',
@@ -12136,9 +12182,9 @@ function ep2ContinueInvite(choiceIndex){
 
 function ep2Finish(){
   save.flags.ep2Completed = true;
+  unlock('ปฏิทิน');
   persist();
 }
-
 function ep2InviteChoices(){
   const route = save.flags.ep2InviteRoute;
 
@@ -12550,27 +12596,21 @@ if(chat==='tanaka'){
 if(chat==='tanaka' && save.flags.ep8Started){
 
   b+='<div class="day">19 เม.ย.</div>';
-
   b+=bubble(
     'คุณการันต์ ผมทราบเรื่องที่คุณกับอชิคบกันแล้วนะครับ'
   );
-
   b+=bubble(
     'บริษัทของเรามีกฎไม่ให้พนักงานคบกัน'
   );
-
   b+=bubble(
     'ผมอยากให้คุณทั้งสองพิสูจน์ว่า สามารถแยกเรื่องงานกับเรื่องส่วนตัวได้'
   );
-
   b+=bubble(
     'ถ้าคุณทำยอดขายให้ได้ 3 ล้านบาท ผมจะยอมรับเรื่องนี้'
   );
-
   b+=bubble(
     'แต่ถ้าทำไม่ได้ คุณต้องเป็นฝ่ายลาออกจากบริษัท'
   );
-
   b+=bubble(
     'ผมเข้าใจครับ ผมจะทำให้ได้',
     true
@@ -12657,11 +12697,58 @@ if(
     b+=bubble('แถวนั้นมีร้านเค้ก',true);
     b+=bubble('เห็นว่าวันนี้วันเกิดอชิผมเลยซื้อมาให้ครับ',true);
     b+=bubble('ฝากพี่ดุจให้อชิด้วยนะครับ',true);
-    b+=bubble('ได้เลยจ้า');
-    b+=bubble('เดี๋ยวพี่จัดการให้');
-    b+=bubble('ขอบคุณครับ',true);
-    if(save.flags.ep3OutingRead){
+   b+=bubble('ได้เลยจ้า');
+b+=bubble('เดี๋ยวพี่จัดการให้');
+b+=bubble('ขอบคุณครับ',true);
 
+// EP.03 — 6 มีนาคม
+if(save.flags.ep3DujQuestionShown){
+
+  b+='<div class="day">6 มี.ค.</div>';
+
+  b+=bubble(
+    'การันต์จ๊ะ พี่กำลังจัด Company Outing ต้นเดือนเมษายน ระหว่างวันที่ 1–9 เมษายน ว่างวันไหนบ้างจ๊ะ?'
+  );
+
+  if(save.flags.ep3DujAnswer){
+
+    b+=bubble(
+      'วันที่ 9 เมษายนว่างครับ ส่วนวันที่ 1–8 ผมมีนัดลูกค้าครับ',
+      true
+    );
+
+    b+=bubble(
+      'ขอบใจมากจ้ะ พี่จะสรุปวันแล้วแจ้งในกลุ่มบริษัทนะ'
+    );
+
+  }else{
+
+    choices=`
+      <div class="tinylabel">
+        เปิดปฏิทินตรวจสอบวันว่าง แล้วกรอกวันที่
+      </div>
+
+      <div style="display:flex;gap:8px;padding:8px 0">
+
+        <input
+          id="ep3FreeDate"
+          inputmode="text"
+          placeholder="เช่น 9 เมษายน"
+          aria-label="วันที่ว่าง"
+          style="min-width:0;flex:1;padding:12px;border:1px solid #ddd;border-radius:12px;font-size:16px"
+        >
+
+        <button class="choice" data-ep3-answer="1">
+          ส่ง
+        </button>
+
+      </div>
+    `;
+  }
+}
+
+// เนื้อเรื่อง EP.04 เดิม
+if(save.flags.ep4AchiCancelledRead){
   b+='<div class="day">13 เม.ย.</div>';
 
   b+=bubble(
@@ -12719,6 +12806,15 @@ if(save.flags.ep2Started && save.flags.ep2CouponReady){
   );
   b+=ep2InviteMessages();
   choices=ep2InviteChoices();
+}
+// EP.03 — 13 มีนาคม
+if(save.flags.ep3SickShown){
+
+  b+='<div class="day">13 มี.ค.</div>';
+
+  b+=bubble(
+    'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
+  );
 }
    // EP.04 — 13 เมษายน
   if(save.flags.ep4AchiCancelledRead){
@@ -12854,6 +12950,11 @@ if(chat==='pai'){
 
     b+=ep2LogoForm();
   }
+}
+// EP.03 — 12 เมษายน
+if(chat==='karin' && save.flags.ep3KarinMessageShown){
+  b+='<div class="day">12 เม.ย.</div>';
+  b+=bubble('ลงมาเจอชั้นหน่อย');
 }
 if(chat==='karin' && save.flags.ep4KarinShown){
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน');

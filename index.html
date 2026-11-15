@@ -5229,6 +5229,58 @@ button{
   transform:rotate(17deg);
   pointer-events:none;
 }
+
+.line-directory-mosaic span{
+  overflow:hidden;
+}
+
+.line-directory-mosaic span > img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.line-directory-mosaic .line-mosaic-group{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(2,minmax(0,1fr));
+  gap:1px;
+}
+
+.line-directory-mosaic .line-mosaic-group img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  object-fit:cover;
+}
+/* LINE group avatar — two halves */
+
+.line-directory-mosaic.line-two-groups{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:1fr;
+  gap:1px;
+  overflow:hidden;
+  border-radius:50%;
+}
+
+.line-two-groups span{
+  width:100%;
+  height:100%;
+  min-width:0;
+  overflow:hidden;
+}
+
+.line-two-groups img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
 </style>
 </head>
 <body>
@@ -6511,7 +6563,9 @@ const lineProfilePhotos = {
   duj: 'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
   tanaka: 'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
   karin: 'https://i.ibb.co/d4zWtjdL/r07qxo-R-Download.jpg',
-  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg'
+  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
+  office: 'https://i.ibb.co/MkYHgKhS/IMG-4977.jpg',
+  sales: 'https://i.ibb.co/mrw0qgHs/IMG-4976.jpg'
 };
 
 function lineAvatar(id='') {
@@ -6892,29 +6946,37 @@ function renderLine(){
   let content='';
   if(lineTab==='home'){
 
-  const mosaic=(ids)=>{
-    const colors={
-      achi:'#dce9e2',
-      duj:'#f1e1d9',
-      pai:'#e4def3',
-      rock:'#dce8f5',
-      office:'#dce8ee',
-      sales:'#e9e1f0'
-    };
+const mosaic=(ids)=>{
 
-    return '<div class="line-directory-mosaic">'+
-      ids.map(id=>
-        '<span style="background:'+
-          (colors[id]||'#e5eaf1')+'">'+
-          lineIcon(
-            id==='office'||id==='sales'
-              ? 'group'
-              : 'user'
-          )+
-        '</span>'
-      ).join('')+
-    '</div>';
-  };
+  // วงกลมกลุ่ม LINE แบ่งเป็น 2 ซีก
+  if(ids.includes('office') && ids.includes('sales')){
+    return `
+      <div class="line-directory-mosaic line-two-groups">
+        <span>
+          <img src="https://i.ibb.co/MkYHgKhS/IMG-4977.jpg" alt="TOYOKAWA">
+        </span>
+        <span>
+          <img src="https://i.ibb.co/mrw0qgHs/IMG-4976.jpg" alt="ทีมฝ่ายขาย">
+        </span>
+      </div>
+    `;
+  }
+
+  // รายการโปรดและเพื่อน ใช้รูปเดิม
+  return '<div class="line-directory-mosaic">'+
+    ids.map(id=>{
+      const photo=lineProfilePhotos[id];
+
+      if(photo){
+        return '<span>'+
+          '<img src="'+photo+'" alt="" loading="lazy">'+
+        '</span>';
+      }
+
+      return '<span>'+lineIcon('user')+'</span>';
+    }).join('')+
+  '</div>';
+};
 
   const directoryRow=(title,subtitle,count,ids,action)=>
     '<button class="line-directory-row" data-line-action="'+action+'">'+

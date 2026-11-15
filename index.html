@@ -10446,11 +10446,28 @@ document.head.appendChild(igStoryStyle);
 
 /* ===== CLOCK ALARMS ===== */
 
-save.flags.clockAlarms ??= {
-  '08:00':true,
-  '13:00':true,
-  '16:45':true
+
+const clockAlarmDefaults = {
+  '08:50':true,
+  '10:00':true,
+  '13:30':true,
+  '16:40':true
 };
+
+save.flags.clockAlarms ??= {};
+
+for(const time of ['08:00','13:00','16:45']){
+  delete save.flags.clockAlarms[time];
+}
+
+for(const [time,enabled] of Object.entries(clockAlarmDefaults)){
+  if(!(time in save.flags.clockAlarms)){
+    save.flags.clockAlarms[time]=enabled;
+  }
+}
+
+persist();
+
 
 function renderSamsungAlarmRow(time,label){
   const enabled=!!save.flags.clockAlarms[time];
@@ -10523,7 +10540,14 @@ function samsungClockFormat(ms){
     .map(v=>String(v).padStart(2,'0'))
     .join(':');
 }
-
+function samsungWorldTime(timeZone){
+  return new Intl.DateTimeFormat('th-TH-u-nu-latn',{
+    timeZone:timeZone,
+    hour:'2-digit',
+    minute:'2-digit',
+    hourCycle:'h23'
+  }).format(new Date());
+}
 function renderEp6Clock(){
   const ringing=
     save.flags.ep6Stage===3 &&
@@ -10552,28 +10576,31 @@ if(samsungClockTab==='alarm'){
       </div>
     ` : ''}
 
-    ${renderSamsungAlarmRow('08:00','ทุกวัน')}
-    ${renderSamsungAlarmRow('13:00','ทุกวัน')}
-    ${renderSamsungAlarmRow('16:45','ทุกวัน')}
-  `;
+    ${renderSamsungAlarmRow('08:50','อชิมาถึงบริษัท · จ.–ศ.')}
+${renderSamsungAlarmRow('10:00','อชิต้องกินยา · ครั้งเดียว')}
+${renderSamsungAlarmRow('13:30','ต้มน้ำร้อน · จ.–ศ.')}
+${renderSamsungAlarmRow('16:40','ปิดม่านให้อชิ · จ.–ศ.')}  `;
 }
-
 
   if(samsungClockTab==='world'){
     body=`
-      <div class="sclock-alarm">
-        <strong>กรุงเทพมหานคร</strong>
-        <div class="sclock-worldtime"
-          id="sclockBangkok">--:--</div>
-        <div class="sclock-sub">ประเทศไทย</div>
-      </div>
+     
+<div class="sclock-alarm">
+  <strong>กรุงเทพมหานคร</strong>
+  <div class="sclock-worldtime">
+    ${samsungWorldTime('Asia/Bangkok')}
+  </div>
+  <div class="sclock-sub">ประเทศไทย</div>
+</div>
 
-      <div class="sclock-alarm">
-        <strong>โตเกียว</strong>
-        <div class="sclock-worldtime"
-          id="sclockTokyo">--:--</div>
-        <div class="sclock-sub">ญี่ปุ่น</div>
-      </div>
+<div class="sclock-alarm">
+  <strong>โตเกียว</strong>
+  <div class="sclock-worldtime">
+    ${samsungWorldTime('Asia/Tokyo')}
+  </div>
+  <div class="sclock-sub">ญี่ปุ่น</div>
+</div>
+
     `;
   }
 
@@ -17646,7 +17673,7 @@ if(ep6LeavingAchiConfession){
     el.innerHTML=`
       <button class="game-banner" data-ep6-open-clock="1">
         <span class="game-banner-icon">
-          ${lineIcon('calendar')}
+         ${samsungClockIcon('alarm')}
         </span>
         <span class="game-banner-text">
           <small>นาฬิกา</small>

@@ -7379,8 +7379,7 @@ const lineProfilePhotos = {
   pai: 'https://i.ibb.co/ZpSXR7nh/r07qxo-R-Download.jpg',
   duj: 'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
   tanaka: 'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
-  karin: 'https://i.ibb.co/d4zWtjdL/r07qxo-R-Download.jpg',
-  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
+  karin:'https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg',  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
   office: 'https://i.ibb.co/MkYHgKhS/IMG-4977.jpg',
   sales: 'https://i.ibb.co/mrw0qgHs/IMG-4976.jpg'
 };
@@ -12717,12 +12716,12 @@ if(save.flags.ep3DujQuestionShown){
 
   }else{
 
-    choices=`
+ choices=`
   <div class="tinylabel">
     เปิดปฏิทินตรวจสอบวันว่าง แล้วกรอกวันที่
   </div>
 
-  <div style="display:flex;align-items:center;gap:8px;padding:8px 0;">
+  <div style="display:flex;align-items:center;gap:8px;padding:8px 0;width:100%;">
 
     <span style="white-space:nowrap;font-size:16px;color:#222;">
       ผมว่างวันที่
@@ -12733,10 +12732,11 @@ if(save.flags.ep3DujQuestionShown){
       type="text"
       placeholder="วันที่"
       autocomplete="off"
-      style="width:65px;min-width:0;padding:12px 8px;border:1px solid #ddd;border-radius:12px;font-size:16px;text-align:center;"
+      style="flex:1;width:0;min-width:0;padding:12px 8px;border:1px solid #ddd;border-radius:12px;font-size:16px;text-align:center;"
     >
 
-    <button class="choice" data-ep3-answer="1">
+    <button class="choice" data-ep3-answer="1"
+      style="flex:0 0 52px;width:52px;min-width:52px;padding:12px 4px;white-space:nowrap;">
       ส่ง
     </button>
 
@@ -12950,7 +12950,18 @@ if(chat==='pai'){
 }
 // EP.03 — 12 เมษายน
 if(chat==='karin' && save.flags.ep3KarinMessageShown){
+
   b+='<div class="day">12 เม.ย.</div>';
+
+  // ช่วงเช้า
+  b+=bubble('การัน ชั้นขอไปนอนห้องแกได้ไหม');
+  b+=bubble('มาทำไม',true);
+  b+=bubble('ฉันทะเลาะกับแฟน');
+  b+=bubble('แล้วเกี่ยวอะไรกับผม',true);
+  b+=bubble('ผมทำงานก่อน',true);
+
+  // ช่วงเย็น
+  b+='<div class="day">ช่วงเย็น</div>';
   b+=bubble('ลงมาเจอชั้นหน่อย');
 }
 if(chat==='karin' && save.flags.ep4KarinShown){

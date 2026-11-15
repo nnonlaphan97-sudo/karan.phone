@@ -9747,12 +9747,12 @@ function igAvatar(label, size = 46) {
   </span>`;
 }
 
+
 function igNavigation() {
   const tabs = [
     ['home','home'],
     ['search','search'],
     ['reels','reels'],
-    ['create','plus'],
     ['profile','profile']
   ];
 
@@ -9768,6 +9768,162 @@ function igNavigation() {
   </nav>`;
 }
 
+/* ===== INSTAGRAM STORIES & FEED ===== */
+
+let igActiveStory = '';
+let igStoryReturn = 'main';
+
+save.flags.igViewedStories ??= {};
+save.flags.igLikedPosts ??= {};
+
+const igPeople = {
+  achi: {
+    name: 'อชิ',
+    username: 'achi.rawit',
+    initial: 'อ',
+    color: '#d9c8c1',
+    story: 'เช้าวันธรรมดา กับกาแฟแก้วโปรด',
+    caption: 'วันสบาย ๆ'
+  },
+  pai: {
+    name: 'ปาย',
+    username: 'pai.paii',
+    initial: 'ป',
+    color: '#c8d9e8',
+    story: 'วันนี้งานเยอะอีกแล้ว',
+    caption: 'อีกหนึ่งวันที่ออฟฟิศ'
+  },
+  rock: {
+    name: 'ร็อค',
+    username: 'rock.n',
+    initial: 'ร',
+    color: '#d8d5ed',
+    story: 'พักเที่ยงสักหน่อย',
+    caption: 'วันดี ๆ ของผม'
+  },
+  duj: {
+    name: 'พี่ดุจ',
+    username: 'dujdao',
+    initial: 'ด',
+    color: '#e7c5ce',
+    story: 'ความสุขเล็ก ๆ',
+    caption: 'เก็บภาพบรรยากาศวันนี้ไว้หน่อย'
+  },
+  pa: {
+    name: 'ป่า',
+    username: 'pa.paa',
+    initial: 'ป',
+    color: '#d2dfcb',
+    story: 'วันหยุดของฉัน',
+    caption: 'พักผ่อนกันบ้าง'
+  }
+};
+
+function igPersonAvatar(id, size=44) {
+  const p=igPeople[id];
+  return `
+    <span class="ig-person-avatar"
+      style="width:${size}px;height:${size}px;background:${p.color}">
+      ${p.initial}
+    </span>
+  `;
+}
+
+function igStoryItem(id) {
+  const p=igPeople[id];
+  const viewed=!!save.flags.igViewedStories[id];
+
+  return `
+    <button class="ig-story-item"
+      data-ig-story="${id}">
+      <span class="ig-story-ring ${viewed?'viewed':''}">
+        ${igPersonAvatar(id,58)}
+      </span>
+      <small>${p.name}</small>
+    </button>
+  `;
+}
+
+function igFeedPost(id) {
+  const p=igPeople[id];
+  const liked=!!save.flags.igLikedPosts[id];
+
+  return `
+    <article class="ig-feed-post">
+      <div class="ig-post-user">
+        ${igPersonAvatar(id,36)}
+        <div class="ig-post-identity">
+          <strong>${p.username}</strong>
+          <small>${p.name}</small>
+        </div>
+        <span class="ig-more">•••</span>
+      </div>
+
+      <div class="ig-feed-photo"
+        style="background:${p.color}">
+        <div class="ig-feed-photo-inner">
+          <span>${p.name}</span>
+          <small>${p.caption}</small>
+        </div>
+      </div>
+
+      <div class="ig-post-actions">
+        <button class="${liked?'liked':''}"
+          data-ig-like="${id}"
+          aria-label="ถูกใจโพสต์">
+          ${igIcon('heart')}
+        </button>
+
+        <button data-ig-comment="${id}"
+          aria-label="ดูความคิดเห็น">
+          ${igIcon('message')}
+        </button>
+
+        <button data-ig-save="${id}"
+          aria-label="บันทึกโพสต์">
+          ${igIcon('bookmark')}
+        </button>
+      </div>
+
+      <div class="ig-post-caption">
+        <strong>${p.username}</strong>
+        ${p.caption}
+      </div>
+    </article>
+  `;
+}
+
+function renderIGStoryViewer() {
+  const p=igPeople[igActiveStory];
+  if(!p)return '';
+
+  return `
+    <div class="ig-story-viewer"
+      style="background:${p.color}">
+      <div class="ig-story-progress">
+        <span></span>
+      </div>
+
+      <div class="ig-story-top">
+        ${igPersonAvatar(igActiveStory,36)}
+        <strong>${p.username}</strong>
+        <small>สตอรี่</small>
+        <button data-ig-close-story="1"
+          aria-label="ปิดสตอรี่">×</button>
+      </div>
+
+      <div class="ig-story-center">
+        <div class="ig-story-text">${p.story}</div>
+      </div>
+
+      <div class="ig-story-bottom">
+        <span>ส่งข้อความ</span>
+        ${igIcon('heart')}
+      </div>
+    </div>
+  `;
+}
+
 function renderInstagram() {
     if(
     igScreen==='ep7shop' ||
@@ -9775,6 +9931,9 @@ function renderInstagram() {
   ){
     return ep7InstagramPage();
   }
+  if(igScreen === 'story'){
+  return renderIGStoryViewer();
+}
   if (igScreen === 'dm') {
     return renderInstagramDM();
   }
@@ -9822,38 +9981,24 @@ function renderInstagram() {
   }
 
   let content = '';
+  
+if (igTab === 'home') {
+  content = `
+    <div class="ig-stories">
+      ${igStoryItem('achi')}
+      ${igStoryItem('pai')}
+      ${igStoryItem('rock')}
+    </div>
 
-  if (igTab === 'home') {
-    content = `
-      <div class="ig-stories">
-        <button data-ig-tab="profile">
-          ${igAvatar('K', 64)}
-          <small>สตอรี่ของคุณ</small>
-        </button>
-        <button data-ig-screen="inbox">
-          ${igAvatar('ป', 64)}
-          <small>ป่า</small>
-        </button>
-      </div>
-      <div class="ig-post">
-        <div class="ig-post-user">
-          ${igAvatar('K', 35)}
-          <strong>karan</strong>
-          <span>•••</span>
-        </div>
-        <div class="ig-post-art">
-          <span>Instagram</span>
-        </div>
-        <div class="ig-post-actions">
-          ${igIcon('heart')}
-          ${igIcon('message')}
-          ${igIcon('bookmark')}
-        </div>
-        <div class="ig-post-caption">
-          <strong>karan</strong> บันทึกช่วงเวลาของวันนี้
-        </div>
-      </div>`;
-  }
+    <div class="ig-feed">
+      ${igFeedPost('achi')}
+      ${igFeedPost('pai')}
+      ${igFeedPost('rock')}
+      ${igFeedPost('duj')}
+      ${igFeedPost('pa')}
+    </div>
+  `;
+}
 
   if (igTab === 'search') {
     content = `
@@ -9931,7 +10076,211 @@ function renderInstagram() {
     </div>`;
 }
 
-/* ===== EP.06 CLOCK ===== */
+/* ===== INSTAGRAM STORIES & FEED ===== */
+
+.ig-stories{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:15px 12px;
+  scrollbar-width:none;
+}
+
+.ig-story-item{
+  flex:0 0 75px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  border:0;
+  background:transparent;
+  color:#222;
+  padding:0;
+}
+
+.ig-story-ring{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  padding:3px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(
+    35deg,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5
+  );
+}
+
+.ig-story-ring.viewed{
+  background:#c9c9c9;
+}
+
+.ig-person-avatar{
+  border:2px solid white;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#4d4350;
+  font-size:22px;
+  font-weight:600;
+  flex-shrink:0;
+}
+
+.ig-story-item small{
+  font-size:11px;
+  white-space:nowrap;
+}
+
+.ig-feed-post{
+  border-bottom:1px solid #eee;
+  padding-bottom:12px;
+}
+
+.ig-post-identity{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.ig-post-identity strong{
+  font-size:13px;
+}
+
+.ig-post-identity small{
+  font-size:11px;
+  color:#777;
+}
+
+.ig-more{
+  font-size:18px;
+}
+
+.ig-feed-photo{
+  width:100%;
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
+}
+
+.ig-feed-photo-inner{
+  width:80%;
+  height:75%;
+  border:1px solid #ffffff80;
+  border-radius:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+  color:#493f4a;
+}
+
+.ig-feed-photo-inner span{
+  font-size:34px;
+  font-weight:700;
+}
+
+.ig-feed-photo-inner small{
+  font-size:15px;
+}
+
+.ig-post-actions button{
+  border:0;
+  background:transparent;
+  padding:0;
+  color:#111;
+}
+
+.ig-post-actions button.liked{
+  color:#ed315a;
+}
+
+.ig-post-actions button.liked svg{
+  fill:currentColor;
+}
+
+.ig-story-viewer{
+  position:relative;
+  width:100%;
+  height:100%;
+  padding:47px 15px 25px;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+}
+
+.ig-story-progress{
+  height:3px;
+  background:#ffffff66;
+  border-radius:5px;
+  overflow:hidden;
+}
+
+.ig-story-progress span{
+  display:block;
+  width:100%;
+  height:100%;
+  background:#fff;
+}
+
+.ig-story-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-top:13px;
+}
+
+.ig-story-top strong{
+  font-size:14px;
+}
+
+.ig-story-top small{
+  flex:1;
+  opacity:.8;
+}
+
+.ig-story-top button{
+  border:0;
+  background:none;
+  color:white;
+  font-size:30px;
+}
+
+.ig-story-center{
+  flex:1;
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+
+.ig-story-text{
+  font-size:25px;
+  font-weight:700;
+  line-height:1.6;
+  padding:20px;
+  text-shadow:0 2px 8px #0004;
+}
+
+.ig-story-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:14px;
+}
+
+.ig-story-bottom span{
+  flex:1;
+  padding:12px 16px;
+  border:1px solid white;
+  border-radius:25px;
+  font-size:13px;
+}
 
 /* ===== CLOCK ALARMS ===== */
 
@@ -15908,6 +16257,68 @@ if(sendBag && page==='chat' && chat==='karin'){
 }
 
 // เปิด Instagram จากแจ้งเตือนของป่า
+
+/* ===== INSTAGRAM STORY INTERACTIONS ===== */
+
+const igStoryButton=e.target.closest('[data-ig-story]');
+
+if(igStoryButton && page==='Instagram'){
+  const id=igStoryButton.dataset.igStory;
+
+  if(!igPeople[id])return;
+
+  save.flags.igViewedStories[id]=true;
+  persist();
+
+  igActiveStory=id;
+  igStoryReturn=igScreen;
+  igScreen='story';
+
+  render();
+  return;
+}
+
+const igCloseStory=e.target.closest('[data-ig-close-story]');
+
+if(igCloseStory && page==='Instagram'){
+  igScreen=igStoryReturn;
+  igActiveStory='';
+  render();
+  return;
+}
+
+const igLikeButton=e.target.closest('[data-ig-like]');
+
+if(igLikeButton && page==='Instagram'){
+  const id=igLikeButton.dataset.igLike;
+
+  save.flags.igLikedPosts[id]=
+    !save.flags.igLikedPosts[id];
+
+  persist();
+  render();
+  return;
+}
+
+const igCommentButton=e.target.closest('[data-ig-comment]');
+
+if(igCommentButton && page==='Instagram'){
+  popup(
+    'ความคิดเห็น',
+    'ยังไม่มีความคิดเห็นในโพสต์นี้'
+  );
+  return;
+}
+
+const igSaveButton=e.target.closest('[data-ig-save]');
+
+if(igSaveButton && page==='Instagram'){
+  popup(
+    'บันทึกโพสต์',
+    'บันทึกโพสต์ไว้แล้ว'
+  );
+  return;
+}
 
 const igTabButton=e.target.closest('[data-ig-tab]');
 

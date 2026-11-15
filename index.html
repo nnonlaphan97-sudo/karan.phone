@@ -7308,17 +7308,31 @@ if(save.flags.ep6Stage >= 1){
   const previousChat=chat;
   const previousSender=lastBubbleSender;
 
-  function dateValue(label){
-    const match=(label||'').match(
-      /(\d{1,2})\s*(ม\.ค\.|เม\.ย\.)/
-    );
+  
+function dateValue(label){
+  const months={
+    'ม.ค.':1,
+    'ก.พ.':2,
+    'มี.ค.':3,
+    'เม.ย.':4,
+    'พ.ค.':5,
+    'มิ.ย.':6,
+    'ก.ค.':7,
+    'ส.ค.':8,
+    'ก.ย.':9,
+    'ต.ค.':10,
+    'พ.ย.':11,
+    'ธ.ค.':12
+  };
 
-    if(!match)return 0;
+  const match=(label||'').match(
+    /(\d{1,2})\s*(ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.|ก\.ค\.|ส\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.)/
+  );
 
-    const month=match[2]==='เม.ย.'?4:1;
+  if(!match)return null;
 
-    return 20260000+month*100+Number(match[1]);
-  }
+  return months[match[2]]*100+Number(match[1]);
+}
 
   const results=availableChats.map((c,index)=>{
 
@@ -7341,9 +7355,14 @@ if(save.flags.ep6Stage >= 1){
       Array.from(body.children).forEach(el=>{
 
         if(el.classList.contains('day')){
-          currentDate=el.textContent.trim();
-          return;
-        }
+  const label=el.textContent.trim();
+
+  if(dateValue(label)!==null){
+    currentDate=label;
+  }
+
+  return;
+}
 
         if(el.classList.contains('line-cancelled-message')){
           latestText='อชิยกเลิกข้อความแล้ว';
@@ -7399,7 +7418,7 @@ if(latestSender==='me'){
       ...c,
       preview,
       date:latestDate,
-      dateOrder:dateValue(latestDate),
+      dateOrder:dateValue(latestDate) ?? 0,
       messageIndex,
       originalIndex:index
     };
@@ -11619,7 +11638,6 @@ function ep2LogoForm(){
           max="100"
           placeholder="0–100"
         >
-
         <button class="action" data-ep2-submit-logo="1">
           ส่งข้อมูลให้ปาย
         </button>
@@ -11633,7 +11651,6 @@ function groupBubble(sender,text,out=false){
     return bubble(text,true);
   }
 
-  
 const senderMap={
   'พี่ดุจ':'duj',
   'พี่ดุจดาว':'duj',
@@ -12312,8 +12329,7 @@ if(chat==='karin' && save.flags.ep4KarinShown){
   }
 }
 if(chat==='office'){
-
-  b='<div class="day">30 ม.ค.</div>';
+  b='<div class="day">29 ม.ค.</div>';
 
   // พี่ดุจแนะนำร็อคในกลุ่มบริษัท
   b+=groupBubble(

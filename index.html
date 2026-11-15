@@ -11621,27 +11621,30 @@ function ep2LogoForm(){
     </div>
   `;
 }
-function groupBubble(sender,text,out=false){
 
+function groupBubble(sender,text,out=false){
   if(out){
     return bubble(text,true);
   }
 
-  const colors={
-    'พี่ดุจ':'#f1e1d9',
-    'ปาย':'#e4def3',
-    'ร็อค':'#dce8f5',
-    'อชิ':'#dce9e2'
+  const senderMap={
+    'พี่ดุจ':'duj',
+    'พี่ดุจดาว':'duj',
+    'ปาย':'pai',
+    'ร็อค':'rock',
+    'อชิ':'achi',
+    'การันต์':'me',
+    'ทานากะซัง':'tanaka',
+    'ทีมฝ่ายขาย':'sales',
+    'ฝ่ายขาย':'sales'
   };
+
+  const senderId=senderMap[sender]||'office';
 
   return `
     <div class="line-message received">
-
       <div class="line-message-avatar">
-        <div class="line-avatar"
-             style="background:${colors[sender]||'#e5eaf1'}">
-          ${lineIcon('user')}
-        </div>
+        ${lineAvatar(senderId)}
       </div>
 
       <div class="group-message-content">
@@ -11650,10 +11653,10 @@ function groupBubble(sender,text,out=false){
       </div>
 
       <div class="line-message-meta">18:00</div>
-
     </div>
   `;
 }
+
 function cancelledMessage(){
   return `
     <div class="line-cancelled-message">
@@ -12356,13 +12359,11 @@ if(chat==='office'){
   }
 }
   if(chat==='sales'){
-
     b+=bubble(
-      'ฝ่ายขาย: ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ'
+      'ส่งรายละเอียดลูกค้าเรียบร้อยแล้วครับ'
     );
-
     b+=bubble(
-      'การันต์: ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',
+      'ขอบคุณครับ รบกวนตรวจตัวเลขอีกครั้งก่อนส่งฉบับสุดท้าย',
       true
     );
 
@@ -13612,7 +13613,6 @@ function lineBannerAvatar(id){
 
   return icon('line');
 }
-
 
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
@@ -15983,15 +15983,28 @@ else if(btn.dataset.reply){
     'ถ้าอชิมีความสุข ผมก็ดีใจแล้วครับ'
   ];
 
-  if(who==='achi'){
-    save.replies[who]=opts[Number(btn.dataset.index)];
-  if(who==='achi' && save.flags.achiThanked){
-  ep2Start();
-}
-    save.flags.ep01Complete=true;
-    persist();
-    render();
+if(who==='achi'){
+  save.replies[who]=opts[Number(btn.dataset.index)];
+
+  const startPaiChat=
+    save.flags.achiThanked &&
+    !save.flags.ep2Started;
+
+  if(startPaiChat){
+    ep2Start();
   }
+
+  save.flags.ep01Complete=true;
+  persist();
+  render();
+
+  if(startPaiChat){
+    showGameBanner(
+      'pai',
+      'ทำไมพี่การันต์ถึงถามเหรอคะ'
+    );
+  }
+}
 }
 else if(btn.dataset.task){
 const task=btn.dataset.task;

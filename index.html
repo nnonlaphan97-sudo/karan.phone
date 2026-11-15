@@ -5175,6 +5175,60 @@ button{
   object-fit:cover;
 }
 
+/* LINE profile favorite star */
+
+.line-favorite-active{
+  color:#06c755;
+  display:grid;
+  place-items:center;
+}
+
+.line-favorite-active svg{
+  fill:#06c755;
+  stroke:#06c755;
+}
+
+.line-favorite-inactive{
+  color:#ffffff;
+  display:grid;
+  place-items:center;
+}
+
+.line-favorite-inactive svg{
+  fill:none;
+  stroke:currentColor;
+}
+
+/* Birthday avatar on LINE home */
+
+.line-birthday-avatar{
+  position:relative;
+  display:inline-flex;
+  flex-shrink:0;
+  width:58px;
+  height:62px;
+  align-items:flex-end;
+  justify-content:center;
+  overflow:visible;
+}
+
+.line-birthday-avatar .line-avatar{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  overflow:hidden;
+}
+
+.line-birthday-hat{
+  position:absolute;
+  width:27px;
+  height:32px;
+  top:-8px;
+  right:-2px;
+  z-index:2;
+  transform:rotate(17deg);
+  pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -6529,7 +6583,7 @@ let lineProfilePreviousTab='directory';
 function lineProfileIcon(type){
   const shapes={
     close:'<path d="M5 5l14 14M19 5L5 19"/>',
-    chat:'<path d="M20 11a8 8 0 0 1-8 8H5l-2 2v-9a9 9 0 1 1 17-1Z"/><circle cx="8" cy="11" r=".8" fill="currentColor"/><circle cx="12" cy="11" r=".8" fill="currentColor"/><circle cx="16" cy="11" r=".8" fill="currentColor"/>',
+    chat:'<path d="M12 3C6.48 3 2 6.58 2 11c0 2.45 1.38 4.64 3.55 6.11L5 21l4.5-2.35c.81.23 1.65.35 2.5.35 5.52 0 10-3.58 10-8S17.52 3 12 3Z" fill="currentColor" stroke="none"/><path d="M7.5 11h9" stroke="#fff" stroke-width="1.8"/><path d="M7.5 14h6" stroke="#fff" stroke-width="1.8"/>',
     phone:'<path d="M6 3H4a2 2 0 0 0-2 2c0 9 8 17 17 17a2 2 0 0 0 2-2v-3l-5-2-2 3a16 16 0 0 1-8-8l3-2-2-5Z"/>',
     video:'<rect x="2" y="5" width="14" height="14" rx="2"/><path d="m16 10 6-4v12l-6-4"/>',
     star:'<path d="m12 2 3.1 6.5 7.1 1-5.1 5 1.2 7-6.3-3.3-6.3 3.3 1.2-7-5.1-5 7.1-1Z"/>'
@@ -6559,8 +6613,8 @@ function renderLineFullProfile(){
         <div class="line-full-profile-top-right">
           <button data-line-profile-favorite="1"
             aria-label="รายการโปรด">
-            <span style="color:#06c755">
-              ${lineProfileIcon('star')}
+            <span class="${id==='achi' ? 'line-favorite-active' : 'line-favorite-inactive'}">
+            ${lineProfileIcon('star')}
             </span>
           </button>
         </div>
@@ -6906,8 +6960,17 @@ function renderLine(){
         '<button data-line-action="friends">ดูทั้งหมด</button>'+
       '</div>'+
 
-      '<button class="line-directory-row" data-line-birthday="achi">'+
-  lineAvatar('achi')+
+      
+'<button class="line-directory-row" data-line-birthday="achi">'+
+  '<span class="line-birthday-avatar">'+
+    lineAvatar('achi')+
+    '<svg class="line-birthday-hat" viewBox="0 0 36 42" aria-hidden="true">'+
+      '<path d="M8 34L23 7L34 34Z" fill="#7199ef"/>'+
+      '<path d="M12 28L29 28" stroke="#fff" stroke-width="2"/>'+
+      '<circle cx="23" cy="6" r="4" fill="#f174b6"/>'+
+      '<path d="M23 0v12M17 6h12" stroke="#f174b6" stroke-width="2"/>'+
+    '</svg>'+
+  '</span>'+
   '<div class="line-directory-info">'+
     '<strong>วันเกิดเพื่อนในช่วงนี้</strong>'+
     '<small>อชิ · 30 มกราคม</small>'+
@@ -14100,6 +14163,7 @@ if(ep2Logo && page==='chat' && chat==='pai'){
 }
 const birthday=e.target.closest('[data-line-birthday]');
 
+
 if(birthday && page==='LINE'){
   save.flags.birthdaySeen=true;
   unlock('GrabFood');
@@ -14110,8 +14174,33 @@ if(birthday && page==='LINE'){
   lineTab='profile';
 
   render();
+
+  const banner=document.getElementById('gameBanner');
+
+  if(banner){
+    banner.innerHTML=`
+      <div class="game-banner" role="status">
+        <span class="game-banner-icon">
+          ${icon('line')}
+        </span>
+        <span class="game-banner-text">
+          <small>LINE · แจ้งเตือนวันเกิด</small>
+          <strong>วันเกิดอชิ · 30 มกราคม</strong>
+          <span>อย่าลืมซื้อเค้กวันเกิดให้อชิด้วยนะ!</span>
+        </span>
+      </div>
+    `;
+
+    setTimeout(()=>{
+      const current=document.getElementById('gameBanner');
+      if(current && current===banner){
+        current.innerHTML='';
+      }
+    },4000);
+  }
   return;
 }
+
 const cakeBtn=e.target.closest('[data-grab-cake]');
 const grabBtn=e.target.closest('[data-grab]');
 

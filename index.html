@@ -15945,7 +15945,7 @@ document.addEventListener('change',function(e){
 });
 
 document.addEventListener('click',function(e){
-
+  try {
   // จัดการปุ่ม PIN ก่อนคำสั่งอื่นทั้งหมด
   const pinButton = e.target.closest(
     '.pin-key, .pin-action'
@@ -18648,6 +18648,13 @@ popup('รายการอาหาร','จัดส่งเรียบร�
 }
 }
 }
+  } catch(error) {
+    console.error('PHONE CLICK ERROR:', error);
+    alert(
+      'ปุ่มทำงานผิดพลาด:\n' +
+      error.message
+    );
+  }
 });
 
 document.addEventListener('input',function(e){

@@ -2208,7 +2208,7 @@ button{
 .samsung-gallery{
   position:relative;
   height:100%;
-  padding:55px 20px 100px;
+  padding:55px 20px 110px;
   background:#fff;
   color:#202127;
   overflow-y:auto;
@@ -2284,19 +2284,22 @@ button{
   color:#fff;
 }
 
+
 .samsung-gallery-tabs{
-  position:absolute;
+  position:fixed;
   left:0;
   right:0;
-  bottom:24px;
+  bottom:0;
+  z-index:50;
   display:flex;
   justify-content:space-around;
-  padding:18px 0;
+  padding:18px 0 24px;
   background:#fff;
   border-top:1px solid #eee;
   font-size:13px;
   color:#777;
 }
+
 
 .samsung-gallery-tabs .selected{
   color:#111;
@@ -2415,11 +2418,13 @@ button{
 }
 
 .ep5-ig-story{
-  width:68%;
-  margin:0 0 20px auto;
-  border:1px solid #eee;
-  border-radius:15px;
-  overflow:hidden;
+  width: min(65%, 260px);
+  aspect-ratio: 9 / 16;
+  height: auto;
+  margin: 0 auto 20px 0;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .ep5-ig-story-label{
@@ -6600,6 +6605,14 @@ button{
   position: relative;
 }
 
+/* Instagram DM — รูปสตอรี่ที่ถูกตอบกลับ */
+.ep5-ig-story img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
 </style>
 </head>
 <body>
@@ -10146,7 +10159,7 @@ function renderInstagramDM(){
       <div class="ep5-ig-head">
       <button data-ig-screen="inbox" aria-label="กลับไปข้อความ Instagram">          ${lineIcon('back')}
         </button>
-        <strong>ป่า</strong>
+        <strong>pamai_</strong>
         <span>Instagram</span>
       </div>
 
@@ -10156,10 +10169,10 @@ function renderInstagramDM(){
         <div class="ep5-ig-story">
           <div class="ep5-ig-story-label">
             ตอบกลับสตอรี่ของคุณ
-          </div>
-          <div class="ep5-ig-story-photo">
-            <span>การเดินทางทางเรือกับอชิ</span>
-          </div>
+          
+<div class="ep5-ig-story">
+ <img src="https://i.postimg.cc/SRthjX60/IMG-5109.jpg">>
+</div>
         </div>
 
         <div class="ep5-ig-bubble received">
@@ -10297,7 +10310,7 @@ save.flags.igLikedPosts ??= {};
 const igPeople = {
   achi: {
     name: 'อชิ',
-    username: 'achi.rawit',
+    username: 'achirawittee',
     initial: 'อ',
     color: '#d9c8c1',
     story: 'เช้าวันธรรมดา กับกาแฟแก้วโปรด',
@@ -10329,7 +10342,7 @@ const igPeople = {
   },
   pa: {
     name: 'ป่า',
-    username: 'pa.paa',
+    username: 'pamai_',
     initial: 'ป',
     color: '#d2dfcb',
     story: 'วันหยุดของฉัน',
@@ -10484,7 +10497,7 @@ function renderInstagram() {
           <button class="ig-chat-row" data-ig-screen="dm">
             ${igAvatar('ป', 55)}
             <span>
-              <strong>ป่า</strong>
+              <strong>Pamai_</strong>
         <small>
   ${save.flags.ep7CoffeeConfirmed
     ? 'ได้เลย เดี๋ยวเตรียมไว้ให้'
@@ -14478,8 +14491,8 @@ if(chat==='karin' && save.flags.ep4KarinShown){
     `;
 
     // บทสนทนาหลังส่งรูป
+    lastBubbleSender=null;
     b+=bubble('ตั้งใจทำงานนะ แล้วค่อยคุยกัน',false,'','09:20');
-
     b+=bubble('คนในรูปนี่อชิเหรอ',false,'','09:21');
     b+=bubble('ทำไมไม่ไปนอนบ้านอชิเลยล่ะ',false,'','09:21');
     b+=bubble('ลำบากอชิเขาครับ',true,'','09:22');
@@ -15885,7 +15898,7 @@ function showEp5InstagramBanner(){
       </span>
       <span class="game-banner-text">
         <small>Instagram · 16 เม.ย.</small>
-        <strong>ป่า</strong>
+        <strong>pamai_</strong>
         <span>มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย</span>
       </span>
     </button>

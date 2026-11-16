@@ -6262,6 +6262,20 @@ button{
   border:2px solid #06c755;
   border-radius:50%;
 }
+
+.sg-radio.selected {
+  background:#06c755;
+  box-shadow:inset 0 0 0 4px #fff;
+}
+
+.sg-recipient {
+  overflow-y:auto;
+}
+
+.sg-contact {
+  flex-shrink:0;
+}
+
 .sg-send {
   margin-top:auto;
   border:0;
@@ -8328,6 +8342,16 @@ if(
   displayDate='13 เม.ย.';
   displayTime='08:36';
 }
+
+if(
+  c.id==='achi' &&
+  save.flags.ep4HomeBannerRead &&
+  (dateValue(displayDate) ?? 0) <= 413
+){
+  displayDate='13 เม.ย.';
+  displayTime='17:30';
+}
+
     const sortTime =
       (dateValue(displayDate) ?? 0) * 10000 +
       Number(displayTime.replace(':',''));
@@ -9930,6 +9954,7 @@ function samsungAllPhotos(){
 
 let samsungGalleryView='grid';
 let samsungShareOpen=false;
+let samsungSelectedRecipient='';
 
 function renderSamsungGallery(){
   const taken=save.flags.ep4PhotoTaken;
@@ -10007,11 +10032,25 @@ const photo=photos[samsungGalleryIndex];
           <img src="${photo}" alt="รูปที่จะแชร์">
         </div>
         <p>เลือกผู้รับใน LINE</p>
-        <button class="sg-contact" data-sg-select-karin="1">
-          <img src="https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg" alt="">
-          <span>พี่การิน</span>
-          <span class="sg-radio"></span>
-        </button>
+        
+${[
+  {id:'karin',name:'Karin'},
+  {id:'achi',name:'Acirawit'},
+  {id:'duj',name:'พี่ดุจดาว'},
+  {id:'pai',name:'Pai'},
+  {id:'rock',name:'Rock'},
+  {id:'tanaka',name:'Tanaka san'}
+].map(person=>`
+  <button class="sg-contact"
+          data-sg-select-recipient="${person.id}">
+    <img src="${lineProfilePhotos[person.id]}" alt="">
+    <span>${person.name}</span>
+    <span class="sg-radio ${
+      samsungSelectedRecipient===person.id ? 'selected' : ''
+    }"></span>
+  </button>
+`).join('')}
+
         <button class="sg-send" data-ep4-send-photo="1">
           ส่ง
         </button>
@@ -14216,7 +14255,7 @@ if(save.flags.ep3SickShown){
 
     // ก่อนเปิดแบนเนอร์ ยังเป็นข้อความแจ้งว่าป่วย
     b+=bubble(
-      'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ',
+      'ขอโษนะการันต์ วันนี้ผมป่วยไปไม่ไหวจริงๆ',
       false,
       '',
       '08:36'
@@ -14225,8 +14264,11 @@ if(save.flags.ep3SickShown){
   choices='';
 }
 
+
   // หลังการันต์หาบ้านอชิสำเร็จ
   if(save.flags.ep4HomeBannerRead){
+
+    b+='<div class="day">13 เม.ย.</div>';
 
     b+=bubble('การันต์ถึงบ้านแล้วใช่ไหมครับ');
 
@@ -14286,7 +14328,7 @@ if(save.flags.ep3SickShown){
     b+='<div class="day">14 เม.ย.</div>';
 
     b+=bubble(
-      'คุณการันต์ครับ ผมถึงที่ทำงานแล้วนะครับ'
+      'การันต์ครับ ผมถึงที่ทำงานแล้วนะครับ'
     );
 
     const breakfastOptions=[
@@ -14296,11 +14338,11 @@ if(save.flags.ep3SickShown){
       },
       {
         text:'ผมซื้ออาหารเช้ามาเผื่ออชิด้วยนะครับ',
-        answer:'จริงเหรอครับ ขอบคุณมากนะครับ'
+        answer:'ขอบคุณครับ เกรงใจมากๆเลย'
       },
       {
         text:'วันนี้อยากกินอะไรเป็นพิเศษไหมครับ',
-        answer:'อะไรก็ได้ครับ ผมไม่ค่อยเลือกกิน'
+        answer:'อะไรก็ได้ครับ ผมกินได้หมด'
       }
     ];
 
@@ -18189,15 +18231,12 @@ if(backToPhoto && page==='แกลเลอรี'){
   return;
 }
 
-// เลือกพี่การินเป็นผู้รับ
-const selectKarin=e.target.closest('[data-sg-select-karin]');
+ // เลือกผู้รับรูปภาพใน LINE
+const selectRecipient=e.target.closest('[data-sg-select-recipient]');
 
-if(selectKarin && page==='แกลเลอรี'){
-  const sendButton=document.querySelector('[data-ep4-send-photo]');
-  if(sendButton){
-    sendButton.disabled=false;
-    sendButton.style.opacity='1';
-  }
+if(selectRecipient && page==='แกลเลอรี'){
+  samsungSelectedRecipient=selectRecipient.dataset.sgSelectRecipient;
+  render();
   return;
 }
 
@@ -18205,7 +18244,12 @@ if(selectKarin && page==='แกลเลอรี'){
 const sendPhoto=e.target.closest('[data-ep4-send-photo]');
 
 if(sendPhoto && page==='แกลเลอรี'){
-
+  
+  if(!samsungSelectedRecipient){
+    popup('ยังไม่ได้เลือกผู้รับ','กรุณาเลือกผู้รับก่อนส่งรูป');
+    return;
+  }
+  
   if(
     !save.flags.ep4PhotoTaken ||
     samsungAllPhotos()[samsungGalleryIndex]!=='videos/IMG_3258.jpeg'
@@ -18217,6 +18261,7 @@ if(sendPhoto && page==='แกลเลอรี'){
     return;
   }
   save.flags.ep4PhotoSent=true;
+  samsungSelectedRecipient='';
   persist();
 
   samsungGalleryView='grid';

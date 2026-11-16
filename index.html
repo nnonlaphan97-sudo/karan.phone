@@ -26,15 +26,12 @@ button,input,select,textarea{
   font:inherit;
   touch-action:manipulation;
 }
-
 input,select,textarea{
   font-size:16px;
 }
-
 button{
   cursor:pointer;
 }
-
 #phone{
   position:relative;
   width:100%;
@@ -8352,6 +8349,22 @@ if(
   displayTime='17:30';
 }
 
+ // EP.04 — 14 เมษายน: อชิคุยเรื่องอาหารเช้ากับการันต์
+if(
+  c.id==='achi' &&
+  save.flags.ep4Day14Started
+){
+  displayDate='14 เม.ย.';
+
+  if(save.flags.ep4BreakfastReply!==''){
+    displayTime='08:01';
+    preview='ขอบคุณครับ';
+  }else{
+    displayTime='07:00';
+    preview='การันต์ครับ ผมถึงที่ทำงานแล้วนะครับ';
+  }
+}
+
     const sortTime =
       (dateValue(displayDate) ?? 0) * 10000 +
       Number(displayTime.replace(':',''));
@@ -9812,16 +9825,13 @@ function renderSamsungCamera(){
           <span>MORE</span>
         </div>
 
-   
 <div class="samsung-shutter-row">
-
-  <button class="samsung-camera-thumbnail"
-          data-ep4-open-gallery="1"
-          aria-label="เปิดภาพล่าสุด">
-    ${cameraShotThisSession
-      ? '<img src="videos/IMG_3258.jpeg" alt="ภาพที่ถ่าย">'
-      : icon('gallery')}
-  </button>
+<button class="samsung-camera-thumbnail"
+        data-ep4-open-gallery="1"
+        aria-label="เปิดภาพล่าสุด">
+  <img src="videos/IMG_3258.jpeg"
+       alt="ภาพล่าสุด">
+</button>
 
   <button class="samsung-shutter"
           data-ep4-shutter="1"
@@ -13689,6 +13699,16 @@ const senderMap={
 
 
   const senderId=senderMap[sender]||'office';
+  const senderDisplayNames={
+  'พี่ดุจ':'พี่ดุจดาว',
+  'พี่ดุจดาว':'พี่ดุจดาว',
+  'ร็อค':'Rock',
+  'ปาย':'Pai',
+  'อชิ':'Acirawit',
+  'ทานากะซัง':'Tanaka san'
+};
+
+const displaySender=senderDisplayNames[sender]||sender;
 
   return `
     <div class="line-message received">
@@ -13697,7 +13717,7 @@ const senderMap={
       </div>
 
       <div class="group-message-content">
-        <div class="group-sender">${sender}</div>
+        <div class="group-sender">${displaySender}</div>
         <div class="bubble incoming">${text}</div>
       </div>
 
@@ -14323,13 +14343,15 @@ if(save.flags.ep3SickShown){
   }
 
   // EP.04 — 14 เมษายน
-  if(save.flags.ep4Day14Started){
+if(save.flags.ep4Day14Started){
 
-    b+='<div class="day">14 เม.ย.</div>';
+  b+='<div class="day">14 เม.ย.</div>';
 
-    b+=bubble(
-      'การันต์ครับ ผมถึงที่ทำงานแล้วนะครับ'
-    );
+  b+=bubble(
+    'การันต์ครับ ผมถึงที่ทำงานแล้วนะครับ',
+    false,
+    true
+  );
 
     const breakfastOptions=[
       {

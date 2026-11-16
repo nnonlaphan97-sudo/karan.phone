@@ -2406,8 +2406,12 @@ button{
 .ep5-ig-body{
   flex:1;
   min-height:0;
+  height:0;
   overflow-y:auto;
-  padding:16px;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding:16px 16px 35px;
 }
 
 .ep5-ig-date{
@@ -2419,12 +2423,19 @@ button{
 
 .ep5-ig-story{
   width: min(65%, 260px);
-  aspect-ratio: 9 / 16;
   height: auto;
-  margin: 0 auto 20px 0;
+  margin: 0 0 20px;
   border: 1px solid #eee;
   border-radius: 15px;
   overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ep5-ig-story img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
 }
 
 .ep5-ig-story-label{
@@ -10149,14 +10160,17 @@ function renderInstagramDM(){
       <div class="ep5-ig-body">
         <div class="ep5-ig-date">16 เมษายน</div>
 
-        <div class="ep5-ig-story">
-          <div class="ep5-ig-story-label">
-            ตอบกลับสตอรี่ของคุณ
-          
-<div class="ep5-ig-story">
- <img src="https://i.postimg.cc/SRthjX60/IMG-5109.jpg">>
+       <div class="ep5-ig-story">
+  <div class="ep5-ig-story-label">
+    ตอบกลับสตอรี่ของคุณ
+  </div>
+
+  <img
+    src="https://i.postimg.cc/SRthjX60/IMG-5109.jpg"
+    alt="สตอรี่ Instagram"
+    style="display:block;width:100%;height:auto;"
+  >
 </div>
-        </div>
 
         <div class="ep5-ig-bubble received">
           มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย

@@ -10135,22 +10135,6 @@ ${[
   `;
 }
 
-function renderInstagramDM(){
-  const options=[
-    {
-      text:'มีคนพาไป',
-      answer:'ใครวะ ถึงขั้นพาคุณชายลงเรือได้'
-    },
-    {
-      text:'กูก็นั่งเป็นปกติ',
-      answer:'ตั้งแต่รู้จักกันมาเพิ่งเคยเห็นมึงนั่งเรือเนี่ยนะ'
-    },
-    {
-      text:'ไปกับอชิ',
-      answer:'อ๋อออ เข้าใจละ ทำไมยอมลำบาก'
-    }
-  ];
-
   const reply=save.flags.ep5PaReply;
   const chosen=reply==='' ? null : options[Number(reply)];
 
@@ -10179,20 +10163,28 @@ function renderInstagramDM(){
           มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย
         </div>
 
-        ${chosen ? `
-          <div class="ep5-ig-bubble sent">
-            ${chosen.text}
-          </div>
-          <div class="ep5-ig-bubble received">
-            ${chosen.answer}
-          </div>
-          <div class="ep5-ig-bubble received">
-            แต่มึงดูมีความสุขดีนะ
-          </div>
-        ` : ''}
+     
+<div class="ep5-ig-bubble sent">
+  ลองนั่งดู ก็บรรยากาศดีวะ
+</div>
+
+<div class="ep5-ig-bubble received">
+  ดีเพราะคนข้างๆ รึเปล่า
+</div>
+
+<div class="ep5-ig-bubble sent">
+  อย่ามาแซวกูมาก
+</div>
+
+<div class="ep5-ig-bubble received">
+  ว่างๆ แวะมาหากูที่ร้านด้วย
+</div>
+
+<div class="ep5-ig-bubble sent">
+  เออ
+</div>
       </div>
 
-      
 ${save.flags.ep7Stage>=3 ? `
   <div class="ep5-ig-date">1 พฤษภาคม</div>
 
@@ -10273,11 +10265,23 @@ function igIcon(name) {
 }
 
 function igAvatar(label, size = 46) {
-  return `<span class="ig-avatar" style="width:${size}px;height:${size}px">
-    ${label}
+  const id = label === 'K' ? 'karan'
+    : label === 'ปม' ? 'pa'
+    : label === 'ป' ? 'pai'
+    : label === 'ร' ? 'rock'
+    : label === 'อ' ? 'achi'
+    : label === 'ด' ? 'duj'
+    : null;
+
+  const photo = id ? igProfilePhotos[id] : null;
+
+  return `<span class="ig-avatar"
+    style="width:${size}px;height:${size}px;overflow:hidden">
+    ${photo
+      ? `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block">`
+      : label}
   </span>`;
 }
-
 
 function igNavigation() {
   const tabs = [
@@ -10305,7 +10309,17 @@ let igActiveStory = '';
 let igStoryReturn = 'main';
 
 save.flags.igViewedStories ??= {};
+save.flags.ep5AllStoriesCompleted ??= false;
 save.flags.igLikedPosts ??= {};
+
+const igProfilePhotos = {
+  achi: 'https://i.postimg.cc/MpWjRHjK/r07qxo-R-Download.jpg',
+  karan: 'https://i.postimg.cc/pLqk5gyv/IMG-4890.jpg',
+  pai: 'https://i.postimg.cc/PJ6fGX2G/r07qxo-R-Download.jpg',
+  rock: 'https://i.postimg.cc/tgbK50N5/r07qxo-R-Download.jpg',
+  pa: 'https://i.postimg.cc/YqZRk14B/r07qxo-R-Download.jpg',
+  duj: lineProfilePhotos.duj
+};
 
 const igPeople = {
   achi: {
@@ -10343,7 +10357,7 @@ const igPeople = {
   pa: {
     name: 'ป่า',
     username: 'pamai_',
-    initial: 'ป',
+    initial: 'ปม',
     color: '#d2dfcb',
     story: 'วันหยุดของฉัน',
     caption: 'พักผ่อนกันบ้าง'
@@ -10352,10 +10366,14 @@ const igPeople = {
 
 function igPersonAvatar(id, size=44) {
   const p=igPeople[id];
+  const photo=igProfilePhotos[id];
+
   return `
     <span class="ig-person-avatar"
-      style="width:${size}px;height:${size}px;background:${p.color}">
-      ${p.initial}
+      style="width:${size}px;height:${size}px;background:${p.color};overflow:hidden">
+      ${photo
+        ? `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block">`
+        : p.initial}
     </span>
   `;
 }
@@ -10375,32 +10393,59 @@ function igStoryItem(id) {
   `;
 }
 
-function igFeedPost(id) {
-  const p=igPeople[id];
-  const liked=!!save.flags.igLikedPosts[id];
+const igFeedPhotos = {
+  achi: [
+    'https://i.postimg.cc/rsBvdzVB/345249C8-3232-4101-9BDE-3B4BB69B322D.jpg',
+    'https://i.postimg.cc/Y9f3N9zJ/r07qxo-R-Download.jpg'
+  ],
+  pai: [
+    'https://i.postimg.cc/Zn81d4Wn/r07qxo-R-Download.jpg'
+  ],
+  rock: [
+    'https://i.postimg.cc/WzLngZZJ/IMG-5080.jpg'
+  ]
+};
+
+
+function igFeedPost(id, photoIndex=0) {
+  const p = igPeople[id];
+  const postId = `${id}-${photoIndex}`;
+  const liked = !!save.flags.igLikedPosts[postId];
+
+  const photos = igFeedPhotos[id] || [];
+  const photo = photos[photoIndex];
 
   return `
     <article class="ig-feed-post">
+
       <div class="ig-post-user">
         ${igPersonAvatar(id,36)}
+
         <div class="ig-post-identity">
           <strong>${p.username}</strong>
-          <small>${p.name}</small>
         </div>
+
         <span class="ig-more">•••</span>
       </div>
 
       <div class="ig-feed-photo"
         style="background:${p.color}">
-        <div class="ig-feed-photo-inner">
-          <span>${p.name}</span>
-          <small>${p.caption}</small>
-        </div>
+
+        ${photo
+          ? `<img src="${photo}"
+               style="display:block;width:100%;height:100%;object-fit:cover;">`
+          : `<div class="ig-feed-photo-inner">
+               <span>${p.name}</span>
+               <small>${p.caption}</small>
+             </div>`
+        }
+
       </div>
 
       <div class="ig-post-actions">
+
         <button class="${liked?'liked':''}"
-          data-ig-like="${id}"
+          data-ig-like="${postId}"
           aria-label="ถูกใจโพสต์">
           ${igIcon('heart')}
         </button>
@@ -10410,16 +10455,18 @@ function igFeedPost(id) {
           ${igIcon('message')}
         </button>
 
-        <button data-ig-save="${id}"
+        <button data-ig-save="${postId}"
           aria-label="บันทึกโพสต์">
           ${igIcon('bookmark')}
         </button>
+
       </div>
 
       <div class="ig-post-caption">
         <strong>${p.username}</strong>
         ${p.caption}
       </div>
+
     </article>
   `;
 }
@@ -10495,7 +10542,7 @@ function renderInstagram() {
   </button>
 `:''}
           <button class="ig-chat-row" data-ig-screen="dm">
-            ${igAvatar('ป', 55)}
+            ${igAvatar('ปม', 55)}
             <span>
               <strong>Pamai_</strong>
         <small>
@@ -10531,11 +10578,11 @@ if (igTab === 'home') {
 
 </div>
     <div class="ig-feed">
-      ${igFeedPost('achi')}
-      ${igFeedPost('pai')}
-      ${igFeedPost('rock')}
-      ${igFeedPost('duj')}
-      ${igFeedPost('pa')}
+      
+${igFeedPost('achi', 0)}
+${igFeedPost('achi', 1)}
+${igFeedPost('pai', 0)}
+${igFeedPost('rock', 0)}
     </div>
   `;
 }
@@ -10645,7 +10692,7 @@ igStoryStyle.textContent = `
   width:70px;
   height:70px;
   border-radius:50%;
-  padding:1.5px;
+  padding:0.5px;
   display:grid;
   place-items:center;
   background:linear-gradient(
@@ -17332,8 +17379,35 @@ if(igStoryButton && page==='Instagram'){
 
   if(!igPeople[id])return;
 
-  save.flags.igViewedStories[id]=true;
+  
+save.flags.igViewedStories[id]=true;
+persist();
+
+const requiredStories=['rock','pai','achi','karan'];
+const allStoriesViewed=requiredStories.every(
+  storyId=>save.flags.igViewedStories[storyId]===true
+);
+
+if(
+  allStoriesViewed &&
+  !save.flags.ep5AllStoriesCompleted &&
+  save.flags.ep6Stage<1
+){
+  save.flags.ep5AllStoriesCompleted=true;
   persist();
+
+  setTimeout(()=>{
+    if(save.flags.ep6Stage>=1)return;
+
+    ep6Advance(1);
+
+    ep6Notify(
+      'Tanaka San',
+      'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
+      'tanaka'
+    );
+  },5000);
+}
 
   igActiveStory=id;
   igStoryReturn=igScreen;
@@ -17413,36 +17487,8 @@ if(openIG){
   return;
 }
 
-// เลือกคำตอบ DM ของป่า
-const paReply=e.target.closest('[data-ep5-pa-reply]');
-
-if(paReply && page==='Instagram'){
-
-  if(save.flags.ep5PaReply!=='')return;
-
-  const index=Number(paReply.dataset.ep5PaReply);
-
-  if(![0,1,2].includes(index))return;
-
- save.flags.ep5PaReply=String(index);
-
-ep6Advance(1);
-
-persist();
-render();
-
-ep6Notify(
-  'Tanaka San',
-  'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
-  'tanaka'
-);
-
-  return;
-}
 /* ===== EP.04 MAP INTERACTIONS ===== */
-
 const mapLink=e.target.closest('[data-open-achi-map]');
-
 if(mapLink){
   // ปลดล็อก Maps ทันทีเมื่อกดลิงก์จากพี่ดุจ
   save.flags.ep4MapUnlocked=true;

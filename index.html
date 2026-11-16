@@ -10879,12 +10879,12 @@ function renderInstagram() {
     data-ep7-ig-open="ep7shop">
     ${igAvatar('ร',55)}
     <span>
-      <strong>ร้านเสื้อผ้า</strong>
-      <small>
-        ${save.flags.ep7ClothesTime
-  ? 'ยืนยันนัดหมาย '+save.flags.ep7ClothesTime+' เรียบร้อยแล้วค่ะ'
-  : 'ขอคอนเฟิร์มเวลานัดหมายค่ะ'}
-      </small>
+      <strong>Mellow Atelier</strong>
+<small>
+  ${save.flags.ep7ShirtCompleted
+    ? 'ตัดเย็บเสื้อคลุมเรียบร้อยแล้วค่ะ'
+    : 'คุณลูกค้าต้องการเสื้อคลุมแบบไหนคะ?'}
+</small>
     </span>
   </button>
 `:''}
@@ -11528,7 +11528,19 @@ function ep6Advance(stage){
 
 /* ===== EP.07 FIRST DATE SYSTEM ===== */
 let ep7FlowerDraft='';
-let ep7ShirtDraft='';
+let ep7ShirtDraft={
+  fabric:'',
+  color:'',
+  size:'',
+  step:0,
+  cut:[],
+  stitches:0,
+  buttons:[],
+  embroidery:0
+};
+
+save.flags.ep7Shirt ??= null;
+save.flags.ep7ShirtCompleted ??= false;
 
 save.flags.ep7FlowerPickup ??= '';
 save.flags.ep7ClothesTime ??= '';
@@ -11557,11 +11569,14 @@ function ep7Banner(app,name,message,target){
     <button class="game-banner"
       data-ep7-open="${target}">
       <span class="game-banner-icon"
-  style="background:${app==='LINE'?'transparent':isIG?'#C13584':isSMS?'#2479E8':'#06c755'}">
+  style="background:${app==='LINE'||isIG?'transparent':isSMS?'#2479E8':'#06c755'};overflow:hidden;">
+
   ${app==='LINE'
-  ? lineBannerAvatar(target)
-  : icon(isSMS?'message':'line')}
-      </span>
+    ? lineBannerAvatar(target)
+    : isIG
+      ? instagramIcon()
+      : icon(isSMS?'message':'line')}
+</span>
       <span class="game-banner-text">
         <small>${app} · ข้อความใหม่</small>
         <strong>${name}</strong>
@@ -11672,61 +11687,306 @@ function ep7FlowerArt(type){
     </svg>`;
 }
 
-
 function ep7InstagramPage(){
 
-  if(igScreen==='ep7shop'){
-
-    const selected=save.flags.ep7ClothesTime;
-
-    return `
-      <div class="ep7-page">
-        <header class="ep7-header">
-          <button data-ep7-ig-back="1">
-            ${igIcon('back')}
-          </button>
-          <strong>ร้านเสื้อผ้า</strong>
-          <span>Instagram</span>
-        </header>
-
-        <div class="ep7-scroll">
-
-          <div class="ep7-dm received">
-            สวัสดีค่ะคุณการันต์
-            ทางร้านขอคอนเฟิร์มเวลานัดหมายค่ะ
-          </div>
-
-          <div class="ep7-dm received">
-            คุณการันต์สะดวกเข้ามาที่ร้านกี่โมงคะ
-          </div>
-
-          ${selected ? `
-            <div class="ep7-dm sent">${selected}</div>
-            <div class="ep7-dm received">
-              ยืนยันนัดหมายเวลา ${selected}
-              เรียบร้อยแล้วค่ะ
-            </div>
-          ` : `
-            <h3>เลือกเวลานัดหมาย</h3>
-
-            ${['08:00 AM','09:00 AM','10:00 AM'].map(time=>`
-              <button
-                class="ep7-primary"
-                data-ep7-clothes-time="${time}"
-                style="margin-bottom:12px;">
-                ${time}
-              </button>
-            `).join('')}
-          `}
-
-        </div>
-      </div>`;
+  if(igScreen!=='ep7shop'){
+    return renderInstagramDM();
   }
 
-  return renderInstagramDM();
+  const s=ep7ShirtDraft;
+  const completed=save.flags.ep7ShirtCompleted;
+
+  const fabricNames={
+    cotton:'คอตตอนทวิล',
+    linen:'ลินิน',
+    canvas:'แคนวาส'
+  };
+
+  const colorNames={
+    brown:'น้ำตาล',
+    cream:'ครีม',
+    sage:'เขียวหม่น'
+  };
+
+  const colorHex={
+    brown:'#aa815e',
+    cream:'#ded1ba',
+    sage:'#a1ae98'
+  };
+
+  const shirtColor=colorHex[s.color]||'#c8b9a8';
+
+  const option=(type,value,label)=>`
+    <button class="ep7-primary"
+      data-ep7-shirt-option="${type}"
+      data-value="${value}"
+      style="
+        margin:5px;
+        width:auto;
+        padding:11px 14px;
+        opacity:${s[type]===value?1:.72};
+        outline:${s[type]===value?'3px solid #8d6b51':'none'};
+      ">
+      ${label}
+    </button>
+  `;
+
+  const shirtSVG=`
+    <svg viewBox="0 0 280 300"
+      style="width:100%;max-width:280px;display:block;margin:auto">
+
+      <path
+        d="M100 25 L120 25 L140 50 L160 25 L180 25
+           L247 105 L216 131 L194 108 L194 263
+           Q140 275 86 263 L86 108 L64 131
+           L33 105Z"
+        fill="${shirtColor}"
+        stroke="#74563e"
+        stroke-width="2.5"/>
+
+      <path d="M100 25 L120 25 L140 50 L160 25
+               L180 25 L160 67 L140 80 L120 67Z"
+        fill="${shirtColor}"
+        stroke="#74563e"
+        stroke-width="2"/>
+
+      <path d="M140 80 L140 268"
+        stroke="#74563e" stroke-width="2"/>
+
+      <path d="M94 190 L123 207 M157 207 L186 190"
+        stroke="#74563e"
+        stroke-width="4"
+        stroke-linecap="round"/>
+
+      ${[104,137,170,203,236].map((y,i)=>`
+        <circle cx="147" cy="${y}" r="5"
+          fill="${s.buttons.includes(i)?'#f6eee2':'#94765e'}"
+          stroke="#74563e"/>
+      `).join('')}
+
+      <text x="163" y="118"
+        fill="#f6eee2"
+        font-size="15"
+        font-weight="bold">A</text>
+    </svg>
+  `;
+
+  let content='';
+
+  if(completed){
+
+    content=`
+      <div class="ep7-dm received">
+        ทางร้านดำเนินการตัดเย็บเสื้อคลุม
+        ให้อชิเรียบร้อยแล้วค่ะ
+      </div>
+
+      <div style="padding:15px;text-align:center">
+        ${shirtSVG}
+      </div>
+
+      <div class="ep7-dm sent">
+        ขอบคุณครับ ฝากด้วยนะครับ
+      </div>
+    `;
+
+  }else if(s.step===0){
+
+    content=`
+      <div class="ep7-dm received">
+        สวัสดีค่ะคุณการันต์
+        ไม่ทราบว่าต้องการเสื้อคลุมแบบไหนคะ?
+        ทางร้านมีเนื้อผ้าให้เลือก 3 แบบค่ะ
+      </div>
+
+      <h3>1. เลือกเนื้อผ้า</h3>
+      ${option('fabric','cotton','คอตตอนทวิล')}
+      ${option('fabric','linen','ลินิน')}
+      ${option('fabric','canvas','แคนวาส')}
+
+      <h3>2. เลือกสีเสื้อ</h3>
+      ${option('color','brown','น้ำตาล')}
+      ${option('color','cream','ครีม')}
+      ${option('color','sage','เขียวหม่น')}
+
+      <h3>3. เลือกไซส์</h3>
+      ${option('size','M','M')}
+      ${option('size','L','L')}
+      ${option('size','XL','XL')}
+
+      <div style="padding:15px">
+        ${shirtSVG}
+      </div>
+
+      <div class="ep7-dm received">
+        ${s.fabric?fabricNames[s.fabric]:'ยังไม่เลือกผ้า'}
+        /
+        ${s.color?colorNames[s.color]:'ยังไม่เลือกสี'}
+        /
+        ${s.size||'ยังไม่เลือกไซส์'}
+      </div>
+
+      <button class="ep7-primary"
+        data-ep7-shirt-start="1"
+        ${!s.fabric||!s.color||!s.size?'disabled':''}>
+        ยืนยันแบบและเข้าสู่หน้าตัดเย็บ
+      </button>
+    `;
+
+  }else{
+
+    const titles=[
+      '',
+      'ตัดผ้าตามแพตเทิร์น',
+      'เย็บตะเข็บ',
+      'ติดกระดุมสีอ่อน',
+      'ปักตัวอักษร A',
+      'ตรวจเสื้อ'
+    ];
+
+    let controls='';
+
+    if(s.step===1){
+
+      controls=`
+        <div class="ep7-dm received">
+          แตะตัดชิ้นผ้าให้ครบ 4 ชิ้นค่ะ
+        </div>
+
+        ${['หน้าซ้าย','หน้าขวา','แขนซ้าย','แขนขวา']
+          .map((name,i)=>`
+            <button class="ep7-primary"
+              data-ep7-shirt-cut="${i}"
+              style="margin-bottom:9px">
+              ${s.cut.includes(i)?'✓ ตัดแล้ว':'✂ ตัด'} ${name}
+            </button>
+          `).join('')}
+
+        <button class="ep7-primary"
+          data-ep7-shirt-next="2"
+          ${s.cut.length!==4?'disabled':''}>
+          ไปเย็บตะเข็บ
+        </button>
+      `;
+
+    }else if(s.step===2){
+
+      controls=`
+        <div class="ep7-dm received">
+          เย็บตะเข็บให้ครบ 8 จังหวะค่ะ
+        </div>
+
+        <h3>${s.stitches} / 8 ฝีเข็ม</h3>
+
+        <button class="ep7-primary"
+          data-ep7-shirt-stitch="1"
+          ${s.stitches>=8?'disabled':''}>
+          เย็บหนึ่งจังหวะ
+        </button>
+
+        <button class="ep7-primary"
+          data-ep7-shirt-next="3"
+          ${s.stitches<8?'disabled':''}>
+          ไปติดกระดุม
+        </button>
+      `;
+
+    }else if(s.step===3){
+
+      controls=`
+        <div class="ep7-dm received">
+          ติดกระดุมสีอ่อนให้ครบ 5 เม็ดค่ะ
+        </div>
+
+        ${[0,1,2,3,4].map(i=>`
+          <button class="ep7-primary"
+            data-ep7-shirt-button="${i}"
+            style="width:48px;margin:4px">
+            ${s.buttons.includes(i)?'✓':i+1}
+          </button>
+        `).join('')}
+
+        <button class="ep7-primary"
+          data-ep7-shirt-next="4"
+          ${s.buttons.length!==5?'disabled':''}>
+          ไปปักตัว A
+        </button>
+      `;
+
+    }else if(s.step===4){
+
+      controls=`
+        <div class="ep7-dm received">
+          ปักตัว A ให้ครบ 8 ฝีเข็มค่ะ
+        </div>
+
+        <h3>${s.embroidery} / 8</h3>
+
+        <button class="ep7-primary"
+          data-ep7-shirt-embroider="1"
+          ${s.embroidery>=8?'disabled':''}>
+          ปักเพิ่มหนึ่งฝีเข็ม
+        </button>
+
+        <button class="ep7-primary"
+          data-ep7-shirt-next="5"
+          ${s.embroidery<8?'disabled':''}>
+          ตรวจเสื้อ
+        </button>
+      `;
+
+    }else if(s.step===5){
+
+      controls=`
+        <div class="ep7-dm received">
+          ตัดเย็บเสร็จแล้วค่ะ
+          กรุณาตรวจรายละเอียดก่อนยืนยันนะคะ
+        </div>
+
+        <div class="ep7-dm received">
+          เนื้อผ้า: ${fabricNames[s.fabric]}<br>
+          สี: ${colorNames[s.color]}<br>
+          ไซส์: ${s.size}<br>
+          กระเป๋าเฉียง<br>
+          กระดุมสีอ่อน 5 เม็ด<br>
+          ปักตัว A
+        </div>
+
+        <button class="ep7-primary"
+          data-ep7-shirt-finish="1">
+          ยืนยันเสื้อคลุมให้อชิ
+        </button>
+      `;
+    }
+
+    content=`
+      <h3>${titles[s.step]}</h3>
+
+      <div style="padding:12px">
+        ${shirtSVG}
+      </div>
+
+      ${controls}
+    `;
+  }
+
+  return `
+    <div class="ep7-page">
+      <header class="ep7-header">
+        <button data-ep7-ig-back="1">
+          ${igIcon('back')}
+        </button>
+
+        <strong>Mellow Atelier</strong>
+        <span>Instagram</span>
+      </header>
+
+      <div class="ep7-scroll">
+        ${content}
+      </div>
+    </div>
+  `;
 }
-
-
 /* ===== SAMSUNG MESSAGES ===== */
 
 let samsungSmsChat = '';
@@ -15491,7 +15751,6 @@ if(
     );
   }
 }
-/* ===== EP.07 FLOWER SHOP CHAT ===== */
 
 /* ===== EP.07 FLOWER SHOP CHAT ===== */
 if(chat==='flowerShop' && save.flags.ep7Stage>=1){
@@ -15507,40 +15766,19 @@ if(chat==='flowerShop' && save.flags.ep7Stage>=1){
     '<a href="#flower-catalog" data-ep7-open-flowers="1" style="color:#1687d9;text-decoration:underline;font-size:14px;">bloomandbeyond.com/catalog</a>',
     false,'','09:01'
   );
-
   if(save.flags.ep7Flower){
 
-    b+=bubble('ผมเลือกแบบนี้ครับ',true,'','09:02');
-
     b+=bubble(
-      'รับทราบค่ะ คุณการันต์สะดวกมารับช่อดอกไม้กี่โมงคะ',
-      false,'','09:03'
+      'ผมเลือกแบบนี้ครับ',
+      true,'','09:02'
     );
 
-    if(save.flags.ep7FlowerPickup){
-
-      b+=bubble(
-        save.flags.ep7FlowerPickup,
-        true,'','09:04'
-      );
-
-      b+=bubble(
-        'ยืนยันเวลารับช่อดอกไม้ '+save.flags.ep7FlowerPickup+' เรียบร้อยค่ะ',
-        false,'','09:05'
-      );
-
-    }else{
-
-      choices=`
-        <div class="tinylabel">เลือกเวลารับช่อดอกไม้</div>
-        ${['03:30 AM','04:00 AM','04:30 AM'].map(time=>`
-          <button class="choice" data-ep7-pickup="${time}">
-            ${time}
-          </button>
-        `).join('')}
-      `;
-    }
+    b+=bubble(
+      'รับทราบค่ะ ทางร้านได้รับแบบช่อดอกไม้ที่คุณการันต์เลือกเรียบร้อยแล้วค่ะ ขอบคุณมากนะคะ',
+      false,'','09:03'
+    );
   }
+}
 }
 
 /* ===== EP.06 PAI CHAT — 30 เมษายน ===== */
@@ -17282,23 +17520,27 @@ if(ep7FlowerConfirm && page==='EP7Flowers'){
   }
 
 save.flags.ep7Flower='lotus';
+
+// จบภารกิจดอกไม้ และปลดล็อกภารกิจร้านเสื้อผ้า
+ep7Next(2);
 persist();
 
-  page='LINE';
-  lineTab='chats';
-  lineSubtab='chats';
+// กลับหน้ารายการแชท LINE
+page='LINE';
+lineTab='chats';
+lineSubtab='chats';
 
-  render();
+render();
 
-  ep7Banner(
-    'Instagram',
-    'ร้านเสื้อผ้า',
-    'ส่งแบบเสื้อมาให้คุณการันต์เลือกแล้วค่ะ',
-    'shop'
-  );
+// แจ้งเตือน Instagram จากร้านเสื้อผ้า
+ep7Banner(
+  'Instagram',
+  'Mellow Atelier',
+  'สวัสดีค่ะคุณการันต์ ไม่ทราบว่าต้องการเสื้อคลุมแบบไหนครับ?',
+  'shop'
+);
 
-  return;
-}
+return;
 
 /* EP.07 — เลือกเวลารับดอกไม้ */
 
@@ -17331,29 +17573,150 @@ if(ep7Pickup && page==='chat' && chat==='flowerShop'){
   return;
 }
 
-/* EP.07 — คอนเฟิร์มนัดร้านเสื้อผ้า */
+/* EP.07 — มินิเกมตัดเย็บเสื้อให้อชิ */
 
-const ep7Clothes=e.target.closest(
-  '[data-ep7-clothes-time]'
+const shirtOption=e.target.closest(
+  '[data-ep7-shirt-option]'
 );
 
-if(
-  ep7Clothes &&
-  page==='Instagram' &&
-  igScreen==='ep7shop'
-){
+if(shirtOption && page==='Instagram'){
 
-  const time=ep7Clothes.dataset.ep7ClothesTime;
+  const type=shirtOption.dataset.ep7ShirtOption;
+  const value=shirtOption.dataset.value;
 
-  if(time!=='09:00 AM'){
-    popup(
-      'ลองเลือกเวลาอีกครั้ง',
-      'ตรวจสอบเวลานัดหมายที่การันต์เตรียมไว้'
-    );
-    return;
+  if(['fabric','color','size'].includes(type)){
+    ep7ShirtDraft[type]=value;
   }
 
-  save.flags.ep7ClothesTime=time;
+  render();
+  return;
+}
+
+const shirtStart=e.target.closest(
+  '[data-ep7-shirt-start]'
+);
+
+if(shirtStart && page==='Instagram'){
+
+  const s=ep7ShirtDraft;
+
+  if(!s.fabric||!s.color||!s.size)return;
+
+  s.step=1;
+  render();
+  return;
+}
+
+const shirtCut=e.target.closest(
+  '[data-ep7-shirt-cut]'
+);
+
+if(shirtCut && page==='Instagram'){
+
+  const i=Number(shirtCut.dataset.ep7ShirtCut);
+  const s=ep7ShirtDraft;
+
+  if(!s.cut.includes(i)){
+    s.cut.push(i);
+  }
+
+  render();
+  return;
+}
+
+const shirtStitch=e.target.closest(
+  '[data-ep7-shirt-stitch]'
+);
+
+if(shirtStitch && page==='Instagram'){
+
+  ep7ShirtDraft.stitches=Math.min(
+    8,
+    ep7ShirtDraft.stitches+1
+  );
+
+  render();
+  return;
+}
+
+const shirtButton=e.target.closest(
+  '[data-ep7-shirt-button]'
+);
+
+if(shirtButton && page==='Instagram'){
+
+  const i=Number(shirtButton.dataset.ep7ShirtButton);
+  const s=ep7ShirtDraft;
+
+  if(!s.buttons.includes(i)){
+    s.buttons.push(i);
+  }
+
+  render();
+  return;
+}
+
+const shirtEmbroidery=e.target.closest(
+  '[data-ep7-shirt-embroider]'
+);
+
+if(shirtEmbroidery && page==='Instagram'){
+
+  ep7ShirtDraft.embroidery=Math.min(
+    8,
+    ep7ShirtDraft.embroidery+1
+  );
+
+  render();
+  return;
+}
+
+const shirtNext=e.target.closest(
+  '[data-ep7-shirt-next]'
+);
+
+if(shirtNext && page==='Instagram'){
+
+  const s=ep7ShirtDraft;
+  const next=Number(shirtNext.dataset.ep7ShirtNext);
+
+  const allowed=
+    (next===2 && s.step===1 && s.cut.length===4) ||
+    (next===3 && s.step===2 && s.stitches===8) ||
+    (next===4 && s.step===3 && s.buttons.length===5) ||
+    (next===5 && s.step===4 && s.embroidery===8);
+
+  if(!allowed)return;
+
+  s.step=next;
+  render();
+  return;
+}
+
+const shirtFinish=e.target.closest(
+  '[data-ep7-shirt-finish]'
+);
+
+if(shirtFinish && page==='Instagram'){
+
+  const s=ep7ShirtDraft;
+
+  if(s.step!==5)return;
+
+  save.flags.ep7Shirt={
+    fabric:s.fabric,
+    color:s.color,
+    size:s.size,
+    chest:120,
+    length:75,
+    sleeve:65,
+    pockets:'slant',
+    buttons:'light',
+    embroidery:'A'
+  };
+
+  save.flags.ep7ShirtCompleted=true;
+
   ep7Next(3);
   persist();
 
@@ -17363,14 +17726,12 @@ if(
   ep7Banner(
     'Instagram',
     'ป่า',
-    'พรุ่งนี้มึงจะเข้ามาที่ร้านกี่โมง',
+    'นี่คือไร่กาแฟที่กูหามาได้',
     'pa'
   );
 
   return;
 }
-
-
 /* EP.07 — เลือกเวลาเข้าร้านของป่า */
 
 const ep7Coffee=e.target.closest('[data-ep7-coffee]');

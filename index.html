@@ -8288,14 +8288,15 @@ const initialChatTimes = {
 
     let displayDate = useInitial ? initial.date : latestDate;
 let displayTime = useInitial ? initial.time : '17:34';
-// 6 มีนาคม — พี่ดุจถามวันว่าง
+
+ // 6 มีนาคม — ใช้วันที่นี้เฉพาะเมื่อยังไม่มีข้อความใหม่
 if(
   c.id==='duj' &&
   save.flags.ep3DujQuestionShown &&
-  !save.flags.ep4AchiCancelledRead
+  (dateValue(latestDate) ?? 0) <= 306
 ){
   displayDate='6 มี.ค.';
-  displayTime=save.flags.ep3DujAnswer?'10:18':'09:42';
+  displayTime=save.flags.ep3DujAnswer ? '10:18' : '09:42';
 }
 
 // 12 เมษายน — ส่งรูปจาก Outing
@@ -14193,7 +14194,7 @@ if(chat==='achi'){
 if(save.flags.ep2Started && save.flags.ep2CouponReady){
   b+='<div class="day">1 ก.พ.</div>';
   b+=bubble(
-    'คูปองร้านอาหารที่ได้มา คุณการันต์เอาไปใช้เลยนะครับ'
+    'คูปองร้านอาหารที่ได้มา การันต์เอาไปใช้เลยนะครับ'
   );
   b+=ep2InviteMessages();
   choices=ep2InviteChoices();
@@ -14471,15 +14472,35 @@ if(save.flags.ep3OfficePosterShown){
     'พี่เอารูปจาก Company Outing วันที่ 9 เมษายนมาฝากจ้ะ ขอบคุณทุกคนที่ไปร่วมสนุกกันนะ'
   );
 
-  b+=`
-    <div style="margin:10px 12px 16px 52px;max-width:270px;">
-      <img
-        src="images/company-outing.jpg"
-        alt="รูปจาก Company Outing"
-        style="width:100%;border-radius:14px;display:block;"
-      >
-    </div>
-  `;
+  
+  // รูป Company Outing ที่พี่ดุจส่งต่อกัน 4 ข้อความ
+  const outingPhotos = [
+    'https://i.ibb.co/DgPDd7HB/IMG-5084.jpg',
+    'https://i.ibb.co/qFdCdYkL/IMG-5081.jpg',
+    'https://i.ibb.co/60fdCzTm/IMG-5083.jpg',
+    'https://i.ibb.co/XZfQ7fmz/IMG-5080.jpg'
+  ];
+
+  outingPhotos.forEach(src => {
+    b += `
+      <div style="
+        margin:8px 12px 8px 52px;
+        max-width:240px;
+      ">
+        <img
+          src="${src}"
+          alt="รูป Company Outing"
+          style="
+            width:100%;
+            height:auto;
+            display:block;
+            border-radius:14px;
+          "
+        >
+      </div>
+    `;
+  });
+
 
   b+=groupBubble('ปาย','ขอบคุณค่ะพี่ดุจ');
   b+=groupBubble('ร็อค','สนุกมากเลยครับ');
@@ -17419,7 +17440,7 @@ render();
 
 showGameBanner(
   'office',
-  'พี่ดุจส่งรูปจาก Company Outing วันที่ 9 เมษายนมาในกลุ่ม'
+  'พี่ดุจดาว ส่งรูปภาพ'
 );
 
 return;
@@ -17623,7 +17644,7 @@ render();
 // แจ้งเตือน LINE จากอชิเรื่องคูปอง
 showGameBanner(
   'achi',
-  'คุณการันต์ครับ เรื่องคูปองร้านอาหารที่ผมได้มา...'
+  'คูปองร้านอาหารที่ได้มา การันต์เอาไปใช้เลยนะครับ'
 );
 
 return;

@@ -18887,18 +18887,41 @@ const ep10LeavingRock=
   }
 
 // EP.06 — อ่านแชททานากะแล้ว อชิส่ง "ขอโทษ?"
-
 if(ep6LeavingAchiConfession){
   ep6Advance(2);
 }
 
+
 if(ep6LeavingTanaka){
   ep6Advance(3);
 }
-  // อัปเดตหน้าจอหลังปลดล็อกแอป
-  render();
+
+// อัปเดตหน้าจอหลังปลดล็อกแอป
+render();
+
+// แสดงนาฬิกาปลุกหลังออกจากแชททานากะ
+if(ep6LeavingTanaka){
+  const el=document.getElementById('gameBanner');
+
+  if(el){
+    el.innerHTML=`
+      <button class="game-banner" data-ep6-open-clock="1">
+        <span class="game-banner-icon"
+          style="background:transparent;color:#333;">
+          ${samsungClockIcon('alarm')}
+        </span>
+        <span class="game-banner-text">
+          <small>นาฬิกา</small>
+          <strong>นาฬิกาปลุก</strong>
+          <span>06:00 · แตะเพื่อปิดนาฬิกาปลุก</span>
+        </span>
+      </button>
+    `;
+  }
+}
 
 if(ep6LeavingAchiConfession){
+
   setTimeout(()=>{
     if(save.flags.ep6Stage!==2)return;
 

@@ -10207,35 +10207,19 @@ ${save.flags.ep7Stage>=3 ? `
   ` : ''}
 ` : ''}
 
-      ${!chosen ? `
+     
+      ${save.flags.ep7Stage >= 3 &&
+        !save.flags.ep7CoffeeConfirmed ? `
         <div class="ep5-ig-replies">
-          <div>เลือกข้อความตอบป่า</div>
-          ${options.map((option,i)=>`
-            <button data-ep5-pa-reply="${i}">
-              ${option.text}
+          <div>ตอบข้อความป่า</div>
+          ${['11:00 AM','12:00 PM','01:00 PM'].map(time => `
+            <button data-ep7-coffee="${time}">
+              ${time}
             </button>
           `).join('')}
         </div>
-           ` : `
-        ${save.flags.ep7Stage>=3 &&
-          !save.flags.ep7CoffeeConfirmed ? `
-          <div class="ep5-ig-replies">
-            <div>ตอบข้อความป่า</div>
-            ${['11:00 AM','12:00 PM','01:00 PM'].map(time=>`
-  <button data-ep7-coffee="${time}">
-    ${time}
-  </button>
-`).join('')}
-              ใช่ ฝากเตรียมกาแฟไว้ให้ด้วยนะ
-              ขอเมล็ดกาแฟจากลำพูน
-            </button>
-          </div>
-        ` : `
-          <div class="ep5-ig-finished">
-            อ่านแล้ว
-          </div>
-        `}
-      `}
+      ` : ''}
+
     </div>
   `;
 }

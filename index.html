@@ -17467,6 +17467,7 @@ if(ep7IGBack && page==='Instagram'){
   return;
 }
 
+
 /* ===== EP.06 INTERACTIONS ===== */
 // เปิดนาฬิกาปลุก
 const ep6OpenClock=e.target.closest(
@@ -17496,7 +17497,6 @@ if(ep6Banner){
 
   page='chat';
   render();
-}
   return;
 }
 
@@ -18891,14 +18891,11 @@ if(ep6LeavingAchiConfession){
   ep6Advance(2);
 }
 
-
 if(ep6LeavingTanaka){
   ep6Advance(3);
 }
-
 // อัปเดตหน้าจอหลังปลดล็อกแอป
 render();
-
 // แสดงนาฬิกาปลุกหลังออกจากแชททานากะ
 if(ep6LeavingTanaka){
   const el=document.getElementById('gameBanner');

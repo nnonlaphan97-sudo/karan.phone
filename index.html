@@ -17496,21 +17496,12 @@ if(ep6Banner){
 
   page='chat';
   render();
-  if(chat==='tanaka' && save.flags.ep6Stage===1){
-  ep6Advance(2);
-
-  ep6Notify(
-    'Achi rawit',
-    'ขอโทษ?',
-    'achi'
-  );
 }
   return;
 }
 
 
 /* ===== SAMSUNG CLOCK INTERACTIONS ===== */
-
 /* ===== CLOCK ALARM SWITCH ===== */
 
 const alarmToggle=e.target.closest(
@@ -17725,17 +17716,18 @@ if(
   save.flags.ep5AllStoriesCompleted=true;
   persist();
 
-  setTimeout(()=>{
-    if(save.flags.ep6Stage>=1)return;
+  
+setTimeout(()=>{
+  if(save.flags.ep6Stage>=1)return;
 
-    ep6Advance(1);
+  ep6Advance(1);
 
-    ep6Notify(
-      'Tanaka San',
-      'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
-      'tanaka'
-    );
-  },5000);
+  ep6Notify(
+    'Acirawit',
+    'ขอโทษ?',
+    'achi'
+  );
+},5000);
 }
 
   igActiveStory=id;
@@ -18782,16 +18774,17 @@ if(btn.dataset.go){
 
 const ep6LeavingAchiConfession =
   page==='chat' &&
-  chat==='tanaka' &&
-  save.flags.ep6Stage>=1 &&
-  save.flags.ep6Stage<3 &&
+  chat==='achi' &&
+  save.flags.ep6Stage===1 &&
   btn.dataset.go==='LINE';
 
-    const ep6LeavingTanaka =
-    page === 'chat' &&
-    chat === 'tanaka' &&
-    save.flags.ep6Stage === 1 &&
-    btn.dataset.go === 'LINE';
+    
+const ep6LeavingTanaka =
+  page==='chat' &&
+  chat==='tanaka' &&
+  save.flags.ep6Stage===2 &&
+  btn.dataset.go==='LINE';
+
     const ep7LeavingAchi=
   page==='chat' &&
   chat==='achi' &&
@@ -18895,33 +18888,28 @@ const ep10LeavingRock=
 
 // EP.06 — อ่านแชททานากะแล้ว อชิส่ง "ขอโทษ?"
 
-
 if(ep6LeavingAchiConfession){
   ep6Advance(2);
+}
+
+if(ep6LeavingTanaka){
   ep6Advance(3);
 }
-
   // อัปเดตหน้าจอหลังปลดล็อกแอป
   render();
-  if(ep6LeavingAchiConfession){
-  const el=document.getElementById('gameBanner');
 
-  if(el){
-    el.innerHTML=`
-      <button class="game-banner" data-ep6-open-clock="1">
-        <span class="game-banner-icon"
-  style="background:transparent;border-radius:12px;overflow:hidden;">
-  ${ico('clock')}
-</span>
-        <span class="game-banner-text">
-          <small>นาฬิกา</small>
-          <strong>นาฬิกาปลุก</strong>
-          <span>06:00 · แตะเพื่อปิดนาฬิกาปลุก</span>
-        </span>
-      </button>
-    `;
-  }
+if(ep6LeavingAchiConfession){
+  setTimeout(()=>{
+    if(save.flags.ep6Stage!==2)return;
+
+    ep6Notify(
+      'Tanaka San',
+      'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
+      'tanaka'
+    );
+  },3000);
 }
+
 if(ep7LeavingAchi){
   save.flags.ep7SunsetNotified=true;
   persist();

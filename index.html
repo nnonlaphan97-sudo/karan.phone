@@ -2554,11 +2554,28 @@ button{
   justify-content:space-between;
   border-bottom:1px solid #eee;
 }
-.ig-header strong {font-size:20px}
-.ig-logo {
-  font-family:Georgia,serif;
-  font-style:italic;
-  font-size:27px!important;
+.ig-header strong{
+  font-size:20px;
+}
+
+.ig-header:has(.ig-logo){
+  position:relative;
+  justify-content:flex-end;
+}
+
+.ig-header .ig-logo{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+}
+.ig-logo{
+  font-family:"Lobster","Brush Script MT","Segoe Script",cursive;
+  font-style:normal;
+  font-weight:400;
+  font-size:34px!important;
+  letter-spacing:-1.5px;
+  line-height:1.2;
 }
 .ig-header-actions {display:flex;gap:18px}
 .ig-header button,.ig-navigation button {
@@ -10383,7 +10400,7 @@ function renderInstagramDM(){
           ${igIcon('back')}
         </button>
 
-        <div class="ep5-ig-profile">ป</div>
+${igPersonAvatar('pa',40)}
 
         <div class="ep5-ig-identity">
           <strong>pamai_</strong>
@@ -10707,7 +10724,7 @@ function igStoryItem(id) {
     <button class="ig-story-item"
       data-ig-story="${id}">
       <span class="ig-story-ring ${viewed?'viewed':''}">
-        ${igPersonAvatar(id,66)}
+        ${igPersonAvatar(id,62)}
       </span>
       <small>${p.name}</small>
     </button>

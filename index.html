@@ -10110,7 +10110,6 @@ ${[
       </div>
     `;
   }
-
   return `
     <div class="samsung-gallery sg-gallery-home">
       <div class="sg-gallery-heading">
@@ -10319,6 +10318,14 @@ const igProfilePhotos = {
 };
 
 const igPeople = {
+  karan: {
+    name: 'การันต์',
+    username: 'karan',
+    initial: 'ก',
+    color: '#e8e2ed',
+    story: 'สตอรี่ของการันต์',
+    caption: ''
+  },
   achi: {
     name: 'อชิ',
     username: 'achirawittee',
@@ -10560,19 +10567,10 @@ function renderInstagram() {
 if (igTab === 'home') {
   content = `
    <div class="ig-stories">
-
-  <button class="ig-story-item" data-ig-own-story="1">
-    <span class="ig-own-story-wrap">
-      ${igAvatar('K',58)}
-      <span class="ig-own-story-plus">+</span>
-    </span>
-    <small>สตอรี่ของคุณ</small>
-  </button>
-
+  ${igStoryItem('karan')}
   ${igStoryItem('achi')}
   ${igStoryItem('pai')}
   ${igStoryItem('rock')}
-
 </div>
     <div class="ig-feed">
       
@@ -10689,7 +10687,7 @@ igStoryStyle.textContent = `
   width:70px;
   height:70px;
   border-radius:50%;
-  padding:0.5px;
+  padding:1px;
   display:grid;
   place-items:center;
   background:linear-gradient(
@@ -10707,7 +10705,7 @@ igStoryStyle.textContent = `
 }
 
 .ig-person-avatar{
-  border:2px solid white;
+  border:1px solid white;
   border-radius:50%;
   display:grid;
   place-items:center;

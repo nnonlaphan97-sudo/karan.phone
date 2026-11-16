@@ -6613,19 +6613,28 @@ button{
   font-size:13px;
 }
 
-/* แถบเมนูแกลเลอรีอยู่ด้านล่างเสมอ */
+
+/* แกลเลอรี — แถบเมนูติดด้านล่าง */
 .samsung-gallery {
   position: relative;
-  min-height: 100%;
-  padding-bottom: 90px;
+  height: 100%;
+  min-height: 0;
+  padding-bottom: 95px;
+  overflow-y: auto;
 }
 
 .samsung-gallery-tabs {
-  position: sticky;
+  position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 20;
   width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 18px 0 24px;
   background: #fff;
+  border-top: 1px solid #eee;
 }
 
 /* ให้ตารางรูปเรียงต่อกัน */
@@ -11349,7 +11358,7 @@ if(samsungClockTab==='alarm'){
       <div class="sclock-alarm">
         <div class="sclock-time">06:00</div>
         <div class="sclock-sub">
-          นาฬิกาปลุก EP.06 กำลังดัง
+          ไปเชียงใหม่
         </div>
 
         <button

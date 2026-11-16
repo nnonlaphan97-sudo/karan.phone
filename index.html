@@ -18779,11 +18779,14 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
-  const ep6LeavingAchiConfession =
+
+const ep6LeavingAchiConfession =
   page==='chat' &&
-  chat==='achi' &&
-  save.flags.ep6Stage===2 &&
+  chat==='tanaka' &&
+  save.flags.ep6Stage>=1 &&
+  save.flags.ep6Stage<3 &&
   btn.dataset.go==='LINE';
+
     const ep6LeavingTanaka =
     page === 'chat' &&
     chat === 'tanaka' &&
@@ -18892,9 +18895,12 @@ const ep10LeavingRock=
 
 // EP.06 — อ่านแชททานากะแล้ว อชิส่ง "ขอโทษ?"
 
+
 if(ep6LeavingAchiConfession){
+  ep6Advance(2);
   ep6Advance(3);
 }
+
   // อัปเดตหน้าจอหลังปลดล็อกแอป
   render();
   if(ep6LeavingAchiConfession){

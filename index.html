@@ -1916,7 +1916,7 @@ button{
 .maps-pin{
   position:absolute;
   transform:translate(-50%,-100%);
-  border:2px solid white;
+  border:1px solid white;
   border-radius:22px;
   background:#fff;
   color:#253044;
@@ -6624,6 +6624,216 @@ button{
   object-fit: cover;
 }
 
+/* ===== PAMAI INSTAGRAM DM — LIGHT MODE ===== */
+
+.ep5-instagram{
+  height:100%;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  padding-top:36px;
+  padding-bottom:0;
+  background:#fff;
+  color:#171717;
+  overflow:hidden;
+}
+
+.ep5-ig-head{
+  height:64px;
+  min-height:64px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 14px;
+  background:#fff;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.ep5-ig-head button{
+  width:38px;
+  height:38px;
+  flex-shrink:0;
+  padding:6px;
+  border:0;
+  background:transparent;
+  color:#171717;
+  display:grid;
+  place-items:center;
+}
+
+.ep5-ig-profile{
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#eeeaf7;
+  display:grid;
+  place-items:center;
+  color:#6841b8;
+  font-size:18px;
+  font-weight:700;
+}
+
+.ep5-ig-identity{
+  flex:1;
+  min-width:0;
+}
+
+.ep5-ig-identity strong{
+  display:block;
+  font-size:17px;
+  font-weight:700;
+}
+
+.ep5-ig-identity small{
+  display:block;
+  margin-top:3px;
+  color:#888;
+  font-size:11px;
+}
+
+.ep5-ig-body{
+  flex:1;
+  min-height:0;
+  height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding:20px 15px 28px;
+  background:#fff;
+}
+
+.ep5-ig-date{
+  text-align:center;
+  font-size:12px;
+  color:#929292;
+  margin:10px 0 22px;
+}
+
+.ep5-ig-story{
+  width:210px;
+  max-width:75%;
+  height:auto;
+  aspect-ratio:auto;
+  margin:0 0 14px auto;
+  padding:9px;
+  border:1px solid #e9e9e9;
+  border-radius:19px;
+  background:#fafafa;
+  overflow:hidden;
+}
+
+.ep5-ig-story-label{
+  padding:2px 3px 9px;
+  font-size:11px;
+  color:#888;
+}
+
+.ep5-ig-story img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:310px;
+  object-fit:contain;
+  border-radius:13px;
+}
+
+.ep5-ig-bubble{
+  width:fit-content;
+  max-width:79%;
+  padding:11px 15px;
+  margin:9px 0;
+  border-radius:22px;
+  font-size:14px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
+.ep5-ig-bubble.received{
+  margin-right:auto;
+  margin-left:0;
+  background:#efeff1;
+  color:#171717;
+}
+
+.ep5-ig-bubble.sent{
+  margin-left:auto;
+  margin-right:0;
+  background:linear-gradient(120deg,#6155f5,#a02cda);
+  color:#fff;
+}
+
+.ep5-ig-replies{
+  flex-shrink:0;
+  max-height:34%;
+  overflow-y:auto;
+  padding:12px 15px 14px;
+  border-top:1px solid #eee;
+  background:#fff;
+}
+
+.ep5-ig-replies button{
+  width:100%;
+  padding:12px 14px;
+  margin:4px 0;
+  border:1px solid #e3d8fb;
+  border-radius:16px;
+  background:#f7f2ff;
+  color:#542ba3;
+  font-size:13px;
+  text-align:left;
+}
+
+.ep5-ig-compose{
+  min-height:64px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 14px 16px;
+  background:#fff;
+  border-top:1px solid #f0f0f0;
+}
+
+.ep5-ig-camera{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  background:#6254f5;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.ep5-ig-input{
+  flex:1;
+  min-width:0;
+  padding:11px 14px;
+  border-radius:24px;
+  background:#f3f3f5;
+  color:#999;
+  font-size:13px;
+}
+
+.ep5-ig-compose-icon{
+  width:26px;
+  height:26px;
+  color:#262626;
+  flex-shrink:0;
+}
+
+#phone:has(.ep5-instagram) .nav{
+  background:#fff;
+}
+
+#phone:has(.ep5-instagram) .nav span{
+  background:#555;
+}
+
+
 </style>
 </head>
 <body>
@@ -8408,9 +8618,22 @@ if(
   }
 }
 
-    const sortTime =
-      (dateValue(displayDate) ?? 0) * 10000 +
-      Number(displayTime.replace(':',''));
+
+if(save.flags.ep6Stage >= 2){
+  if(c.id === 'achi'){
+    displayDate = '17 เม.ย.';
+    displayTime = '14:00';
+  }
+
+  if(c.id === 'tanaka'){
+    displayDate = '17 เม.ย.';
+    displayTime = '15:00';
+  }
+}
+
+const sortTime =
+  (dateValue(displayDate) ?? 0) * 10000 +
+  Number(displayTime.replace(':',''));
 
     return {
       ...c,
@@ -10149,89 +10372,183 @@ ${[
 function renderInstagramDM(){
   return `
     <div class="ep5-instagram">
+
+      <!-- Instagram DM Header -->
       <div class="ep5-ig-head">
-      <button data-ig-screen="inbox" aria-label="กลับไปข้อความ Instagram">          ${lineIcon('back')}
+
+        <button
+          data-ig-screen="inbox"
+          aria-label="กลับไปข้อความ Instagram"
+        >
+          ${igIcon('back')}
         </button>
-        <strong>pamai_</strong>
-        <span>Instagram</span>
+
+        <div class="ep5-ig-profile">ป</div>
+
+        <div class="ep5-ig-identity">
+          <strong>pamai_</strong>
+          <small>Instagram</small>
+        </div>
+
+        <span style="display:flex;gap:12px;color:#222">
+          <svg width="25" height="25"
+            viewBox="0 0 24 24"
+            fill="none" stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M22 16.9v3a2 2 0 0 1-2.2 2
+              A19.8 19.8 0 0 1 3.1 5.2
+              2 2 0 0 1 5.1 3h3
+              a2 2 0 0 1 2 1.7l.5 2.8
+              a2 2 0 0 1-.6 1.7L8.2 11
+              a16 16 0 0 0 4.8 4.8l1.8-1.8
+              a2 2 0 0 1 1.7-.6l2.8.5
+              a2 2 0 0 1 1.7 2z"/>
+          </svg>
+
+          <svg width="26" height="26"
+            viewBox="0 0 24 24"
+            fill="none" stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="5"
+              width="15" height="14" rx="3"/>
+            <path d="m17 10 5-3v10l-5-3"/>
+          </svg>
+        </span>
+
       </div>
 
+      <!-- Scrollable messages -->
       <div class="ep5-ig-body">
-        <div class="ep5-ig-date">16 เมษายน</div>
 
-       <div class="ep5-ig-story">
-  <div class="ep5-ig-story-label">
-    ตอบกลับสตอรี่ของคุณ
-  </div>
+        <div class="ep5-ig-date">
+          16 เมษายน
+        </div>
 
-  <img
-    src="https://i.postimg.cc/SRthjX60/IMG-5109.jpg"
-    alt="สตอรี่ Instagram"
-    style="display:block;width:100%;height:auto;"
-  >
-</div>
+        <div class="ep5-ig-story">
+          <div class="ep5-ig-story-label">
+            ตอบกลับสตอรี่ของคุณ
+          </div>
+
+          <img
+            src="https://i.postimg.cc/SRthjX60/IMG-5109.jpg"
+            alt="Instagram Story"
+          >
+        </div>
 
         <div class="ep5-ig-bubble received">
           มึงนั่งเรือเป็นกับเขาด้วยเหรอคุณชาย
         </div>
 
-     
-<div class="ep5-ig-bubble sent">
-  ลองนั่งดู ก็บรรยากาศดีวะ
-</div>
+        <div class="ep5-ig-bubble sent">
+          ลองนั่งดู ก็บรรยากาศดีวะ
+        </div>
 
-<div class="ep5-ig-bubble received">
-  ดีเพราะคนข้างๆ รึเปล่า
-</div>
+        <div class="ep5-ig-bubble received">
+          ดีเพราะคนข้างๆ รึเปล่า
+        </div>
 
-<div class="ep5-ig-bubble sent">
-  อย่ามาแซวกูมาก
-</div>
+        <div class="ep5-ig-bubble sent">
+          อย่ามาแซวกูมาก
+        </div>
 
-<div class="ep5-ig-bubble received">
-  ว่างๆ แวะมาหากูที่ร้านด้วย
-</div>
+        <div class="ep5-ig-bubble received">
+          ว่างๆ แวะมาหากูที่ร้านด้วย
+        </div>
 
-<div class="ep5-ig-bubble sent">
-  เออ
-</div>
+        <div class="ep5-ig-bubble sent">
+          เออ
+        </div>
+
+        ${save.flags.ep7Stage >= 3 ? `
+          <div class="ep5-ig-date">
+            1 พฤษภาคม
+          </div>
+
+          <div class="ep5-ig-bubble received">
+            พรุ่งนี้มึงจะเข้ามาที่ร้านกี่โมง
+          </div>
+
+          ${save.flags.ep7FriendTime ? `
+            <div class="ep5-ig-bubble sent">
+              ${save.flags.ep7FriendTime}
+            </div>
+
+            <div class="ep5-ig-bubble sent">
+              ขอเมล็ดกาแฟจากลำพูนนะ
+            </div>
+
+            <div class="ep5-ig-bubble received">
+              ได้เลย เดี๋ยวเตรียมไว้ให้
+            </div>
+          ` : ''}
+        ` : ''}
+
       </div>
 
-${save.flags.ep7Stage>=3 ? `
-  <div class="ep5-ig-date">1 พฤษภาคม</div>
-
-  <div class="ep5-ig-bubble received">
-    พรุ่งนี้มึงจะเข้ามาที่ร้านกี่โมง
-  </div>
-
-  ${save.flags.ep7FriendTime ? `
-    <div class="ep5-ig-bubble sent">
-      ${save.flags.ep7FriendTime}
-    </div>
-
-    <div class="ep5-ig-bubble sent">
-      ขอเมล็ดกาแฟจากลำพูนนะ
-    </div>
-
-    <div class="ep5-ig-bubble received">
-      ได้เลย เดี๋ยวเตรียมไว้ให้
-    </div>
-  ` : ''}
-` : ''}
-
-     
+      <!-- Story reply choices -->
       ${save.flags.ep7Stage >= 3 &&
         !save.flags.ep7CoffeeConfirmed ? `
         <div class="ep5-ig-replies">
           <div>ตอบข้อความป่า</div>
-          ${['11:00 AM','12:00 PM','01:00 PM'].map(time => `
-            <button data-ep7-coffee="${time}">
-              ${time}
-            </button>
-          `).join('')}
+
+          ${['11:00 AM','12:00 PM','01:00 PM']
+            .map(time => `
+              <button data-ep7-coffee="${time}">
+                ${time}
+              </button>
+            `).join('')}
         </div>
       ` : ''}
 
+      <!-- Instagram compose bar -->
+      <div class="ep5-ig-compose">
+
+        <div class="ep5-ig-camera">
+          <svg width="23" height="23"
+            viewBox="0 0 24 24"
+            fill="none" stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14 4h-4l-2 3H5
+              a2 2 0 0 0-2 2v9
+              a2 2 0 0 0 2 2h14
+              a2 2 0 0 0 2-2V9
+              a2 2 0 0 0-2-2h-3z"/>
+            <circle cx="12" cy="13" r="3.5"/>
+          </svg>
+        </div>
+
+        <div class="ep5-ig-input">
+          ส่งข้อความ...
+        </div>
+
+        <svg class="ep5-ig-compose-icon"
+          viewBox="0 0 24 24"
+          fill="none" stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3"
+            width="18" height="18" rx="4"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="m21 15-5-5L5 21"/>
+        </svg>
+
+        <svg class="ep5-ig-compose-icon"
+          viewBox="0 0 24 24"
+          fill="none" stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M8 12h8M12 8v8"/>
+        </svg>
+      </div>
     </div>
   `;
 }
@@ -10390,7 +10707,7 @@ function igStoryItem(id) {
     <button class="ig-story-item"
       data-ig-story="${id}">
       <span class="ig-story-ring ${viewed?'viewed':''}">
-        ${igPersonAvatar(id,58)}
+        ${igPersonAvatar(id,66)}
       </span>
       <small>${p.name}</small>
     </button>
@@ -14086,7 +14403,7 @@ if(chat==='tanaka'){
   b='<div class="day">17 เม.ย.</div>';
 
   b+=bubble(
-    'พรุ่งนี้ผมจะไปดูงานที่เชียงใหม่นะครับ ฝากคุณการันต์ช่วยคุยงานทางนี้ให้ด้วย'
+    'พรุ่งนี้ผมจะไปดูงานที่เชียงใหม่ ฝากคุณการันต์ช่วยคุยงานทางนี้ให้ด้วยนะ'
   );
 
   b+=bubble(
@@ -14094,13 +14411,13 @@ if(chat==='tanaka'){
     true
   );
 
-  b+=bubble('คุณการันต์จะไปเองเหรอครับ');
+  b+=bubble('การันต์จะไปเองเหรอครับ');
 
   b+=bubble(
     'ครับ ผมมีเรื่องสำคัญที่ต้องไปทำที่นั่นด้วย',
     true
   );
-  b+=bubble('เข้าใจแล้วครับ ฝากด้วยนะครับ');
+  b+=bubble('เข้าใจแล้วครับ ฝากด้วยนะ');
 }
 
 /* ===== EP.08 TANAKA ===== */
@@ -18569,9 +18886,10 @@ if(ep6LeavingAchiConfession){
   if(el){
     el.innerHTML=`
       <button class="game-banner" data-ep6-open-clock="1">
-        <span class="game-banner-icon">
-         ${samsungClockIcon('alarm')}
-        </span>
+        <span class="game-banner-icon"
+  style="background:transparent;border-radius:12px;overflow:hidden;">
+  ${ico('clock')}
+</span>
         <span class="game-banner-text">
           <small>นาฬิกา</small>
           <strong>นาฬิกาปลุก</strong>

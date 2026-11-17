@@ -10883,7 +10883,7 @@ function renderInstagram() {
       <strong>Mellow Atelier</strong>
 <small>
   ${save.flags.ep7ShirtCompleted
-    ? 'ตัดเย็บเสื้อคลุมเรียบร้อยแล้วค่ะ'
+    ? 'ทางร้านได้รับข้อมูลคำสั่งซื้อเรียบร้อยแล้วค่ะ'
     : 'คุณลูกค้าต้องการเสื้อคลุมแบบไหนคะ?'}
 </small>
     </span>
@@ -11564,6 +11564,27 @@ const ep7FabricCatalog = {
 };
 
 let ep7TailorSelectionPage = 'fabric';
+const ep7TailorPrice = {fabric: 1650, sewing: 850, shipping: 100}; // ราคาจำลอง แก้ได้
+let ep7TailorNoticeTimers = [];
+function ep7ClearTailorNoticeTimers(){
+  ep7TailorNoticeTimers.forEach(clearTimeout);
+  ep7TailorNoticeTimers=[];
+}
+function ep7TailorNotifications(){
+  ep7ClearTailorNoticeTimers();
+  ep7TailorNoticeTimers.push(setTimeout(()=>{
+    const host=document.getElementById('gameBanner');
+    if(!host)return;
+    const amount=ep7TailorPrice.fabric+ep7TailorPrice.sewing+ep7TailorPrice.shipping;
+    host.innerHTML=`<div class="game-banner" style="pointer-events:none"><span class="game-banner-icon" style="background:#2479e8">${icon('message')}</span><span class="game-banner-text"><small>ข้อความ · แจ้งเตือนธุรกรรม</small><strong>เงินออกจากบัญชี</strong><span>ชำระ Mellow Atelier ฿${amount.toLocaleString('th-TH')}</span></span></div>`;
+  },2000));
+  ep7TailorNoticeTimers.push(setTimeout(()=>{
+    const host=document.getElementById('gameBanner');
+    if(host)host.innerHTML='';
+    ep7Banner('Instagram','ป่า','นี่คือไร่กาแฟที่กูหามาได้','pa');
+  },4000));
+}
+
 
   let ep7ShirtDraft={
   fabric:'',
@@ -11789,81 +11810,32 @@ function ep7InstagramPage(){
       .flatMap(f=>f.colors.map(c=>[c.id,c.name]))
   );
 
-  const shirtColor=selectedColor?.hex||'#c8b9a8';
-
-  const option=(type,value,label)=>`
-    <button class="ep7-primary"
-      data-ep7-shirt-option="${type}"
-      data-value="${value}"
-      style="
-        margin:5px;
-        width:auto;
-        padding:11px 14px;
-        opacity:${s[type]===value?1:.72};
-        outline:${s[type]===value?'3px solid #8d6b51':'none'};
-      ">
-      ${label}
-    </button>
-  `;
-
-  const shirtSVG=`
-    <svg viewBox="0 0 280 300"
-      style="width:100%;max-width:280px;display:block;margin:auto">
-
-      <path
-        d="M100 25 L120 25 L140 50 L160 25 L180 25
-           L247 105 L216 131 L194 108 L194 263
-           Q140 275 86 263 L86 108 L64 131
-           L33 105Z"
-        fill="${shirtColor}"
-        stroke="#74563e"
-        stroke-width="2.5"/>
-
-      <path d="M100 25 L120 25 L140 50 L160 25
-               L180 25 L160 67 L140 80 L120 67Z"
-        fill="${shirtColor}"
-        stroke="#74563e"
-        stroke-width="2"/>
-
-      <path d="M140 80 L140 268"
-        stroke="#74563e" stroke-width="2"/>
-
-      <path d="M94 190 L123 207 M157 207 L186 190"
-        stroke="#74563e"
-        stroke-width="4"
-        stroke-linecap="round"/>
-
-      ${[104,137,170,203,236].map((y,i)=>`
-        <circle cx="147" cy="${y}" r="5"
-          fill="${s.buttons.includes(i)?'#f6eee2':'#94765e'}"
-          stroke="#74563e"/>
-      `).join('')}
-
-      <text x="163" y="118"
-        fill="#f6eee2"
-        font-size="15"
-        font-weight="bold">A</text>
-    </svg>
-  `;
-
   let content='';
 
   if(completed){
-
+    const order=save.flags.ep7Shirt||{};
+    const chosenFabric=ep7FabricCatalog[order.fabric];
+    const chosenColor=chosenFabric?.colors.find(c=>c.id===order.color);
+    const total=ep7TailorPrice.fabric+ep7TailorPrice.sewing+ep7TailorPrice.shipping;
     content=`
-      <div class="ep7-dm received">
-        ทางร้านดำเนินการตัดเย็บเสื้อคลุม
-        ให้อชิเรียบร้อยแล้วค่ะ
-      </div>
-
-      <div style="padding:15px;text-align:center">
-        ${shirtSVG}
-      </div>
-
-      <div class="ep7-dm sent">
-        ขอบคุณครับ ฝากด้วยนะครับ
-      </div>
-    `;
+      <div style="padding:18px 15px;color:#302b26;background:#f7f4ef;min-height:100%">
+        <h2 style="margin:0 0 15px">Mellow Atelier</h2>
+        <div class="ep7-dm sent">สวัสดีครับ ผมขอสั่งตัดเสื้อคลุมให้อชิตามรายละเอียดนี้ครับ<br><br>
+          เนื้อผ้า: ${chosenFabric?.name||'-'}<br>
+          สี: ${chosenColor?.name||'-'}<br>
+          ไซส์: ${order.size||'-'}</div>
+        <div class="ep7-dm received">ทางร้านได้รับข้อมูลคำสั่งซื้อเรียบร้อยแล้วค่ะ<br><br>
+          <strong>สรุปคำสั่งซื้อ</strong><br>
+          เสื้อคลุมสำหรับคุณอชิ<br>
+          เนื้อผ้า: ${chosenFabric?.name||'-'}<br>
+          สี: ${chosenColor?.name||'-'}<br>
+          ไซส์: ${order.size||'-'}<br><br>
+          ค่าเนื้อผ้า ฿${ep7TailorPrice.fabric.toLocaleString('th-TH')}<br>
+          ค่าตัดเย็บ ฿${ep7TailorPrice.sewing.toLocaleString('th-TH')}<br>
+          ค่าจัดส่ง ฿${ep7TailorPrice.shipping.toLocaleString('th-TH')}<br>
+          <strong>ยอดชำระรวม ฿${total.toLocaleString('th-TH')}</strong><br><br>
+          ทางร้านยืนยันการชำระเงินและรับออเดอร์แล้วค่ะ ขอบคุณที่ใช้บริการ Mellow Atelier นะคะ</div>
+      </div>`;
 
   }else if(s.step===0){
 
@@ -11938,7 +11910,7 @@ function ep7InstagramPage(){
             letter-spacing:1.5px;
             color:#887d70;
           ">
-            CUSTOM ORDER / STEP 01 OF 04
+            CUSTOM ORDER / STEP 01 OF 02
           </div>
 
           <h2 style="margin:12px 0 8px">
@@ -12003,7 +11975,7 @@ function ep7InstagramPage(){
           color:#302b26;
         ">
           <div style="font-size:11px;color:#887d70">
-            CUSTOM ORDER / STEP 02 OF 04
+            CUSTOM ORDER / STEP 02 OF 02
           </div>
 
           <h2>เลือกขนาดเสื้อ</h2>
@@ -12048,148 +12020,12 @@ function ep7InstagramPage(){
             data-ep7-shirt-start="1"
             ${!s.size?'disabled':''}
             style="margin-top:16px">
-            ยืนยันแบบและเข้าสู่หน้าตัดเย็บ
+            ส่งคำสั่งซื้อให้ Mellow Atelier
           </button>
         </div>
       `;
     }
 
-  }else{
-
-
-    const titles=[
-      '',
-      'ตัดผ้าตามแพตเทิร์น',
-      'เย็บตะเข็บ',
-      'ติดกระดุมสีอ่อน',
-      'ปักตัวอักษร A',
-      'ตรวจเสื้อ'
-    ];
-
-    let controls='';
-
-    if(s.step===1){
-
-      controls=`
-        <div class="ep7-dm received">
-          แตะตัดชิ้นผ้าให้ครบ 4 ชิ้นค่ะ
-        </div>
-
-        ${['หน้าซ้าย','หน้าขวา','แขนซ้าย','แขนขวา']
-          .map((name,i)=>`
-            <button class="ep7-primary"
-              data-ep7-shirt-cut="${i}"
-              style="margin-bottom:9px">
-              ${s.cut.includes(i)?'✓ ตัดแล้ว':'✂ ตัด'} ${name}
-            </button>
-          `).join('')}
-
-        <button class="ep7-primary"
-          data-ep7-shirt-next="2"
-          ${s.cut.length!==4?'disabled':''}>
-          ไปเย็บตะเข็บ
-        </button>
-      `;
-
-    }else if(s.step===2){
-
-      controls=`
-        <div class="ep7-dm received">
-          เย็บตะเข็บให้ครบ 8 จังหวะค่ะ
-        </div>
-
-        <h3>${s.stitches} / 8 ฝีเข็ม</h3>
-
-        <button class="ep7-primary"
-          data-ep7-shirt-stitch="1"
-          ${s.stitches>=8?'disabled':''}>
-          เย็บหนึ่งจังหวะ
-        </button>
-
-        <button class="ep7-primary"
-          data-ep7-shirt-next="3"
-          ${s.stitches<8?'disabled':''}>
-          ไปติดกระดุม
-        </button>
-      `;
-
-    }else if(s.step===3){
-
-      controls=`
-        <div class="ep7-dm received">
-          ติดกระดุมสีอ่อนให้ครบ 5 เม็ดค่ะ
-        </div>
-
-        ${[0,1,2,3,4].map(i=>`
-          <button class="ep7-primary"
-            data-ep7-shirt-button="${i}"
-            style="width:48px;margin:4px">
-            ${s.buttons.includes(i)?'✓':i+1}
-          </button>
-        `).join('')}
-
-        <button class="ep7-primary"
-          data-ep7-shirt-next="4"
-          ${s.buttons.length!==5?'disabled':''}>
-          ไปปักตัว A
-        </button>
-      `;
-
-    }else if(s.step===4){
-
-      controls=`
-        <div class="ep7-dm received">
-          ปักตัว A ให้ครบ 8 ฝีเข็มค่ะ
-        </div>
-
-        <h3>${s.embroidery} / 8</h3>
-
-        <button class="ep7-primary"
-          data-ep7-shirt-embroider="1"
-          ${s.embroidery>=8?'disabled':''}>
-          ปักเพิ่มหนึ่งฝีเข็ม
-        </button>
-
-        <button class="ep7-primary"
-          data-ep7-shirt-next="5"
-          ${s.embroidery<8?'disabled':''}>
-          ตรวจเสื้อ
-        </button>
-      `;
-
-    }else if(s.step===5){
-
-      controls=`
-        <div class="ep7-dm received">
-          ตัดเย็บเสร็จแล้วค่ะ
-          กรุณาตรวจรายละเอียดก่อนยืนยันนะคะ
-        </div>
-
-        <div class="ep7-dm received">
-          เนื้อผ้า: ${fabricNames[s.fabric]}<br>
-          สี: ${colorNames[s.color]}<br>
-          ไซส์: ${s.size}<br>
-          กระเป๋าเฉียง<br>
-          กระดุมสีอ่อน 5 เม็ด<br>
-          ปักตัว A
-        </div>
-
-        <button class="ep7-primary"
-          data-ep7-shirt-finish="1">
-          ยืนยันเสื้อคลุมให้อชิ
-        </button>
-      `;
-    }
-
-    content=`
-      <h3>${titles[s.step]}</h3>
-
-      <div style="padding:12px">
-        ${shirtSVG}
-      </div>
-
-      ${controls}
-    `;
   }
 
   return `
@@ -17873,146 +17709,20 @@ if(shirtOption && page==='Instagram'){
   return;
 }
 
-const shirtStart=e.target.closest(
-  '[data-ep7-shirt-start]'
-);
-
-if(shirtStart && page==='Instagram'){
-
+const shirtStart=e.target.closest('[data-ep7-shirt-start]');
+if(shirtStart && page==='Instagram' && igScreen==='ep7tailor'){
   const s=ep7ShirtDraft;
-
-  if(!s.fabric||!s.color||!s.size)return;
-
-  s.step=1;
-  render();
-  return;
-}
-
-const shirtCut=e.target.closest(
-  '[data-ep7-shirt-cut]'
-);
-
-if(shirtCut && page==='Instagram'){
-
-  const i=Number(shirtCut.dataset.ep7ShirtCut);
-  const s=ep7ShirtDraft;
-
-  if(!s.cut.includes(i)){
-    s.cut.push(i);
-  }
-
-  render();
-  return;
-}
-
-const shirtStitch=e.target.closest(
-  '[data-ep7-shirt-stitch]'
-);
-
-if(shirtStitch && page==='Instagram'){
-
-  ep7ShirtDraft.stitches=Math.min(
-    8,
-    ep7ShirtDraft.stitches+1
-  );
-
-  render();
-  return;
-}
-
-const shirtButton=e.target.closest(
-  '[data-ep7-shirt-button]'
-);
-
-if(shirtButton && page==='Instagram'){
-
-  const i=Number(shirtButton.dataset.ep7ShirtButton);
-  const s=ep7ShirtDraft;
-
-  if(!s.buttons.includes(i)){
-    s.buttons.push(i);
-  }
-
-  render();
-  return;
-}
-
-const shirtEmbroidery=e.target.closest(
-  '[data-ep7-shirt-embroider]'
-);
-
-if(shirtEmbroidery && page==='Instagram'){
-
-  ep7ShirtDraft.embroidery=Math.min(
-    8,
-    ep7ShirtDraft.embroidery+1
-  );
-
-  render();
-  return;
-}
-
-const shirtNext=e.target.closest(
-  '[data-ep7-shirt-next]'
-);
-
-if(shirtNext && page==='Instagram'){
-
-  const s=ep7ShirtDraft;
-  const next=Number(shirtNext.dataset.ep7ShirtNext);
-
-  const allowed=
-    (next===2 && s.step===1 && s.cut.length===4) ||
-    (next===3 && s.step===2 && s.stitches===8) ||
-    (next===4 && s.step===3 && s.buttons.length===5) ||
-    (next===5 && s.step===4 && s.embroidery===8);
-
-  if(!allowed)return;
-
-  s.step=next;
-  render();
-  return;
-}
-
-const shirtFinish=e.target.closest(
-  '[data-ep7-shirt-finish]'
-);
-
-if(shirtFinish && page==='Instagram'){
-
-  const s=ep7ShirtDraft;
-
-  if(s.step!==5)return;
-
-  save.flags.ep7Shirt={
-    fabric:s.fabric,
-    color:s.color,
-    size:s.size,
-    chest:120,
-    length:75,
-    sleeve:65,
-    pockets:'slant',
-    buttons:'light',
-    embroidery:'A'
-  };
-
+  const valid=ep7FabricCatalog[s.fabric]?.colors.some(c=>c.id===s.color);
+  if(!valid||!['M','L','XL'].includes(s.size)||save.flags.ep7ShirtCompleted)return;
+  save.flags.ep7Shirt={fabric:s.fabric,color:s.color,size:s.size};
   save.flags.ep7ShirtCompleted=true;
-
   ep7Next(3);
   persist();
-
-  igScreen='inbox';
   render();
-
-  ep7Banner(
-    'Instagram',
-    'ป่า',
-    'นี่คือไร่กาแฟที่กูหามาได้',
-    'pa'
-  );
-
+  ep7TailorNotifications();
   return;
 }
+
 /* EP.07 — เลือกเวลาเข้าร้านของป่า */
 
 const ep7Coffee=e.target.closest('[data-ep7-coffee]');

@@ -10850,8 +10850,9 @@ function renderIGStoryViewer() {
 }
 
 function renderInstagram() {
-    if(
+   if(
     igScreen==='ep7shop' ||
+    igScreen==='ep7tailor' ||
     igScreen==='ep7pa'
   ){
     return ep7InstagramPage();
@@ -11689,7 +11690,48 @@ function ep7FlowerArt(type){
 
 function ep7InstagramPage(){
 
-  if(igScreen!=='ep7shop'){
+  if(igScreen==='ep7shop'){
+    return `
+      <div class="ep7-page">
+        <header class="ep7-header">
+          <button data-ep7-ig-back="1">
+            ${igIcon('back')}
+          </button>
+          <strong>Mellow Atelier</strong>
+          <span>Instagram</span>
+        </header>
+
+        <div class="ep7-scroll">
+          <div class="ep7-dm received">
+            สวัสดีค่ะคุณการันต์
+            ไม่ทราบว่าต้องการเสื้อคลุมแบบไหนคะ?
+          </div>
+
+          <div class="ep7-dm received">
+            ทางร้านมีบริการออกแบบและตัดเย็บเสื้อคลุมค่ะ
+            คุณการันต์สามารถเลือกเนื้อผ้า สี และไซส์
+            ผ่านลิงก์ด้านล่างได้เลยนะคะ
+          </div>
+
+          <button
+            data-ep7-tailor-link="1"
+            style="display:block;width:calc(100% - 24px);
+                   margin:12px;padding:15px;
+                   border:1px solid #d9e2f4;
+                   border-radius:14px;background:#f0f5ff;
+                   color:#2766bd;text-align:left;
+                   overflow-wrap:anywhere;">
+            <strong>mellowatelier.com/custom-order</strong>
+            <small style="display:block;margin-top:6px;color:#65758e">
+              แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม
+            </small>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  if(igScreen!=='ep7tailor'){
     return renderInstagramDM();
   }
 
@@ -17410,9 +17452,16 @@ if(
 
   return;
 }
-const ep7IGOpen=e.target.closest(
-  '[data-ep7-ig-open]'
+/* EP.07 — เปิดลิงก์ออกแบบเสื้อจาก DM */
+const ep7TailorLink=e.target.closest(
+  '[data-ep7-tailor-link]'
 );
+
+if(ep7TailorLink && page==='Instagram'){
+  igScreen='ep7tailor';
+  render();
+  return;
+}
 
 if(ep7IGOpen && page==='Instagram'){
   igScreen=ep7IGOpen.dataset.ep7IgOpen;
@@ -17831,12 +17880,14 @@ const ep7IGBack=e.target.closest(
 );
 
 if(ep7IGBack && page==='Instagram'){
-  igScreen='inbox';
+  if(igScreen==='ep7tailor'){
+    igScreen='ep7shop';
+  }else{
+    igScreen='inbox';
+  }
   render();
   return;
 }
-
-
 /* ===== EP.06 INTERACTIONS ===== */
 // เปิดนาฬิกาปลุก
 const ep6OpenClock=e.target.closest(

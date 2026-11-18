@@ -8848,25 +8848,7 @@ const sortTime =
 
   // EP.01 — LINE GIFT อยู่ถัดจากอชิและพี่ดุจ
   // แสดงเมื่อสั่งเค้กแล้วเท่านั้น
-  if(save.flags.cakeOrdered){
-    results.push({
-      id:'lineGiftNotice',
-      name:'LINE GIFT Notice',
-      preview:'อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย',
-      date:'30 ม.ค.',
-      time:'10:36',
-      sortTime:0,
-      originalIndex:999
-    });
-
-    // คงลำดับแชทอื่นตามเวลาเดิม
-    // แต่ให้ LINE GIFT อยู่หลังสองคนนี้
-    const giftIndex=results.findIndex(
-      c=>c.id==='lineGiftNotice'
-    );
-
-    const gift=results.splice(giftIndex,1)[0];
-
+    const giftChatVisible = !!save.flags.cakeOrdered;
     const achiIndex=results.findIndex(c=>c.id==='achi');
     const dujIndex=results.findIndex(c=>c.id==='duj');
 
@@ -15168,17 +15150,17 @@ function renderEp1GiftChat(){
   min-width:0;
   font-size:17px;
 ">
-  <svg width="23" height="23"
-       viewBox="0 0 24 24"
-       fill="none"
-       xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 21V3"
-          stroke="#06c755"
-          stroke-width="2"
-          stroke-linecap="round"/>
-    <path d="M6 4H20L16 10L20 16H6Z"
-          fill="#06c755"/>
-  </svg>
+  <svg width="24" height="24" viewBox="0 0 24 24"
+     xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2L21 5V12C21 17 17 20 12 22C7 20 3 17 3 12V5Z"
+        fill="#06C755"/>
+  <path d="M8 12L11 15L16 9"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="2.3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
   <span>LINE GIFT Notice</span>
 </b>
       </div>

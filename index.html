@@ -17939,9 +17939,56 @@ document.addEventListener('change',function(e){
   }
 });
 
+
 document.addEventListener('click',function(e){
   try {
+
+  /* ===== PIN HANDLER ===== */
+  const pinButton = e.target.closest(
+    '[data-pin],[data-pin-action]'
+  );
+
+  if(page === 'pin' && pinButton){
+
+    const action = pinButton.dataset.pinAction;
+
+    if(action === 'cancel'){
+      pinInput = '';
+      page = 'lock';
+      render();
+      return;
+    }
+
+    if(action === 'delete'){
+      pinInput = pinInput.slice(0,-1);
+      render();
+      return;
+    }
+
+    const digit = pinButton.dataset.pin;
+
+    if(digit !== undefined){
+      if(pinInput.length >= 4) return;
+
+      pinInput += digit;
+
+      if(pinInput.length === 4){
+        if(pinInput === PHONE_PIN){
+          pinInput = '';
+          page = 'home';
+        }else{
+          pinInput = '';
+          alert('รหัส PIN ไม่ถูกต้อง');
+        }
+      }
+
+      render();
+      return;
+    }
+  }
+
   /* ===== EP.12 FILES INTERACTIONS ===== */
+
 
 const ep12Folder=e.target.closest('[data-ep12-folder]');
 
@@ -20052,44 +20099,6 @@ if(e.target.closest('[data-line-call]')){
 
 const pinBtn=e.target.closest('[data-pin],[data-pin-action]');
 
-if(pinBtn && page==='pin'){
-
-  if(pinBtn.dataset.pinAction==='cancel'){
-    pinInput='';
-    page='lock';
-    render();
-    return;
-  }
-
-  if(pinBtn.dataset.pinAction==='delete'){
-    pinInput=pinInput.slice(0,-1);
-    render();
-    return;
-  }
-
-  if(pinBtn.dataset.pin!==undefined){
-
-    if(pinInput.length>=4)return;
-
-    pinInput+=pinBtn.dataset.pin;
-
-    if(pinInput.length===4){
-
-      if(pinInput===PHONE_PIN){
-        pinInput='';
-        page='home';
-      }else{
-        pinInput='';
-        alert('รหัส PIN ไม่ถูกต้อง');
-      }
-
-    }
-
-    render();
-    return;
-  }
-}
-
 // EP.04 — ตอบอชิเรื่องอาหารเช้า
 const breakfastBtn=e.target.closest('[data-ep4-breakfast]');
 
@@ -20838,51 +20847,6 @@ document.addEventListener('input',function(e){
   }
 });
   
-/* ===== PIN KEYPAD FIX ===== */
-document.addEventListener('click', function(e) {
-  const btn = e.target.closest(
-    '[data-pin], [data-pin-action]'
-  );
-
-  if (!btn || page !== 'pin') return;
-
-  e.preventDefault();
-  e.stopImmediatePropagation();
-
-  const action = btn.dataset.pinAction;
-
-  if (action === 'cancel') {
-    pinInput = '';
-    page = 'lock';
-    render();
-    return;
-  }
-
-  if (action === 'delete') {
-    pinInput = pinInput.slice(0, -1);
-    render();
-    return;
-  }
-
-  const digit = btn.dataset.pin;
-
-  if (digit === undefined) return;
-
-  pinInput += digit;
-
-  if (pinInput.length === 4) {
-    if (pinInput === PHONE_PIN) {
-      pinInput = '';
-      page = 'home';
-    } else {
-      pinInput = '';
-      alert('รหัส PIN ไม่ถูกต้อง');
-    }
-  }
-
-  render();
-}, true);
-
 document.getElementById('nav').addEventListener('click',function(){
   if(page==='lock'){
     pinInput='';

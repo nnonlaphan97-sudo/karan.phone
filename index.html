@@ -8251,7 +8251,7 @@ const lineProfileImages={
 
 const lineProfileNames={
   me:'karan',
-  achi:'Achi rawit',
+  achi:'Achirawit',
   pai:'Pai',
   duj:'พี่ดุจดาว',
   tanaka:'Tanaka san',
@@ -9815,14 +9815,14 @@ const calendarEvents=[
     date:`2026-04-${String(i+1).padStart(2,'0')}`,
     title:'นัดลูกค้า',
     time:'09:00–17:00',
-    detail:'มีนัดหมายกับลูกค้า ไม่สะดวกเข้าร่วม Outing',
+    detail:'บริษัทพีเบก้า',
     type:'work'
   })),
   {
     date:'2026-01-28',
     title:'นัดพบลูกค้า',
     time:'10:00–11:30',
-    detail:'ประชุมงานกับลูกค้าฝ่ายขาย',
+    detail:'บริษัท GEMMHOUSE',
     type:'work'
   },
   {
@@ -15093,7 +15093,7 @@ function ep1GiftCard(){
 
             <div style="
               color:#777;
-              font-size:12px;
+              font-size:10px;
               margin-top:5px;
             ">
               30 ม.ค. · ราศีกุมภ์
@@ -15752,12 +15752,15 @@ if(save.flags.ep3OfficePosterShown){
 
   
   // รูป Company Outing ที่พี่ดุจส่งต่อกัน 4 ข้อความ
-  const outingPhotos = [
-    'https://i.ibb.co/DgPDd7HB/IMG-5084.jpg',
-    'https://i.ibb.co/qFdCdYkL/IMG-5081.jpg',
-    'https://i.ibb.co/60fdCzTm/IMG-5083.jpg',
-    'https://i.ibb.co/XZfQ7fmz/IMG-5080.jpg'
-  ];
+ 
+const outingPhotos = [
+  'https://i.postimg.cc/349b5Wm9/IMG-4895.jpg',
+  'https://i.postimg.cc/TLQHMhgn/IMG-5080.jpg',
+  'https://i.postimg.cc/KkQsS4BT/IMG-5081.jpg',
+  'https://i.postimg.cc/8JwnQsMb/IMG-5083.jpg',
+  'https://i.postimg.cc/Vr4HQ5nr/IMG-5084.jpg'
+];
+
 
   outingPhotos.forEach(src => {
     b += `
@@ -15780,7 +15783,7 @@ if(save.flags.ep3OfficePosterShown){
   });
 
 
-  b+=groupBubble('ปาย','ขอบคุณค่ะพี่ดุจ');
+  b+=groupBubble('ปาย','รูปเริ่ดมากเลยค่ะพี่ดุจ');
   b+=groupBubble('ร็อค','สนุกมากเลยครับ');
   b+=groupBubble('อชิ','ขอบคุณครับ');
 }
@@ -17128,7 +17131,7 @@ function showGameBanner(who,message){
   const avatar=who==='lineGiftNotice'?ep1GiftIcon():who==='line-official'?'<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800">LINE</span>':lineBannerAvatar(who);
   banner.innerHTML=`<button class="game-banner" data-banner-chat="${who}"><span class="game-banner-icon" style="background:transparent;overflow:hidden">${avatar}</span><span class="game-banner-text"><small>LINE · ตอนนี้</small><strong>${sender}</strong><span>${message}</span></span></button>`;
   const shown=banner.firstElementChild;
-  gameBannerHideTimer=setTimeout(()=>{if(banner.firstElementChild===shown)banner.innerHTML=''},2500);
+  gameBannerHideTimer=setTimeout(()=>{if(banner.firstElementChild===shown)banner.innerHTML=''},3000);
 }
 
 function goApp(name){

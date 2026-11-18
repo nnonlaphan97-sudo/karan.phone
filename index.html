@@ -11518,13 +11518,25 @@ igStoryStyle.textContent = `
 }
 
 .ig-story-bottom{
+  position:absolute !important;
+  bottom:25px !important;
+  left:15px;
+  right:15px;
+  width:auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:15px;
   padding:14px;
+  z-index:10;
 }
-
+.ig-story-bottom span{
+  flex:1;
+  padding:12px 16px;
+  border:1px solid white;
+  border-radius:25px;
+  font-size:13px;
+}
 .ig-story-bottom span{
   flex:1;
   padding:12px 16px;

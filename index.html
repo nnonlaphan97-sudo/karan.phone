@@ -8650,7 +8650,7 @@ if(save.flags.ep6Stage >= 1){
   ){
     availableChats.push({
       id:'achi',
-      name:'Acirawit'
+      name:'Achirawit'
     });
   }
 
@@ -9069,7 +9069,7 @@ const mosaic=(ids)=>{
   '</span>'+
   '<div class="line-directory-info">'+
     '<strong>วันเกิดเพื่อนในช่วงนี้</strong>'+
-    '<small>Acirawit · 30 มกราคม</small>'+
+    '<small>Achirawit · 30 มกราคม</small>'+
   '</div>'+
   '<span class="line-directory-count">1</span>'+
   '<span class="line-directory-arrow">›</span>'+
@@ -9077,7 +9077,7 @@ const mosaic=(ids)=>{
 
 directoryRow(
   'รายการโปรด',
-  'Acirawit',
+  'Achirawit',
   '1',
   ['achi'],
   'favorites'
@@ -10605,7 +10605,7 @@ const photo=photos[samsungGalleryIndex];
         
 ${[
   {id:'karin',name:'Karin'},
-  {id:'achi',name:'Acirawit'},
+  {id:'achi',name:'Achirawit'},
   {id:'duj',name:'พี่ดุจดาว'},
   {id:'pai',name:'Pai'},
   {id:'rock',name:'Rock'},
@@ -15222,7 +15222,7 @@ const senderMap={
   'พี่ดุจดาว':'พี่ดุจดาว',
   'ร็อค':'Rock',
   'ปาย':'Pai',
-  'อชิ':'Acirawit',
+  'อชิ':'Achirawit',
   'ทานากะซัง':'Tanaka san'
 };
 
@@ -15247,7 +15247,7 @@ const displaySender=senderDisplayNames[sender]||sender;
 function cancelledMessage(){
   return `
     <div class="line-cancelled-message">
-      <div> Acirawit ยกเลิกข้อความแล้ว</div>
+      <div> Achirawit ยกเลิกข้อความแล้ว</div>
     </div>
   `;
 }
@@ -17607,18 +17607,55 @@ function lineBannerAvatar(id){
   return icon('line');
 }
 
-let gameBannerHideTimer=null;
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
   if(!banner)return;
   clearTimeout(gameBannerHideTimer);
-  const names={office:'TOYOKAWA',sales:'ทีมฝ่ายขาย',achi:'Acirawit',pai:'Pai',rock:'Rock',duj:'พี่ดุจดาว',karin:'Karin',tanaka:'Tanaka San'};
+  const names={office:'TOYOKAWA',sales:'ทีมฝ่ายขาย',achi:'Achirawit',pai:'Pai',rock:'Rock',duj:'พี่ดุจดาว',karin:'Karin',tanaka:'Tanaka San'};
   const sender=who==='lineGiftNotice'?'LINE GIFT Notice':who==='line-official'?'LINE':(names[who]||who);
   const avatar=who==='lineGiftNotice'?ep1GiftIcon():who==='line-official'?'<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800">LINE</span>':lineBannerAvatar(who);
   banner.innerHTML=`<button class="game-banner" data-banner-chat="${who}"><span class="game-banner-icon" style="background:transparent;overflow:hidden">${avatar}</span><span class="game-banner-text"><small>LINE · ตอนนี้</small><strong>${sender}</strong><span>${message}</span></span></button>`;
-  const shown=banner.firstElementChild;
-  gameBannerHideTimer=setTimeout(()=>{if(banner.firstElementChild===shown)banner.innerHTML=''},2500);
 }
+
+
+/* ===== AUTO HIDE BANNERS EXCEPT CALLS & ALARMS ===== */
+(function(){
+  const host = document.getElementById('gameBanner');
+  if(!host) return;
+
+  let hideTimer = null;
+
+  const persistentSelectors = [
+    '[data-ep6-open-clock]',
+    '[data-ep10-call-notice]',
+    '[data-ep11-call-open]'
+  ].join(',');
+
+  const observer = new MutationObserver(() => {
+    clearTimeout(hideTimer);
+    hideTimer = null;
+
+    const currentBanner = host.querySelector('.game-banner');
+    if(!currentBanner) return;
+
+    // สายเรียกเข้าและนาฬิกาปลุกต้องค้างไว้
+    if(currentBanner.matches(persistentSelectors)){
+      return;
+    }
+
+    // แจ้งเตือนทั่วไปหายเองหลัง 2.5 วินาที
+    hideTimer = setTimeout(() => {
+      if(host.contains(currentBanner)){
+        currentBanner.remove();
+      }
+    }, 2500);
+  });
+
+  observer.observe(host, {
+    childList:true
+  });
+})();
+
 
 function goApp(name){
 
@@ -18979,7 +19016,7 @@ if(
 
   // คงการแจ้งเตือนอชิที่เชื่อมกับเนื้อเรื่องเดิม
   ep6Notify(
-    'Acirawit',
+    'Achirawit',
     'ผมอยากคุยกับการันต์เรื่องคืนก่อน',
     'achi'
   );
@@ -19052,7 +19089,7 @@ setTimeout(()=>{
   ep6Advance(1);
 
   ep6Notify(
-    'Acirawit',
+    'Achirawit',
     'ขอโทษ?',
     'achi'
   );

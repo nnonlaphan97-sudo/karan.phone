@@ -6986,6 +6986,43 @@ button{
   margin-top:6px;
   color:#65758e;
 }
+  .ig-explore-search{
+  margin:10px 12px 14px;
+  padding:11px 14px;
+  background:#efeff1;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.ig-explore-search input{
+  border:0;
+  outline:0;
+  background:transparent;
+  flex:1;
+  min-width:0;
+  font-size:14px;
+}
+
+.ig-explore-photo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:2px;
+}
+
+.ig-explore-photo{
+  aspect-ratio:1;
+  overflow:hidden;
+  background:#eee;
+}
+
+.ig-explore-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
 </style>
 </head>
 <body>
@@ -8969,6 +9006,15 @@ if(save.flags.ep6Stage >= 5 && c.id === 'achi'){
   displayTime = '19:24';
   preview = 'ผมอยากคุยกับการันต์เรื่องคืนก่อน';
 }
+    /* EP.07 — หลังยืนยันเฮลิคอปเตอร์ */
+if(
+  c.id === 'achi' &&
+  save.flags.ep7HelicopterConfirmed
+){
+  displayDate = '1 พ.ค.';
+  displayTime = '09:30';
+  preview = 'การันต์ ขอโทษนะครับที่ผมเป็นลมไป';
+}
 const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -8991,6 +9037,17 @@ const sortTime =
       a.originalIndex-b.originalIndex
     );
   });
+  /* EP.07 — อชิขึ้นบนสุดหลังยืนยันเฮลิคอปเตอร์ */
+if(save.flags.ep7HelicopterConfirmed){
+  const achiIndex = results.findIndex(
+    item => item.id === 'achi'
+  );
+
+  if(achiIndex > 0){
+    const achiItem = results.splice(achiIndex,1)[0];
+    results.unshift(achiItem);
+  }
+}
 /* EP.06 — อชิขึ้นบนสุดหลังการันต์ตอบปาย */
 if(
   save.flags.ep6Stage === 5
@@ -11322,15 +11379,59 @@ ${igFeedPost('rock', 0)}
   `;
 }
 
-  if (igTab === 'search') {
-    content = `
-      <div class="ig-search">ค้นหา</div>
-      <div class="ig-explore-grid">
-        ${Array.from({length:12}, (_,i) =>
-          `<div class="ig-explore-item"> ${i+1} </div>`
-        ).join('')}
-      </div>`;
+ if (igTab === 'search') {
+
+const explorePhotos = [
+  {
+    type:'polcasan',
+    src:'https://commons.wikimedia.org/wiki/Special:FilePath/Polcasan_gmmtv.jpg'
+  },
+  {
+    type:'camera',
+    src:"https://commons.wikimedia.org/wiki/Special:FilePath/Digital_Camera%27s.jpg"
+  },
+  {
+    type:'camera',
+    src:'https://commons.wikimedia.org/wiki/Special:FilePath/Digital_cameras.jpg'
+  },
+  {
+    type:'camera',
+    src:'https://commons.wikimedia.org/wiki/Special:FilePath/Nikon_D850_digital_single-lens_reflex_camera.jpg'
   }
+];
+
+const shuffled = [...explorePhotos]
+  .sort(() => Math.random() - 0.5);
+
+const photos = Array.from(
+  {length:18},
+  (_,i) => shuffled[i % shuffled.length]
+);
+
+
+  const shuffled = [...explorePhotos]
+    .sort(() => Math.random() - 0.5);
+
+  const photos = Array.from(
+    {length:18},
+    (_,i) => shuffled[i % shuffled.length]
+  );
+
+  content = `
+    <div class="ig-explore-search">
+      ${igIcon('search')}
+      <input type="search" placeholder="ค้นหา">
+    </div>
+
+    <div class="ig-explore-photo-grid">
+      ${photos.map(photo => `
+        <div class="ig-explore-photo">
+          <img src="${photo.src}" alt="${photo.type}" loading="lazy">
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
 
  
 if (igTab === 'reels') {
@@ -16541,6 +16642,7 @@ if(
   save.flags.ep7HelicopterConfirmed
 ){
   b+='<div class="day">2 พ.ค.</div>';
+  lastBubbleSender=null;
 
   b+=bubble('การันต์ ขอโทษนะครับที่ผมเป็นลมไป',false,'','09:00');
   b+=bubble('ผมผิดเองที่ไม่ได้บอกการันต์ว่าผมกลัวความสูง',false,'','09:01');

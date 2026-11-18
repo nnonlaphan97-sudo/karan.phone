@@ -15558,7 +15558,6 @@ if(save.flags.ep3SickShown){
   save.flags.ep4AchiCancelledRead ||
   save.flags.ep3SickBannerSeen
 ){
-
     // เมื่อเปิดอ่านข้อความแล้ว ให้เห็นว่าอชิยกเลิกข้อความ
     b+=cancelledMessage();
 
@@ -19721,6 +19720,28 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
+  
+if(
+  page==='chat' &&
+  chat==='achi' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep4AchiCancelledRead &&
+  !save.flags.ep4DujBannerShown
+){
+  save.flags.ep4DujBannerShown=true;
+  lineMarkChatActivity('duj');
+  persist();
+
+  page='LINE';
+  lineTab='chats';
+  lineSubtab='chats';
+
+  render();
+
+  showGameBanner('duj','นี่จ๊ะ ที่อยู่บ้านของอชิ');
+  return;
+}
+
 // EP.03 — กลับจากแชทการิน แล้วอชิส่งข้อความ
 if(
   page === 'chat' &&

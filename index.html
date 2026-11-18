@@ -20837,6 +20837,52 @@ document.addEventListener('input',function(e){
     input.setSelectionRange(cursor,cursor);
   }
 });
+  
+/* ===== PIN KEYPAD FIX ===== */
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest(
+    '[data-pin], [data-pin-action]'
+  );
+
+  if (!btn || page !== 'pin') return;
+
+  e.preventDefault();
+  e.stopImmediatePropagation();
+
+  const action = btn.dataset.pinAction;
+
+  if (action === 'cancel') {
+    pinInput = '';
+    page = 'lock';
+    render();
+    return;
+  }
+
+  if (action === 'delete') {
+    pinInput = pinInput.slice(0, -1);
+    render();
+    return;
+  }
+
+  const digit = btn.dataset.pin;
+
+  if (digit === undefined) return;
+
+  pinInput += digit;
+
+  if (pinInput.length === 4) {
+    if (pinInput === PHONE_PIN) {
+      pinInput = '';
+      page = 'home';
+    } else {
+      pinInput = '';
+      alert('รหัส PIN ไม่ถูกต้อง');
+    }
+  }
+
+  render();
+}, true);
+
 document.getElementById('nav').addEventListener('click',function(){
   if(page==='lock'){
     pinInput='';

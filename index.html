@@ -18925,18 +18925,29 @@ if(
 }
 /* อชิยกเลิกข้อความแล้ว พี่ดุจจึงส่งที่อยู่ */
 if(
-  targetChat==='achi' &&
+  page === 'chat' &&
+  chat === 'achi' &&
+  btn.dataset.go === 'LINE' &&
   save.flags.ep4AchiCancelledRead &&
   !save.flags.ep4DujBannerShown
 ){
-    save.flags.ep4DujBannerShown=true;
-    persist();
+  save.flags.ep4DujBannerShown = true;
 
+  page = 'LINE';
+  lineTab = 'chats';
+  lineSubtab = 'chats';
+
+  lineMarkChatActivity('duj');
+
+  persist();
+  render();
+
+  setTimeout(() => {
     showGameBanner(
       'duj',
       'นี่จ๊ะ ที่อยู่บ้านของอชิ'
     );
-  }
+  }, 500);
 
   return;
 }
@@ -19768,7 +19779,7 @@ if(
       'achi',
       'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
     );
-  }, 800);
+  }, 200);
 
   return;
 }

@@ -5128,7 +5128,7 @@ button{
 
 .line-full-profile-center{
   position:absolute;
-  top:48%;
+  top:53%;
   left:0;
   right:0;
   transform:translateY(-50%);
@@ -6878,7 +6878,7 @@ button{
   width:43px;
   height:54px;
   top:-43px;
-  left:50%;
+  left:63%;
   right:auto;
   transform:translateX(-50%) rotate(-12deg);
   transform-origin:bottom center;
@@ -6950,13 +6950,25 @@ button{
 /* ยกโปรไฟล์ขึ้นเมื่อมีกล่องวันเกิด */
 .line-full-profile:has(#ep1BirthdayPopup)
 .line-full-profile-center{
-  top:36%;
+  top:43%;
 }
 
 /* กล่องวันเกิดด้านล่าง */
 #ep1BirthdayPopup{
   bottom:16px !important;
   top:auto !important;
+}
+  .line-full-profile-status{
+  margin-top:-5px;
+  font-size:14px;
+  color:rgba(255,255,255,.88);
+  text-align:center;
+  text-shadow:0 1px 5px #0008;
+}
+
+.ep1-birthday-date svg{
+  color:white;
+  stroke:white;
 }
 </style>
 </head>
@@ -8424,6 +8436,24 @@ function renderLineFullProfile(){
 </div>
 
 <h2>${name}</h2>
+
+${id==='achi' && !save.flags.cakeOrdered ? `
+  <div class="ep1-birthday-date">
+    ${ep1GiftIcon()}
+    <span>30 ม.ค.</span>
+  </div>
+` : ''}
+
+<div class="line-full-profile-status">
+  ${({
+    achi: 'คนพิเศษที่ไม่วิเศษ',
+    pai: 'เกิด แก่ เจ็บ เติมเกย์',
+    rock: 'อย่ายอมแพ้ดิวะ!',
+    duj: 'มีความสุขกับทุกวัน',
+    karin: 'ถ้าเธอได้ยิน',
+    tanaka: 'TOYOKAWA Fighting!!'
+  })[id] || ''}
+</div>
 
 ${id==='achi' && !save.flags.cakeOrdered ? `
   <div class="ep1-birthday-date">

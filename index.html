@@ -6858,7 +6858,89 @@ button{
 #phone:has(.ep5-instagram) .nav span{
   background:#555;
 }
+/* EP.01 Birthday Profile */
 
+.ep1-birthday-avatar-wrap{
+  position:relative;
+  width:112px;
+  height:112px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.ep1-birthday-avatar-wrap .line-full-profile-avatar{
+  width:112px !important;
+  height:112px !important;
+}
+
+.ep1-party-hat{
+  position:absolute;
+  width:43px;
+  height:54px;
+  top:-40px;
+  left:-13px;
+  transform:rotate(-22deg);
+  z-index:4;
+  pointer-events:none;
+}
+
+.ep1-birthday-date{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  color:white;
+  font-size:13px;
+  text-shadow:0 1px 4px #0008;
+}
+
+.ep1-birthday-date svg{
+  width:19px;
+  height:19px;
+}
+
+.ep1-balloon-layer{
+  position:absolute;
+  inset:0;
+  overflow:visible;
+  pointer-events:none;
+  z-index:10;
+}
+
+.ep1-floating-balloon{
+  position:absolute;
+  bottom:55px;
+  width:33px;
+  height:60px;
+  animation:ep1BalloonFloat 2.4s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes ep1BalloonFloat{
+  0%{
+    opacity:0;
+    transform:translateY(15px) scale(.6);
+  }
+  15%{
+    opacity:1;
+  }
+  100%{
+    opacity:0;
+    transform:translateY(-220px) scale(1.15);
+  }
+}
+
+/* ยกโปรไฟล์ขึ้นเมื่อมีกล่องวันเกิด */
+.line-full-profile:has(#ep1BirthdayPopup)
+.line-full-profile-center{
+  top:36%;
+}
+
+/* กล่องวันเกิดด้านล่าง */
+#ep1BirthdayPopup{
+  bottom:16px !important;
+  top:auto !important;
+}
 </style>
 </head>
 <body>
@@ -8296,10 +8378,42 @@ function renderLineFullProfile(){
       </div>
 
       <div class="line-full-profile-center">
-        <div class="line-avatar line-full-profile-avatar">
-          <img src="${photo}" alt="">
-        </div>
-        <h2>${name}</h2>
+        <div class="ep1-birthday-avatar-wrap"
+     data-ep1-balloons="1">
+
+  <div class="line-avatar line-full-profile-avatar">
+    <img src="${photo}" alt="">
+  </div>
+
+  ${id==='achi' && !save.flags.cakeOrdered ? `
+    <svg class="ep1-party-hat"
+         viewBox="0 0 48 60"
+         aria-hidden="true">
+      <path d="M8 49 L24 5 L41 49 Z"
+            fill="#ffcf46"/>
+      <path d="M16 29 L33 36 M13 40 L37 46"
+            stroke="#ff8e59"
+            stroke-width="5"/>
+      <circle cx="24" cy="5" r="5"
+              fill="#ff8e59"/>
+      <ellipse cx="24" cy="50"
+               rx="20" ry="5"
+               fill="#fff2c2"/>
+    </svg>
+  ` : ''}
+
+  <div class="ep1-balloon-layer"
+       id="ep1BalloonLayer"></div>
+</div>
+
+<h2>${name}</h2>
+
+${id==='achi' && !save.flags.cakeOrdered ? `
+  <div class="ep1-birthday-date">
+    ${ep1GiftIcon()}
+    <span>30 ม.ค. · วันเกิด</span>
+  </div>
+` : ''}
       </div>
 
       <div class="line-full-profile-actions">
@@ -8383,8 +8497,31 @@ z-index:30;
               font-size:15px;
               font-weight:700;
             ">
-            ส่งของขวัญ
-          </button>
+            <span style="
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+">
+  <svg viewBox="0 0 32 32"
+       width="24" height="24"
+       fill="none"
+       aria-hidden="true">
+    <rect x="4" y="13" width="24" height="16"
+          rx="2" fill="#ff7196"/>
+    <rect x="2" y="10" width="28" height="6"
+          rx="2" fill="#ff91ad"/>
+    <path d="M16 10 V29"
+          stroke="white" stroke-width="3"/>
+    <path d="M16 10 C5 10 6 2 12 3
+             C15 3 16 10 16 10Z"
+          fill="#ff7196"/>
+    <path d="M16 10 C27 10 26 2 20 3
+             C17 3 16 10 16 10Z"
+          fill="#ff7196"/>
+  </svg>
+  ส่งของขวัญ
+</span>
 
         </div>
       ` : ''}
@@ -16957,7 +17094,6 @@ function lineBannerAvatar(id){
   return icon('line');
 }
 
-
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
   if(!banner)return;
@@ -16981,6 +17117,18 @@ function showGameBanner(who,message){
       : (names[who]||who);
 
   banner.innerHTML=`
+  // LINE GIFT Notice แสดง 2 วินาทีแล้วหาย
+if(who === 'lineGiftNotice'){
+  clearTimeout(window.ep1GiftBannerTimer);
+
+  window.ep1GiftBannerTimer = setTimeout(()=>{
+    const banner = document.getElementById('gameBanner');
+
+    if(banner){
+      banner.innerHTML = '';
+    }
+  }, 2000);
+}
     <button class="game-banner" data-banner-chat="${who}">
     <span class="game-banner-icon"
       style="background:${who==='line-official'?'#06c755':'transparent'};overflow:hidden">
@@ -18864,6 +19012,55 @@ if(giftGrab){
 
   persist();
   render();
+  return;
+}
+    // EP.01 — แตะรูปอชิเพื่อปล่อยลูกโป่ง
+const birthdayAvatar=e.target.closest(
+  '[data-ep1-balloons]'
+);
+
+if(birthdayAvatar){
+  const layer=document.getElementById('ep1BalloonLayer');
+
+  if(layer){
+    const colors=[
+      '#ffe74e',
+      '#65b7ff',
+      '#53d6a5',
+      '#ff89b4',
+      '#b69aff'
+    ];
+
+    for(let i=0;i<5;i++){
+      const balloon=document.createElement('div');
+      balloon.className='ep1-floating-balloon';
+      balloon.style.left=`${-35+i*35}px`;
+      balloon.style.animationDelay=`${i*0.12}s`;
+
+      balloon.innerHTML=`
+        <svg viewBox="0 0 36 65"
+             width="36" height="65">
+          <ellipse cx="18" cy="20"
+                   rx="15" ry="19"
+                   fill="${colors[i]}"/>
+          <path d="M18 39 L14 44 H22Z"
+                fill="${colors[i]}"/>
+          <path d="M18 44 Q12 53 18 65"
+                fill="none"
+                stroke="white"
+                stroke-width="1.5"/>
+        </svg>
+      `;
+
+      layer.appendChild(balloon);
+
+      balloon.addEventListener(
+        'animationend',
+        ()=>balloon.remove()
+      );
+    }
+  }
+
   return;
 }
 const birthday=e.target.closest('[data-line-birthday]');

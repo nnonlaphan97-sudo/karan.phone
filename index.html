@@ -8149,11 +8149,16 @@ const linePeople = [
     name:'Pai',
     status:'เกิด แก่ เจ็บ เติมเกย์'
   },
-  {
-    id:'rock',
-    name:'Rock',
-    status:'อย่ายอมแพ้ดิวะ!'
-  }
+ {
+  id:'rock',
+  name:'Rock',
+  status:'อย่ายอมแพ้ดิวะ!'
+},
+{
+  id:'karin',
+  name:'Karin',
+  status:''
+}
 ];
 
 const lineGroups=[
@@ -15233,7 +15238,9 @@ function renderChat(){
   sales:'ทีมฝ่ายขาย'
 };
 
-  let b='<div class="day">30 ม.ค.</div>';
+  let b = chat==='karin'
+  ? ''
+  : '<div class="day">30 ม.ค.</div>';
   let choices='';
   // EP.01 — ยังไม่สั่งเค้ก ไม่แสดงประวัติแชทอชิ
 if(chat==='achi' && save.flags.deliveryStatus==='none'){
@@ -17138,7 +17145,7 @@ function showGameBanner(who,message){
   const avatar=who==='lineGiftNotice'?ep1GiftIcon():who==='line-official'?'<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800">LINE</span>':lineBannerAvatar(who);
   banner.innerHTML=`<button class="game-banner" data-banner-chat="${who}"><span class="game-banner-icon" style="background:transparent;overflow:hidden">${avatar}</span><span class="game-banner-text"><small>LINE · ตอนนี้</small><strong>${sender}</strong><span>${message}</span></span></button>`;
   const shown=banner.firstElementChild;
-  gameBannerHideTimer=setTimeout(()=>{if(banner.firstElementChild===shown)banner.innerHTML=''},3000);
+  gameBannerHideTimer=setTimeout(()=>{if(banner.firstElementChild===shown)banner.innerHTML=''},2500);
 }
 
 function goApp(name){
@@ -18870,21 +18877,6 @@ if(
   );
   return;
 }
-// EP.03 — วันที่ 13 เมษายน อชิแจ้งว่าป่วย
-if(
-  targetChat==='karin' &&
-  save.flags.ep3KarinMessageRead &&
-  !save.flags.ep3SickBannerSeen
-){
-  save.flags.ep3SickBannerSeen=true;
-  persist();
-
-  showGameBanner(
-    'achi',
-    'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
-  );
-  return;
-}
   /* เมื่ออ่านแชตอชิแล้ว พี่ดุจส่งข้อความตามมา */
 if(
   targetChat==='achi' &&
@@ -19685,6 +19677,32 @@ if(!btn)return;
 
 if(btn.dataset.go){
 
+// EP.03 — อ่านแชทการินแล้วกดกลับ
+// จากนั้นอชิจึงส่งแจ้งเตือนว่าป่วย
+if(
+  page==='chat' &&
+  chat==='karin' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep3KarinMessageRead &&
+  !save.flags.ep3SickBannerSeen
+){
+  save.flags.ep3SickBannerSeen=true;
+  persist();
+
+  page='LINE';
+  lineTab='chats';
+  lineSubtab='chats';
+
+  render();
+
+  showGameBanner(
+    'achi',
+    'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
+  );
+
+  return;
+}
+  
 const ep6LeavingAchiConfession =
   page==='chat' &&
   chat==='achi' &&

@@ -15160,10 +15160,27 @@ function renderEp1GiftChat(){
           ${lineIcon('back')}
         </button>
 
-        <b style="flex:1">
-          ${ep1GiftIcon()}
-          LINE GIFT Notice
-        </b>
+       <b style="
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  font-size:17px;
+">
+  <svg width="23" height="23"
+       viewBox="0 0 24 24"
+       fill="none"
+       xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 21V3"
+          stroke="#06c755"
+          stroke-width="2"
+          stroke-linecap="round"/>
+    <path d="M6 4H20L16 10L20 16H6Z"
+          fill="#06c755"/>
+  </svg>
+  <span>LINE GIFT Notice</span>
+</b>
       </div>
 
       <div class="line-chatbody"
@@ -15177,18 +15194,28 @@ function renderEp1GiftChat(){
           align-items:flex-start;
           gap:8px;
         ">
-          <div style="
-            flex:0 0 36px;
-            width:36px;
-            height:36px;
-            border-radius:50%;
-            background:white;
-            display:grid;
-            place-items:center;
-          ">
-            ${ep1GiftIcon()}
-          </div>
-
+        <div style="
+  flex:0 0 36px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:white;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+">
+  <span style="
+    display:grid;
+    place-items:center;
+    width:27px;
+    height:27px;
+  ">
+    ${ep1GiftIcon().replace(
+      'width="40" height="40"',
+      'width="25" height="25"'
+    )}
+  </span>
+</div>
           <div style="
             flex:1;
             min-width:0;

@@ -6986,43 +6986,6 @@ button{
   margin-top:6px;
   color:#65758e;
 }
-  .ig-explore-search{
-  margin:10px 12px 14px;
-  padding:11px 14px;
-  background:#efeff1;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.ig-explore-search input{
-  border:0;
-  outline:0;
-  background:transparent;
-  flex:1;
-  min-width:0;
-  font-size:14px;
-}
-
-.ig-explore-photo-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:2px;
-}
-
-.ig-explore-photo{
-  aspect-ratio:1;
-  overflow:hidden;
-  background:#eee;
-}
-
-.ig-explore-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
 </style>
 </head>
 <body>
@@ -9006,15 +8969,6 @@ if(save.flags.ep6Stage >= 5 && c.id === 'achi'){
   displayTime = '19:24';
   preview = 'ผมอยากคุยกับการันต์เรื่องคืนก่อน';
 }
-    /* EP.07 — หลังยืนยันเฮลิคอปเตอร์ */
-if(
-  c.id === 'achi' &&
-  save.flags.ep7HelicopterConfirmed
-){
-  displayDate = '1 พ.ค.';
-  displayTime = '09:30';
-  preview = 'การันต์ ขอโทษนะครับที่ผมเป็นลมไป';
-}
 const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -9037,17 +8991,6 @@ const sortTime =
       a.originalIndex-b.originalIndex
     );
   });
-  /* EP.07 — อชิขึ้นบนสุดหลังยืนยันเฮลิคอปเตอร์ */
-if(save.flags.ep7HelicopterConfirmed){
-  const achiIndex = results.findIndex(
-    item => item.id === 'achi'
-  );
-
-  if(achiIndex > 0){
-    const achiItem = results.splice(achiIndex,1)[0];
-    results.unshift(achiItem);
-  }
-}
 /* EP.06 — อชิขึ้นบนสุดหลังการันต์ตอบปาย */
 if(
   save.flags.ep6Stage === 5
@@ -11379,59 +11322,15 @@ ${igFeedPost('rock', 0)}
   `;
 }
 
- if (igTab === 'search') {
-
-const explorePhotos = [
-  {
-    type:'polcasan',
-    src:'https://commons.wikimedia.org/wiki/Special:FilePath/Polcasan_gmmtv.jpg'
-  },
-  {
-    type:'camera',
-    src:"https://commons.wikimedia.org/wiki/Special:FilePath/Digital_Camera%27s.jpg"
-  },
-  {
-    type:'camera',
-    src:'https://commons.wikimedia.org/wiki/Special:FilePath/Digital_cameras.jpg'
-  },
-  {
-    type:'camera',
-    src:'https://commons.wikimedia.org/wiki/Special:FilePath/Nikon_D850_digital_single-lens_reflex_camera.jpg'
+  if (igTab === 'search') {
+    content = `
+      <div class="ig-search">ค้นหา</div>
+      <div class="ig-explore-grid">
+        ${Array.from({length:12}, (_,i) =>
+          `<div class="ig-explore-item"> ${i+1} </div>`
+        ).join('')}
+      </div>`;
   }
-];
-
-const shuffled = [...explorePhotos]
-  .sort(() => Math.random() - 0.5);
-
-const photos = Array.from(
-  {length:18},
-  (_,i) => shuffled[i % shuffled.length]
-);
-
-
-  const shuffled = [...explorePhotos]
-    .sort(() => Math.random() - 0.5);
-
-  const photos = Array.from(
-    {length:18},
-    (_,i) => shuffled[i % shuffled.length]
-  );
-
-  content = `
-    <div class="ig-explore-search">
-      ${igIcon('search')}
-      <input type="search" placeholder="ค้นหา">
-    </div>
-
-    <div class="ig-explore-photo-grid">
-      ${photos.map(photo => `
-        <div class="ig-explore-photo">
-          <img src="${photo.src}" alt="${photo.type}" loading="lazy">
-        </div>
-      `).join('')}
-    </div>
-  `;
-}
 
  
 if (igTab === 'reels') {
@@ -12669,38 +12568,13 @@ function ep7InstagramPage(){
           ผ่านลิงก์ด้านล่างได้เลยนะคะ
         </div>
 
-        ${save.flags.ep7ShirtCompleted ? (() => {
-  const order = save.flags.ep7Shirt || {};
-  const fabric = ep7FabricCatalog[order.fabric];
-  const color = fabric?.colors.find(c => c.id === order.color);
-  const total = ep7TailorPrice.fabric
-              + ep7TailorPrice.sewing
-              + ep7TailorPrice.shipping;
-
-  return `
-    <div class="ep7-dm sent">
-      รายละเอียดเสื้อตามนี้นะครับ<br><br>
-      เนื้อผ้า: ${fabric?.name || '-'}<br>
-      สี: ${color?.name || '-'}<br>
-      ไซส์: ${order.size || '-'}
-    </div>
-
-    <div class="ep7-dm received">
-      ทางร้านได้รับคำสั่งซื้อเรียบร้อยแล้วค่ะ<br><br>
-      ค่าเนื้อผ้า ฿${ep7TailorPrice.fabric.toLocaleString('th-TH')}<br>
-      ค่าตัดเย็บ ฿${ep7TailorPrice.sewing.toLocaleString('th-TH')}<br>
-      ค่าจัดส่ง ฿${ep7TailorPrice.shipping.toLocaleString('th-TH')}<br>
-      <strong>ยอดรวม ฿${total.toLocaleString('th-TH')}</strong><br><br>
-      ยืนยันการชำระเงินแล้วค่ะ
-      ขอบคุณที่ใช้บริการ Mellow Atelier นะคะ
-    </div>
-  `;
-})() : `
-  <button data-ep7-tailor-link="1" class="ep7-shop-order-link">
-    <strong>mellowatelier.com/custom-order</strong>
-    <small>แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม</small>
-  </button>
-`}
+        <button
+          data-ep7-tailor-link="1"
+          class="ep7-shop-order-link"
+        >
+          <strong>mellowatelier.com/custom-order</strong>
+          <small>แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม</small>
+        </button>
 
       </div>
     </div>
@@ -12730,12 +12604,55 @@ function ep7InstagramPage(){
 
   let content='';
 
- if(completed){
-  content=`
-    <div style="padding:22px;color:#302b26">
-      ส่งคำสั่งซื้อเรียบร้อยแล้ว
+  if(completed){
+    const order=save.flags.ep7Shirt||{};
+    const chosenFabric=ep7FabricCatalog[order.fabric];
+    const chosenColor=chosenFabric?.colors.find(c=>c.id===order.color);
+    const total=ep7TailorPrice.fabric+ep7TailorPrice.sewing+ep7TailorPrice.shipping;
+    content=`
+      <div style="padding:18px 15px;color:#302b26;background:#f7f4ef;min-height:100%">
+        <h2 style="margin:0 0 15px">Mellow Atelier</h2>
+        <div class="ep7-dm sent">รายละเอียดเสื้อตามนี้นะครับ<br><br>
+          เนื้อผ้า: ${chosenFabric?.name||'-'}<br>
+          สี: ${chosenColor?.name||'-'}<br>
+          ไซส์: ${order.size||'-'}</div>
+       
+${save.flags.ep7ShirtCompleted ? (() => {
+  const order = save.flags.ep7Shirt || {};
+  const fabric = ep7FabricCatalog[order.fabric];
+  const color = fabric?.colors.find(c => c.id === order.color);
+  const total = ep7TailorPrice.fabric
+              + ep7TailorPrice.sewing
+              + ep7TailorPrice.shipping;
+
+  return `
+    <div class="ep7-dm sent">
+      สวัสดีครับ ผมขอสั่งตัดเสื้อคลุมให้อชิตามรายละเอียดนี้ครับ<br><br>
+      เนื้อผ้า: ${fabric?.name || '-'}<br>
+      สี: ${color?.name || '-'}<br>
+      ไซส์: ${order.size || '-'}
+    </div>
+
+    <div class="ep7-dm received">
+      ทางร้านได้รับคำสั่งซื้อเรียบร้อยแล้วค่ะ<br><br>
+      <strong>สรุปรายการสั่งซื้อ</strong><br>
+      เนื้อผ้า: ${fabric?.name || '-'}<br>
+      สี: ${color?.name || '-'}<br>
+      ไซส์: ${order.size || '-'}<br><br>
+      ค่าเนื้อผ้า ฿${ep7TailorPrice.fabric.toLocaleString('th-TH')}<br>
+      ค่าตัดเย็บ ฿${ep7TailorPrice.sewing.toLocaleString('th-TH')}<br>
+      ค่าจัดส่ง ฿${ep7TailorPrice.shipping.toLocaleString('th-TH')}<br>
+      <strong>ยอดรวม ฿${total.toLocaleString('th-TH')}</strong><br><br>
+      ทางร้านยืนยันการชำระเงินและรับออเดอร์แล้วค่ะ
+      ขอบคุณที่ใช้บริการ Mellow Atelier นะคะ
     </div>
   `;
+})() : `
+  <button data-ep7-tailor-link="1" class="ep7-shop-order-link">
+    <strong>mellowatelier.com/custom-order</strong>
+    <small>แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม</small>
+  </button>
+`}
   }else if(s.step===0){
 
     const currentFabric=s.fabric||'cotton';
@@ -14637,12 +14554,8 @@ const ep7CoffeeRoasts={
  medium:{name:'คั่วกลาง',desc:'หวานนุ่มแบบขนมอบ เปรี้ยวและขมสมดุล',adj:0},
  dark:{name:'คั่วเข้ม',desc:'กลิ่นคั่วชัด ขมเด่น เปรี้ยวน้อย สัมผัสหนักแน่น',adj:-2}
 };
-const ep7CoffeeGrinds={
-  coarse:{name:'บดหยาบ',sec:1,turns:3},
-  medium:{name:'บดปานกลาง',sec:3,turns:5},
-  fine:{name:'บดละเอียด',sec:5,turns:8}
-};
-let ep7CoffeeDraft={step:1,farm:0,roast:'light',grind:'medium',turns:0,water:0,temp:0,elapsed:0,status:'ready'};
+const ep7CoffeeGrinds={coarse:{name:'บดหยาบ',sec:1},medium:{name:'บดปานกลาง',sec:3},fine:{name:'บดละเอียด',sec:5}};
+let ep7CoffeeDraft={step:1,farm:0,roast:'light',grind:'medium',turns:0,water:0,temp:94,elapsed:0,status:'ready'};
 let ep7CoffeeBrewTimer=null;
 function ep7CoffeeSuggestedTemp(){
  const c=ep7CoffeeDraft;
@@ -14690,21 +14603,20 @@ function ep7CoffeePage(){
  <b>เลือกระดับคั่ว</b><div class="opts">${Object.entries(ep7CoffeeRoasts).map(([k,v])=>`<button class="opt ${c.roast===k?'on':''}" data-coffee-roast="${k}">${v.name}</button>`).join('')}</div>
  <div class="hint"><b>${r.name}</b> — ${r.desc}</div>
  <b>เลือกระดับบด</b><div class="opts">${Object.entries(ep7CoffeeGrinds).map(([k,v])=>`<button class="opt ${c.grind===k?'on':''}" data-coffee-grind="${k}">${v.name}<small>${v.sec} วินาทีในเกม</small></button>`).join('')}</div>
- <div class="machine"><svg viewBox="0 0 320 290"><ellipse cx="160" cy="271" rx="76" ry="10" fill="#d2c9bd"/><rect x="112" y="133" width="96" height="128" rx="16" fill="#aeb3af" stroke="#808a84" stroke-width="3"/><rect x="118" y="208" width="84" height="53" rx="11" fill="#95633e"/><ellipse cx="160" cy="131" rx="48" ry="15" fill="#525651"/><ellipse cx="160" cy="131" rx="38" ry="9" fill="#5c3927"/><g id="ep7Beans">${Array.from({length:12},(_,i)=>`<ellipse cx="${135+i%4*16}" cy="${124+Math.floor(i/4)*5}" rx="5" ry="3" fill="#b18252"/>`).join('')}</g><g id="ep7Handle"><rect x="155" y="43" width="10" height="83" rx="5" fill="#858d89"/><rect x="156" y="43" width="87" height="10" rx="5" fill="#858d89"/><rect x="231" y="25" width="23" height="43" rx="11" fill="#8e5939"/></g><circle cx="160" cy="125" r="10" fill="#e1ded5" stroke="#858b86" stroke-width="3"/><circle id="ep7GrindTouch" cx="160" cy="125" r="105" fill="transparent" style="touch-action:none"/><text x="160" y="284" text-anchor="middle" font-size="11" fill="#766757">ลากนิ้ววนตามเข็มนาฬิกา</text></svg><div>หมุนแล้ว <b id="ep7Turns">${c.turns.toFixed(1)}</b>/ ${g.turns} รอบ</div><div class="meter"><div id="ep7GrindMeter" style="width:${c.turns/g.turns*100}%"></div></div></div>`;}
+ <div class="machine"><svg viewBox="0 0 320 290"><ellipse cx="160" cy="271" rx="76" ry="10" fill="#d2c9bd"/><rect x="112" y="133" width="96" height="128" rx="16" fill="#aeb3af" stroke="#808a84" stroke-width="3"/><rect x="118" y="208" width="84" height="53" rx="11" fill="#95633e"/><ellipse cx="160" cy="131" rx="48" ry="15" fill="#525651"/><ellipse cx="160" cy="131" rx="38" ry="9" fill="#5c3927"/><g id="ep7Beans">${Array.from({length:12},(_,i)=>`<ellipse cx="${135+i%4*16}" cy="${124+Math.floor(i/4)*5}" rx="5" ry="3" fill="#b18252"/>`).join('')}</g><g id="ep7Handle"><rect x="155" y="43" width="10" height="83" rx="5" fill="#858d89"/><rect x="156" y="43" width="87" height="10" rx="5" fill="#858d89"/><rect x="231" y="25" width="23" height="43" rx="11" fill="#8e5939"/></g><circle cx="160" cy="125" r="10" fill="#e1ded5" stroke="#858b86" stroke-width="3"/><circle id="ep7GrindTouch" cx="160" cy="125" r="105" fill="transparent" style="touch-action:none"/><text x="160" y="284" text-anchor="middle" font-size="11" fill="#766757">ลากนิ้ววนตามเข็มนาฬิกา</text></svg><div>หมุนแล้ว <b id="ep7Turns">${c.turns.toFixed(1)}</b> / 5 รอบ</div><div class="meter"><div id="ep7GrindMeter" style="width:${c.turns/5*100}%"></div></div></div>`;}
  else if(c.step===3){
  const pct=Math.min(1,c.elapsed/g.sec),coffee=Math.round(c.water*.85*pct),remaining=Math.round(c.water*(1-pct));
  const level=Math.min(68,coffee/340*68);
  content=`<h2>เครื่องดริปกาแฟ</h2><p>${f.name} · ${r.name} · ${g.name}</p><div class="hint"><b>สูตรดริปแนะนำ</b><br>กาแฟ 15 กรัม · น้ำ ${f.water} ml · อุณหภูมิ ${ep7CoffeeSuggestedTemp()}°C</div>
  <div class="machine"><svg viewBox="0 0 340 320"><defs><clipPath id="ep7JugClip"><path d="M164 196 H266 L256 277 Q215 291 174 277 Z"/></clipPath><clipPath id="ep7TankClip"><rect x="24" y="78" width="72" height="156" rx="10"/></clipPath></defs><ellipse cx="174" cy="297" rx="148" ry="12" fill="#ddd5ca"/><rect x="15" y="61" width="91" height="192" rx="16" fill="#dce8e8" stroke="#91a9ac" stroke-width="3"/><g clip-path="url(#ep7TankClip)"><rect id="ep7TankWater" x="24" y="${234-150*remaining/400}" width="72" height="${150*remaining/400}" fill="#78b8dc"/></g><text x="60" y="111" text-anchor="middle" font-size="10" fill="#365c71">WATER</text><text id="ep7TankNum" x="60" y="139" text-anchor="middle" font-size="20" font-weight="bold" fill="#365c71">${remaining}</text><text x="60" y="153" text-anchor="middle" font-size="10" fill="#365c71">ml</text><rect x="106" y="32" width="219" height="101" rx="18" fill="#aeb2ad" stroke="#999f99" stroke-width="2"/><rect x="127" y="52" width="128" height="62" rx="10" fill="#303b36"/><text x="191" y="69" text-anchor="middle" font-size="10" fill="#afcdb9">BREW TIMER</text><text x="191" y="98" text-anchor="middle" font-size="27" font-weight="bold" fill="#ecf5e8">${c.elapsed.toFixed(1)}s</text><text x="191" y="108" text-anchor="middle" font-size="8" fill="#afcdb9">TARGET ${g.sec}s</text><circle cx="284" cy="82" r="18" fill="#dedfd8" stroke="#929891" stroke-width="3"/><circle cx="284" cy="82" r="6" fill="${c.status==='running'?'#56a575':'#8c9690'}"/><rect x="158" y="132" width="114" height="18" rx="6" fill="#9da49e"/><path d="M169 150 H261 L245 190 H185 Z" fill="#eee6d7" stroke="#a8a094" stroke-width="2"/><path d="M186 168 Q215 158 244 168 L239 183 H192 Z" fill="#72492e"/>${c.status==='running'?'<path d="M215 190 V209" stroke="#8cb9d0" stroke-width="4" stroke-dasharray="5 5"/>':''}<g clip-path="url(#ep7JugClip)"><rect x="164" y="${282-level}" width="102" height="${level}" fill="#75432b"/></g><path d="M164 196 H266 L256 277 Q215 291 174 277 Z" fill="#e7eff0" fill-opacity=".12" stroke="#91a9ad" stroke-width="3"/><path d="M267 211 Q305 208 303 242 Q299 265 264 255" stroke="#9cacae" stroke-width="10" fill="none"/><path d="M267 211 Q305 208 303 242 Q299 265 264 255" stroke="#e9eeed" stroke-width="5" fill="none"/><rect x="157" y="285" width="160" height="9" rx="4" fill="#858d86"/><text x="215" y="313" text-anchor="middle" font-size="11" fill="#766657">${c.status==='done'?'BREW COMPLETE':c.status==='running'?'BREWING':'READY TO BREW'}</text></svg></div>
  <div class="panel">เวลา <b>${c.elapsed.toFixed(1)} / ${g.sec} วิ</b> · กาแฟ <b>${coffee} ml</b><div class="meter"><div style="width:${pct*100}%"></div></div></div>
- ${c.status==='ready'?`<div style="display:flex;gap:8px"><button class="back hold" id="ep7Minus">− เทน้ำออก</button><button class="back hold" id="ep7Plus">+ เติมน้ำ</button></div><p style="font-size:12px;text-align:center" id="ep7WaterLabel">กดค้างเพื่อปรับน้ำ · ${c.water} / 400 ml</p><div class="panel"><b>อุณหภูมิ <span id="ep7TempLabel">${c.temp}°C</span></b><input id="ep7Temp" type="range" min="0" max="100" step="1" value="${c.temp}"></div><button class="go" data-coffee-start ${c.water===0 || c.temp===0?'disabled':''}>เริ่มดริปกาแฟ (${g.sec} วิ)</button>`:c.status==='running'?'<div class="hint">กำลังดริปกาแฟ…</div>':`<div class="panel"><b>ดริปกาแฟเสร็จแล้ว!</b><p>น้ำ ${c.water} ml · ${c.temp}°C · ${g.sec} วินาที</p><button class="go" data-coffee-send>ส่งสูตรกาแฟให้ป่า</button></div>`}`;
+ ${c.status==='ready'?`<div style="display:flex;gap:8px"><button class="back hold" id="ep7Minus">− เทน้ำออก</button><button class="back hold" id="ep7Plus">+ เติมน้ำ</button></div><p style="font-size:12px;text-align:center" id="ep7WaterLabel">กดค้างเพื่อปรับน้ำ · ${c.water} / 400 ml</p><div class="panel"><b>อุณหภูมิ <span id="ep7TempLabel">${c.temp}°C</span></b><input id="ep7Temp" type="range" min="85" max="96" value="${c.temp}"></div><button class="go" data-coffee-start ${c.water===0?'disabled':''}>เริ่มดริปกาแฟ (${g.sec} วิ)</button>`:c.status==='running'?'<div class="hint">กำลังดริปกาแฟ…</div>':`<div class="panel"><b>ดริปกาแฟเสร็จแล้ว!</b><p>น้ำ ${c.water} ml · ${c.temp}°C · ${g.sec} วินาที</p><button class="go" data-coffee-send>ส่งสูตรกาแฟให้ป่า</button></div>`}`;
  }
  return `${style}<div class="ep7-coffee"><div style="display:flex;justify-content:space-between;font-size:11px;color:#846c56"><b>PAMAI COFFEE</b><span>STEP 0${c.step} / 03</span></div>${content}${c.status!=='running'&&c.status!=='done'?'<button class="back" data-coffee-back>ย้อนกลับ</button>':''}</div>`;
 }
 function ep7CoffeeSetup(){
  if(page!=='EP7Coffee')return;
  const c=ep7CoffeeDraft;
- const requiredTurns=ep7CoffeeGrinds[c.grind].turns;
  if(c.step===2){
   const touch=document.getElementById('ep7GrindTouch'),handle=document.getElementById('ep7Handle');
   if(!touch)return;
@@ -16642,7 +16554,6 @@ if(
   save.flags.ep7HelicopterConfirmed
 ){
   b+='<div class="day">2 พ.ค.</div>';
-  lastBubbleSender=null;
 
   b+=bubble('การันต์ ขอโทษนะครับที่ผมเป็นลมไป',false,'','09:00');
   b+=bubble('ผมผิดเองที่ไม่ได้บอกการันต์ว่าผมกลัวความสูง',false,'','09:01');
@@ -18953,15 +18864,13 @@ if(coffeeChoice && page==='EP7Coffee'){
     const f=ep7CoffeeFarms[ep7CoffeeDraft.farm];
     ep7CoffeeDraft.roast=f.roast;
     ep7CoffeeDraft.grind=f.grind;
-    ep7CoffeeDraft.temp=0;
+    ep7CoffeeDraft.temp=ep7CoffeeSuggestedTemp();
   }
   if(coffeeChoice.dataset.coffeeRoast){
     ep7CoffeeDraft.roast=coffeeChoice.dataset.coffeeRoast;
-    ep7CoffeeDraft.temp=0;
- if(coffeeChoice.dataset.coffeeGrind){
-  ep7CoffeeDraft.grind=coffeeChoice.dataset.coffeeGrind;
-  ep7CoffeeDraft.turns=0;
-}
+    ep7CoffeeDraft.temp=ep7CoffeeSuggestedTemp();
+  }
+  if(coffeeChoice.dataset.coffeeGrind)ep7CoffeeDraft.grind=coffeeChoice.dataset.coffeeGrind;
   render();return;
 }
 if(e.target.closest('[data-coffee-next]') && page==='EP7Coffee'){
@@ -19035,8 +18944,8 @@ if(
 
   // รอ 3 วินาที ก่อนแสดงแจ้งเตือนจากอชิ
   setTimeout(()=>{
-   showGameBanner(
-  'achi',
+    showGameBanner(
+      'achirawit',
       'การันต์ ขอโทษนะครับที่ผมเป็นลมไป'
     );
   },3000);

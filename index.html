@@ -7917,32 +7917,112 @@ function ep10Start(){
 let ep9SpotifyScreen='home';
 let ep9SelectedSong='';
 
+
 const EP9_SONGS=[
   {
-    id:'believe',
-    title:'เชื่อในตัวเธอ',
-    artist:'KARAN PLAYLIST',
-    album:'For Achi',
+    id:'voice',
+    title:'ถ้าเธอได้ยิน (Voice Within)',
+    artist:'Tay Tawan',
+    album:'Ost.Cherry Magic 30 ยังซิง',
     color:'#7189A7',
-    message:'ไม่ว่าอชิจะเลือกทางไหน ผมก็เชื่อในตัวอชิเสมอนะครับ'
+    src:'videos/v09044g40000cnu1ho7og65qsf5pji90.mp3',
+    cover:'videos/IMG_5302.jpeg',
+    message:'เพลงนี้ผมอยากให้อชิได้ฟังนะครับ'
   },
   {
-    id:'beside',
-    title:'อยู่ตรงนี้เสมอ',
-    artist:'KARAN PLAYLIST',
-    album:'For Achi',
+    id:'magic',
+    title:'พลังวิเศษของคนไม่พิเศษ (Everything is Magic)',
+    artist:'New Thitipoom',
+    album:'Ost.Cherry Magic 30 ยังซิง',
     color:'#A68192',
-    message:'ถึงเราจะไม่ได้อยู่ใกล้กันทุกวัน แต่ผมจะอยู่ข้าง ๆ อชิเสมอครับ'
+    src:'videos/v14025g50000clupdonog65ose2fo94g.mp3',
+    cover:'videos/IMG_5305.jpeg',
+    message:'สำหรับผม อชิเป็นคนพิเศษเสมอนะครับ'
   },
   {
-    id:'brave',
-    title:'ก้าวต่อไป',
-    artist:'KARAN PLAYLIST',
-    album:'For Achi',
+    id:'loudest',
+    title:'แอบตะโกน (Loudest Love)',
+    artist:'Tay Tawan, New Thitipoom',
+    album:'Ost.Cherry Magic 30 ยังซิง',
     color:'#7B9A83',
-    message:'ลองทำสิ่งที่อยากทำดูนะครับ ผมจะคอยเป็นกำลังใจให้'
+    src:'videos/v14025g50000clsliivog65shtamhpfg.mp3',
+    cover:'videos/IMG_5304.jpeg',
+    message:'ผมอยากส่งเพลงนี้ให้อชิครับ'
   }
 ];
+
+/* เครื่องเล่นเสียงจริง */
+const ep9Audio=new Audio();
+ep9Audio.preload='metadata';
+
+function ep9FormatTime(seconds){
+  if(!Number.isFinite(seconds))return '0:00';
+  const m=Math.floor(seconds/60);
+  const s=Math.floor(seconds%60);
+  return m+':'+String(s).padStart(2,'0');
+}
+
+function ep9UpdatePlayer(){
+  const play=document.querySelector('[data-ep9-play]');
+  if(play){
+    play.innerHTML=ep9Audio.paused
+      ? ep9MusicSVG('play')
+      : `<svg viewBox="0 0 24 24" width="30" height="30"
+          fill="currentColor">
+          <rect x="6" y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>`;
+  }
+
+  const elapsed=document.getElementById('ep9Elapsed');
+  const duration=document.getElementById('ep9Duration');
+  const progress=document.getElementById('ep9ProgressFill');
+
+  if(elapsed)elapsed.textContent=ep9FormatTime(ep9Audio.currentTime);
+  if(duration)duration.textContent=ep9FormatTime(ep9Audio.duration);
+
+  if(progress){
+    progress.style.width=Number.isFinite(ep9Audio.duration)
+      && ep9Audio.duration>0
+      ? (ep9Audio.currentTime/ep9Audio.duration*100)+'%'
+      : '0%';
+  }
+}
+
+function ep9LoadSong(id,autoplay=false){
+  const song=EP9_SONGS.find(s=>s.id===id);
+  if(!song)return;
+
+  ep9Audio.pause();
+  ep9SelectedSong=song.id;
+  ep9Audio.src=song.src;
+  ep9Audio.load();
+
+  if(autoplay){
+    ep9Audio.play().catch(error=>{
+      console.warn('ไม่สามารถเล่นเพลงได้',error);
+    });
+  }
+
+  if(page==='Spotify'){
+    ep9SpotifyScreen='player';
+    render();
+  }
+  ep9UpdatePlayer();
+}
+
+function ep9ChangeSong(step){
+  const index=EP9_SONGS.findIndex(s=>s.id===ep9SelectedSong);
+  const next=(index+step+EP9_SONGS.length)%EP9_SONGS.length;
+  ep9LoadSong(EP9_SONGS[next].id,true);
+}
+
+ep9Audio.addEventListener('timeupdate',ep9UpdatePlayer);
+ep9Audio.addEventListener('loadedmetadata',ep9UpdatePlayer);
+ep9Audio.addEventListener('play',ep9UpdatePlayer);
+ep9Audio.addEventListener('pause',ep9UpdatePlayer);
+ep9Audio.addEventListener('ended',()=>ep9ChangeSong(1));
+
 function ep9Start(){
   if(save.flags.ep9Started)return;
 
@@ -11614,6 +11694,32 @@ if (igTab === 'profile') {
     </div>`;
 }
 
+/* ===== KARAN'S PHONE MUSIC PLAYLIST ===== */
+
+const karanMusicPlaylist = [
+  {
+    title: 'ถ้าเธอได้ยิน (Voice Within)',
+    artist: 'Tay Tawan',
+    album: 'Ost.Cherry Magic 30 ยังซิง',
+    src: 'videos/v09044g40000cnu1ho7og65qsf5pji90.mp3',
+    cover: 'videos/IMG_5302.jpeg'
+  },
+  {
+    title: 'พลังวิเศษของคนไม่พิเศษ (Everything is Magic)',
+    artist: 'New Thitipoom',
+    album: 'Ost.Cherry Magic 30 ยังซิง',
+    src: 'videos/v14025g50000clupdonog65ose2fo94g.mp3',
+    cover: 'videos/IMG_5305.jpeg'
+  },
+  {
+    title: 'แอบตะโกน (Loudest Love)',
+    artist: 'Tay Tawan, New Thitipoom',
+    album: 'Ost.Cherry Magic 30 ยังซิง',
+    src: 'videos/v14025g50000clsliivog65shtamhpfg.mp3',
+    cover: 'videos/IMG_5304.jpeg'
+  }
+];
+
 const igStoryStyle = document.createElement("style");
 
 igStoryStyle.textContent = `
@@ -13576,17 +13682,29 @@ function ep9MusicSVG(type){
   `;
 }
 
+
 function ep9SpotifyCover(song,size='small'){
   return `
     <div class="ep9-spotify-cover ${size}"
-      style="background:${song.color}">
-      <div class="ep9-cover-circle">
-        ${ep9MusicSVG('note')}
-      </div>
-      <span>FOR ACHI</span>
+      style="
+        background:${song.color};
+        overflow:hidden;
+        padding:0;
+      ">
+      <img
+        src="${song.cover}"
+        alt="${song.title}"
+        style="
+          display:block;
+          width:100%;
+          height:100%;
+          object-fit:cover;
+        "
+      >
     </div>
   `;
 }
+
 /* ===== EP.10 SAMSUNG INTERNET ===== */
 
 function ep10KrathongArt(color){
@@ -14155,24 +14273,41 @@ function renderSpotify(){
           <p>${selected.artist}</p>
         </div>
 
-        <div class="ep9-player-progress">
-          <div class="ep9-progress-track">
-            <span></span>
-          </div>
-          <div class="ep9-progress-time">
-            <span>0:00</span>
-            <span>3:24</span>
-          </div>
-        </div>
+       
+<div class="ep9-player-progress">
+  <div class="ep9-progress-track"
+    data-ep9-seek="1"
+    style="cursor:pointer;">
+    <span id="ep9ProgressFill" style="width:0%"></span>
+  </div>
 
-        <div class="ep9-player-controls">
-          <span>−</span>
-          <button class="ep9-player-play"
-            data-ep9-play="1">
-            ${ep9MusicSVG('play')}
-          </button>
-          <span>+</span>
-        </div>
+  <div class="ep9-progress-time">
+    <span id="ep9Elapsed">0:00</span>
+    <span id="ep9Duration">0:00</span>
+  </div>
+</div>
+
+<div class="ep9-player-controls">
+  <button data-ep9-prev="1"
+    aria-label="เพลงก่อนหน้า"
+    style="background:none;border:0;color:inherit;font-size:30px;">
+    &#9198;
+  </button>
+
+  <button class="ep9-player-play"
+    data-ep9-play="1"
+    aria-label="เล่นหรือหยุดเพลง">
+    ${ep9MusicSVG('play')}
+  </button>
+
+  <button data-ep9-next="1"
+    aria-label="เพลงถัดไป"
+    style="background:none;border:0;color:inherit;font-size:30px;">
+    &#9197;
+  </button>
+</div>
+
+
 
         <button class="ep9-spotify-send"
           data-ep9-send-song="${selected.id}">
@@ -16902,7 +17037,10 @@ if(
   chat==='achi' &&
   save.flags.ep9TanakaRead
 ){
-  b+='<div class="day">20 เม.ย. · ตอนเย็น</div>';
+  b+='<div class="day">11 พ.ย.</div>';
+
+  // เริ่มบทสนทนาชุดใหม่
+  lastBubbleSender=null;
 
   b+=bubble(
     'อชิครับ วันนี้ผมคุยกับทานากะซังมา',
@@ -16915,7 +17053,7 @@ if(
   );
 
   b+=bubble(
-    'อ๋อ... เรื่องนั้น'
+    'อ๋อเรื่องนั้น'
   );
 
   b+=bubble(
@@ -17102,11 +17240,14 @@ if(
 
     b+=`
       <div class="ep9-line-song">
-        <div class="ep9-line-song-cover"
-          style="background:${song.color}">
-          ${ep9MusicSVG('note')}
-        </div>
-
+       <div class="ep9-line-song-cover"
+  style="background:${song.color};overflow:hidden;">
+  <img
+    src="${song.cover}"
+    alt="${song.title}"
+    style="width:100%;height:100%;object-fit:cover;"
+  >
+</div>
         <div>
           <small>Spotify · แชร์เพลง</small>
           <strong>${song.title}</strong>
@@ -18480,28 +18621,54 @@ if(ep10CallNotice){
 }
 
 /* ===== EP.09 SPOTIFY INTERACTIONS ===== */
+
 const ep9Play=e.target.closest('[data-ep9-play]');
 
 if(ep9Play && page==='Spotify'){
-  const playing=ep9Play.dataset.playing==='1';
+  const song=EP9_SONGS.find(s=>s.id===ep9SelectedSong);
 
-  ep9Play.dataset.playing=playing?'0':'1';
-  ep9Play.setAttribute(
-    'aria-label',
-    playing?'เล่น':'หยุดชั่วคราว'
-  );
+  if(song){
+    if(!ep9Audio.src || !ep9Audio.src.endsWith(song.src)){
+      ep9Audio.src=song.src;
+      ep9Audio.load();
+    }
 
-  ep9Play.innerHTML=playing
-    ? ep9MusicSVG('play')
-    : `<svg viewBox="0 0 24 24"
-         width="30" height="30"
-         fill="currentColor">
-         <rect x="6" y="4" width="4" height="16" rx="1"/>
-         <rect x="14" y="4" width="4" height="16" rx="1"/>
-       </svg>`;
+    if(ep9Audio.paused){
+      ep9Audio.play().catch(console.warn);
+    }else{
+      ep9Audio.pause();
+    }
+  }
 
+  ep9UpdatePlayer();
   return;
 }
+
+const ep9Prev=e.target.closest('[data-ep9-prev]');
+if(ep9Prev && page==='Spotify'){
+  ep9ChangeSong(-1);
+  return;
+}
+
+const ep9Next=e.target.closest('[data-ep9-next]');
+if(ep9Next && page==='Spotify'){
+  ep9ChangeSong(1);
+  return;
+}
+
+const ep9Seek=e.target.closest('[data-ep9-seek]');
+if(ep9Seek && page==='Spotify'){
+  const rect=ep9Seek.getBoundingClientRect();
+  const fraction=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+
+  if(Number.isFinite(ep9Audio.duration)){
+    ep9Audio.currentTime=fraction*ep9Audio.duration;
+  }
+
+  ep9UpdatePlayer();
+  return;
+}
+
 // เปิด Spotify จากแชตอชิ
 const ep9OpenSpotify=e.target.closest(
   '[data-ep9-open-spotify]'
@@ -18524,10 +18691,7 @@ const ep9Song=e.target.closest(
 );
 
 if(ep9Song && page==='Spotify'){
-  ep9SelectedSong=ep9Song.dataset.ep9Song;
-  ep9SpotifyScreen='player';
-
-  render();
+  ep9LoadSong(ep9Song.dataset.ep9Song,false);
   return;
 }
 

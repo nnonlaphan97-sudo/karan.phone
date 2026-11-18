@@ -15243,9 +15243,11 @@ function renderChat(){
   : '<div class="day">30 ม.ค.</div>';
   let choices='';
   // EP.01 — ยังไม่สั่งเค้ก ไม่แสดงประวัติแชทอชิ
-if(chat==='achi' && save.flags.deliveryStatus==='none'){
+
+if(chat==='achi' && !save.flags.achiThanked){
   b='<div class="line-empty-chat" style="flex:1;min-height:240px;background:#d3d9e6"></div>';
 }
+
 /* ===== EP.06 TANAKA CHAT ===== */
 
 if(chat==='tanaka' && save.flags.ep6Stage>=2){
@@ -15471,11 +15473,9 @@ b+=`
 }
   }
 
-
-if(chat==='achi' && save.flags.deliveryStatus!=='none'){
+if(chat==='achi' && save.flags.achiThanked){
 
   // EP.01 — 30 มกราคม
-  
   b+=bubble(
     'สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',
     true

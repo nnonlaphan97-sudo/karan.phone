@@ -8846,17 +8846,6 @@ const sortTime =
     );
   });
 
-  // EP.01 — LINE GIFT อยู่ถัดจากอชิและพี่ดุจ
-  // แสดงเมื่อสั่งเค้กแล้วเท่านั้น
-    const giftChatVisible = !!save.flags.cakeOrdered;
-    const achiIndex=results.findIndex(c=>c.id==='achi');
-    const dujIndex=results.findIndex(c=>c.id==='duj');
-
-    const insertAfter=Math.max(achiIndex,dujIndex);
-
-    results.splice(insertAfter+1,0,gift);
-  }
-
   // EP.01 — แสดง LINE GIFT Notice หลังสั่งเค้กสำเร็จ
   const giftChatVisible = !!save.flags.cakeOrdered;
 

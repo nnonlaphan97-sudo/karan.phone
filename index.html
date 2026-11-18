@@ -8614,9 +8614,10 @@ function lineChatsHTML(){
     name:'Bloom & Beyond'
   });
 }
-if(save.flags.ep6Stage >= 1){
+if(save.flags.ep6Stage >= 2){
   availableChats.push({
-    id:'tanaka',name:'Tanaka San'
+    id:'tanaka',
+    name:'Tanaka San'
   });
 }
   if(save.flags.ep4KarinShown || save.flags.ep3KarinMessageShown){
@@ -8841,7 +8842,8 @@ if(
  // EP.04 — 14 เมษายน: อชิคุยเรื่องอาหารเช้ากับการันต์
 if(
   c.id==='achi' &&
-  save.flags.ep4Day14Started
+  save.flags.ep4Day14Started &&
+  save.flags.ep6Stage < 1
 ){
   displayDate='14 เม.ย.';
 
@@ -8854,16 +8856,29 @@ if(
   }
 }
 
+/* EP.06 — อัปเดตแชทหลังสารภาพรัก */
+if(save.flags.ep6Stage >= 1){
 
-if(save.flags.ep6Stage >= 2){
   if(c.id === 'achi'){
     displayDate = '17 เม.ย.';
     displayTime = '14:00';
+
+    // ข้อความล่าสุดจากการันต์ในบทสารภาพรัก
+    preview = 'อชิกลับบ้านดีๆ นะ';
   }
 
-  if(c.id === 'tanaka'){
+  if(c.id === 'karin'){
+    displayDate = '17 เม.ย.';
+    displayTime = '14:01';
+
+    // แสดงข้อความจากประวัติแชทจริง
+  }
+
+  // ทานากะขึ้นเมื่อมีแจ้งเตือนแล้วเท่านั้น
+  if(c.id === 'tanaka' && save.flags.ep6Stage >= 2){
     displayDate = '17 เม.ย.';
     displayTime = '15:00';
+    preview = 'พรุ่งนี้ผมจะไปดูงานที่เชียงใหม่ ฝากคุณการันต์ช่วยคุยงานทางนี้ให้ด้วยนะ';
   }
 }
 
@@ -9470,7 +9485,7 @@ function renderGrab(){
               <strong>฿${c.price}</strong>
             </div>
             <div class="gf-order-summary">
-              <span>ค่าจัดส่ง (จำลอง)</span>
+              <span>ค่าจัดส่ง</span>
               <strong>฿35</strong>
             </div>
             <div class="gf-order-summary gf-total">
@@ -9730,7 +9745,7 @@ if(grabTab==='orders'){
         <h2>การเงิน</h2>
         <div class="gf-finance">
           <strong>วิธีชำระเงิน</strong>
-          <p>บัญชีจำลองของการันต์</p>
+          <p>บัญชีของการันต์</p>
           <small>การสั่งซื้อในเกมไม่มีการชำระเงินจริง</small>
         </div>
       </div>
@@ -10445,8 +10460,8 @@ function renderSamsungCamera(){
 <button class="samsung-camera-thumbnail"
         data-ep4-open-gallery="1"
         aria-label="เปิดภาพล่าสุด">
-  <img src="videos/previous-photo.jpg"
-       alt="ภาพก่อนถ่าย">
+ <img src="${samsungGalleryPhotos[Math.floor(Math.random() * samsungGalleryPhotos.length)]}"
+     alt="ภาพล่าสุดในแกลเลอรี">
 </button>
 
   <button class="samsung-shutter"
@@ -12229,7 +12244,7 @@ const ep7FabricCatalog = {
 };
 
 let ep7TailorSelectionPage = 'fabric';
-const ep7TailorPrice = {fabric: 5550, sewing: 850, shipping: 100}; // ราคาจำลอง แก้ได้
+const ep7TailorPrice = {fabric: 5550, sewing: 850, shipping: 100}; // ราคาแก้ได้
 let ep7TailorNoticeTimers = [];
 function ep7ClearTailorNoticeTimers(){
   ep7TailorNoticeTimers.forEach(clearTimeout);

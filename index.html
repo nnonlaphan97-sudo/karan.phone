@@ -18954,7 +18954,20 @@ if(ksmsHome && page==='Messages'){
   render();
   return;
 }
-save.flags.ep7HelicopterConfirmed=true;
+
+
+/* ยืนยันเฮลิคอปเตอร์ */
+const ep7Helicopter=e.target.closest(
+  '[data-ep7-helicopter]'
+);
+
+if(
+  ep7Helicopter &&
+  page==='Messages' &&
+  save.flags.ep7Stage>=4 &&
+  !save.flags.ep7HelicopterConfirmed
+){
+  save.flags.ep7HelicopterConfirmed=true;
 save.flags.ep7AchiFaintedMessage=true;
 
 ep7Next(5);

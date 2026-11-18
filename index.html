@@ -9008,7 +9008,7 @@ if(
 }
     // EP.08 — ข้อความสรุปยอดขายจากทีมฝ่ายขาย
 if(c.id==='sales' && save.flags.ep8Completed){
-  displayDate='5 ต.ค.';
+  displayDate='20 ต.ค.';
   displayTime='17:34';
   preview='ทีมฝ่ายขาย: สรุปยอดขายเรียบร้อยแล้ว ยอดรวม '+
     ep8Money(ep8Total())+' บาท ทำยอดถึงเป้าหมาย 3 ล้านบาทแล้ว';
@@ -9029,6 +9029,14 @@ if(
   displayTime='17:40';
   preview='ผมตรวจสอบยอดขายเรียบร้อยแล้ว';
 }
+    
+/* EP.09 — ทานากะส่งข้อความเรื่องนครศรีธรรมราช */
+if(c.id==='tanaka' && save.flags.ep9Started){
+  displayDate='22 พ.ย.';
+  displayTime='09:09';
+  preview='ขอบคุณนะ แต่ผมอยากให้อชิเป็นคนตัดสินใจด้วยตัวเอง';
+}
+
     const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));

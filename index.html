@@ -14821,7 +14821,10 @@ function renderChat(){
 
   let b='<div class="day">30 ม.ค.</div>';
   let choices='';
-  
+  // EP.01 — ยังไม่สั่งเค้ก ไม่แสดงประวัติแชทอชิ
+if(chat==='achi' && save.flags.deliveryStatus==='none'){
+  b='<div class="line-empty-chat" style="flex:1;min-height:240px;background:#d3d9e6"></div>';
+}
 /* ===== EP.06 TANAKA CHAT ===== */
 
 if(chat==='tanaka'){
@@ -15048,9 +15051,10 @@ b+=`
   }
 
 
-if(chat==='achi'){
+if(chat==='achi' && save.flags.deliveryStatus!=='none'){
 
   // EP.01 — 30 มกราคม
+  
   b+=bubble(
     'สุขสันต์วันเกิดนะครับอชิ ขอให้มีความสุขมาก ๆ นะครับ',
     true
@@ -16578,6 +16582,17 @@ if(chat==='achi' && save.flags.ep12Stage>=1){
       'แล้วเจอกันในวันแต่งงานของเรานะ'
     );
   }
+}
+  // EP.01 — ก่อนสั่งเค้ก ซ่อนประวัติแชทส่วนตัวทุกคน
+// ยกเว้นแชทกลุ่มบริษัทและทีมฝ่ายขาย
+const isGroupChat = ['office', 'sales'].includes(chat);
+
+if (
+  !isGroupChat &&
+  save.flags.deliveryStatus === 'none'
+) {
+  b = '';
+  choices = '';
 }
   const chatIcon=(type)=>{
     const shapes={

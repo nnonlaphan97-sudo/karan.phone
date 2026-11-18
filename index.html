@@ -9108,7 +9108,18 @@ if(
       </button>
     `
     : '';
+// ให้อชิขึ้นอันดับแรกเฉพาะช่วงที่ส่งรายชื่อลูกค้า
+if(
+  save.flags.ep8TanakaRead &&
+  !save.flags.ep8TanakaFinalRead
+){
+  const achiIndex=results.findIndex(c=>c.id==='achi');
 
+  if(achiIndex>0){
+    const achiChat=results.splice(achiIndex,1)[0];
+    results.unshift(achiChat);
+  }
+}
   const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>

@@ -17606,7 +17606,7 @@ function lineBannerAvatar(id){
 
   return icon('line');
 }
-
+let gameBannerHideTimer = null;
 function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
   if(!banner)return;

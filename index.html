@@ -11400,6 +11400,15 @@ const explorePhotos = [
   }
 ];
 
+const shuffled = [...explorePhotos]
+  .sort(() => Math.random() - 0.5);
+
+const photos = Array.from(
+  {length:18},
+  (_,i) => shuffled[i % shuffled.length]
+);
+
+
   const shuffled = [...explorePhotos]
     .sort(() => Math.random() - 0.5);
 
@@ -17939,56 +17948,9 @@ document.addEventListener('change',function(e){
   }
 });
 
-
 document.addEventListener('click',function(e){
   try {
-
-  /* ===== PIN HANDLER ===== */
-  const pinButton = e.target.closest(
-    '[data-pin],[data-pin-action]'
-  );
-
-  if(page === 'pin' && pinButton){
-
-    const action = pinButton.dataset.pinAction;
-
-    if(action === 'cancel'){
-      pinInput = '';
-      page = 'lock';
-      render();
-      return;
-    }
-
-    if(action === 'delete'){
-      pinInput = pinInput.slice(0,-1);
-      render();
-      return;
-    }
-
-    const digit = pinButton.dataset.pin;
-
-    if(digit !== undefined){
-      if(pinInput.length >= 4) return;
-
-      pinInput += digit;
-
-      if(pinInput.length === 4){
-        if(pinInput === PHONE_PIN){
-          pinInput = '';
-          page = 'home';
-        }else{
-          pinInput = '';
-          alert('รหัส PIN ไม่ถูกต้อง');
-        }
-      }
-
-      render();
-      return;
-    }
-  }
-
   /* ===== EP.12 FILES INTERACTIONS ===== */
-
 
 const ep12Folder=e.target.closest('[data-ep12-folder]');
 
@@ -20099,6 +20061,44 @@ if(e.target.closest('[data-line-call]')){
 
 const pinBtn=e.target.closest('[data-pin],[data-pin-action]');
 
+if(pinBtn && page==='pin'){
+
+  if(pinBtn.dataset.pinAction==='cancel'){
+    pinInput='';
+    page='lock';
+    render();
+    return;
+  }
+
+  if(pinBtn.dataset.pinAction==='delete'){
+    pinInput=pinInput.slice(0,-1);
+    render();
+    return;
+  }
+
+  if(pinBtn.dataset.pin!==undefined){
+
+    if(pinInput.length>=4)return;
+
+    pinInput+=pinBtn.dataset.pin;
+
+    if(pinInput.length===4){
+
+      if(pinInput===PHONE_PIN){
+        pinInput='';
+        page='home';
+      }else{
+        pinInput='';
+        alert('รหัส PIN ไม่ถูกต้อง');
+      }
+
+    }
+
+    render();
+    return;
+  }
+}
+
 // EP.04 — ตอบอชิเรื่องอาหารเช้า
 const breakfastBtn=e.target.closest('[data-ep4-breakfast]');
 
@@ -20798,7 +20798,6 @@ unlock('โน้ต');
 popup('รายการอาหาร','จัดส่งเรียบร้อยแล้ว มีข้อมูลเพิ่มเติมในโน้ต');
 }
 }
-}
   } catch(error) {
     console.error('PHONE CLICK ERROR:', error);
     alert(
@@ -20846,7 +20845,6 @@ document.addEventListener('input',function(e){
     input.setSelectionRange(cursor,cursor);
   }
 });
-  
 document.getElementById('nav').addEventListener('click',function(){
   if(page==='lock'){
     pinInput='';

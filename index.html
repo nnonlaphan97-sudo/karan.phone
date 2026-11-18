@@ -11240,28 +11240,112 @@ if (igTab === 'reels') {
       </div>`;
   }
 
-  if (igTab === 'profile') {
-    content = `
-      <div class="ig-profile">
-        <div class="ig-profile-info">
-          ${igAvatar('K', 85)}
-          <div><strong>0</strong><small>โพสต์</small></div>
-          <div><strong>—</strong><small>ผู้ติดตาม</small></div>
-          <div><strong>—</strong><small>กำลังติดตาม</small></div>
+ 
+if (igTab === 'profile') {
+  const karanPosts = [
+    '4E96E2DC-2531-4415-B026-A0D6FD44DEBC.jpeg',
+    '5A97C05B-82B3-4E1B-B39D-CD15A9850646.jpeg',
+    '5C05A6D3-2FFA-4276-9DE0-593816AC1517.jpeg',
+    '910BC983-5FD7-46AD-889C-028B2A86E71D.jpeg',
+    'IMG_3258.jpeg',
+    'IMG_4063.jpeg',
+    'IMG_4401.jpeg',
+    'IMG_4404.jpeg',
+    'IMG_4405.jpeg',
+    'IMG_4851.jpeg',
+    'IMG_4850.jpeg',
+    'IMG_4857.jpeg',
+    'IMG_4858.jpeg',
+    'IMG_5292.jpeg',
+    'IMG_4902.jpeg',
+    'IMG_4891.jpeg',
+    'IMG_4890.jpeg',
+    'IMG_4889.jpeg',
+    'IMG_4888.jpeg',
+    'IMG_4887.jpeg',
+    'IMG_4886.jpeg',
+    'IMG_4885.jpeg',
+    'IMG_4884.jpeg'
+  ];
+
+  content = `
+    <div class="karan-ig-profile">
+      <div class="karan-ig-stats">
+        <div class="karan-ig-avatar">
+          <img src="${igProfilePhotos.karan}" alt="การันต์">
+          <span class="karan-ig-avatar-plus">+</span>
         </div>
-        <div class="ig-profile-name">
-          <strong>การันต์</strong>
+        <div class="karan-ig-stat">
+          <strong>286</strong>
+          <span>โพสต์</span>
         </div>
-        <div class="ig-profile-buttons">
-          <button>แก้ไขโปรไฟล์</button>
-          <button>แชร์โปรไฟล์</button>
+        <div class="karan-ig-stat">
+          <strong>128K</strong>
+          <span>ผู้ติดตาม</span>
         </div>
-        <div class="ig-profile-tabs">${igIcon('grid')}</div>
-        <div class="ig-placeholder">
-          <p>ยังไม่มีโพสต์</p>
+        <div class="karan-ig-stat">
+          <strong>348</strong>
+          <span>กำลังติดตาม</span>
         </div>
-      </div>`;
-  }
+      </div>
+
+      <div class="karan-ig-bio">
+        <strong>Karan</strong>
+        <span>Personal blog</span>
+        <p>Collecting moments, not things.</p>
+        <p>Bangkok, Thailand</p>
+      </div>
+
+      <div class="karan-ig-actions">
+        <button type="button">แก้ไขโปรไฟล์</button>
+        <button type="button">แชร์โปรไฟล์</button>
+        <button type="button" class="karan-ig-add">+</button>
+      </div>
+
+      <div class="karan-ig-highlights">
+        <div class="karan-ig-highlight">
+          <div><img src="videos/IMG_4401.jpeg" alt=""></div>
+          <span>Life</span>
+        </div>
+        <div class="karan-ig-highlight">
+          <div><img src="videos/IMG_4851.jpeg" alt=""></div>
+          <span>Travel</span>
+        </div>
+        <div class="karan-ig-highlight">
+          <div><img src="videos/IMG_5292.jpeg" alt=""></div>
+          <span>Memories</span>
+        </div>
+        <div class="karan-ig-highlight">
+          <div><img src="videos/IMG_4889.jpeg" alt=""></div>
+          <span>Daily</span>
+        </div>
+      </div>
+
+      <div class="karan-ig-tabs">
+        <button class="active" type="button"
+          aria-label="โพสต์">
+          ${igIcon('grid')}
+        </button>
+        <button type="button" data-ig-tab="reels"
+          aria-label="Reels">
+          ${igIcon('reels')}
+        </button>
+      </div>
+
+      <div class="karan-ig-grid">
+        ${karanPosts.map((photo, index) => `
+          <button type="button"
+            class="karan-ig-grid-item"
+            data-karan-post="${index}">
+            <img src="videos/${photo}"
+              alt="โพสต์ของการันต์ ${index + 1}"
+              loading="lazy">
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
 
   return `
     <div class="ig-app">
@@ -11571,6 +11655,253 @@ igStoryStyle.textContent = `
 }
 `;
 document.head.appendChild(igStoryStyle);
+
+const karanProfileStyle = document.createElement('style');
+karanProfileStyle.textContent = `
+.karan-ig-profile{
+  background:#fff;
+  color:#111;
+  min-height:100%;
+  padding-top:12px;
+}
+
+.karan-ig-stats{
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  gap:8px;
+  padding:10px 14px;
+}
+
+.karan-ig-avatar{
+  position:relative;
+  width:86px;
+  height:86px;
+  flex-shrink:0;
+}
+
+.karan-ig-avatar img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.karan-ig-avatar-plus{
+  position:absolute;
+  right:0;
+  bottom:0;
+  width:23px;
+  height:23px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#0095f6;
+  color:#fff;
+  border:2px solid #fff;
+  font-size:17px;
+}
+
+.karan-ig-stat{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.karan-ig-stat strong{
+  font-size:17px;
+  font-weight:700;
+}
+
+.karan-ig-bio{
+  padding:12px 17px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.karan-ig-bio strong,
+.karan-ig-bio span{
+  display:block;
+}
+
+.karan-ig-bio span{
+  color:#888;
+}
+
+.karan-ig-bio p{
+  margin:2px 0;
+}
+
+.karan-ig-actions{
+  display:flex;
+  gap:7px;
+  padding:8px 12px 18px;
+}
+
+.karan-ig-actions button{
+  flex:1;
+  border:0;
+  border-radius:8px;
+  background:#efefef;
+  color:#111;
+  padding:9px 5px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.karan-ig-actions .karan-ig-add{
+  flex:0 0 38px;
+  font-size:22px;
+}
+
+.karan-ig-highlights{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  padding:8px 16px 20px;
+  scrollbar-width:none;
+}
+
+.karan-ig-highlight{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  flex-shrink:0;
+}
+
+.karan-ig-highlight div{
+  width:65px;
+  height:65px;
+  border:1px solid #ddd;
+  border-radius:50%;
+  padding:3px;
+}
+
+.karan-ig-highlight img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.karan-ig-tabs{
+  display:flex;
+  border-top:1px solid #eee;
+}
+
+.karan-ig-tabs button{
+  flex:1;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:0;
+  background:transparent;
+  color:#888;
+}
+
+.karan-ig-tabs button.active{
+  color:#111;
+  border-top:2px solid #111;
+}
+
+.karan-ig-tabs svg{
+  width:24px;
+  height:24px;
+}
+
+.karan-ig-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:2px;
+}
+
+.karan-ig-grid-item{
+  display:block;
+  width:100%;
+  aspect-ratio:3/4;
+  border:0;
+  padding:0;
+  background:#eee;
+  overflow:hidden;
+}
+
+.karan-ig-grid-item img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+`;
+document.head.appendChild(karanProfileStyle);
+
+document.addEventListener('click', function(e){
+  const close = e.target.closest('[data-karan-post-close]');
+
+  if(close){
+    e.stopImmediatePropagation();
+    document.getElementById('karanPostViewer')?.remove();
+    return;
+  }
+
+  const post = e.target.closest('[data-karan-post]');
+  if(!post) return;
+
+  e.stopImmediatePropagation();
+
+  const img = post.querySelector('img');
+  if(!img) return;
+
+  document.getElementById('karanPostViewer')?.remove();
+
+  const viewer = document.createElement('div');
+  viewer.id = 'karanPostViewer';
+
+  viewer.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    background:#fff;
+    color:#111;
+    display:flex;
+    flex-direction:column;
+    overflow:auto;
+  `;
+
+  const image = document.createElement('img');
+  image.src = img.src;
+  image.alt = img.alt;
+  image.style.cssText = `
+    width:100%;
+    max-height:70vh;
+    object-fit:contain;
+    background:#111;
+  `;
+
+  const header = document.createElement('div');
+  header.style.cssText = `
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 14px;
+    font-weight:700;
+  `;
+
+  header.innerHTML = `
+    <button data-karan-post-close="1"
+      style="border:0;background:none;font-size:28px">
+      ‹
+    </button>
+    <span>karan</span>
+  `;
+
+  viewer.append(header, image);
+  document.body.appendChild(viewer);
+}, true);
 
 /* ===== CLOCK ALARMS ===== */
 

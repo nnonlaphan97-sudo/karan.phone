@@ -7471,6 +7471,10 @@ save.flags.ep2Started ??= false;
 save.flags.ep2PaiOpened ??= false;
 save.flags.ep2NotesUnlocked ??= false;
 save.flags.ep2LogoDone ??= false;
+// EP.02 — หลังตอบโค้ดสีปายถูกต้อง
+function ep1BirthdayActive(){
+  return !save.flags.ep2LogoDone;
+}
 save.flags.ep2CouponReady ??= false;
 save.flags.ep2Completed ??= false;
 
@@ -8305,8 +8309,9 @@ function renderLineFullProfile(){
   const photo=lineProfileImages[id]||'';
 
   const showBirthday =
-    id==='achi' &&
-    !save.flags.cakeOrdered;
+  id==='achi' &&
+  ep1BirthdayActive() &&
+  !save.flags.cakeOrdered;
 
   return `
    <div class="line-full-profile"
@@ -8338,7 +8343,7 @@ function renderLineFullProfile(){
     <img src="${photo}" alt="">
   </div>
 
-  ${id==='achi' && !save.flags.cakeOrdered ? `
+  ${showBirthday ? `
     <svg class="ep1-party-hat"
          viewBox="0 0 48 60"
          aria-hidden="true">
@@ -8359,7 +8364,7 @@ function renderLineFullProfile(){
 
 <h2>${name}</h2>
 
-${id==='achi' && !save.flags.cakeOrdered ? `
+${showBirthday ? `
   <div class="ep1-birthday-date">
     <span class="ep1-white-gift">${ep1GiftIcon()}</span>
     <span>30 ม.ค.</span>
@@ -8847,8 +8852,9 @@ const sortTime =
   });
 
   // EP.01 — แสดง LINE GIFT Notice หลังสั่งเค้กสำเร็จ
-  const giftChatVisible = !!save.flags.cakeOrdered;
-
+ const giftChatVisible =
+  !!save.flags.cakeOrdered &&
+  ep1BirthdayActive();
   const giftChat = giftChatVisible &&
     'LINE GIFT Notice'.toLowerCase().includes(q)
     ? `
@@ -8985,7 +8991,7 @@ const mosaic=(ids)=>{
         '<b>รายชื่อเพื่อน</b>'+
         '<button data-line-action="friends">ดูทั้งหมด</button>'+
       '</div>'+
-
+(ep1BirthdayActive() ?
 '<button class="line-directory-row" data-line-birthday="achi">'+
   '<span class="line-birthday-avatar">'+
     lineAvatar('achi')+
@@ -9002,7 +9008,7 @@ const mosaic=(ids)=>{
   '</div>'+
   '<span class="line-directory-count">1</span>'+
   '<span class="line-directory-arrow">›</span>'+
-'</button>'+
+'</button>' : '')+
 
 directoryRow(
   'รายการโปรด',
@@ -15235,7 +15241,7 @@ if(chat==='achi' && save.flags.deliveryStatus==='none'){
 }
 /* ===== EP.06 TANAKA CHAT ===== */
 
-if(chat==='tanaka'){
+if(chat==='tanaka' && save.flags.ep6Stage>=2){
   b='<div class="day">17 เม.ย.</div>';
 
   b+=bubble(

@@ -9016,6 +9016,16 @@ if(c.id==='achi' && save.flags.ep8Completed){
   displayTime='17:37';
   preview='อชิช่วยผมเยอะมาก';
 }
+    // ข้อความล่าสุดจากทานากะหลังยอดครบ 3 ล้านบาท
+if(
+  c.id==='tanaka' &&
+  save.flags.ep8TanakaFinalRead &&
+  !save.flags.ep9Started
+){
+  displayDate='20 พ.ย.';
+  displayTime='17:40';
+  preview='ผมตรวจสอบยอดขายเรียบร้อยแล้ว';
+}
     const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -9154,6 +9164,18 @@ if(
   if(achiIndex>0){
     const achiChat=results.splice(achiIndex,1)[0];
     results.unshift(achiChat);
+  }
+}
+  // EP.08 — หลังอ่านแชทอชิ ทานากะขึ้นบนสุด
+if(
+  save.flags.ep8TanakaFinalRead &&
+  !save.flags.ep9Started
+){
+  const index=results.findIndex(c=>c.id==='tanaka');
+
+  if(index>0){
+    const tanakaChat=results.splice(index,1)[0];
+    results.unshift(tanakaChat);
   }
 }
   const normalChats = results
@@ -20572,13 +20594,21 @@ const ep6LeavingTanaka =
     btn.dataset.go==='LINE' &&
     save.flags.ep8Started &&
     !save.flags.ep8TanakaRead;
-
+// EP.08 — กลับจากแชทอชิหลังยอดครบ 3 ล้านบาท
+const ep8LeavingAchiSales=
+  page==='chat' &&
+  chat==='achi' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep8Completed &&
+  save.flags.ep8AchiSalesNotified &&
+  !save.flags.ep8TanakaFinalRead;
+  
   const ep8LeavingSales=
-    page==='chat' &&
-    chat==='sales' &&
-    btn.dataset.go==='LINE' &&
-    save.flags.ep8Completed &&
-    !save.flags.ep8TanakaFinalRead;
+  page==='chat' &&
+  chat==='sales' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep8Completed &&
+  !save.flags.ep8AchiSalesNotified;
       /* ===== EP.09 TRANSITIONS ===== */
 
   const ep9StartAfterTanaka=
@@ -20730,8 +20760,31 @@ if(ep7LeavingAchi){
 }
 
 if(ep8LeavingSales){
-  save.flags.ep8TanakaFinalRead=true;
+  save.flags.ep8AchiSalesNotified=true;
+
+  // อชิเป็นแชทล่าสุดหลังออกจากแชทฝ่ายขาย
+  lineMarkChatActivity('achi');
+
   persist();
+  render();
+
+  ep8Banner(
+    'อชิ',
+    'การันต์เก่งมากเลย',
+    'achi'
+  );
+}
+
+// EP.08 — อ่านแชทอชิแล้ว ทานากะส่งข้อความ
+if(ep8LeavingAchiSales){
+
+  save.flags.ep8TanakaFinalRead=true;
+
+  // ทานากะเป็นแชทล่าสุด
+  lineMarkChatActivity('tanaka');
+
+  persist();
+  render();
 
   ep8Banner(
     'ทานากะซัง',
@@ -20739,6 +20792,7 @@ if(ep8LeavingSales){
     'tanaka'
   );
 }
+
 /* ===== EP.09 STORY TRANSITIONS ===== */
 
 // เริ่ม EP.09 หลังอ่านผลสรุปยอดขาย EP.08

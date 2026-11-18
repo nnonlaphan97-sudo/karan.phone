@@ -7943,12 +7943,15 @@ const EP9_SONGS=[
     message:'ลองทำสิ่งที่อยากทำดูนะครับ ผมจะคอยเป็นกำลังใจให้'
   }
 ];
-
 function ep9Start(){
   if(save.flags.ep9Started)return;
 
   save.flags.ep9Started=true;
+
+  lineMarkChatActivity('tanaka');
+
   persist();
+  render();
 
   ep8Banner(
     'ทานากะซัง',
@@ -8989,7 +8992,7 @@ if(
 }
 // EP.08 — ทานากะทักหลังการันต์กับอชิคบกัน
 if(c.id==='tanaka' && save.flags.ep8Started){
-  displayDate='5 พ.ย.';
+  displayDate='5 ต.ค.';
   displayTime='09:00';
   preview='ผมมีเรื่องสำคัญอยากคุยกับคุณการันต์และอชิ';
 }
@@ -9012,7 +9015,7 @@ if(c.id==='sales' && save.flags.ep8Completed){
 }
     // EP.08 — ข้อความล่าสุดหลังยอดครบ 3 ล้านบาท
 if(c.id==='achi' && save.flags.ep8Completed){
-  displayDate='20 พ.ย.';
+  displayDate='20 ต.ค.';
   displayTime='17:37';
   preview='อชิช่วยผมเยอะมาก';
 }
@@ -9022,7 +9025,7 @@ if(
   save.flags.ep8TanakaFinalRead &&
   !save.flags.ep9Started
 ){
-  displayDate='20 พ.ย.';
+  displayDate='20 ต.ค.';
   displayTime='17:40';
   preview='ผมตรวจสอบยอดขายเรียบร้อยแล้ว';
 }
@@ -16025,7 +16028,7 @@ if(chat==='tanaka' && save.flags.ep6Stage>=2){
 
 if(chat==='tanaka' && save.flags.ep8Started){
 
-  b+='<div class="day">5 พ.ย.</div>';
+  b+='<div class="day">5 ต.ค.</div>';
   lastBubbleSender=null;
 
   b+=bubble(
@@ -16060,7 +16063,7 @@ if(chat==='tanaka' && save.flags.ep8Started){
 
   if(save.flags.ep8Completed){
 
-    b+='<div class="day">20 พ.ย.</div>';
+    b+='<div class="day">20 ต.ค.</div>';
     lastBubbleSender=null;
 
     b+=bubble(
@@ -16091,49 +16094,57 @@ if(
   chat==='tanaka' &&
   save.flags.ep9Started
 ){
-  b+='<div class="day">20 เม.ย.</div>';
+  b+='<div class="day">11 พ.ย.</div>';
+  lastBubbleSender=null;
 
   b+=bubble(
-    'การันต์ ผมขอถามเรื่องอชิหน่อย'
+    'การันต์ ผมขอถามเรื่องอชิหน่อย',
+    false, '', '09:00'
   );
 
   b+=bubble(
-    'อชิให้คำตอบคุณหรือยังว่าเขาจะไปนครศรีธรรมราชไหม'
+    'อชิให้คำตอบคุณหรือยังว่าเขาจะไปนครศรีธรรมราชไหม',
+    false, '', '09:01'
   );
 
   b+=bubble(
     'นครศรีธรรมราชเหรอครับ?',
-    true
+    true, '', '09:02'
   );
 
   b+=bubble(
     'อชิยังไม่ได้พูดเรื่องนี้กับผมเลยครับ',
-    true
+    true, '', '09:03'
   );
 
   b+=bubble(
-    'อย่างนั้นเหรอ'
+    'อย่างนั้นเหรอ',
+    false, '', '09:04'
   );
 
   b+=bubble(
-    'ผมเสนอให้อชิไปรับผิดชอบงานที่นครศรีธรรมราช'
+    'ผมเสนอให้อชิไปรับผิดชอบงานที่นครศรีธรรมราช',
+    false, '', '09:05'
   );
 
   b+=bubble(
-    'ผมคิดว่าเขามีความสามารถ และอยากให้เขาได้ลองทำงานที่ท้าทายขึ้น'
+    'ผมคิดว่าเขามีความสามารถ และอยากให้เขาได้ลองทำงานที่ท้าทายขึ้น',
+    false, '', '09:06'
   );
 
   b+=bubble(
-    'แต่เขายังไม่ให้คำตอบ ผมนึกว่าเขาปรึกษาคุณแล้ว'
+    'แต่เขายังไม่ให้คำตอบ ผมนึกว่าเขาปรึกษาคุณแล้ว',
+    false, '', '09:07'
   );
 
   b+=bubble(
     'เข้าใจแล้วครับ เดี๋ยวผมลองคุยกับอชิดู',
-    true
+    true, '', '09:08'
   );
 
   b+=bubble(
-    'ขอบคุณนะ แต่ผมอยากให้อชิเป็นคนตัดสินใจด้วยตัวเอง'
+    'ขอบคุณนะ แต่ผมอยากให้อชิเป็นคนตัดสินใจด้วยตัวเอง',
+    false, '', '09:09'
   );
 }
 
@@ -16751,7 +16762,7 @@ if(
     save.flags.ep8NoteJoined
   )
 ){
-   b+='<div class="day">20 พ.ย.</div>';
+   b+='<div class="day">20 ต.ค.</div>';
 
   // เริ่มวันใหม่ ให้แสดงรูปโปรไฟล์อชิอีกครั้ง
   lastBubbleSender=null;
@@ -16816,7 +16827,7 @@ if(
   save.flags.ep8Completed
 ){
 
-  b+='<div class="day">20 พ.ย.</div>';
+  b+='<div class="day">20 ต.ค.</div>';
 
   // เริ่มบทสนทนาชุดใหม่
   lastBubbleSender=null;
@@ -20820,7 +20831,9 @@ if(ep8LeavingAchiSales){
 
 // เริ่ม EP.09 หลังอ่านผลสรุปยอดขาย EP.08
 if(ep9StartAfterTanaka){
-  ep9Start();
+  setTimeout(()=>{
+    ep9Start();
+  },7000);
 }
 
 // หลังอ่านแชตทานากะซังเรื่องนครศรีธรรมราช

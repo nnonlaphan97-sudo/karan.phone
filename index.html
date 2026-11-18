@@ -5060,12 +5060,12 @@ button{
   background:#51436c;
   color:#fff;
 }
-
 /* ===== LINE FULL SCREEN PROFILE ===== */
-
 .line-full-profile{
   position:absolute;
   inset:0;
+  width:100%;
+  height:100%;
   z-index:30;
   display:flex;
   flex-direction:column;
@@ -5073,7 +5073,6 @@ button{
   color:#fff;
   background:#111;
   isolation:isolate;
-  position: relative;
 }
 
 .line-full-profile::before{
@@ -6860,6 +6859,43 @@ button{
   background:#555;
 }
 
+/* EP.01 — LINE Full Profile */
+
+.line-full-profile {
+  position: relative !important;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ให้พื้นหลังโปรไฟล์แสดงเต็มพื้นที่ */
+.line-full-profile::before {
+  background-image: var(--line-profile-photo);
+  background-position: center;
+  background-size: cover;
+}
+
+/* ให้แถบด้านบน รูปโปรไฟล์ และปุ่มต่าง ๆ
+   อยู่เหนือพื้นหลัง */
+.line-full-profile-top,
+.line-full-profile-center,
+.line-full-profile-actions {
+  position: relative;
+  z-index: 2;
+}
+
+/* กล่องวันเกิดอยู่ด้านล่างสุด */
+#ep1BirthdayPopup {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 20px !important;
+  left: 12px !important;
+  right: 12px !important;
+  z-index: 30 !important;
+}
+
 
 </style>
 </head>
@@ -8264,16 +8300,21 @@ function lineProfileIcon(type){
     '</svg>';
 }
 
+
 function renderLineFullProfile(){
   const id=lineProfile;
   const name=lineProfileNames[id]||
     linePeople.find(p=>p.id===id)?.name||id;
   const photo=lineProfileImages[id]||'';
 
+  const showBirthday =
+    id==='achi' &&
+    !save.flags.cakeOrdered;
+
   return `
     <div class="line-full-profile"
-      style="--line-profile-photo:url('${photo}')">
-
+  style="--line-profile-photo:url('${photo}')">
+  
       <div class="line-full-profile-top">
         <button data-line-profile-close="1"
           aria-label="ปิด">
@@ -8283,8 +8324,10 @@ function renderLineFullProfile(){
         <div class="line-full-profile-top-right">
           <button data-line-profile-favorite="1"
             aria-label="รายการโปรด">
-            <span class="${id==='achi' ? 'line-favorite-active' : 'line-favorite-inactive'}">
-            ${lineProfileIcon('star')}
+            <span class="${id==='achi'
+              ? 'line-favorite-active'
+              : 'line-favorite-inactive'}">
+              ${lineProfileIcon('star')}
             </span>
           </button>
         </div>
@@ -8314,60 +8357,75 @@ function renderLineFullProfile(){
           <span>วิดีโอคอล</span>
         </button>
       </div>
-    ${id==='achi' && !save.flags.cakeOrdered ? `
-  <div style="
-    position:absolute;
-    left:12px;
-    right:12px;
-    bottom:18px;
-    padding:18px 14px 14px;
-    background:white;
-    border-radius:18px;
-    color:#111;
-    text-align:center;
-    box-shadow:0 5px 24px #0002;
-    z-index:5;
-  " id="ep1BirthdayPopup">
 
-    <button
-      data-ep1-close-birthday="1"
-      style="
-        position:absolute;
-        top:10px;
-        right:12px;
-        background:none;
-        border:0;
-        font-size:25px;
-        color:#111;
-      ">×</button>
+      ${showBirthday ? `
+        <div id="ep1BirthdayPopup"
+          style="
+            position:absolute;
+            left:12px;
+            right:12px;
+            bottom:20px;
+            z-index:30;
+            background:#fff;
+            border-radius:17px;
+            padding:22px 14px 14px;
+            color:#111;
+            text-align:center;
+            box-shadow:0 5px 25px rgba(0,0,0,.18);
+          ">
 
-    <h3 style="margin:12px 0 8px">
-      วันนี้เป็นวันเกิด<br>ของเพื่อนคุณ
-    </h3>
+          <button
+            data-ep1-close-birthday="1"
+            aria-label="ปิดแจ้งเตือนวันเกิด"
+            style="
+              position:absolute;
+              top:8px;
+              right:12px;
+              border:0;
+              background:transparent;
+              color:#111;
+              font-size:26px;
+              line-height:1;
+              padding:4px;
+            ">×</button>
 
-    <p style="
-      font-size:13px;
-      color:#999;
-      margin-bottom:18px;
-    ">
-      มาอวยพรวันเกิดให้เพื่อนของคุณกันเถอะ
-    </p>
+          <div style="
+            font-size:20px;
+            font-weight:800;
+            line-height:1.4;
+            margin:16px 0 12px;
+          ">
+            วันนี้เป็นวันเกิด<br>
+            ของเพื่อนคุณ
+          </div>
 
-    <button
-      data-ep1-open-gift="1"
-      style="
-        width:100%;
-        padding:14px;
-        background:#fafafa;
-        border:1px solid #ddd;
-        border-radius:9px;
-        color:#111;
-        font-weight:700;
-      ">
-      ส่งของขวัญ
-    </button>
-  </div>
-` : ''}
+          <div style="
+            font-size:13px;
+            color:#999;
+            margin-bottom:20px;
+          ">
+            มาอวยพรวันเกิดให้เพื่อนของคุณกันเถอะ
+          </div>
+
+          <button
+            data-ep1-open-gift="1"
+            style="
+              display:block;
+              width:100%;
+              padding:15px 10px;
+              background:#fafafa;
+              border:1px solid #e1e1e1;
+              border-radius:9px;
+              color:#111;
+              font-size:15px;
+              font-weight:700;
+            ">
+            ส่งของขวัญ
+          </button>
+
+        </div>
+      ` : ''}
+
     </div>
   `;
 }

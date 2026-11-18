@@ -5128,7 +5128,7 @@ button{
 
 .line-full-profile-center{
   position:absolute;
-  top:53%;
+  top:48%;
   left:0;
   right:0;
   transform:translateY(-50%);
@@ -6877,14 +6877,13 @@ button{
   position:absolute;
   width:43px;
   height:54px;
-  top:-43px;
-  left:63%;
-  right:auto;
-  transform:translateX(-50%) rotate(-12deg);
-  transform-origin:bottom center;
-  z-index:15;
+  top:-40px;
+  left:-13px;
+  transform:rotate(-22deg);
+  z-index:4;
   pointer-events:none;
 }
+
 .ep1-birthday-date{
   display:flex;
   align-items:center;
@@ -6900,75 +6899,51 @@ button{
   height:19px;
 }
 
-
-.ep1-birthday-avatar-wrap{
-  position:relative;
-  width:112px;
-  height:112px;
-  flex-shrink:0;
-  overflow:visible !important;
-  cursor:pointer;
-  isolation:isolate;
-}
+.ep1-white-gift{display:inline-flex;align-items:center;}
+.ep1-white-gift svg,
+.ep1-white-gift svg *{stroke:#fff !important;}
 
 .ep1-balloon-layer{
   position:absolute;
   inset:0;
-  z-index:20;
-  overflow:visible !important;
+  overflow:visible;
   pointer-events:none;
+  z-index:10;
 }
 
 .ep1-floating-balloon{
   position:absolute;
-  bottom:15px;
-  width:36px;
-  height:65px;
-  opacity:0;
+  bottom:55px;
+  width:33px;
+  height:60px;
+  animation:ep1BalloonFloat 2.4s ease-out forwards;
   pointer-events:none;
-  animation:ep1BalloonFloat 2.6s ease-out forwards;
-  will-change:transform,opacity;
 }
 
 @keyframes ep1BalloonFloat{
   0%{
     opacity:0;
-    transform:translateY(0) scale(.65);
+    transform:translateY(15px) scale(.6);
   }
-  12%{
-    opacity:1;
-  }
-  75%{
+  15%{
     opacity:1;
   }
   100%{
     opacity:0;
-    transform:translateY(-260px) scale(1.12);
+    transform:translateY(-220px) scale(1.15);
   }
 }
 
 /* ยกโปรไฟล์ขึ้นเมื่อมีกล่องวันเกิด */
 .line-full-profile:has(#ep1BirthdayPopup)
 .line-full-profile-center{
-  top:43%;
+  top:36%;
 }
 
 /* กล่องวันเกิดด้านล่าง */
 #ep1BirthdayPopup{
   bottom:16px !important;
   top:auto !important;
-}
-  .line-full-profile-status{
-  margin-top:-5px;
-  font-size:14px;
-  color:rgba(255,255,255,.88);
-  text-align:center;
-  text-shadow:0 1px 5px #0008;
-}
-
-.ep1-birthday-date svg{
-  color:white;
-  stroke:white;
 }
 </style>
 </head>
@@ -8439,26 +8414,8 @@ function renderLineFullProfile(){
 
 ${id==='achi' && !save.flags.cakeOrdered ? `
   <div class="ep1-birthday-date">
-    ${ep1GiftIcon()}
+    <span class="ep1-white-gift">${ep1GiftIcon()}</span>
     <span>30 ม.ค.</span>
-  </div>
-` : ''}
-
-<div class="line-full-profile-status">
-  ${({
-    achi: 'คนพิเศษที่ไม่วิเศษ',
-    pai: 'เกิด แก่ เจ็บ เติมเกย์',
-    rock: 'อย่ายอมแพ้ดิวะ!',
-    duj: 'มีความสุขกับทุกวัน',
-    karin: 'ถ้าเธอได้ยิน',
-    tanaka: 'TOYOKAWA Fighting!!'
-  })[id] || ''}
-</div>
-
-${id==='achi' && !save.flags.cakeOrdered ? `
-  <div class="ep1-birthday-date">
-    ${ep1GiftIcon()}
-    <span>30 ม.ค. · วันเกิด</span>
   </div>
 ` : ''}
       </div>
@@ -17141,44 +17098,50 @@ function lineBannerAvatar(id){
   return icon('line');
 }
 
-function showGameBanner(who, message){
-  const banner = document.getElementById('gameBanner');
-  if(!banner) return;
+function showGameBanner(who,message){
+  const banner=document.getElementById('gameBanner');
+  if(!banner)return;
 
-  // ยกเลิกเวลาของแจ้งเตือนก่อนหน้า
-  clearTimeout(window.gameBannerHideTimer);
-
-  const names = {
-    office: 'TOYOKAWA',
-    sales: 'ทีมฝ่ายขาย',
-    achi: 'Acirawit',
-    pai: 'Pai',
-    rock: 'Rock',
-    duj: 'พี่ดุจดาว',
-    karin: 'Karin',
-    tanaka: 'Tanaka San'
+  const names={
+    office:'TOYOKAWA',
+    sales:'ทีมฝ่ายขาย',
+    achi:'Acirawit',
+    pai:'Pai',
+    rock:'Rock',
+    duj:'พี่ดุจดาว',
+    karin:'Karin',
+    tanaka:'Tanaka San'
   };
 
-  const sender = who === 'lineGiftNotice'
+  const sender =
+  who==='lineGiftNotice'
     ? 'LINE GIFT Notice'
-    : who === 'line-official'
+    : who==='line-official'
       ? 'LINE'
-      : (names[who] || who);
+      : (names[who]||who);
 
-  const avatar = who === 'lineGiftNotice'
-    ? ep1GiftIcon()
-    : who === 'line-official'
-      ? '<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800">LINE</span>'
-      : lineBannerAvatar(who);
+  banner.innerHTML=`
+  // LINE GIFT Notice แสดง 2 วินาทีแล้วหาย
+if(who === 'lineGiftNotice'){
+  clearTimeout(window.ep1GiftBannerTimer);
 
-  banner.innerHTML = `
-    <button class="game-banner"
-            data-banner-chat="${who}">
-      <span class="game-banner-icon"
-            style="background:transparent;overflow:hidden">
-        ${avatar}
-      </span>
+  window.ep1GiftBannerTimer = setTimeout(()=>{
+    const banner = document.getElementById('gameBanner');
 
+    if(banner){
+      banner.innerHTML = '';
+    }
+  }, 2000);
+}
+    <button class="game-banner" data-banner-chat="${who}">
+    <span class="game-banner-icon"
+      style="background:${who==='line-official'?'#06c755':'transparent'};overflow:hidden">
+${who==='lineGiftNotice'
+  ? ep1GiftIcon()
+  : who==='line-official'
+  ? `<span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800;">LINE</span>`
+  : lineBannerAvatar(who)}
+        </span>
       <span class="game-banner-text">
         <small>LINE · ตอนนี้</small>
         <strong>${sender}</strong>
@@ -17186,15 +17149,6 @@ function showGameBanner(who, message){
       </span>
     </button>
   `;
-
-  // ทุกแบนเนอร์หายเองใน 2 วินาที
-  const currentBanner = banner.firstElementChild;
-
-  window.gameBannerHideTimer = setTimeout(() => {
-    if(banner.firstElementChild === currentBanner){
-      banner.innerHTML = '';
-    }
-  }, 2000);
 }
 
 function goApp(name){
@@ -19065,56 +19019,40 @@ if(giftGrab){
   return;
 }
     // EP.01 — แตะรูปอชิเพื่อปล่อยลูกโป่ง
-
-const birthdayAvatar = e.target.closest(
+const birthdayAvatar=e.target.closest(
   '[data-ep1-balloons]'
 );
 
 if(birthdayAvatar){
-
-  const layer = birthdayAvatar.querySelector(
-    '#ep1BalloonLayer'
-  );
+  const layer=document.getElementById('ep1BalloonLayer');
 
   if(layer){
-
-    layer.innerHTML = '';
-
-    const colors = [
+    const colors=[
       '#ffe74e',
       '#65b7ff',
       '#53d6a5',
       '#ff89b4',
-      '#b69aff',
-      '#ffab62'
+      '#b69aff'
     ];
 
-    colors.forEach((color, i) => {
+    for(let i=0;i<5;i++){
+      const balloon=document.createElement('div');
+      balloon.className='ep1-floating-balloon';
+      balloon.style.left=`${-35+i*35}px`;
+      balloon.style.animationDelay=`${i*0.12}s`;
 
-      const balloon = document.createElement('div');
-
-      balloon.className = 'ep1-floating-balloon';
-
-      balloon.style.left = `${-35 + i * 28}px`;
-      balloon.style.animationDelay = `${i * 0.10}s`;
-
-      balloon.innerHTML = `
+      balloon.innerHTML=`
         <svg viewBox="0 0 36 65"
-             width="36"
-             height="65"
-             xmlns="http://www.w3.org/2000/svg">
-
+             width="36" height="65">
           <ellipse cx="18" cy="20"
                    rx="15" ry="19"
-                   fill="${color}"/>
-
-          <path d="M18 39 L14 44 L22 44 Z"
-                fill="${color}"/>
-
+                   fill="${colors[i]}"/>
+          <path d="M18 39 L14 44 H22Z"
+                fill="${colors[i]}"/>
           <path d="M18 44 Q12 53 18 65"
                 fill="none"
-                stroke="#fff"
-                stroke-width="1.4"/>
+                stroke="white"
+                stroke-width="1.5"/>
         </svg>
       `;
 
@@ -19122,11 +19060,11 @@ if(birthdayAvatar){
 
       balloon.addEventListener(
         'animationend',
-        () => balloon.remove(),
-        {once:true}
+        ()=>balloon.remove()
       );
-    });
+    }
   }
+
   return;
 }
 const birthday=e.target.closest('[data-line-birthday]');

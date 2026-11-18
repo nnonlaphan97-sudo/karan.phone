@@ -10318,7 +10318,7 @@ function selectMapPoint(id){
 
   // บ้านหลอกฝั่งธนบุรี
   else if(id==='houseC' || id==='houseE'){
-    mapFeedback='ไม่ใช่';
+    mapFeedback='ไม่ใช่นะคั้บ';
   }
 
   // บ้านอชิ
@@ -10471,98 +10471,42 @@ function renderSamsungCamera(){
     </div>
   `;
 }
-
-
 /* รูปเก่าใน Samsung Gallery — เรียงตามลำดับที่ส่งมา */
+
 const samsungGalleryPhotos = [
-  'https://i.ibb.co/zVV1R35M/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/SDrb2Jyk/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/mCvqyZvL/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/bRD18hTP/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/NnKcxYmr/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/hJbnPddS/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/tw6YyKBn/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/hJJ3GZBD/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/s90RnYbP/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/8n38HsTD/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/VdsdKQc/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/0pTrcYH4/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/tTGwtmxp/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/S4K8B16T/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/sJWDvsgL/r07qxo-R-Download.jpg',
-  'https://i.ibb.co/0VmXCzj7/IMG-4903.jpg',
-  'https://i.ibb.co/JWqNGYT0/IMG-4904.jpg',
-  'https://i.ibb.co/TB2zWfnb/IMG-4902.jpg',
-  'https://i.ibb.co/fzBDXj6w/IMG-4901.jpg',
-  'https://i.ibb.co/WpjDFQWz/IMG-4900.jpg',
-  'https://i.ibb.co/PGHX4JJv/IMG-4899.jpg',
-  'https://i.ibb.co/bgWGV9fj/IMG-4898.jpg',
-  'https://i.ibb.co/vFvV6z7/IMG-4897.jpg',
-  'https://i.ibb.co/LhcMKj5q/IMG-4896.jpg',
-  'https://i.ibb.co/gZMQjm5g/IMG-4895.jpg',
-  'https://i.ibb.co/FkHD6kCD/IMG-4894.jpg',
-  'https://i.ibb.co/39TgZHT7/IMG-4893.jpg',
-  'https://i.ibb.co/Jw3HWzwk/IMG-4892.jpg',
-  'https://i.ibb.co/tM5574pg/IMG-4891.jpg',
-  'https://i.ibb.co/23WxsSz4/IMG-4890.jpg',
-  'https://i.ibb.co/hR39zTpS/IMG-4889.jpg',
-  'https://i.ibb.co/N2Gj2HMd/IMG-4888.jpg',
-  'https://i.ibb.co/Rp1KLFT8/IMG-4887.jpg',
-  'https://i.ibb.co/cKH473Mh/IMG-4886.jpg',
-  'https://i.ibb.co/xqQzDcGc/IMG-4885.jpg',
-  'https://i.ibb.co/PsDsS0NQ/IMG-4884.jpg',
-  'https://i.ibb.co/d4bRBCb6/IMG-4883.jpg',
-  'https://i.ibb.co/wZMsTD9b/IMG-4882.jpg',
-  'https://i.ibb.co/Q386SRZ1/IMG-4881.jpg',
-  'https://i.ibb.co/bgG5nnfP/IMG-4880.jpg',
-  'https://i.ibb.co/93Bt3Cht/IMG-4879.jpg',
-  'https://i.ibb.co/JWYMP8yC/IMG-4878.jpg',
-  'https://i.ibb.co/5xCmH5SV/IMG-4877.jpg',
-  'https://i.ibb.co/V0XVN8Kk/IMG-4876.jpg',
-  'https://i.ibb.co/d4Np67SF/IMG-4875.jpg',
-  'https://i.ibb.co/Swr5fSJV/IMG-4874.jpg',
-  'https://i.ibb.co/bM24kznm/IMG-4873.jpg',
-  'https://i.ibb.co/S4Vq9hcW/IMG-4872.jpg',
-  'https://i.ibb.co/93pW144G/IMG-4404.jpg',
-  'https://i.ibb.co/Pvv2B2yn/IMG-4870.jpg',
-  'https://i.ibb.co/MDxw8D3T/IMG-4869.jpg',
-  'https://i.ibb.co/LDR2V4wf/IMG-4868.jpg',
-  'https://i.ibb.co/PZMFQY3C/IMG-4867.jpg',
-  'https://i.ibb.co/1fWbqx0Y/IMG-4866.jpg',
-  'https://i.ibb.co/Rpk8XF6g/IMG-4865.jpg',
-  'https://i.ibb.co/TDX0fWFP/IMG-4403.jpg',
-  'https://i.ibb.co/9mYwTSNv/IMG-4863.jpg',
-  'https://i.ibb.co/27GXg4WK/IMG-4862.jpg',
-  'https://i.ibb.co/Gv5jhGGd/IMG-4861.jpg',
-  'https://i.ibb.co/RGSpbPCV/IMG-4405.jpg',
-  'https://i.ibb.co/N6pvG59W/IMG-4859.jpg',
-  'https://i.ibb.co/3yphHrBG/IMG-4858.jpg',
-  'https://i.ibb.co/n8f0RpR6/IMG-4857.jpg',
-  'https://i.ibb.co/35C0Sg6w/IMG-4856.jpg',
-  'https://i.ibb.co/qhsbLTv/IMG-4407.jpg',
-  'https://i.ibb.co/wFJTtyc4/IMG-4853.jpg',
-  'https://i.ibb.co/0Rw87YHP/IMG-4852.jpg',
-  'https://i.ibb.co/fVK1HPyb/IMG-4851.jpg',
-  'https://i.ibb.co/KppxhGRP/IMG-4850.jpg',
-  'https://i.ibb.co/DxFcxWX/IMG-4849.jpg',
-  'https://i.ibb.co/N6PyYp5Y/82-B3-FA06-E754-401-F-BE6-A-B39-CB19-AE1-F7.jpg',
-  'https://i.ibb.co/mVspXctc/5-B46853-A-7-C2-D-44-C8-91-E6-81056-EB23150.jpg',
-  'https://i.ibb.co/mCvfzhcN/4-A861-B07-468-C-4106-A940-36-C5-B32-EB575.jpg',
-  'https://i.ibb.co/ccB3J5q5/F10932-AC-64-A5-4900-A95-B-CD0-A61555-D4-B.jpg',
-  'https://i.ibb.co/qYFdgPCK/53735371-A2-E7-4-F21-B170-8-AFB29-CDE660.jpg',
-  'https://i.ibb.co/8pNZRnZ/65-CA4462-580-F-435-E-B255-9-F9148-E4206-B.jpg',
-  'https://i.ibb.co/KcJTQbV7/7452-C859-F466-43-F2-A1-F7-34-A9-D33137-B8.jpg',
-  'https://i.ibb.co/1fRNsGnQ/B6-AD0-F2-B-3-F54-4749-88-DA-A0-BA05765-D92.jpg',
-  'https://i.ibb.co/99v3YD48/4-E96-E2-DC-2531-4415-B026-A0-D6-FD44-DEBC.jpg',
-  'https://i.ibb.co/V05KGb1k/DAFCF753-1962-48-CB-BDE8-8659-FC4-DE165.jpg',
-  'https://i.ibb.co/xq26kQ4s/345249-C8-3232-4101-9-BDE-3-B4-BB69-B322-D.jpg',
-  'https://i.ibb.co/ZpfMGZWn/52-A8-C6-DF-55-A5-49-BA-ADD5-86-B7-A0-A0-D459.jpg',
-  'https://i.ibb.co/yL0Dhmx/E96-D48-EB-1-A91-4-E2-C-9009-1-D919-A55-E9-E1.jpg',
-  'https://i.ibb.co/nMQVXPhn/5-C05-A6-D3-2-FFA-4276-9-DE0-593816-AC1517.jpg',
-  'https://i.ibb.co/Lh6j5N2X/320-DE8-E6-088-F-4-A91-8585-7448-D010-B3-E6.jpg',
-  'https://i.ibb.co/gMpLCqYS/910-BC983-5-FD7-46-AD-889-C-028-B2-A86-E71-D.jpg',
-  'https://i.ibb.co/p6Q87xsP/5-A97-C05-B-82-B3-4-E1-B-B39-D-CD15-A9850646.jpg',
-  'https://i.ibb.co/9kDMphPp/311-EF174-6-B80-4807-82-E3-6-A809699041-B.jpg'
+  'https://i.postimg.cc/5yjP695c/IMG-4895.jpg',
+  'https://i.postimg.cc/RhqPNC7k/IMG-5080.jpg',
+  'https://i.postimg.cc/8csyjkRt/IMG-5081.jpg',
+  'https://i.postimg.cc/4yn8m46q/IMG-5083.jpg',
+  'https://i.postimg.cc/Wzt9hpGy/IMG-5084.jpg',
+  'https://i.postimg.cc/pry0pVfc/IMG-5102.jpg',
+  'https://i.postimg.cc/1X4WfRGY/IMG-5111.jpg',
+  'https://i.postimg.cc/g0wD3cnP/IMG-4413.jpg',
+  'https://i.postimg.cc/5tH38961/IMG-5099.jpg',
+  'https://i.postimg.cc/R03RwCNm/IMG-5100.jpg',
+  'https://i.postimg.cc/yNJP06kC/IMG-5103.jpg',
+  'https://i.postimg.cc/g0wD3cnF/IMG-5107.jpg',
+  'https://i.postimg.cc/YS43Q2jJ/IMG-5108.jpg',
+  'https://i.postimg.cc/zfLjTD3M/IMG-5109.jpg',
+  'https://i.postimg.cc/3wyB2rWq/IMG-5110.jpg',
+  'https://i.postimg.cc/6qBnbB6S/IMG-5082.jpg',
+  'https://i.postimg.cc/fLcYvVZn/IMG-5085.jpg',
+  'https://i.postimg.cc/WzsgYspC/IMG-5086.jpg',
+  'https://i.postimg.cc/vTGf2G8C/IMG-6679.jpg',
+  'https://i.postimg.cc/ry9S0RQs/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/mZSQz18c/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/BnjDVYsq/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/6qBnbB57/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/3JJ2grcC/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/zXXTnDc6/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/J0KJ9SG1/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/brLbK4sn/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/5ypvZD6L/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/fy5X61J7/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/KjQLdCRf/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/xTxMgDrr/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/9XNQnWfx/r07qxo-R-Download.jpg',
+  'https://i.postimg.cc/tRm4MXgw/r07qxo-R-Download.jpg'
 ];
 
 let samsungGalleryIndex=0;
@@ -19541,11 +19485,15 @@ cameraShotThisSession = true;
   return;
 }
 
-// กดภาพวงกลมซ้ายเพื่อเปิดแกลเลอรี่
 const openGallery=e.target.closest('[data-ep4-open-gallery]');
 
 if(openGallery && page==='กล้อง'){
   if(!save.flags.ep4PhotoTaken)return;
+
+  // เปิดภาพที่เพิ่งถ่ายแบบเต็มจอทันที
+  samsungGalleryView='photo';
+  samsungGalleryIndex=0;
+  samsungShareOpen=false;
 
   page='แกลเลอรี';
   render();

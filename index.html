@@ -8065,8 +8065,8 @@ function ep8Banner(name,message,target){
   host.innerHTML=`
     <button class="game-banner"
       data-ep8-banner="${target}">
-     <span class="game-banner-icon"
-  style="background:${target==='phone'?'#06c755':'transparent'}">
+   <span class="game-banner-icon"
+  style="background:transparent;padding:0;overflow:hidden;">
   ${target==='phone'
     ? icon('phone')
     : lineBannerAvatar(target)}
@@ -8989,7 +8989,7 @@ if(
 }
 // EP.08 — ทานากะทักหลังการันต์กับอชิคบกัน
 if(c.id==='tanaka' && save.flags.ep8Started){
-  displayDate='19 พ.ย.';
+  displayDate='5 พ.ย.';
   displayTime='09:00';
   preview='ผมมีเรื่องสำคัญอยากคุยกับคุณการันต์และอชิ';
 }
@@ -9001,7 +9001,20 @@ if(
 ){
   displayDate='19 พ.ย.';
   displayTime='09:01';
-  preview='การันต์ ผมลองย้อนดูรายชื่อลูกค้า...';
+  preview='การันต์ ผมลองย้อนดูรายชื่อลูกค้าเก่า';
+}
+    // EP.08 — ข้อความสรุปยอดขายจากทีมฝ่ายขาย
+if(c.id==='sales' && save.flags.ep8Completed){
+  displayDate='19 พ.ย.';
+  displayTime='17:34';
+  preview='ทีมฝ่ายขาย: สรุปยอดขายเรียบร้อยแล้ว ยอดรวม '+
+    ep8Money(ep8Total())+' บาท ทำยอดถึงเป้าหมาย 3 ล้านบาทแล้ว';
+}
+    // EP.08 — ข้อความล่าสุดหลังยอดครบ 3 ล้านบาท
+if(c.id==='achi' && save.flags.ep8Completed){
+  displayDate='20 พ.ย.';
+  displayTime='17:37';
+  preview='อชิช่วยผมเยอะมาก';
 }
     const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
@@ -9111,6 +9124,29 @@ if(
 // ให้อชิขึ้นอันดับแรกเฉพาะช่วงที่ส่งรายชื่อลูกค้า
 if(
   save.flags.ep8TanakaRead &&
+  !save.flags.ep8TanakaFinalRead
+){
+  const achiIndex=results.findIndex(c=>c.id==='achi');
+
+  if(achiIndex>0){
+    const achiChat=results.splice(achiIndex,1)[0];
+    results.unshift(achiChat);
+  }
+}
+  // EP.08 — ยอดขายครบ 3 ล้านบาท ทีมฝ่ายขายขึ้นบนสุด
+if(
+  save.flags.ep8Completed &&
+  !save.flags.ep8TanakaFinalRead
+){
+  const salesIndex=results.findIndex(c=>c.id==='sales');
+
+  if(salesIndex>0){
+    const salesChat=results.splice(salesIndex,1)[0];
+    results.unshift(salesChat);
+  }
+}// อชิขึ้นอันดับแรกเมื่อยอดครบ 3 ล้านบาท
+if(
+  save.flags.ep8Completed &&
   !save.flags.ep8TanakaFinalRead
 ){
   const achiIndex=results.findIndex(c=>c.id==='achi');
@@ -15958,7 +15994,7 @@ if(chat==='tanaka' && save.flags.ep6Stage>=2){
 
 if(chat==='tanaka' && save.flags.ep8Started){
 
-  b+='<div class="day">19 พ.ย.</div>';
+  b+='<div class="day">5 พ.ย.</div>';
 
   // เริ่มชุดข้อความใหม่เมื่อเปลี่ยนวัน
   lastBubbleSender=null;
@@ -16721,12 +16757,63 @@ if(
  // EP.08 — การันต์ขอบคุณอชิหลังได้รับข้อความแชร์โน้ต
 if(save.flags.ep8TanakaRead){
   b+=bubble(
-    'ขอบคุณมากนะอชิ ช่วยผมได้เยอะเลย',
+    'ขอบคุณมากนะอชิ เดี๋ยวผมจะลองโทรดู',
     true,
     '',
     '09:06'
   );
 }
+}
+  /* ===== EP.08 — ยอดขายครบ 3 ล้านบาท ===== */
+
+if(
+  chat==='achi' &&
+  save.flags.ep8Completed
+){
+
+  b+='<div class="day">20 พ.ย.</div>';
+
+  // เริ่มบทสนทนาชุดใหม่
+  lastBubbleSender=null;
+
+  // การันต์
+  b+=bubble(
+    'อชิผมทำได้แล้วนะ',
+    true,
+    '',
+    '17:35'
+  );
+
+  // อชิ
+  b+=bubble(
+    'การันต์เก่งมากเลย',
+    false,
+    '',
+    '17:36'
+  );
+
+  b+=bubble(
+    'ผมไม่ได้ช่วยอะไรการันต์เลย',
+    false,
+    '',
+    '17:36'
+  );
+
+  // การันต์
+  b+=bubble(
+    'ไม่เลย',
+    true,
+    '',
+    '17:37'
+  );
+
+  b+=bubble(
+    'อชิช่วยผมเยอะมาก',
+    true,
+    '',
+    '17:37'
+  );
+
 }
 /* ===== EP.09 ACHI AND KARAN ===== */
 
@@ -18584,9 +18671,12 @@ if(
   if(newSale){
     save.flags.ep8Sales.push(customer.id);
 
-    if(ep8Total()>=EP8_TARGET){
-      save.flags.ep8Completed=true;
-    }
+   if(ep8Total()>=EP8_TARGET){
+  save.flags.ep8Completed=true;
+
+  // ยอดครบ 3 ล้านบาท ทีมฝ่ายขายส่งข้อความล่าสุด
+  lineMarkChatActivity('sales');
+}
   }
 
   ep8Calling=null;
@@ -18596,14 +18686,32 @@ if(
   persist();
   render();
 
-  if(newSale){
+ if(newSale){
+
+  if(save.flags.ep8Completed){
+
+    // ยอดครบ 3 ล้านบาท อชิเป็นแชทล่าสุด
+    lineMarkChatActivity('achi');
+    persist();
+
+    ep8Banner(
+      'อชิ',
+      'การันต์เก่งมากเลย',
+      'achi'
+    );
+
+  }else{
+
+    // ยอดยังไม่ครบ แจ้งเตือนฝ่ายขายตามเดิม
     ep8Banner(
       'ทีมฝ่ายขาย',
       'ยอดขาย +'+ep8Money(customer.amount)+
       ' บาท · รวม '+ep8Money(ep8Total())+' บาท',
       'sales'
     );
+
   }
+}
 
   return;
 }
@@ -20696,9 +20804,10 @@ if(ep11StartAfterAchi){
       <button class="game-banner"
         data-ep11-call-open="1">
 
-        <span class="game-banner-icon">
-          ${icon('phone')}
-        </span>
+       <span class="game-banner-icon"
+  style="background:transparent;padding:0;overflow:hidden;">
+  ${icon('phone')}
+</span>
 
         <span class="game-banner-text">
           <small>โทรศัพท์ · สายเรียกเข้า</small>

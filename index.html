@@ -8993,6 +8993,16 @@ if(c.id==='tanaka' && save.flags.ep8Started){
   displayTime='09:00';
   preview='ผมมีเรื่องสำคัญอยากคุยกับคุณการันต์และอชิ';
 }
+   // EP.08 — อชิแชร์รายชื่อลูกค้าหลังออกจากแชททานากะ
+if(
+  c.id==='achi' &&
+  save.flags.ep8TanakaRead &&
+  !save.flags.ep8TanakaFinalRead
+){
+  displayDate='19 พ.ย.';
+  displayTime='09:01';
+  preview='การันต์ ผมลองย้อนดูรายชื่อลูกค้า...';
+}
     const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -11090,23 +11100,7 @@ const igPeople = {
   color: '#d9d4e8',
   story: 'สตอรี่ของจินตะ',
   caption: 'วันธรรมดาของจินตะ'
-},
-  duj: {
-    name: 'พี่ดุจ',
-    username: 'dujdao',
-    initial: 'ด',
-    color: '#e7c5ce',
-    story: 'ความสุขเล็ก ๆ',
-    caption: 'เก็บภาพบรรยากาศวันนี้ไว้หน่อย'
-  },
-  pa: {
-    name: 'ป่า',
-    username: 'pamai_',
-    initial: 'ปม',
-    color: '#d2dfcb',
-    story: 'วันหยุดของฉัน',
-    caption: 'พักผ่อนกันบ้าง'
-  }
+}
 };
 
 function igPersonAvatar(id, size=44) {
@@ -12397,7 +12391,7 @@ function ep7TailorNotifications(){
   ep7TailorNoticeTimers.push(setTimeout(()=>{
     const host=document.getElementById('gameBanner');
     if(host)host.innerHTML='';
-    ep7Banner('Instagram','ป่า','พรุ่งนี้กูเข้าร้านนะ เลือกเมนูกาแฟที่มึงอยากได้เลย','pa');
+    ep7Banner('Instagram','pamai_','พรุ่งนี้กูเข้าร้านนะ เลือกเมนูกาแฟที่มึงอยากได้เลย','pa');
   },4000));
 }
 
@@ -15369,7 +15363,7 @@ function ep2LogoForm(){
   return `
     <div class="entry">
       <b>GEMMHOUSE — แก้ไขสีโลโก้</b>
-      <p>กรอกค่า CMYK จากข้อมูลที่บันทึกไว้</p>
+      <p>กรอกค่า CMYK จากข้อมูลที่บันทึกไว้ในโน้ต</p>
 
       <div class="controls">
         <label for="ep2M">Magenta (M)</label>
@@ -16675,7 +16669,7 @@ if(
   );
 
   b+=bubble(
-    'มีอยู่ 8 บริษัทที่เคยสั่งซื้อยอดใหญ่ ผมรวบรวมไว้ใน Samsung Notes แล้ว'
+    'มีอยู่ 8 บริษัทที่เคยสั่งซื้อยอดใหญ่การันต์ลองโทรดูนะครับ'
   );
 
   b+=bubble(
@@ -16713,12 +16707,15 @@ if(
     </div>
   `;
 
-  if(save.flags.ep8ContactsReceived){
-    b+=bubble(
-      'ผมได้รายชื่อแล้วนะ ขอบคุณมากอชิ',
-      true
-    );
-  }
+ // EP.08 — การันต์ขอบคุณอชิหลังได้รับข้อความแชร์โน้ต
+if(save.flags.ep8TanakaRead){
+  b+=bubble(
+    'ขอบคุณมากนะอชิ ช่วยผมได้เยอะเลย',
+    true,
+    '',
+    '09:06'
+  );
+}
 }
 /* ===== EP.09 ACHI AND KARAN ===== */
 
@@ -20598,9 +20595,12 @@ if(ep7LeavingAchi){
   if(leavingDuj){
     showGameBanner('achi','ขอบคุณครับ');
   }
-  /* ===== EP.08 STORY TRANSITIONS ===== */
-if(ep8LeavingTanaka){
+  if(ep8LeavingTanaka){
   save.flags.ep8TanakaRead=true;
+
+  // อชิส่งข้อความล่าสุดหลังออกจากแชททานากะ
+  lineMarkChatActivity('achi');
+
   persist();
 
   ep8Banner(

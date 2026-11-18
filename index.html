@@ -5064,8 +5064,6 @@ button{
 .line-full-profile{
   position:absolute;
   inset:0;
-  width:100%;
-  height:100%;
   z-index:30;
   display:flex;
   flex-direction:column;
@@ -5138,6 +5136,7 @@ button{
   flex-direction:column;
   align-items:center;
   gap:14px;
+  z-index:2;
 }
 
 .line-full-profile-avatar{
@@ -5172,6 +5171,7 @@ button{
   justify-content:space-evenly;
   align-items:flex-start;
   padding:0 12px;
+  z-index:2;
 }
 
 .line-full-profile-actions button{
@@ -6859,44 +6859,6 @@ button{
   background:#555;
 }
 
-/* EP.01 — LINE Full Profile */
-
-.line-full-profile {
-  position: relative !important;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-/* ให้พื้นหลังโปรไฟล์แสดงเต็มพื้นที่ */
-.line-full-profile::before {
-  background-image: var(--line-profile-photo);
-  background-position: center;
-  background-size: cover;
-}
-
-/* ให้แถบด้านบน รูปโปรไฟล์ และปุ่มต่าง ๆ
-   อยู่เหนือพื้นหลัง */
-.line-full-profile-top,
-.line-full-profile-center,
-.line-full-profile-actions {
-  position: relative;
-  z-index: 2;
-}
-
-/* กล่องวันเกิดอยู่ด้านล่างสุด */
-#ep1BirthdayPopup {
-  position: absolute !important;
-  top: auto !important;
-  bottom: 20px !important;
-  left: 12px !important;
-  right: 12px !important;
-  z-index: 30 !important;
-}
-
-
 </style>
 </head>
 <body>
@@ -8312,7 +8274,7 @@ function renderLineFullProfile(){
     !save.flags.cakeOrdered;
 
   return `
-    <div class="line-full-profile"
+   <div class="line-full-profile"
   style="--line-profile-photo:url('${photo}')">
   
       <div class="line-full-profile-top">
@@ -8362,10 +8324,11 @@ function renderLineFullProfile(){
         <div id="ep1BirthdayPopup"
           style="
             position:absolute;
-            left:12px;
-            right:12px;
-            bottom:20px;
-            z-index:30;
+left:12px;
+right:12px;
+bottom:16px;
+top:auto;
+z-index:30;
             background:#fff;
             border-radius:17px;
             padding:22px 14px 14px;

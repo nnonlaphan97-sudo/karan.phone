@@ -6861,7 +6861,7 @@ button{
 /* ===== EP.01 Birthday Profile — consolidated ===== */
 .ep1-birthday-avatar-wrap{position:relative;width:112px;height:112px;flex-shrink:0;overflow:visible;cursor:pointer}
 .ep1-birthday-avatar-wrap .line-full-profile-avatar{width:112px!important;height:112px!important}
-.ep1-party-hat{position:absolute;width:43px;height:54px;top:-43px;left:68%;right:auto;transform:translateX(-50%) rotate(-12deg);transform-origin:bottom center;z-index:15;pointer-events:none}
+.ep1-party-hat{position:absolute;width:43px;height:54px;top:-43px;left:68%;right:auto;transform:translateX(-50%) rotate(15deg);transform-origin:bottom center;z-index:15;pointer-events:none}
 .ep1-birthday-date{display:flex;align-items:center;justify-content:center;gap:7px;color:#fff;font-size:13px;text-shadow:0 1px 4px #0008}
 .ep1-birthday-date svg{width:19px;height:19px}
 .ep1-white-gift{display:inline-flex;align-items:center}
@@ -8846,23 +8846,91 @@ const sortTime =
     );
   });
 
+  // EP.01 — LINE GIFT อยู่ถัดจากอชิและพี่ดุจ
+  // แสดงเมื่อสั่งเค้กแล้วเท่านั้น
+  if(save.flags.cakeOrdered){
+    results.push({
+      id:'lineGiftNotice',
+      name:'LINE GIFT Notice',
+      preview:'อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย',
+      date:'30 ม.ค.',
+      time:'10:36',
+      sortTime:0,
+      originalIndex:999
+    });
 
-  return results
+    // คงลำดับแชทอื่นตามเวลาเดิม
+    // แต่ให้ LINE GIFT อยู่หลังสองคนนี้
+    const giftIndex=results.findIndex(
+      c=>c.id==='lineGiftNotice'
+    );
+
+    const gift=results.splice(giftIndex,1)[0];
+
+    const achiIndex=results.findIndex(c=>c.id==='achi');
+    const dujIndex=results.findIndex(c=>c.id==='duj');
+
+    const insertAfter=Math.max(achiIndex,dujIndex);
+
+    results.splice(insertAfter+1,0,gift);
+  }
+
+  // EP.01 — แสดง LINE GIFT Notice หลังสั่งเค้กสำเร็จ
+  const giftChatVisible = !!save.flags.cakeOrdered;
+
+  const giftChat = giftChatVisible &&
+    'LINE GIFT Notice'.toLowerCase().includes(q)
+    ? `
+      <button class="line-row"
+        data-line-chat="lineGiftNotice">
+
+        <span class="line-avatar"
+          style="
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#fff;
+            flex-shrink:0;
+          ">
+          ${ep1GiftIcon()}
+        </span>
+
+        <div class="line-row-body">
+          <div class="line-name">
+            LINE GIFT Notice
+          </div>
+
+          <div class="line-preview">
+            อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย
+          </div>
+        </div>
+
+        <div class="line-time">30 ม.ค.</div>
+      </button>
+    `
+    : '';
+
+  const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
       '<button class="line-row" data-line-chat="'+c.id+'">'+
         lineAvatar(c.id)+
         '<div class="line-row-body">'+
-'<div class="line-name" data-line-open-profile="'+c.id+'">'+
-  c.name+
-'</div>'+
+         '<div class="line-name"'+
+  (c.id==='lineGiftNotice'
+    ? ''
+    : ' data-line-open-profile="'+c.id+'"')+
+'>'+
+            c.name+
+          '</div>'+
           '<div class="line-preview">'+c.preview+'</div>'+
         '</div>'+
         '<div class="line-time">'+c.date+'</div>'+
       '</button>'
-    ).join('') ||
+    ).join('');
+
+  return giftChat + normalChats ||
     '<div class="line-empty">ไม่พบแชต</div>';
-}
 
 function renderLine(){
   let content='';
@@ -17087,25 +17155,7 @@ if(name==='Instagram'){
 if(name==='GrabFood'){
   grabScreen=save.flags.cakeOrdered?'tracking':'home';
 }
-
-
 render();
-
-if(name==='LINE' && !save.flags.birthdaySeen){
-
-  save.flags.birthdaySeen=true;
-
-  // ปลดล็อก GrabFood แต่ยังไม่เปิดทันที
-  unlock('GrabFood');
-  persist();
-
-  showGameBanner(
-    'lineGiftNotice',
-    'อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย'
-  );
-}
-}
-
 document.addEventListener('input',function(e){
   if(e.target.id!=='calendarSearchInput' || page!=='ปฏิทิน') return;
 
@@ -19065,10 +19115,6 @@ if(action==='miss'){
 }
 /* ===== LINE PROFILE INTERACTIONS ===== */
 
-const openLineProfile=e.target.closest(
-  '[data-line-open-profile]'
-);
-
 if(openLineProfile){
   const id=openLineProfile.dataset.lineOpenProfile;
 
@@ -19078,6 +19124,18 @@ if(openLineProfile){
     page='LINE';
     lineTab='profile';
     render();
+
+    // EP.01 — แจ้งเตือนวันเกิดเมื่อเปิดโปรไฟล์อชิครั้งแรก
+    if(id==='achi' && !save.flags.birthdaySeen){
+      save.flags.birthdaySeen=true;
+      unlock('GrabFood');
+      persist();
+
+      showGameBanner(
+        'lineGiftNotice',
+        'อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย'
+      );
+    }
   }
   return;
 }

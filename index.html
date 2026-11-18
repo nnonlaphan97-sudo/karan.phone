@@ -5073,6 +5073,7 @@ button{
   color:#fff;
   background:#111;
   isolation:isolate;
+  position: relative;
 }
 
 .line-full-profile::before{
@@ -8313,6 +8314,60 @@ function renderLineFullProfile(){
           <span>วิดีโอคอล</span>
         </button>
       </div>
+    ${id==='achi' && !save.flags.cakeOrdered ? `
+  <div style="
+    position:absolute;
+    left:12px;
+    right:12px;
+    bottom:18px;
+    padding:18px 14px 14px;
+    background:white;
+    border-radius:18px;
+    color:#111;
+    text-align:center;
+    box-shadow:0 5px 24px #0002;
+    z-index:5;
+  " id="ep1BirthdayPopup">
+
+    <button
+      data-ep1-close-birthday="1"
+      style="
+        position:absolute;
+        top:10px;
+        right:12px;
+        background:none;
+        border:0;
+        font-size:25px;
+        color:#111;
+      ">×</button>
+
+    <h3 style="margin:12px 0 8px">
+      วันนี้เป็นวันเกิด<br>ของเพื่อนคุณ
+    </h3>
+
+    <p style="
+      font-size:13px;
+      color:#999;
+      margin-bottom:18px;
+    ">
+      มาอวยพรวันเกิดให้เพื่อนของคุณกันเถอะ
+    </p>
+
+    <button
+      data-ep1-open-gift="1"
+      style="
+        width:100%;
+        padding:14px;
+        background:#fafafa;
+        border:1px solid #ddd;
+        border-radius:9px;
+        color:#111;
+        font-weight:700;
+      ">
+      ส่งของขวัญ
+    </button>
+  </div>
+` : ''}
     </div>
   `;
 }
@@ -14804,8 +14859,179 @@ function ep7PlayLoveEffect(type){
     layer.remove();
   },6000);
 }
+// ===== EP.01 LINE GIFT NOTICE =====
 
+function ep1GiftIcon(){
+  return `
+    <svg viewBox="0 0 48 48" width="40" height="40"
+      fill="none" stroke="#06c755"
+      stroke-width="3" stroke-linejoin="round">
+      <rect x="6" y="17" width="36" height="26" rx="2"/>
+      <path d="M4 17H44V11H4Z"/>
+      <path d="M24 11V43"/>
+      <path d="M24 11C10 11 10 2 17 3
+               C22 3 24 11 24 11Z"/>
+      <path d="M24 11C38 11 38 2 31 3
+               C26 3 24 11 24 11Z"/>
+    </svg>
+  `;
+}
+
+function ep1GiftCard(){
+  return `
+    <div style="
+      background:white;
+      border-radius:14px;
+      overflow:hidden;
+      margin:12px 0;
+      color:#333;
+    ">
+
+      <div style="
+        background:#8750df;
+        padding:24px 12px 16px;
+        text-align:center;
+        color:white;
+      ">
+        <div style="font-size:13px;font-weight:700">
+          อย่าลืมวันเกิดเพื่อนนะ!
+        </div>
+
+        <div style="
+          font-size:26px;
+          font-weight:800;
+          margin:10px 0 14px;
+        ">
+          วันนี้วันเกิดใคร?
+        </div>
+
+        <svg viewBox="0 0 200 115"
+          style="width:170px;height:105px">
+          <rect x="43" y="45" width="114"
+            height="63" rx="8" fill="#ffd747"/>
+          <path d="M100 45V108M43 67H157"
+            stroke="white" stroke-width="8"/>
+          <path d="M100 45C68 43 65 15 84 19
+                   C96 22 100 45 100 45Z"
+            fill="#ffb3d0"/>
+          <path d="M100 45C132 43 135 15 116 19
+                   C104 22 100 45 100 45Z"
+            fill="#ffb3d0"/>
+          <path d="M100 45V10"
+            stroke="white" stroke-width="5"/>
+        </svg>
+      </div>
+
+      <div style="padding:17px">
+        <div style="
+          display:flex;
+          align-items:center;
+          gap:12px;
+          margin-bottom:16px;
+        ">
+          ${lineAvatar('achi')}
+
+          <div>
+            <strong style="font-size:17px">
+              มอบเซอร์ไพรส์วันเกิดให้อชิ!
+            </strong>
+
+            <div style="
+              color:#777;
+              font-size:12px;
+              margin-top:5px;
+            ">
+              30 ม.ค. · ราศีกุมภ์
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          data-ep1-gift-grab="1"
+          style="
+            width:100%;
+            padding:15px 10px;
+            border:0;
+            border-radius:9px;
+            background:#ededed;
+            color:#333;
+            font-size:15px;
+            font-weight:700;
+          ">
+          ส่งของขวัญเซอร์ไพรส์
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEp1GiftChat(){
+  return `
+    <div class="line-chatpage">
+
+      <div class="line-chathead">
+        <button data-go="LINE"
+          aria-label="ย้อนกลับ">
+          ${lineIcon('back')}
+        </button>
+
+        <b style="flex:1">
+          ${ep1GiftIcon()}
+          LINE GIFT Notice
+        </b>
+      </div>
+
+      <div class="line-chatbody"
+        id="lineChatBody"
+        style="background:#d3d9e6;padding:14px">
+
+        <div class="day">วันนี้</div>
+
+        <div style="
+          display:flex;
+          align-items:flex-start;
+          gap:8px;
+        ">
+          <div style="
+            flex:0 0 36px;
+            width:36px;
+            height:36px;
+            border-radius:50%;
+            background:white;
+            display:grid;
+            place-items:center;
+          ">
+            ${ep1GiftIcon()}
+          </div>
+
+          <div style="
+            flex:1;
+            min-width:0;
+            max-width:310px;
+          ">
+            ${ep1GiftCard()}
+          </div>
+        </div>
+      </div>
+
+      <div style="
+        padding:14px;
+        background:white;
+        text-align:center;
+        font-weight:600;
+      ">
+        LINE GIFT Notice
+      </div>
+    </div>
+  `;
+}
 function renderChat(){
+
+  if(chat==='lineGiftNotice'){
+    return renderEp1GiftChat();
+  }
+
   lastBubbleSender=null;
    const names = {
   pai:'Pai',
@@ -16726,13 +16952,20 @@ function showGameBanner(who,message){
     tanaka:'Tanaka San'
   };
 
-  const sender=who==='line-official'?'LINE':(names[who]||who);
+  const sender =
+  who==='lineGiftNotice'
+    ? 'LINE GIFT Notice'
+    : who==='line-official'
+      ? 'LINE'
+      : (names[who]||who);
 
   banner.innerHTML=`
     <button class="game-banner" data-banner-chat="${who}">
     <span class="game-banner-icon"
       style="background:${who==='line-official'?'#06c755':'transparent'};overflow:hidden">
-${who==='line-official'
+${who==='lineGiftNotice'
+  ? ep1GiftIcon()
+  : who==='line-official'
   ? `<span style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800;">LINE</span>`
   : lineBannerAvatar(who)}
         </span>
@@ -16771,14 +17004,17 @@ if(name==='GrabFood'){
 render();
 
 if(name==='LINE' && !save.flags.birthdaySeen){
+
   save.flags.birthdaySeen=true;
+
+  // ปลดล็อก GrabFood แต่ยังไม่เปิดทันที
   unlock('GrabFood');
   persist();
 
-showGameBanner(
-  'line-official',
-  'วันนี้วันเกิดอชิ! มีเค้กมากมายให้เลือกบน GrabFood'
-);
+  showGameBanner(
+    'lineGiftNotice',
+    'อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย'
+  );
 }
 }
 
@@ -18416,13 +18652,20 @@ if(bannerChat){
 
   const targetChat=bannerChat.dataset.bannerChat;
 
-if(targetChat==='line-official'){
-  document.getElementById('gameBanner').innerHTML='';
+  if(targetChat==='lineGiftNotice'){
 
-  popup(
-    'มีของขวัญวันเกิดให้เพื่อนคุณรึยัง!',
-    'วันนี้วันเกิด Acirawit มีเค้กมากมายให้เลือกบน GrabFood ลองเข้าไปเลือกเค้กที่ถูกใจส่งของขวัญให้เพื่อนกัน!'
-  );
+  chat='lineGiftNotice';
+  page='chat';
+
+  const banner=document.getElementById('gameBanner');
+  if(banner) banner.innerHTML='';
+
+  render();
+  return;
+}
+  
+chat=targetChat;
+page='chat';
 
   return;
 }
@@ -18565,7 +18808,48 @@ showGameBanner(
 
 return;
 }
+// ===== EP.01 LINE GIFT ACTIONS =====
 
+// ปิดกล่องวันเกิดบนหน้าโปรไฟล์
+const closeBirthday=e.target.closest(
+  '[data-ep1-close-birthday]'
+);
+
+if(closeBirthday){
+  const box=document.getElementById('ep1BirthdayPopup');
+  if(box) box.remove();
+  return;
+}
+
+// กดส่งของขวัญจากหน้าโปรไฟล์อชิ
+const openGift=e.target.closest(
+  '[data-ep1-open-gift]'
+);
+
+if(openGift){
+  chat='lineGiftNotice';
+  page='chat';
+  render();
+  return;
+}
+
+// กดส่งของขวัญเซอร์ไพรส์จาก LINE GIFT Notice
+const giftGrab=e.target.closest(
+  '[data-ep1-gift-grab]'
+);
+
+if(giftGrab){
+
+  unlock('GrabFood');
+
+  // เปิดหน้าเลือกร้านและเค้ก
+  page='GrabFood';
+  grabScreen='home';
+
+  persist();
+  render();
+  return;
+}
 const birthday=e.target.closest('[data-line-birthday]');
 
 if(birthday && page==='LINE'){

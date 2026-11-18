@@ -8931,11 +8931,10 @@ const sortTime =
 
   return giftChat + normalChats ||
     '<div class="line-empty">ไม่พบแชต</div>';
-
+}
 function renderLine(){
   let content='';
   if(lineTab==='home'){
-
 
 const mosaic=(ids)=>{
 
@@ -17156,6 +17155,8 @@ if(name==='GrabFood'){
   grabScreen=save.flags.cakeOrdered?'tracking':'home';
 }
 render();
+}
+
 document.addEventListener('input',function(e){
   if(e.target.id!=='calendarSearchInput' || page!=='ปฏิทิน') return;
 

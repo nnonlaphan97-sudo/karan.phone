@@ -6903,14 +6903,43 @@ button{
 .line-group-profile .line-full-profile-actions button{
   width:110px;
 }
-/* จัดข้อความร้านเสื้อให้เริ่มจากด้านบน */
-.ep7-page:has(.ep7-dm) .ep7-scroll{
+
+  /* Mellow Atelier — Instagram DM */
+.ep7-page .ep7-shop-chat{
+  display:flex !important;
+  flex-direction:column !important;
   justify-content:flex-start !important;
-  align-content:start !important;
+  align-items:stretch !important;
+  gap:12px;
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:16px !important;
+  box-sizing:border-box;
 }
 
-.ep7-page:has(.ep7-dm) .ep7-dm:first-child{
-  margin-top:0 !important;
+.ep7-shop-chat .ep7-dm.received{
+  display:block !important;
+  position:static !important;
+  align-self:flex-start !important;
+  width:fit-content !important;
+  max-width:85% !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:14px 16px !important;
+  border-radius:20px !important;
+  background:#e8e8ee !important;
+  color:#111 !important;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+  box-sizing:border-box;
+}
+
+.ep7-shop-chat [data-ep7-tailor-link]{
+  flex-shrink:0;
+  align-self:stretch;
+  margin:0 !important;
+  width:100% !important;
 }
 </style>
 </head>
@@ -12468,11 +12497,18 @@ function ep7InstagramPage(){
           <button data-ep7-ig-back="1">
             ${igIcon('back')}
           </button>
-          <strong>Mellow Atelier</strong>
-          <span>Instagram</span>
+         <img
+  src="videos/IMG_5025.jpeg"
+  alt="Mellow Atelier"
+  style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;"
+>
+<div style="display:flex;flex-direction:column;gap:2px;">
+  <strong>Mellow Atelier</strong>
+  <small style="color:#858592;">Instagram</small>
+</div>
         </header>
 
-        <div class="ep7-scroll" style="flex:1;display:block;min-height:0;overflow-y:auto;padding:14px 17px 30px;">
+      <div class="ep7-scroll ep7-shop-chat">
             สวัสดีค่ะคุณการันต์
             ไม่ทราบว่าต้องการเสื้อคลุมแบบไหนคะ?
           </div>

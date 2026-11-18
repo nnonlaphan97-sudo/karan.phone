@@ -11400,15 +11400,6 @@ const explorePhotos = [
   }
 ];
 
-const shuffled = [...explorePhotos]
-  .sort(() => Math.random() - 0.5);
-
-const photos = Array.from(
-  {length:18},
-  (_,i) => shuffled[i % shuffled.length]
-);
-
-
   const shuffled = [...explorePhotos]
     .sort(() => Math.random() - 0.5);
 

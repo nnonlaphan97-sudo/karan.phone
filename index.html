@@ -8018,12 +8018,16 @@ function ep8Total(){
         : 0);
   },0);
 }
-
 function ep8Start(){
   if(save.flags.ep8Started)return;
 
   save.flags.ep8Started=true;
+
+  // ทานากะส่งข้อความล่าสุด
+  lineMarkChatActivity('tanaka');
+
   persist();
+  render();
 
   ep8Banner(
     'ทานากะซัง',
@@ -9005,6 +9009,15 @@ const sortTime =
       a.originalIndex-b.originalIndex
     );
   });
+  // EP.08 — ทานากะส่งข้อความหลังอชิตอบตกลงเป็นแฟน
+if(save.flags.ep8Started){
+  const tanakaIndex=results.findIndex(c=>c.id==='tanaka');
+
+  if(tanakaIndex>0){
+    const tanakaChat=results.splice(tanakaIndex,1)[0];
+    results.unshift(tanakaChat);
+  }
+}
 /* EP.06 — อชิขึ้นบนสุดหลังการันต์ตอบปาย */
 if(
   save.flags.ep6Stage === 5

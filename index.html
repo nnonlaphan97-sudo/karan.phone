@@ -6872,6 +6872,34 @@ button{
 .ep1-balloons-overlay{position:absolute;inset:0;z-index:40;overflow:hidden;pointer-events:none}
 .ep1-balloons-overlay .ep1-floating-balloon{position:absolute;width:36px;height:65px;opacity:0;pointer-events:none;animation:ep1BalloonRise 2.6s ease-out forwards}
 @keyframes ep1BalloonRise{0%{opacity:0;transform:translateY(15px) scale(.7)}15%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(-270px) scale(1.1)}}
+
+/* โปรไฟล์กลุ่ม LINE แบบเต็มจอ */
+.line-group-profile{
+  position:absolute;
+  inset:0;
+  z-index:30;
+}
+
+.line-group-profile .line-full-profile-center{
+  top:45%;
+}
+
+.line-group-profile .line-group-member-count{
+  color:#fff;
+  font-size:13px;
+  text-align:center;
+  text-shadow:0 1px 5px #0008;
+}
+
+.line-group-profile .line-full-profile-actions{
+  bottom:65px;
+  justify-content:center;
+}
+
+.line-group-profile .line-full-profile-actions button{
+  width:110px;
+}
+
 </style>
 </head>
 <body>
@@ -9200,7 +9228,7 @@ else if(lineTab==='directory'){
 lineAvatar('me')+
 '<div><b>karan</b>'+
       '<div class="line-sub">บัญชี LINE ของการันต์</div></div></div>'+
-      '<div class="line-card">สถานะ: พร้อมทำงาน</div>';
+      '<div class="line-card">สถานะ: ถ้าเธอได้ยิน</div>';
   }
 
     else if(lineTab==='profile'){
@@ -9212,16 +9240,51 @@ lineAvatar('me')+
       lineGroups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
   }
 
-  else if(lineTab==='groupdetail'){
-    const g=lineGroups.find(x=>x.id===lineGroup);
-    if(g){
-      content=lineHeader(g.name,
-        lineButton('back','groups','ย้อนกลับ'))+
-        '<div class="line-card"><b>สมาชิก</b><p>'+g.members+'</p>'+
-        '<button class="line-primary" data-line-chat="'+g.id+
-        '">เปิดแชตกลุ่ม</button></div>';
-    }
+
+else if(lineTab==='groupdetail'){
+  const g=lineGroups.find(x=>x.id===lineGroup);
+
+  if(g){
+    const groupPhoto=lineProfileImages[g.id]||'';
+
+    content=`
+      <div class="line-full-profile line-group-profile"
+           style="--line-profile-photo:url('${groupPhoto}')">
+
+        <div class="line-full-profile-top">
+          <button data-line-tab="groups" aria-label="ปิด">
+            ${lineProfileIcon('close')}
+          </button>
+
+          <div class="line-full-profile-top-right">
+            <button aria-label="รายการโปรด">
+              ${lineProfileIcon('star')}
+            </button>
+          </div>
+        </div>
+
+        <div class="line-full-profile-center">
+          <div class="line-avatar line-full-profile-avatar">
+            <img src="${groupPhoto}" alt="">
+          </div>
+
+          <h2>${g.name}</h2>
+          <div class="line-group-member-count">
+            ${g.members}
+          </div>
+        </div>
+
+        <div class="line-full-profile-actions">
+          <button data-line-chat="${g.id}">
+            ${lineProfileIcon('chat')}
+            <span>แชท</span>
+          </button>
+        </div>
+      </div>
+    `;
   }
+}
+
 
   else if(lineTab==='community'){
     const c=lineCommunities.find(x=>x.id===lineOpenchat);

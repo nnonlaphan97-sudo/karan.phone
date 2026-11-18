@@ -8881,7 +8881,12 @@ if(save.flags.ep6Stage >= 1){
     preview = 'พรุ่งนี้ผมจะไปดูงานที่เชียงใหม่ ฝากคุณการันต์ช่วยคุยงานทางนี้ให้ด้วยนะ';
   }
 }
-
+/* EP.06 — หลังตอบปาย อชิส่งข้อความใหม่ */
+if(save.flags.ep6Stage >= 5 && c.id === 'achi'){
+  displayDate = '30 เม.ย.';
+  displayTime = '19:24';
+  preview = 'ผมอยากคุยกับการันต์เรื่องคืนก่อน';
+}
 const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -8904,7 +8909,19 @@ const sortTime =
       a.originalIndex-b.originalIndex
     );
   });
+/* EP.06 — อชิขึ้นบนสุดหลังการันต์ตอบปาย */
+if(
+  save.flags.ep6Stage === 5
+){
+  const achiIndex = results.findIndex(
+    c => c.id === 'achi'
+  );
 
+  if(achiIndex > 0){
+    const achiChat = results.splice(achiIndex,1)[0];
+    results.unshift(achiChat);
+  }
+}
 // EP.03–04 — จัดลำดับแชทตามเหตุการณ์ที่เกิดขึ้นจริง
 if(
   save.flags.ep3KarinMessageShown &&

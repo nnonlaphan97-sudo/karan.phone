@@ -12568,13 +12568,46 @@ function ep7InstagramPage(){
           ผ่านลิงก์ด้านล่างได้เลยนะคะ
         </div>
 
-        <button
-          data-ep7-tailor-link="1"
-          class="ep7-shop-order-link"
-        >
-          <strong>mellowatelier.com/custom-order</strong>
-          <small>แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม</small>
-        </button>
+       
+        ${save.flags.ep7ShirtCompleted ? (() => {
+          const order = save.flags.ep7Shirt || {};
+          const fabric = ep7FabricCatalog[order.fabric];
+          const color = fabric?.colors.find(c => c.id === order.color);
+          const total = ep7TailorPrice.fabric
+                      + ep7TailorPrice.sewing
+                      + ep7TailorPrice.shipping;
+
+          return `
+            <div class="ep7-dm sent">
+              สวัสดีครับ ผมขอสั่งตัดเสื้อคลุมตามรายละเอียดนี้ครับ<br><br>
+              เนื้อผ้า: ${fabric?.name || '-'}<br>
+              สี: ${color?.name || '-'}<br>
+              ไซส์: ${order.size || '-'}
+            </div>
+
+            <div class="ep7-dm received">
+              ทางร้านได้รับคำสั่งซื้อเรียบร้อยแล้วค่ะ<br><br>
+              <strong>สรุปรายการคำสั่งซื้อ</strong><br>
+              เนื้อผ้า: ${fabric?.name || '-'}<br>
+              สี: ${color?.name || '-'}<br>
+              ไซส์: ${order.size || '-'}<br><br>
+              ค่าเนื้อผ้า ฿${ep7TailorPrice.fabric.toLocaleString('th-TH')}<br>
+              ค่าตัดเย็บ ฿${ep7TailorPrice.sewing.toLocaleString('th-TH')}<br>
+              ค่าจัดส่ง ฿${ep7TailorPrice.shipping.toLocaleString('th-TH')}<br><br>
+              <strong>ยอดรวม ฿${total.toLocaleString('th-TH')}</strong><br><br>
+              ทางร้านได้รับชำระเงินเรียบร้อยแล้วค่ะ<br>
+              ขอบคุณที่ใช้บริการ Mellow Atelier นะคะ
+            </div>
+          `;
+        })() : `
+          <button
+            data-ep7-tailor-link="1"
+            class="ep7-shop-order-link"
+          >
+            <strong>mellowatelier.com/custom-order</strong>
+            <small>แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม</small>
+          </button>
+        `}
 
       </div>
     </div>

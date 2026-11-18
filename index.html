@@ -2431,6 +2431,16 @@ button{
   flex-shrink: 0;
 }
 
+/* สตอรี่ที่ป่าตอบกลับ จัดให้อยู่ฝั่งซ้าย */
+.ep5-ig-story{
+  width:72%;
+  max-width:280px;
+  margin-left:0 !important;
+  margin-right:auto !important;
+  align-self:flex-start !important;
+  text-align:left;
+}
+
 .ep5-ig-story img{
   display:block;
   width:100%;
@@ -8233,8 +8243,9 @@ const lineProfilePhotos = {
   achi: 'https://i.ibb.co/twQNSqNM/r07qxo-R-Download.jpg',
   pai: 'https://i.ibb.co/ZpSXR7nh/r07qxo-R-Download.jpg',
   duj: 'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
-  tanaka: 'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
-  karin:'https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg',  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
+  tanaka:'https://i.postimg.cc/Njh4cvMw/r07qxo-R-Download.jpg',
+  karin:'https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg', 
+  rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
   office: 'https://i.ibb.co/MkYHgKhS/IMG-4977.jpg',
   sales: 'https://i.ibb.co/mrw0qgHs/IMG-4976.jpg',
   flowerShop: 'https://i.ibb.co/gByzbw6/IMG-5021.jpg'
@@ -10894,6 +10905,7 @@ const igProfilePhotos = {
   pai: 'https://i.postimg.cc/PJ6fGX2G/r07qxo-R-Download.jpg',
   rock: 'https://i.postimg.cc/tgbK50N5/r07qxo-R-Download.jpg',
   pa: 'https://i.postimg.cc/YqZRk14B/r07qxo-R-Download.jpg',
+  jinta: 'https://i.postimg.cc/B6x3m0X6/r07qxo-R-Download.webp',
   duj: lineProfilePhotos.duj
 };
 
@@ -10930,6 +10942,14 @@ const igPeople = {
     story: 'พักเที่ยงสักหน่อย',
     caption: 'วันดี ๆ ของผม'
   },
+  jinta: {
+  name: 'จินตะ',
+  username: 'jintaleela',
+  initial: 'จ',
+  color: '#d9d4e8',
+  story: 'สตอรี่ของจินตะ',
+  caption: 'วันธรรมดาของจินตะ'
+},
   duj: {
     name: 'พี่ดุจ',
     username: 'dujdao',
@@ -10982,6 +11002,9 @@ const igFeedPhotos = {
     'https://i.postimg.cc/rsBvdzVB/345249C8-3232-4101-9BDE-3B4BB69B322D.jpg',
     'https://i.postimg.cc/Y9f3N9zJ/r07qxo-R-Download.jpg'
   ],
+  jinta: [
+  'https://i.postimg.cc/LXzSxpn4/r07qxo-R-Download.jpg'
+],
   pai: [
     'https://i.postimg.cc/Zn81d4Wn/r07qxo-R-Download.jpg'
   ],
@@ -11054,14 +11077,40 @@ function igFeedPost(id, photoIndex=0) {
     </article>
   `;
 }
+const igStoryVideos = {
+  karan: 'videos/ไอจีการัน.mp4',
+  achi: 'videos/ไอจีอชิ.mp4',
+  rock: 'videos/ไอจีร็อค.mp4',
+  pai: 'videos/ไอจีปาย.mp4',
+  jinta: 'videos/ไอจีจินตะ.mp4'
+};
+  
 
 function renderIGStoryViewer() {
-  const p=igPeople[igActiveStory];
-  if(!p)return '';
+  const p = igPeople[igActiveStory];
+  if (!p) return '';
+
+  const video = igStoryVideos[igActiveStory];
 
   return `
     <div class="ig-story-viewer"
-      style="background:${p.color}">
+      style="background:${p.color};position:relative;overflow:hidden">
+
+      ${video ? `
+        <video
+          class="ig-story-video"
+          src="${video}"
+          autoplay
+          playsinline
+          loop
+          preload="auto">
+        </video>
+      ` : `
+        <div class="ig-story-center">
+          <div class="ig-story-text">${p.story}</div>
+        </div>
+      `}
+
       <div class="ig-story-progress">
         <span></span>
       </div>
@@ -11072,10 +11121,6 @@ function renderIGStoryViewer() {
         <small>สตอรี่</small>
         <button data-ig-close-story="1"
           aria-label="ปิดสตอรี่">×</button>
-      </div>
-
-      <div class="ig-story-center">
-        <div class="ig-story-text">${p.story}</div>
       </div>
 
       <div class="ig-story-bottom">
@@ -11150,6 +11195,7 @@ if (igTab === 'home') {
    <div class="ig-stories">
   ${igStoryItem('karan')}
   ${igStoryItem('achi')}
+  ${igStoryItem('jinta')}
   ${igStoryItem('pai')}
   ${igStoryItem('rock')}
 </div>
@@ -11157,6 +11203,7 @@ if (igTab === 'home') {
       
 ${igFeedPost('achi', 0)}
 ${igFeedPost('achi', 1)}
+${igFeedPost('jinta', 0)}
 ${igFeedPost('pai', 0)}
 ${igFeedPost('rock', 0)}
     </div>
@@ -11173,14 +11220,22 @@ ${igFeedPost('rock', 0)}
       </div>`;
   }
 
-  if (igTab === 'reels') {
-    content = `
-      <div class="ig-placeholder">
-        ${igIcon('reels')}
-        <h3>Reels</h3>
-        <p>ยังไม่มีวิดีโอในตอนนี้</p>
-      </div>`;
-  }
+ 
+if (igTab === 'reels') {
+  content = `
+    <div class="ig-reels-viewer">
+      <video
+        src="videos/คลิปรีล.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        controls
+        preload="metadata">
+      </video>
+    </div>
+  `;
+}
 
   if (igTab === 'create') {
     content = `
@@ -11240,8 +11295,48 @@ ${igFeedPost('rock', 0)}
 }
 
 const igStoryStyle = document.createElement("style");
-igStoryStyle.textContent = `
 
+igStoryStyle.textContent = `
+/* Instagram Story Video */
+.ig-story-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+  z-index:0;
+}
+
+.ig-story-progress,
+.ig-story-top,
+.ig-story-bottom{
+  position:relative;
+  z-index:2;
+}
+
+/* Instagram Reels */
+.ig-reels-viewer{
+  width:100%;
+  height:100%;
+  min-height:450px;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.ig-reels-viewer video{
+  width:100%;
+  height:100%;
+  max-height:calc(100dvh - 160px);
+  object-fit:contain;
+  background:#000;
+}
+`;
+
+document.head.appendChild(igStoryStyle);
 /* ===== INSTAGRAM STORIES & FEED ===== */
 
 .ig-stories{
@@ -18604,7 +18699,7 @@ if(igStoryButton && page==='Instagram'){
 save.flags.igViewedStories[id]=true;
 persist();
 
-const requiredStories=['rock','pai','achi','karan'];
+const requiredStories=['rock','pai','achi','karan','jinta'];
 const allStoriesViewed=requiredStories.every(
   storyId=>save.flags.igViewedStories[storyId]===true
 );

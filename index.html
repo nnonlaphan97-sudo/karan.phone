@@ -8987,7 +8987,13 @@ if(
   displayTime = '09:00';
   preview = 'การันต์ ขอโทษนะครับที่ผมเป็นลมไป';
 }
-const sortTime =
+// EP.08 — ทานากะทักหลังการันต์กับอชิคบกัน
+if(c.id==='tanaka' && save.flags.ep8Started){
+  displayDate='19 พ.ย.';
+  displayTime='09:00';
+  preview='ผมมีเรื่องสำคัญอยากคุยกับคุณการันต์และอชิ';
+}
+    const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
 
@@ -14976,7 +14982,7 @@ CMYK: C0 M100 Y100 K0
 
   const sharedBody = `
     <div class="snote-paper">
-      <h2>รายชื่อลูกค้าบิ๊กแบ็ก</h2>
+      <h2>รายชื่อลูกค้าไม่ได้ติดต่อนาน</h2>
       <div class="snote-date">แชร์โดยอชิ</div>
 
       ${!save.flags.ep8NoteJoined ? `
@@ -15065,7 +15071,7 @@ CMYK: C0 M100 Y100 K0
           <div class="snote-grid">
             ${sharedVisible ? `
               <button class="snote-card" data-note-open="shared">
-                <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+                <strong>รายชื่อลูกค้าไม่ได้ติดต่อนาน</strong>
                 <p>Samsung Notes · แชร์โดยอชิ</p>
                 <small>โน้ตที่แชร์</small>
               </button>
@@ -15948,6 +15954,9 @@ if(chat==='tanaka' && save.flags.ep6Stage>=2){
 if(chat==='tanaka' && save.flags.ep8Started){
 
   b+='<div class="day">19 พ.ย.</div>';
+
+  // เริ่มชุดข้อความใหม่เมื่อเปลี่ยนวัน
+  lastBubbleSender=null;
   b+=bubble(
     'การันต์ซัง ผมทราบเรื่องที่คุณกับอชิคบกันแล้ว'
   );
@@ -16692,7 +16701,7 @@ if(
           </span>
 
           <span class="ep8-shared-info">
-            <strong>รายชื่อลูกค้าบิ๊กแบ็ก</strong>
+            <strong>รายชื่อลูกค้าไม่ได้ติดต่อนาน</strong>
             <small>Samsung Notes · แชร์โดยอชิ</small>
             <small>8 บริษัท · เปิดโน้ตที่แชร์</small>
           </span>

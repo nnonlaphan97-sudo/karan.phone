@@ -8885,6 +8885,32 @@ const sortTime =
     );
   });
 
+// EP.03–04 — จัดลำดับแชทตามเหตุการณ์ที่เกิดขึ้นจริง
+if(
+  save.flags.ep3KarinMessageShown &&
+  !save.flags.ep4Day14Started
+){
+  let priority = null;
+
+  if(save.flags.ep4DujBannerShown){
+    // พี่ดุจส่งที่อยู่แล้ว
+    priority = 'duj';
+  }else if(save.flags.ep3SickBannerSeen){
+    // อชิส่งข้อความว่าป่วยแล้ว
+    priority = 'achi';
+  }else{
+    // เพิ่งอ่านรูป Outing / การินส่งข้อความ
+    priority = 'karin';
+  }
+
+  const index = results.findIndex(c => c.id === priority);
+
+  if(index > 0){
+    const item = results.splice(index,1)[0];
+    results.unshift(item);
+  }
+}
+
   // EP.01 — แสดง LINE GIFT Notice หลังสั่งเค้กสำเร็จ
  const giftChatVisible =
   !!save.flags.cakeOrdered &&
@@ -15520,13 +15546,10 @@ if(save.flags.ep3DujQuestionShown){
   }
 }
 
-// EP.04 — 13 เมษายน
-if(
-  save.flags.ep4AchiCancelledRead ||
-  save.flags.ep3SickBannerSeen
-){
+// EP.04 — พี่ดุจส่งที่อยู่หลังอชิยกเลิกข้อความ
+if(save.flags.ep4DujBannerShown){
+  
   b+='<div class="day">13 เม.ย.</div>';
-
   b+=bubble(
     'พี่ดุจครับ พอจะมีที่อยู่บ้านอชิไหมครับ',true
   );
@@ -18925,15 +18948,17 @@ if(chat==='karin' && save.flags.ep3KarinMessageShown){
     save.flags.ep3KarinMessageShown=true;
   }
 }
-
- if(chat==='achi'){
+if(chat==='achi'){
 
   if(save.flags.ep4MapComplete &&
      save.flags.ep4HomeBannerShown){
 
     save.flags.ep4HomeBannerRead=true;
 
-  }else if(save.flags.ep4AchiBannerShown){
+  }else if(
+    save.flags.ep3SickBannerSeen &&
+    !save.flags.ep4AchiCancelledRead
+  ){
 
     save.flags.ep4AchiCancelledRead=true;
   }
@@ -18955,13 +18980,12 @@ if(
   );
   return;
 }
-  /* เมื่ออ่านแชตอชิแล้ว พี่ดุจส่งข้อความตามมา */
+/* อชิยกเลิกข้อความแล้ว พี่ดุจจึงส่งที่อยู่ */
 if(
   targetChat==='achi' &&
-  save.flags.ep3SickBannerSeen &&
+  save.flags.ep4AchiCancelledRead &&
   !save.flags.ep4DujBannerShown
 ){
-
     save.flags.ep4DujBannerShown=true;
     persist();
 

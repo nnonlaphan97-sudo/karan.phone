@@ -12326,7 +12326,13 @@ function ep7Banner(app,name,message,target){
       <span class="game-banner-icon"
   style="background:${app==='LINE'||isIG?'transparent':isSMS?'#2479E8':'#06c755'};overflow:hidden;">
 
-  ${app==='LINE'
+ ${target==='flowers-chat'
+  ? `<img
+       src="${lineProfilePhotos.flowerShop}"
+       alt="Bloom & Beyond"
+       style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"
+     >`
+  : app==='LINE'
     ? lineBannerAvatar(target)
     : isIG
       ? instagramIcon()
@@ -16417,37 +16423,17 @@ if(save.flags.ep6Stage>=5){
 }
 
 /* ===== EP.07 ACHI DATE INVITATION ===== */
-
+/* ===== EP.07 ACHI DATE INVITATION ===== */
 if(
   chat==='achi' &&
   save.flags.ep6Stage>=6
 ){
-  if(save.flags.ep7Stage===0){
-
-    choices=`
-      <button class="choice"
-        data-ep7-invite="1">
-        ถ้าอย่างนั้น พรุ่งนี้อชิไปเดตกับผมนะครับ
-      </button>
-    `;
-
-  }else{
-
-    b+=bubble(
-      'ถ้าอย่างนั้น พรุ่งนี้อชิไปเดตกับผมนะครับ',
-      true
-    );
-
-    b+=bubble('ได้ครับ');
-
-    b+=bubble(
-      'ตีห้าผมไปรับนะครับ',
-      true
-    );
-  }
+  b+=bubble(
+    'พรุ่งนี้ผมจะไปรับอชิตอนเช้านะครับ',
+    true
+  );
+  b+=bubble('ได้ครับ');
 }
-
-/* ===== EP.07 ACHI AFTER HELICOPTER ===== */
 /* ===== EP.07 ACHI AFTER HELICOPTER ===== */
 
 if(
@@ -18515,29 +18501,6 @@ if(ep7IGOpen && page==='Instagram'){
   render();
   return;
 }
-const ep7Invite=e.target.closest(
-  '[data-ep7-invite]'
-);
-
-if(
-  ep7Invite &&
-  page==='chat' &&
-  chat==='achi' &&
-  save.flags.ep6Stage>=6 &&
-  save.flags.ep7Stage===0
-){
-  ep7Next(1);
-  render();
-
-  ep7Banner(
-    'LINE',
-    'ร้านดอกไม้',
-    'ส่งแบบช่อดอกไม้ให้เลือกแล้วค่ะ',
-    'flowers-chat'
-  );
-
-  return;
-}
 
 /* เปิดแจ้งเตือน EP.07 */
 
@@ -20203,6 +20166,12 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
+const ep7LeavingDateChat =
+  page==='chat' &&
+  chat==='achi' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep6Stage>=6 &&
+  save.flags.ep7Stage===0;
   
 if(
   page==='chat' &&
@@ -20378,8 +20347,22 @@ if(ep6LeavingAchiConfession){
 if(ep6LeavingTanaka){
   ep6Advance(3);
 }
-// อัปเดตหน้าจอหลังปลดล็อกแอป
+// EP.07 — ออกจากแชทอชิแล้วร้านดอกไม้ส่งข้อความ
+if(ep7LeavingDateChat){
+  ep7Next(1);
+}
+
+// อัปเดตหน้าจอหลังเปลี่ยนหน้า
 render();
+
+if(ep7LeavingDateChat){
+  ep7Banner(
+    'LINE',
+    'Bloom & Beyond',
+    'สวัสดีค่ะคุณการันต์ ทางร้านส่งแบบช่อดอกไม้มาให้เลือกแล้วนะคะ',
+    'flowers-chat'
+  );
+}
 // แสดงนาฬิกาปลุกหลังออกจากแชททานากะ
 if(ep6LeavingTanaka){
   const el=document.getElementById('gameBanner');

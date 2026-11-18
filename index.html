@@ -2421,22 +2421,16 @@ button{
   margin-bottom:18px;
 }
 
-.ep5-ig-story{
-  width: min(65%, 260px);
-  height: auto;
-  margin: 0 0 20px;
-  border: 1px solid #eee;
-  border-radius: 15px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
 /* สตอรี่ที่ป่าตอบกลับ จัดให้อยู่ฝั่งซ้าย */
 .ep5-ig-story{
   width:72%;
   max-width:280px;
-  margin-left:0 !important;
-  margin-right:auto !important;
+  height:auto;
+  margin:0 auto 14px 0 !important;
+  border:1px solid #eee;
+  border-radius:15px;
+  overflow:hidden;
+  flex-shrink:0;
   align-self:flex-start !important;
   text-align:left;
 }
@@ -11334,11 +11328,7 @@ igStoryStyle.textContent = `
   object-fit:contain;
   background:#000;
 }
-`;
-
-document.head.appendChild(igStoryStyle);
 /* ===== INSTAGRAM STORIES & FEED ===== */
-
 .ig-stories{
   display:flex;
   gap:14px;

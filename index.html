@@ -12604,57 +12604,42 @@ function ep7InstagramPage(){
 
   let content='';
 
-  if(completed){
+    if(completed){
     const order=save.flags.ep7Shirt||{};
     const chosenFabric=ep7FabricCatalog[order.fabric];
     const chosenColor=chosenFabric?.colors.find(c=>c.id===order.color);
-    const total=ep7TailorPrice.fabric+ep7TailorPrice.sewing+ep7TailorPrice.shipping;
+
+    const total=
+      ep7TailorPrice.fabric+
+      ep7TailorPrice.sewing+
+      ep7TailorPrice.shipping;
+
     content=`
       <div style="padding:18px 15px;color:#302b26;background:#f7f4ef;min-height:100%">
-        <h2 style="margin:0 0 15px">Mellow Atelier</h2>
-        <div class="ep7-dm sent">รายละเอียดเสื้อตามนี้นะครับ<br><br>
+        <h2>Mellow Atelier</h2>
+
+        <div class="ep7-dm sent">
+          รายละเอียดเสื้อตามนี้นะครับ<br><br>
           เนื้อผ้า: ${chosenFabric?.name||'-'}<br>
           สี: ${chosenColor?.name||'-'}<br>
-          ไซส์: ${order.size||'-'}</div>
-       
-${save.flags.ep7ShirtCompleted ? (() => {
-  const order = save.flags.ep7Shirt || {};
-  const fabric = ep7FabricCatalog[order.fabric];
-  const color = fabric?.colors.find(c => c.id === order.color);
-  const total = ep7TailorPrice.fabric
-              + ep7TailorPrice.sewing
-              + ep7TailorPrice.shipping;
+          ไซส์: ${order.size||'-'}
+        </div>
 
-  return `
-    <div class="ep7-dm sent">
-      สวัสดีครับ ผมขอสั่งตัดเสื้อคลุมให้อชิตามรายละเอียดนี้ครับ<br><br>
-      เนื้อผ้า: ${fabric?.name || '-'}<br>
-      สี: ${color?.name || '-'}<br>
-      ไซส์: ${order.size || '-'}
-    </div>
+        <div class="ep7-dm received">
+          ทางร้านได้รับคำสั่งซื้อเรียบร้อยแล้วค่ะ<br><br>
 
-    <div class="ep7-dm received">
-      ทางร้านได้รับคำสั่งซื้อเรียบร้อยแล้วค่ะ<br><br>
-      <strong>สรุปรายการสั่งซื้อ</strong><br>
-      เนื้อผ้า: ${fabric?.name || '-'}<br>
-      สี: ${color?.name || '-'}<br>
-      ไซส์: ${order.size || '-'}<br><br>
-      ค่าเนื้อผ้า ฿${ep7TailorPrice.fabric.toLocaleString('th-TH')}<br>
-      ค่าตัดเย็บ ฿${ep7TailorPrice.sewing.toLocaleString('th-TH')}<br>
-      ค่าจัดส่ง ฿${ep7TailorPrice.shipping.toLocaleString('th-TH')}<br>
-      <strong>ยอดรวม ฿${total.toLocaleString('th-TH')}</strong><br><br>
-      ทางร้านยืนยันการชำระเงินและรับออเดอร์แล้วค่ะ
-      ขอบคุณที่ใช้บริการ Mellow Atelier นะคะ
-    </div>
-  `;
-})() : `
-  <button data-ep7-tailor-link="1" class="ep7-shop-order-link">
-    <strong>mellowatelier.com/custom-order</strong>
-    <small>แตะเพื่อเข้าสู่หน้าออกแบบเสื้อคลุม</small>
-  </button>
-`}
-  }else if(s.step===0){
+          ค่าเนื้อผ้า ฿${ep7TailorPrice.fabric.toLocaleString('th-TH')}<br>
+          ค่าตัดเย็บ ฿${ep7TailorPrice.sewing.toLocaleString('th-TH')}<br>
+          ค่าจัดส่ง ฿${ep7TailorPrice.shipping.toLocaleString('th-TH')}<br>
 
+          <strong>ยอดรวม ฿${total.toLocaleString('th-TH')}</strong><br><br>
+
+          ทางร้านยืนยันการชำระเงินแล้วค่ะ
+        </div>
+      </div>
+    `;
+
+  }else{
     const currentFabric=s.fabric||'cotton';
     const fabric=ep7FabricCatalog[currentFabric];
 

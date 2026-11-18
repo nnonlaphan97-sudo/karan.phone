@@ -8283,7 +8283,7 @@ const lineProfileImages={
   pai:'https://i.ibb.co/ZpSXR7nh/r07qxo-R-Download.jpg',
   duj:'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
   tanaka:'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
-  karin:'https://i.ibb.co/d4zWtjdL/r07qxo-R-Download.jpg',
+  karin:'https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg',
   rock:'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg'
 };
 
@@ -9240,12 +9240,11 @@ lineAvatar('me')+
       lineGroups.map(g=>lineRow(g.id,g.name,g.members,'group')).join('');
   }
 
-
 else if(lineTab==='groupdetail'){
   const g=lineGroups.find(x=>x.id===lineGroup);
 
   if(g){
-    const groupPhoto=lineProfileImages[g.id]||'';
+    const groupPhoto=lineProfilePhotos[g.id]||'';
 
     content=`
       <div class="line-full-profile line-group-profile"
@@ -9257,7 +9256,8 @@ else if(lineTab==='groupdetail'){
           </button>
 
           <div class="line-full-profile-top-right">
-            <button aria-label="รายการโปรด">
+            <button data-line-profile-favorite="1"
+                    aria-label="รายการโปรด">
               ${lineProfileIcon('star')}
             </button>
           </div>
@@ -9269,7 +9269,7 @@ else if(lineTab==='groupdetail'){
           </div>
 
           <h2>${g.name}</h2>
-          <div class="line-group-member-count">
+          <div class="line-full-profile-status">
             ${g.members}
           </div>
         </div>
@@ -9279,12 +9279,21 @@ else if(lineTab==='groupdetail'){
             ${lineProfileIcon('chat')}
             <span>แชท</span>
           </button>
+
+          <button data-line-profile-call="phone">
+            ${lineProfileIcon('phone')}
+            <span>โทร</span>
+          </button>
+
+          <button data-line-profile-call="video">
+            ${lineProfileIcon('video')}
+            <span>วิดีโอคอล</span>
+          </button>
         </div>
       </div>
     `;
   }
 }
-
 
   else if(lineTab==='community'){
     const c=lineCommunities.find(x=>x.id===lineOpenchat);
@@ -9317,7 +9326,12 @@ else if(lineTab==='groupdetail'){
 
   return '<div class="line-app">'+
     '<div class="line-scroll">'+content+'</div>'+
-    (lineTab==='profile'?'':lineBottom())+
+(
+  lineTab==='profile' ||
+  lineTab==='groupdetail'
+    ? ''
+    : lineBottom()
+)+
     '</div>';
 }
 
@@ -19194,17 +19208,12 @@ if(openLineProfile){
     lineTab='profile';
     render();
 
-    // EP.01 — แจ้งเตือนวันเกิดเมื่อเปิดโปรไฟล์อชิครั้งแรก
-    if(id==='achi' && !save.flags.birthdaySeen){
-      save.flags.birthdaySeen=true;
-      unlock('GrabFood');
-      persist();
-
-      showGameBanner(
-        'lineGiftNotice',
-        'อย่าลืมวันเกิดเพื่อนนะ! รีบส่งของขวัญเลย'
-      );
-    }
+ // EP.01 — เปิดโปรไฟล์อชิ โดยไม่เด้งแจ้งเตือนวันเกิด
+if(id==='achi' && !save.flags.birthdaySeen){
+  save.flags.birthdaySeen=true;
+  unlock('GrabFood');
+  persist();
+}
   }
   return;
 }

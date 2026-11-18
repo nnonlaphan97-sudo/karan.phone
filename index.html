@@ -18652,23 +18652,18 @@ if(bannerChat){
 
   const targetChat=bannerChat.dataset.bannerChat;
 
-  if(targetChat==='lineGiftNotice'){
+   if(targetChat==='lineGiftNotice'){
+    chat='lineGiftNotice';
+    page='chat';
 
-  chat='lineGiftNotice';
-  page='chat';
+    const banner=document.getElementById('gameBanner');
+    if(banner) banner.innerHTML='';
 
-  const banner=document.getElementById('gameBanner');
-  if(banner) banner.innerHTML='';
+    render();
+    return;
+  }
 
-  render();
-  return;
-}
-  
-chat=targetChat;
-page='chat';
-
-  return;
-}
+  // แจ้งเตือนแชททั่วไป
   chat=targetChat;
   page='chat';
 

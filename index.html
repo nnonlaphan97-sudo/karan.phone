@@ -9032,11 +9032,16 @@ if(
     
 /* EP.09 — ทานากะส่งข้อความเรื่องนครศรีธรรมราช */
 if(c.id==='tanaka' && save.flags.ep9Started){
-  displayDate='22 พ.ย.';
+  displayDate='11 พ.ย.';
   displayTime='09:09';
   preview='ขอบคุณนะ แต่ผมอยากให้อชิเป็นคนตัดสินใจด้วยตัวเอง';
 }
-
+// EP.09 — อชิส่งข้อความหลังอ่านแชททานากะ
+if(c.id==='achi' && save.flags.ep9TanakaRead){
+  displayDate='11 พ.ย.';
+  displayTime='09:10';
+  preview='การันต์ ว่างคุยกันหน่อยไหม';
+}
     const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -9187,6 +9192,18 @@ if(
   if(index>0){
     const tanakaChat=results.splice(index,1)[0];
     results.unshift(tanakaChat);
+  }
+}
+  // EP.09 — อชิขึ้นบนสุดหลังออกจากแชททานากะ
+if(
+  save.flags.ep9TanakaRead &&
+  !save.flags.ep9AchiTalkRead
+){
+  const achiIndex=results.findIndex(c=>c.id==='achi');
+
+  if(achiIndex>0){
+    const achiChat=results.splice(achiIndex,1)[0];
+    results.unshift(achiChat);
   }
 }
   const normalChats = results
@@ -20847,7 +20864,12 @@ if(ep9StartAfterTanaka){
 // หลังอ่านแชตทานากะซังเรื่องนครศรีธรรมราช
 if(ep9LeavingTanaka){
   save.flags.ep9TanakaRead=true;
+
+  // อชิส่งข้อความใหม่และขึ้นเป็นแชทล่าสุด
+  lineMarkChatActivity('achi');
+
   persist();
+  render();
 
   ep8Banner(
     'อชิ',
@@ -20855,7 +20877,6 @@ if(ep9LeavingTanaka){
     'achi'
   );
 }
-
 // หลังอ่านแชตให้กำลังใจอชิ
 if(ep9LeavingAchi){
   save.flags.ep9AchiTalkRead=true;

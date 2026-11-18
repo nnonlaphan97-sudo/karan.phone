@@ -8964,10 +8964,24 @@ if(save.flags.ep6Stage >= 1){
   }
 }
 /* EP.06 — หลังตอบปาย อชิส่งข้อความใหม่ */
-if(save.flags.ep6Stage >= 5 && c.id === 'achi'){
+if(
+  save.flags.ep6Stage >= 5 &&
+  c.id === 'achi' &&
+  !save.flags.ep7HelicopterConfirmed
+){
   displayDate = '30 เม.ย.';
   displayTime = '19:24';
   preview = 'ผมอยากคุยกับการันต์เรื่องคืนก่อน';
+}
+
+/* EP.07 — หลังยืนยันเฮลิคอปเตอร์ */
+if(
+  c.id === 'achi' &&
+  save.flags.ep7HelicopterConfirmed
+){
+  displayDate = '2 พ.ค.';
+  displayTime = '09:00';
+  preview = 'การันต์ ขอโทษนะครับที่ผมเป็นลมไป';
 }
 const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
@@ -18940,25 +18954,13 @@ if(ksmsHome && page==='Messages'){
   render();
   return;
 }
+save.flags.ep7HelicopterConfirmed=true;
+save.flags.ep7AchiFaintedMessage=true;
 
-
-/* ยืนยันเฮลิคอปเตอร์ */
-const ep7Helicopter=e.target.closest(
-  '[data-ep7-helicopter]'
-);
-
-if(
-  ep7Helicopter &&
-  page==='Messages' &&
-  save.flags.ep7Stage>=4 &&
-  !save.flags.ep7HelicopterConfirmed
-){
-  save.flags.ep7HelicopterConfirmed=true;
-  save.flags.ep7AchiFaintedMessage=true;
-
-  ep7Next(5);
-  persist();
-  render();
+ep7Next(5);
+lineMarkChatActivity('achi');
+persist();
+render();
 
   // รอ 3 วินาที ก่อนแสดงแจ้งเตือนจากอชิ
   setTimeout(()=>{

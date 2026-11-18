@@ -19115,6 +19115,10 @@ if(action==='miss'){
 }
 /* ===== LINE PROFILE INTERACTIONS ===== */
 
+const openLineProfile = e.target.closest(
+  '[data-line-open-profile]'
+);
+
 if(openLineProfile){
   const id=openLineProfile.dataset.lineOpenProfile;
 

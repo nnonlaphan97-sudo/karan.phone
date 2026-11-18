@@ -7563,6 +7563,7 @@ save.flags.ep3OfficePosterShown ??= false;
 save.flags.ep3OfficePosterRead ??= false;
 save.flags.ep3KarinMessageShown ??= false;
 save.flags.ep3KarinMessageRead ??= false;
+save.flags.ep3AchiAfterKarinNotified ??= false;
 save.flags.ep3KarinBannerSeen ??= false;
 save.flags.ep3SickShown ??= false;
 save.flags.ep3SickBannerSeen ??= false;
@@ -19676,29 +19677,33 @@ const btn=e.target.closest('[data-go],[data-app],[data-chat],[data-reply],[data-
 if(!btn)return;
 
 if(btn.dataset.go){
-
-// EP.03 — อ่านแชทการินแล้วกดกลับ
-// จากนั้นอชิจึงส่งแจ้งเตือนว่าป่วย
+// EP.03 — กลับจากแชทการิน แล้วอชิส่งข้อความ
 if(
-  page==='chat' &&
-  chat==='karin' &&
-  btn.dataset.go==='LINE' &&
-  save.flags.ep3KarinMessageRead &&
-  !save.flags.ep3SickBannerSeen
+  page === 'chat' &&
+  chat === 'karin' &&
+  btn.dataset.go === 'LINE' &&
+  save.flags.ep3KarinMessageShown &&
+  !save.flags.ep3AchiAfterKarinNotified
 ){
-  save.flags.ep3SickBannerSeen=true;
+
+  save.flags.ep3KarinMessageRead = true;
+  save.flags.ep3SickShown = true;
+  save.flags.ep3SickBannerSeen = true;
+  save.flags.ep3AchiAfterKarinNotified = true;
+
+  page = 'LINE';
+  lineTab = 'chats';
+  lineSubtab = 'chats';
+
   persist();
-
-  page='LINE';
-  lineTab='chats';
-  lineSubtab='chats';
-
   render();
 
-  showGameBanner(
-    'achi',
-    'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
-  );
+  setTimeout(() => {
+    showGameBanner(
+      'achi',
+      'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
+    );
+  }, 800);
 
   return;
 }

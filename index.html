@@ -6903,7 +6903,15 @@ button{
 .line-group-profile .line-full-profile-actions button{
   width:110px;
 }
+/* จัดข้อความร้านเสื้อให้เริ่มจากด้านบน */
+.ep7-page:has(.ep7-dm) .ep7-scroll{
+  justify-content:flex-start !important;
+  align-content:start !important;
+}
 
+.ep7-page:has(.ep7-dm) .ep7-dm:first-child{
+  margin-top:0 !important;
+}
 </style>
 </head>
 <body>
@@ -11186,13 +11194,17 @@ function renderInstagram() {
           ${save.flags.ep7Stage>=2?`
   <button class="ig-chat-row"
     data-ep7-ig-open="ep7shop">
-    ${igAvatar('ร',55)}
+    <img
+  src="videos/IMG_5025.jpeg"
+  alt="Mellow Atelier"
+  style="width:55px;height:55px;border-radius:50%;object-fit:cover;flex-shrink:0;"
+>
     <span>
       <strong>Mellow Atelier</strong>
 <small>
   ${save.flags.ep7ShirtCompleted
-    ? 'ทางร้านได้รับข้อมูลคำสั่งซื้อเรียบร้อยแล้วค่ะ'
-    : 'คุณลูกค้าต้องการเสื้อคลุมแบบไหนคะ?'}
+    ? 'สวัสดีค่ะคุณการันต์'
+    : 'คุณการันต์ต้องการเสื้อคลุมแบบไหนคะ?'}
 </small>
     </span>
   </button>
@@ -12460,14 +12472,12 @@ function ep7InstagramPage(){
           <span>Instagram</span>
         </header>
 
-        <div class="ep7-scroll">
-          <div class="ep7-dm received">
+        <div class="ep7-scroll" style="flex:1;display:block;min-height:0;overflow-y:auto;padding:14px 17px 30px;">
             สวัสดีค่ะคุณการันต์
             ไม่ทราบว่าต้องการเสื้อคลุมแบบไหนคะ?
           </div>
 
           <div class="ep7-dm received">
-            ทางร้านมีบริการออกแบบและตัดเย็บเสื้อคลุมค่ะ
             คุณการันต์สามารถเลือกเนื้อผ้า สี และไซส์
             ผ่านลิงก์ด้านล่างได้เลยนะคะ
           </div>

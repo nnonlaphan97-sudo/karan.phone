@@ -9426,7 +9426,7 @@ if(
   // After EP11, sort every visible chat by the actual latest story date.
   if(save.flags.ep11LeaveApproved){
     const duj=results.find(c=>c.id==='duj');
-    if(duj){duj.date='23 ธ.ค.';duj.preview='ขอบคุณครับ';duj.sortTime=12231035;}
+    if(duj){duj.date='23 ธ.ค.';duj.preview='ขอบคุณมากครับพี่ดุจ';duj.sortTime=12231035;}
     const rock=results.find(c=>c.id==='rock');
     if(rock){rock.date='20 พ.ย.';rock.preview='มีอะไรรึเปล่าครับร็อค';rock.sortTime=11201740;}
     results.sort((a,b)=>b.sortTime-a.sortTime || a.originalIndex-b.originalIndex);
@@ -16233,13 +16233,6 @@ if(chat==='achi' && !save.flags.achiThanked){
   b='<div class="line-empty-chat" style="flex:1;min-height:240px;background:#d3d9e6"></div>';
 }
 
-if(chat==='duj' && save.flags.ep11LeaveApproved){
-  b+='<div class="day">23 ธ.ค.</div>';
-  b+=bubble('พี่อนุมัติวันลาให้แล้วนะการันต์');
-  b+=bubble('ขอบคุณที่ทำงานหนัก');
-  b+=bubble('ไปเที่ยวกับอชิให้สนุกนะ');
-  b+=bubble('ขอบคุณครับ',true);
-}
 /* ===== EP.06 TANAKA CHAT ===== */
 
 if(chat==='tanaka' && save.flags.ep6Stage>=2){
@@ -17593,6 +17586,16 @@ if(chat==='achi' && save.flags.ep12Checkin){
     <button class="choice" data-ep12-propose="flowers">ไม่ว่าโลกจะเปลี่ยนไปแค่ไหน ผมอยากจับมืออชิไว้ตลอดชีวิต แต่งงานกันนะครับ</button>`;
   }
 }
+  // EP.11 — Show approved leave at the END of Duj's conversation,
+  // after the older April chat, so it is visible when opening the room.
+  if(chat==='duj' && save.flags.ep11LeaveApproved){
+    lastBubbleSender=null;
+    b+='<div class="day">23 ธ.ค.</div>';
+    b+=bubble('พี่อนุมัติวันลาให้แล้วนะการันต์',false,'','10:30');
+    b+=bubble('ขอบคุณที่ทำงานหนักมาตลอดนะ',false,'','10:31');
+    b+=bubble('พักผ่อนให้เต็มที่ แล้วไปหาอชิให้สนุกนะ',false,'','10:32');
+    b+=bubble('ขอบคุณมากครับพี่ดุจ',true,'','10:35');
+  }
   // EP.01 — ก่อนสั่งเค้ก ซ่อนประวัติแชทส่วนตัวทุกคน
 // ยกเว้นแชทกลุ่มบริษัทและทีมฝ่ายขาย
 const isGroupChat = ['office', 'sales'].includes(chat);

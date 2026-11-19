@@ -7002,10 +7002,12 @@ button{
 }
 .ig-explore-real{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;padding:2px}.ig-explore-real .ig-explore-item{border:0;padding:0;aspect-ratio:1;background:#eee;overflow:hidden}.ig-explore-real .ig-explore-item img{width:100%;height:100%;object-fit:cover;display:block}.ig-notification-list{padding:15px;color:#222}.ig-notification-list h3{font-size:17px}.ig-notification-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee;font-size:13px}.ig-notification-row>div{flex:1}.ig-notification-row small{display:block;color:#999;margin-top:5px}.ig-notification-symbol svg{width:23px;height:23px}.ig-follow-btn{background:#0095f6;color:white;border:0;border-radius:8px;padding:8px 10px;font-size:12px}.ig-follow-btn:disabled{background:#ddd;color:#555}
 
-.ep9-spotify.player .ep9-player-cover{padding-top:26px;transform:translateY(12px)}
-.ep9-spotify.player .ep9-player-info{padding-top:32px}
+.ep9-spotify.player .ep9-player-cover{padding-top:12px;transform:none;flex:0 1 auto;min-height:0;margin:22px 0 12px}
+.ep9-spotify.player .ep9-player-info{padding-top:8px}
 .ep9-spotify.player .ep9-player-info h2{font-size:18px;line-height:1.4}
-.ep9-spotify.player .ep9-player-progress{margin-top:32px}
+.ep9-spotify.player .ep9-spotify-cover.large{width:min(65vw,220px);height:auto;aspect-ratio:1;margin:0 auto;flex-shrink:0}
+.ep9-spotify.player .ep9-spotify-cover.large img{width:100%;height:100%;object-fit:cover;display:block}
+.ep9-spotify.player .ep9-player-progress{margin-top:22px}
 .ep10-call-avatar{border-radius:50%!important;aspect-ratio:1;flex-shrink:0}
 .ep10-call-actions button svg{flex-shrink:0;stroke:none}
 </style>
@@ -8832,6 +8834,10 @@ if(save.flags.ep6Stage >= 2){
     });
   }
 
+  if(save.flags.ep9Started || save.flags.ep10CallDone){
+    availableChats.push({id:'rock',name:'Rock'});
+  }
+
   if(save.flags.ep2Started){
     availableChats.push({
       id:'pai',
@@ -9161,13 +9167,18 @@ if(save.flags.ep10Started){
     displayDate='16 พ.ย.';
     displayTime='10:12';
     preview=save.flags.ep10Krathong
-      ? 'เมื่อไหร่ปายจะเจอคนแบบพี่การันบ้างคะ'
-      : 'ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ';
+      ? 'เมื่อไหร่ปายจะเจอคนแบบพี่การันต์บ้างคะ'
+      : 'พี่การันต์คะมีอะไรให้ปายช่วยคะ';
   }
   if(c.id==='tanaka'){
     displayDate='11 พ.ย.';
     displayTime='09:09';
   }
+}
+if(c.id==='rock' && save.flags.ep10CallDone){
+  displayDate='20 พ.ย.';
+  displayTime='17:35';
+  preview='พี่การันต์อยู่ไหนครับ';
 }
     // EP.04 — อชิส่งข้อความหลังพบบ้าน
 if(
@@ -9311,6 +9322,7 @@ if(
       </button>
     `
     : '';
+if(save.flags.ep10CallDone && !save.flags.ep10FinalMessage){const i=results.findIndex(c=>c.id==='rock');if(i>0)results.unshift(results.splice(i,1)[0]);}
 if(save.flags.ep10PaiTop && !save.flags.ep10PaiNewsRead){const i=results.findIndex(c=>c.id==='pai');if(i>0)results.unshift(results.splice(i,1)[0]);}
 // ให้อชิขึ้นอันดับแรกเฉพาะช่วงที่ส่งรายชื่อลูกค้า
 if(
@@ -14907,10 +14919,12 @@ function ep7CoffeePage(){
  .ep7-coffee .machine svg{display:block;width:100%;max-height:320px}
  .ep7-coffee .hold{touch-action:none;user-select:none}.ep7-coffee input[type=range]{width:100%;accent-color:#8b6747}
  
-.ep9-spotify.player .ep9-player-cover{padding-top:26px;transform:translateY(12px)}
-.ep9-spotify.player .ep9-player-info{padding-top:32px}
+.ep9-spotify.player .ep9-player-cover{padding-top:12px;transform:none;flex:0 1 auto;min-height:0;margin:22px 0 12px}
+.ep9-spotify.player .ep9-player-info{padding-top:8px}
 .ep9-spotify.player .ep9-player-info h2{font-size:18px;line-height:1.4}
-.ep9-spotify.player .ep9-player-progress{margin-top:32px}
+.ep9-spotify.player .ep9-spotify-cover.large{width:min(65vw,220px);height:auto;aspect-ratio:1;margin:0 auto;flex-shrink:0}
+.ep9-spotify.player .ep9-spotify-cover.large img{width:100%;height:100%;object-fit:cover;display:block}
+.ep9-spotify.player .ep9-player-progress{margin-top:22px}
 .ep10-call-avatar{border-radius:50%!important;aspect-ratio:1;flex-shrink:0}
 .ep10-call-actions button svg{flex-shrink:0;stroke:none}
 </style>`;
@@ -18618,6 +18632,9 @@ if(
 
   if(!song)return;
 
+  ep9Audio.pause();
+  ep9Audio.currentTime=0;
+  ep9UpdatePlayer();
   save.flags.ep9SongSent=songId;
   save.flags.ep9AchiAccepted=true;
 

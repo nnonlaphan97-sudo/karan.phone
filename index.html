@@ -21155,10 +21155,11 @@ goApp(btn.dataset.app);
 }
 
 else if(btn.dataset.chat){
+
   chat=btn.dataset.chat;
   page='chat';
 
-  // EP.04 — อ่านข้อความอชิหลังพบบ้าน
+  // EP.04 — เปิดแชทอชิหลังจากพบบ้านสำเร็จ
   if(
     chat==='achi' &&
     save.flags.ep4MapComplete &&

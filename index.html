@@ -17388,7 +17388,11 @@ if(chat==='achi' && save.flags.ep10Started){
   );
 
   b+=bubble(
-    'เมื่อกี้เราเพิ่งวิดีโอคอลกันเองนะ'
+    'พอเราห่างกันจริงการันต์จะไหวไหมเนี่ย'
+  );
+    b+=bubble(
+    'ผมไม่อยากให้วันนั้นมาถึงเลย',
+    true
   );
 
   if(save.flags.ep10CallDone){
@@ -17419,16 +17423,31 @@ if(chat==='achi' && save.flags.ep10Started){
 
 // EP.10 · 16 พฤศจิกายน — การันต์ปรึกษาปายเรื่องกระทงรักษ์โลก
 if(chat==='pai' && save.flags.ep10Started){
+
   b+='<div class="day">16 พ.ย.</div>';
-  b+=bubble('ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ',true);
-  b+=bubble('ปายว่าแบบไหนดีกว่าครับ',true);
-  b+=`<div class="line-message sent"><div class="line-message-content"><div class="bubble outgoing"><a href="#" data-ep10-open-web="1" style="color:#1269b1;text-decoration:underline;overflow-wrap:anywhere">https://karan-phone.pages.dev/krathong</a></div></div></div>`;
+
+  // การันต์ส่งข้อความหาปาย
+  b+=bubble(
+    'ปายครับว่างมั้ย ผมมีเรื่องให้ช่วย',
+    true
+  );
+
+  // ปายตอบกลับ
+  b+=bubble(
+    'พี่การันต์ มีอะไรให้ปายช่วยไหมคะ'
+  );
+
+  // การันต์ขอให้ปายช่วยเลือกกระทง
+  b+=bubble(
+    'ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ',
+    true
+  );
+  b+=`<div class="line-message sent"><div class="line-message-content"><div class="bubble outgoing"><a href="#" data-ep10-open-web="1" style="color:#1269b1;text-decoration:underline;overflow-wrap:anywhere">https://krathong.news</a></div></div></div>`;
   if(save.flags.ep10Krathong){
     const k=EP10_KRATHONGS.find(item=>item.id===save.flags.ep10Krathong);
     if(k){
       b+=bubble('ปายเลือก'+k.name+'ค่ะพี่การันต์');
       b+=bubble(k.desc+' เหมาะกับการลดขยะจากกระทงแบบเดิมค่ะ');
-      b+=bubble('https://karan-phone.pages.dev/krathong/'+k.id);
       b+=bubble('แต่พี่การันต์');
       b+=bubble('พี่อชิจะได้ไปลอยกระทงด้วยเหรอ');
       b+=bubble('ทำไมถามแบบนั้นล่ะ',true);
@@ -20988,8 +21007,8 @@ if(ep11StartAfterAchi){
 
         <span class="game-banner-text">
           <small>โทรศัพท์ · สายเรียกเข้า</small>
-          <strong>อชิ</strong>
-          <span>โทรจากนครศรีธรรมราช · แตะเพื่อรับสาย</span>
+          <strong>Achirawit</strong>
+          <span>แตะเพื่อรับสาย</span>
         </span>
 
       </button>

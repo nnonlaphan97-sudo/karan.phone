@@ -6349,6 +6349,16 @@ button{
 }
 
 
+/* Flower product images stay within their cards */
+.ep7-product{min-width:0;overflow:hidden}
+.ep7-product-art{display:block;min-width:0;overflow:hidden;border-radius:12px}
+.ep7-product-art img{display:block;width:100%;height:100%;max-width:100%;object-fit:cover}
+/* Full screen swipeable Reels */
+.ig-reels-stack{height:calc(100dvh - 135px);overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;background:#000;scrollbar-width:none}
+.ig-reels-stack::-webkit-scrollbar{display:none}
+.ig-reel-slide{height:100%;min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;background:#000;display:flex;align-items:center;justify-content:center}
+.ig-reel-slide video{width:100%;height:100%;object-fit:contain;background:#000}
+
 /* ===== SAMSUNG MESSAGES ===== */
 
 /* ซ่อนแถบสถานะเฉพาะแอปข้อความ */
@@ -8424,7 +8434,7 @@ const lineProfilePhotos = {
   achi: 'https://i.ibb.co/twQNSqNM/r07qxo-R-Download.jpg',
   pai: 'https://i.ibb.co/ZpSXR7nh/r07qxo-R-Download.jpg',
   duj: 'https://i.ibb.co/WWS8XgCr/r07qxo-R-Download.jpg',
-  tanaka:'https://i.postimg.cc/Njh4cvMw/r07qxo-R-Download.jpg',
+  tanaka:'https://i.ibb.co/ds4N0cJ9/r07qxo-R-Download.jpg',
   karin:'https://i.ibb.co/W4hJKRDy/r07qxo-R-Download.jpg', 
   rock: 'https://i.ibb.co/Qjjxs2ZN/r07qxo-R-Download.jpg',
   office: 'https://i.ibb.co/MkYHgKhS/IMG-4977.jpg',
@@ -9028,21 +9038,11 @@ if(
   displayTime='17:30';
 }
 
- // EP.04 — 14 เมษายน: อชิคุยเรื่องอาหารเช้ากับการันต์
-if(
-  c.id==='achi' &&
-  save.flags.ep4Day14Started &&
-  save.flags.ep6Stage < 1
-){
+ // EP.04 — ข้อความล่าสุดวันที่ 14 เม.ย.
+if(c.id==='achi' && save.flags.ep4Day14Started && save.flags.ep6Stage<1){
   displayDate='14 เม.ย.';
-
-  if(save.flags.ep4BreakfastReply!==''){
-    displayTime='08:01';
-    preview='ขอบคุณครับ';
-  }else{
-    displayTime='07:00';
-    preview='การันต์ครับ ผมถึงที่ทำงานแล้วนะครับ';
-  }
+  displayTime='08:01';
+  preview='อย่าลืมกินยาด้วยนะอชิ';
 }
 
 /* EP.06 — อัปเดตแชทหลังสารภาพรัก */
@@ -11472,7 +11472,7 @@ function igFeedPost(id, photoIndex=0) {
 
       <div class="ig-post-caption">
         <strong>${p.username}</strong>
-        ${p.caption}
+        ${id==='achi' && photoIndex===1 ? 'อชิกับเหมียว' : p.caption}
       </div>
 
     </article>
@@ -11641,19 +11641,16 @@ ${igFeedPost('rock', 0)}
     </div>`;
   }
 if (igTab === 'reels') {
-  content = `
-    <div class="ig-reels-viewer">
-      <video
-        src="videos/คลิปรีล.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-        controls
-        preload="metadata">
-      </video>
-    </div>
-  `;
+  const reelVideos=[
+    'videos/snaptik_7303500317168061701_v3.mp4',
+    'videos/snaptik_7339500290812497153_v3.mp4',
+    'videos/snaptik_7405225634697317633_v3.mp4'
+  ];
+  content = `<div class="ig-reels-stack">
+    ${reelVideos.map((src,i)=>`<section class="ig-reel-slide">
+      <video src="${src}" muted loop playsinline controls preload="metadata" data-reel-video="${i}"></video>
+    </section>`).join('')}
+  </div>`;
 }
 
   if (igTab === 'create') {
@@ -12812,7 +12809,6 @@ const flowers = [
             data-ep7-flower="${id}">
             <span class="ep7-product-art">
               <img
-  <img
   src="${photo}"
   alt="${name}"
   style="width:100%;height:100%;max-height:100%;object-fit:cover;border-radius:12px;display:block"
@@ -16550,42 +16546,9 @@ if(save.flags.ep3SickShown){
     b+=bubble('ผมไหวครับ');
     b+=bubble('ผมได้ยาจากการันต์มาแล้ว');
 
-    const replyOptions=[
-      {
-        text:'เจอกันพรุ่งนี้ครับ',
-        answer:'ครับ เจอกันพรุ่งนี้นะครับ'
-      },
-      {
-        text:'ฝันดีครับ',
-        answer:'ครับ การันต์ก็ฝันดีนะครับ'
-      },
-      {
-        text:'พักผ่อนครับ',
-        answer:'ครับ ขอบคุณที่เป็นห่วงนะครับ'
-      }
-    ];
-
-    const selected=save.flags.ep4AchiFinalReply;
-
-    if(selected!==''){
-
-      const picked=replyOptions[Number(selected)];
-
-      if(picked){
-        b+=bubble(picked.text,true);
-        b+=bubble(picked.answer);
-      }
-
-    }else{
-
-      choices=replyOptions.map((item,i)=>
-        '<button class="choice" '+
-        'data-ep4-achi-reply="'+i+'">'+
-        item.text+
-        '</button>'
-      ).join('');
-    }
+    b+=bubble('งั้นพักผ่อนนะครับ',true);
   }
+
 
   // EP.04 — 14 เมษายน
 if(save.flags.ep4Day14Started){
@@ -16598,43 +16561,10 @@ if(save.flags.ep4Day14Started){
     'achi'
   );
 
-    const breakfastOptions=[
-      {
-        text:'อชิกินข้าวเช้ามาหรือยังครับ',
-        answer:'ยังเลยครับ ผมรีบออกมานิดหน่อย'
-      },
-      {
-        text:'ผมซื้ออาหารเช้ามาเผื่ออชิด้วยนะครับ',
-        answer:'ขอบคุณครับ เกรงใจมากๆเลย'
-      },
-      {
-        text:'วันนี้อยากกินอะไรเป็นพิเศษไหมครับ',
-        answer:'อะไรก็ได้ครับ ผมกินได้หมด'
-      }
-    ];
+    b+=bubble('อชิกินข้าวเช้ามารึยังครับ',true);
+    b+=bubble('เรียบร้อยแล้วครับ');
+    b+=bubble('อย่าลืมกินยาด้วยนะอชิ',true);
 
-    const selectedBreakfast=save.flags.ep4BreakfastReply;
-
-    if(selectedBreakfast!==''){
-
-      const picked=breakfastOptions[Number(selectedBreakfast)];
-
-      if(picked){
-        b+=bubble(picked.text,true);
-        b+=bubble(picked.answer);
-        b+=bubble('เดี๋ยวผมจัดการให้นะครับ',true);
-        b+=bubble('ขอบคุณครับ');
-      }
-
-    }else{
-
-      choices=breakfastOptions.map((item,i)=>
-        '<button class="choice" '+
-        'data-ep4-breakfast="'+i+'">'+
-        item.text+
-        '</button>'
-      ).join('');
-    }
   }
 }
 
@@ -17405,29 +17335,9 @@ if(chat==='pai' && save.flags.ep6Stage>=4){
     false,'','19:22'
   );
 
-  if(save.flags.ep6Stage>=5){
+  b+=bubble('ขอบคุณที่บอกนะครับ',true,'','19:23');
+  b+=bubble('เดี๋ยวผมจะรีบไปตามหาอชิ',true,'','19:23');
 
-    const reply=save.flags.ep6PaiSearchReply ||
-      'เดี๋ยวผมลองตามหาอชิดูครับ';
-
-    b+=bubble(reply,true,'','19:23');
-
-  }else{
-
-    choices=`
-      <button class="choice" data-ep6-pai-reply="1">
-        เดี๋ยวผมลองตามหาอชิดูครับ
-      </button>
-
-      <button class="choice" data-ep6-pai-reply="2">
-        ผมจะลองติดต่ออชิดูครับ
-      </button>
-
-      <button class="choice" data-ep6-pai-reply="3">
-        ขอบคุณที่บอกนะครับ ผมจะรีบไปหาอชิ
-      </button>
-    `;
-  }
 }
 
 /* ===== EP.10 LINE STORY ===== */
@@ -18991,12 +18901,12 @@ if(
   // แสดงเอฟเฟกต์หลังอชิตอบตกลง
   ep7PlayLoveEffect(type);
 
-  // รอเพียง 1 วินาที แล้วให้ทานากะซังส่งข้อความ
+  // ทานากะส่งข้อความหลังขอเป็นแฟน 5 วินาที
   setTimeout(()=>{
     if(!save.flags.ep8Started){
       ep8Start();
     }
-  },1000);
+  },5000);
 
   return;
 }
@@ -19529,40 +19439,6 @@ ep6Notify(
 }
 
 
-// EP.06 — การันต์เลือกคำตอบเรื่องตามหาอชิ
-const ep6Pai=e.target.closest('[data-ep6-pai-reply]');
-
-if(
-  ep6Pai &&
-  page==='chat' &&
-  chat==='pai' &&
-  save.flags.ep6Stage===4
-){
-
-  const replies={
-    '1':'เดี๋ยวผมลองตามหาอชิดูครับ',
-    '2':'ผมจะลองติดต่ออชิดูครับ',
-    '3':'ขอบคุณที่บอกนะครับ ผมจะรีบไปหาอชิ'
-  };
-
-  const selected=ep6Pai.dataset.ep6PaiReply;
-
-  save.flags.ep6PaiSearchReply=replies[selected] || replies['1'];
-
-  ep6Advance(5);
-  persist();
-  render();
-
-  // คงการแจ้งเตือนอชิที่เชื่อมกับเนื้อเรื่องเดิม
-  ep6Notify(
-    'Achirawit',
-    'ผมอยากคุยกับการันต์เรื่องคืนก่อน',
-    'achi'
-  );
-  return;
-}
-
-
 /* ===== EP.05 INTERACTIONS ===== */
 
 // ส่งรายการของให้พี่การิน วันที่ 15
@@ -19658,10 +19534,11 @@ if(igFollowButton && page==='Instagram'){
   igFollowButton.disabled=true;
   return;
 }
+const reelArea=e.target.closest('.ig-reels-stack');
 const igExplorePhoto=e.target.closest('[data-ig-explore-photo]');
 if(igExplorePhoto && page==='Instagram'){
   const image=igExplorePhoto.querySelector('img');
-  if(image)popup('รูปภาพ', 'ภาพจากโพสต์ Instagram และแกลเลอรี่');
+  // หน้า Explore เป็นภาพตัวอย่าง ไม่เปิดป็อปอัพหรือรูปเต็มจอ
   return;
 }
 const igLikeButton=e.target.closest('[data-ig-like]');
@@ -19915,6 +19792,7 @@ if(chat==='achi'){
      save.flags.ep4HomeBannerShown){
 
     save.flags.ep4HomeBannerRead=true;
+    save.flags.ep4Day14Started=true;
 
   }else if(
     save.flags.ep3SickBannerSeen &&
@@ -20279,6 +20157,7 @@ if(lc && page==='LINE'){
     save.flags.ep4HomeBannerShown
   ){
     save.flags.ep4HomeBannerRead=true;
+    save.flags.ep4Day14Started=true;
     persist();
   }
   if(chat==='achi' && save.flags.ep6Stage===5){
@@ -20429,30 +20308,6 @@ if(pinBtn && page==='pin'){
     render();
     return;
   }
-}
-
-// EP.04 — ตอบอชิเรื่องอาหารเช้า
-const breakfastBtn=e.target.closest('[data-ep4-breakfast]');
-
-if(breakfastBtn && page==='chat' && chat==='achi'){
-
-  if(save.flags.ep4BreakfastReply!=='')return;
-
-  const choice=Number(breakfastBtn.dataset.ep4Breakfast);
-
-  if(![0,1,2].includes(choice))return;
-
-  save.flags.ep4BreakfastReply=String(choice);
-  save.flags.ep4KarinShown=true;
-
-  persist();
-  render();
-
- showGameBanner(
-    'karin',
-    'คุยด้วยหน่อยได้ไหม'
-  );
-  return;
 }
 
 // EP.04 — ถ่ายภาพ
@@ -20648,27 +20503,6 @@ if(!save.flags.ep5InstagramNotified){
   return;
 }
 
-// EP.04 — เลือกคำตอบสุดท้ายให้อชิ
-const ep4Reply=e.target.closest('[data-ep4-achi-reply]');
-
-if(ep4Reply){
-
-  if(!save.flags.ep4HomeBannerRead)return;
-  if(save.flags.ep4AchiFinalReply!=='')return;
-
-  const index=Number(ep4Reply.dataset.ep4AchiReply);
-
-  if(![0,1,2].includes(index))return;
-
-   save.flags.ep4AchiFinalReply=String(index);
-  save.flags.ep4Day14Started=true;
-
-  persist();
-  render();
-  
-  return;
-}
-
 const noteOpen=e.target.closest('[data-note-open]');
 if(noteOpen){
   notesSelected=noteOpen.dataset.noteOpen;
@@ -20815,6 +20649,11 @@ if(
   return;
 }
   
+const ep4LeavingAchiMorning =
+  page==='chat' && chat==='achi' && btn.dataset.go==='LINE' &&
+  save.flags.ep4HomeBannerRead && save.flags.ep4Day14Started &&
+  !save.flags.ep4KarinShown && save.flags.ep6Stage<1;
+
 const ep6LeavingAchiConfession =
   page==='chat' &&
   chat==='achi' &&
@@ -20822,6 +20661,10 @@ const ep6LeavingAchiConfession =
   btn.dataset.go==='LINE';
 
     
+const ep6LeavingPai =
+  page==='chat' && chat==='pai' && btn.dataset.go==='LINE' &&
+  save.flags.ep6Stage===4;
+
 const ep6LeavingTanaka =
   page==='chat' &&
   chat==='tanaka' &&
@@ -20833,6 +20676,7 @@ const ep6LeavingTanaka =
   chat==='achi' &&
   btn.dataset.go==='LINE' &&
   save.flags.ep7AchiFaintedMessage &&
+  !save.flags.ep7Wish &&
   !save.flags.ep7SunsetNotified;
   const leavingDuj=
     page==='chat' &&
@@ -20937,11 +20781,24 @@ const ep10LeavingRock=
     persist();
   }
 
+if(ep4LeavingAchiMorning){
+  save.flags.ep4KarinShown=true;
+  lineMarkChatActivity('karin');
+  persist();
+  render();
+  showGameBanner('karin','คุยด้วยหน่อยได้ไหม');
+}
+
 // EP.06 — อ่านแชททานากะแล้ว อชิส่ง "ขอโทษ?"
 if(ep6LeavingAchiConfession){
   ep6Advance(2);
 }
 
+if(ep6LeavingPai){
+  ep6Advance(5);
+  lineMarkChatActivity('achi');
+  persist();
+}
 if(ep6LeavingTanaka){
   ep6Advance(3);
 }
@@ -20982,6 +20839,9 @@ if(ep6LeavingTanaka){
   }
 }
 
+if(ep6LeavingPai){
+  ep6Notify('Achirawit','ผมอยากคุยกับการันต์เรื่องคืนก่อน','achi');
+}
 if(ep6LeavingAchiConfession){
   if(save.flags.ep6Stage===2){
     lineMarkChatActivity('tanaka');
@@ -20990,11 +20850,7 @@ if(ep6LeavingAchiConfession){
   }
 }
 
-if(ep7LeavingAchi){
-  save.flags.ep7SunsetNotified=true;
-  persist();
-  ep7Banner('LINE','อชิ','มีข้อความใหม่จากอชิ','achi');
-}
+// ไม่แจ้งเตือนอชิซ้ำหลังฉากขอเป็นแฟน
 
   if(leavingDuj){
     showGameBanner('achi','ขอบคุณครับ');
@@ -21158,6 +21014,7 @@ else if(btn.dataset.chat){
     save.flags.ep4HomeBannerShown
   ){
     save.flags.ep4HomeBannerRead=true;
+    save.flags.ep4Day14Started=true;
     persist();
   }
 

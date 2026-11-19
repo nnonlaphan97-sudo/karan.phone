@@ -9176,6 +9176,21 @@ if(
     results.unshift(achiChat);
   }
 }
+  // EP.04 — หลังพบบ้านอชิ ให้แชทอชิขึ้นบนสุด
+if(
+  save.flags.ep4MapComplete &&
+  save.flags.ep4HomeBannerShown &&
+  !save.flags.ep4Day14Started
+){
+  const achiIndex=results.findIndex(
+    c=>c.id==='achi'
+  );
+
+  if(achiIndex>0){
+    const achiChat=results.splice(achiIndex,1)[0];
+    results.unshift(achiChat);
+  }
+}
 // EP.03–04 — จัดลำดับแชทตามเหตุการณ์ที่เกิดขึ้นจริง
 if(
   save.flags.ep3KarinMessageShown &&
@@ -20291,6 +20306,16 @@ if(lg && page==='LINE'){
 
 if(lc && page==='LINE'){
   chat=lc.dataset.lineChat;
+
+  // EP.04 — เข้าจากรายการ LINE หลังพบบ้านอชิ
+  if(
+    chat==='achi' &&
+    save.flags.ep4MapComplete &&
+    save.flags.ep4HomeBannerShown
+  ){
+    save.flags.ep4HomeBannerRead=true;
+    persist();
+  }
   if(chat==='achi' && save.flags.ep6Stage===5){
   ep6Advance(6);
 }

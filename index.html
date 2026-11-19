@@ -7025,6 +7025,20 @@ button{
 .ep11-call-bubble strong{font-size:13px;font-weight:600}
 .ep11-call-bubble small{font-size:11px;color:#69727b}
 .line-message .line-message-avatar .line-avatar{overflow:hidden}
+
+/* EP12 video call, finale and celebrations */
+.ep12-video-call{position:absolute;inset:0;z-index:55;background:#080a12;overflow:hidden}
+.ep12-video-call video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ep12-video-call .ep11-video-top{position:absolute;top:48px;left:15px;right:15px;z-index:2;display:flex;justify-content:space-between;color:#fff;text-shadow:0 2px 7px #000}
+.ep12-video-call .ep11-video-controls{position:absolute;bottom:65px;left:0;right:0;z-index:2;display:flex;align-items:center;flex-direction:column;gap:9px;color:#fff}
+.ep12-celebration{position:absolute;inset:0;z-index:100;overflow:hidden;pointer-events:none;background:radial-gradient(circle at center,rgba(255,198,226,.25),rgba(10,4,36,.2))}
+.ep12-celebration span{position:absolute;animation:ep12Fall 4s ease-in infinite;text-shadow:0 1px 12px #fff9}
+@keyframes ep12Fall{0%{opacity:0;transform:translateY(-100px) rotate(0) scale(.3)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(105vh) rotate(650deg) scale(1.3)}}
+.ep12-celebration-title{position:absolute;top:39%;width:100%;text-align:center;color:white;font-size:26px;font-weight:900;letter-spacing:1px;text-shadow:0 3px 14px #b10077,0 0 30px #fbe17b;animation:ep12Title 5.5s both}
+@keyframes ep12Title{0%{opacity:0;transform:scale(.2)}20%{opacity:1;transform:scale(1.2)}75%{opacity:1;transform:scale(1)}100%{opacity:0}}
+.ep12-end-screen{height:100%;padding:100px 25px 60px;background:linear-gradient(160deg,#fff3f9,#e9d9fc,#fff4d7);color:#61374d;text-align:center;overflow-y:auto}
+.ep12-end-screen h1{font-family:Georgia,serif;font-size:28px}.ep12-end-screen h2{font-size:20px;line-height:1.7}.ep12-end-screen p{line-height:1.8}
+.ep12-end-ornament{font-size:40px;margin:30px 0}.ep12-end-screen button{display:block;width:100%;margin:12px 0;padding:15px;border:0;border-radius:16px;background:#774c73;color:white;font-weight:700}
 </style>
 </head>
 <body>
@@ -7807,32 +7821,48 @@ let ep11CallState='incoming';
 
 save.flags.ep12Stage ??= 0;
 save.flags.ep12Completed ??= false;
+save.flags.ep12Checkin ??= false;
+save.flags.ep12AchiExit ??= false;
+save.flags.ep12CallDone ??= false;
+save.flags.ep12Proposal ??= '';
+save.flags.ep12ShopNotified ??= false;
+save.flags.ep12CardSent ??= false;
+let ep12CallState='incoming';
+let ep12CallStart=0;
+
 
 function ep12Advance(stage){
-  if(stage <= save.flags.ep12Stage)return;
-
+  if(stage<=save.flags.ep12Stage)return;
   save.flags.ep12Stage=stage;
-
-  if(stage===4){
-    unlock('ไฟล์');
-  }
-
-  persist();
-  render();
+  persist();render();
 }
-
 function ep12Start(){
-  if(!save.flags.ep11Completed)return;
-  if(save.flags.ep12Stage>0)return;
-
+  if(!save.flags.ep11Completed || save.flags.ep12Stage)return;
   save.flags.ep12Stage=1;
   persist();
-
-  page='chat';
-  chat='achi';
-  render();
+  page='LINE';lineTab='chats';lineSubtab='chats';render();
 }
-
+function ep12Celebration(kind){
+  const host=document.getElementById('phone');if(!host)return;
+  const old=document.getElementById('ep12Celebration');if(old)old.remove();
+  const layer=document.createElement('div');layer.id='ep12Celebration';layer.className='ep12-celebration';
+  const symbols=kind==='fireworks'?['✦','✧','✺','✹']:kind==='hearts'?['♥','♡','❤','💗']:['🌸','❀','✿','🌺'];
+  for(let i=0;i<105;i++){
+    const bit=document.createElement('span');bit.textContent=symbols[i%symbols.length];
+    bit.style.left=(Math.random()*100)+'%';bit.style.top=(kind==='fireworks'?15+Math.random()*75:-25-Math.random()*50)+'%';
+    bit.style.animationDelay=(Math.random()*2.2)+'s';bit.style.animationDuration=(2.4+Math.random()*2.8)+'s';
+    bit.style.fontSize=(18+Math.random()*24)+'px';bit.style.color=['#f6a8cb','#ffda6e','#b6e6ff','#ffd5e4','#fff'][i%5];
+    layer.appendChild(bit);
+  }
+  const title=document.createElement('div');title.className='ep12-celebration-title';title.textContent='💍 YES! FOREVER TOGETHER 💍';layer.appendChild(title);
+  host.appendChild(layer);setTimeout(()=>{if(layer.isConnected)layer.remove();},6500);
+}
+function renderEp12Call(){
+  const connected=ep12CallState==='connected';
+  const handset='<svg viewBox="0 0 24 24" width="30" height="30"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg>';
+  if(connected)return `<div class="ep11-full-video-call ep12-video-call"><video id="ep12Video" src="videos/คลิปรีล.mp4" autoplay playsinline loop></video><div class="ep11-video-top"><div class="ep11-video-type">วิดีโอคอล · <span class="karan-call-timer">00:00</span></div><div class="ep11-video-name">Achirawit</div></div><div class="ep11-video-controls"><button class="ep11-video-end" data-ep12-hangup="1" aria-label="วางสาย"><span style="display:inline-flex;transform:rotate(135deg)">${handset}</span></button><small>วางสาย</small></div></div>`;
+  return `<div class="ep10-call"><div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px"><img src="${lineProfilePhotos.achi}" style="width:100%;height:100%;object-fit:cover"></div><h2>Achirawit</h2><p>สายวิดีโอเรียกเข้า</p><div class="ep10-call-actions"><button class="ep10-hangup" data-ep12-reject="1">${handset}<span>ปฏิเสธ</span></button><button class="ep10-answer" data-ep12-answer="1">${handset}<span>รับสาย</span></button></div></div>`;
+}
 const EP11_EMAILS=[
   {id:'quotation',from:'บริษัท นากามูระ',address:'purchasing@nakamura.example',subject:'คำถามจาก Cherry Magic',body:'อชิเป็นคนจังหวัดอะไร',options:['ลำพูน','ลำปาง','ลำตะคอง'],correct:0},
   {id:'delivery',from:'บริษัท ทีเอ็น ซัพพลาย',address:'orders@tnsupply.example',subject:'คำถามจาก Cherry Magic',body:'นายจากญี่ปุ่นที่มอบรางวัลให้การันต์มีชื่อว่าอะไร',options:['อาเคดะซัง','อะเดคิซัง','อิเคดะซัง'],correct:2},
@@ -8147,12 +8177,10 @@ function ep8Banner(name,message,target){
       data-ep8-banner="${target}">
    <span class="game-banner-icon"
   style="background:transparent;padding:0;overflow:hidden;">
-  ${target==='phone'
-    ? phoneBannerIcon()
-    : lineBannerAvatar(target)}
+  ${target==='phone'?phoneBannerIcon():target==='gmail'?'<span style="background:#fff;color:#e84838;font-size:25px;font-weight:800;padding:5px 9px;border-radius:9px">M</span>':lineBannerAvatar(target)}
 </span>
       <span class="game-banner-text">
-        <small>${target==='phone'?'Phone':'LINE'} · ข้อความใหม่</small>
+        <small>${target==='phone'?'Phone':target==='gmail'?'Gmail':'LINE'} · ${target==='gmail'?'อีเมลใหม่':'ข้อความใหม่'}</small>
         <strong>${name}</strong>
         <span>${message}</span>
       </span>
@@ -9362,6 +9390,21 @@ if(
     const achi=results.find(c=>c.id==='achi');
     if(achi && !save.flags.ep11CallDone){achi.date='20 พ.ย.';achi.preview='ผมล้อเล่นน่ะ';}
   }
+  // EP.11/12 — use event date and latest actual narrative message, then sort once.
+  if(save.flags.ep11LeaveApproved){
+    const duj=results.find(c=>c.id==='duj');
+    if(duj){duj.date='23 ธ.ค.';duj.preview='พี่อนุมัติวันลาให้แล้วนะการันต์';duj.sortTime=12231030;}
+  }
+  if(save.flags.ep12Checkin){
+    const achi=results.find(c=>c.id==='achi');
+    if(achi){achi.date='22 ธ.ค.';achi.preview=save.flags.ep12Proposal?'ผมรักการันต์นะครับ':save.flags.ep12CallDone?'วิดีโอคอล · '+(save.flags.ep12CallDuration||'00:00'):'ผมเพิ่งแยกกับลูกค้าครับ';achi.sortTime=12221930;}
+  }else if(save.flags.ep11CallDone){
+    const achi=results.find(c=>c.id==='achi');if(achi){achi.date='01 ธ.ค.';achi.preview='อย่าทำงานหนักเกินไปนะการันต์';achi.sortTime=12011830;}
+  }
+  if(save.flags.ep11PaiNotified){const pai=results.find(c=>c.id==='pai');if(pai){pai.date='01 ธ.ค.';pai.preview='น่ารักมากกกกกก';pai.sortTime=12011900;}}
+  if(save.flags.ep11LeaveApproved){results.sort((a,b)=>b.sortTime-a.sortTime || a.originalIndex-b.originalIndex);}
+  // In EP12 the newest Achi message should be first after online check-in.
+  if(save.flags.ep12Checkin){const i=results.findIndex(c=>c.id==='achi');if(i>0)results.unshift(results.splice(i,1)[0]);}
   const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
@@ -9381,7 +9424,8 @@ if(
       '</button>'
     ).join('');
 
-  return giftChat + normalChats ||
+  const weddingShopRow=save.flags.ep12ShopNotified && 'Ever After Wedding Studio'.toLowerCase().includes(q) ? '<button class="line-row" data-line-chat="ep12Shop"><span class="line-avatar" style="background:#f5e1e9;color:#9d5d78">✿</span><div class="line-row-body"><div class="line-name">Ever After Wedding Studio</div><div class="line-preview">'+(save.flags.ep12CardSent?'อย่าลืมเอาการ์ดของคุณมาอวดนะคะ':'อยากได้การ์ดแต่งงานแบบไหนคะ')+'</div></div><div class="line-time">22 ธ.ค.</div></button>' : '';
+  return weddingShopRow + giftChat + normalChats ||
     '<div class="line-empty">ไม่พบแชต</div>';
 }
 function renderLine(){
@@ -14038,34 +14082,12 @@ function ep11MailList(){
 
         ${rows}
 
-        ${save.flags.ep11LeaveApproved && save.flags.ep11DujRead?`
-          <button class="ep11-mail-row"
-            data-ep11-open="booking">
-            <div class="ep11-mail-avatar">
-  ${ep11MailIcon('plane')}
-</div>
-            <div class="ep11-mail-row-text">
-              <strong>Flight Booking</strong>
-              <b>จองเที่ยวบินไปนครศรีธรรมราช</b>
-              <span>เลือกเที่ยวบินและยืนยันการจอง</span>
-            </div>
-          </button>
-        `:''}
-
         ${save.flags.ep11FlightBooked?`
-          <button class="ep11-mail-row"
-            data-ep11-open="confirmed">
-           <div class="ep11-mail-avatar">
-  ${ep11MailIcon('check')}
-</div>
-            <div class="ep11-mail-row-text">
-              <strong>Flight Booking</strong>
-              <b>Booking Confirmed</b>
-              <span>ยืนยันตั๋วเครื่องบินเรียบร้อยแล้ว</span>
-            </div>
-          </button>
+          <button class="ep11-mail-row" data-ep11-open="confirmed"><div class="ep11-mail-avatar">${ep11MailIcon('check')}</div><div class="ep11-mail-row-text"><strong>Skyline Air · E-ticket</strong><b>${save.flags.ep12Checkin?'เช็คอินออนไลน์สำเร็จ · Boarding Pass':'E-ticket issued · Business Class'}</b><span>Booking KACM26 · Bangkok → Nakhon Si Thammarat</span></div></button>
         `:''}
-
+        ${save.flags.ep11LeaveApproved && save.flags.ep11DujRead?`
+          <button class="ep11-mail-row" data-ep11-open="booking"><div class="ep11-mail-avatar">${ep11MailIcon('plane')}</div><div class="ep11-mail-row-text"><strong>Skyline Air · Reservations</strong><b>รายละเอียดการจอง · Business Class</b><span>กรุงเทพฯ → นครศรีธรรมราช · 22 ธ.ค.</span></div></button>
+        `:''}
       </div>
 
       <div class="ep11-mail-nav">
@@ -14192,42 +14214,29 @@ function renderEp11Gmail(){
   }
 
   if(ep11MailOpen==='booking'){
-    content=`
-      <h2>จองเที่ยวบิน</h2>
-      <p>จาก: Flight Booking</p>
-      <div class="ep11-flight">
-        <small>เที่ยวบินจำลอง</small>
-        <h2>กรุงเทพฯ → นครศรีธรรมราช</h2>
-        <p>ผู้โดยสาร: การันต์</p>
-        <p>ชั้นโดยสาร: Economy</p>
-      </div>
-      <button class="ep11-primary"
-        data-ep11-book-flight="1">
-        ยืนยันการจองเที่ยวบิน
-      </button>
-    `;
+    content=`<h2>Flight Reservation · Business Class</h2><p>จาก: Skyline Air Reservations</p>
+      <div class="ep11-flight"><small>ITINERARY / BOOKING REQUEST</small><h2>Bangkok → Nakhon Si Thammarat</h2>
+      <p><b>ผู้โดยสาร:</b> Karan · Adult (1)</p><p><b>วันที่เดินทาง:</b> 22 ธันวาคม 2026</p>
+      <p><b>เส้นทาง:</b> BKK → NST · เที่ยวบินจำลอง SA 2212</p><p><b>เวลา:</b> 09:20 – 10:40 (เวลาท้องถิ่น)</p>
+      <p><b>ชั้นโดยสาร:</b> Business Class · ที่นั่ง 2A</p>
+      <p><b>บริการ:</b> Lounge access · Priority boarding · อาหารบนเครื่อง</p>
+      <p><b>สัมภาระ:</b> ถือขึ้นเครื่อง 7 กก. · โหลดใต้เครื่อง 30 กก.</p>
+      <p><b>รหัสอ้างอิง:</b> KACM26</p><small>ข้อมูลสายการบินและเที่ยวบินเป็นข้อมูลสมมติสำหรับเกม</small></div>
+      ${save.flags.ep11FlightBooked?'<p>ออกบัตรโดยสารแล้ว · ดูอีเมล E-ticket ด้านบน</p>':'<button class="ep11-primary" data-ep11-book-flight="1">ออกตั๋ว Business Class</button>'}`;
   }
-
   if(ep11MailOpen==='confirmed'){
-    content=`
-      <h2>Booking Confirmed</h2>
-      <p>จาก: Flight Booking</p>
-
-      <div class="ep11-flight">
-        <div class="ep11-flight-check">
-          ${ep11MailIcon('check')}
-        </div>
-        <h2>ยืนยันการจองสำเร็จ</h2>
-        <p>Bangkok → Nakhon Si Thammarat</p>
-        <p>ผู้โดยสาร: การันต์</p>
-        <p>สถานะ: Confirmed</p>
-      </div>
-
-      <button class="ep11-primary"
-        data-ep11-finish="1">
-        เปิดอ่านการยืนยัน
-      </button>
-    `;
+    content=`<h2>${save.flags.ep12Checkin?'Online Check-in Completed':'E-ticket · Booking Confirmed'}</h2><p>จาก: Skyline Air · Electronic Ticket</p>
+      <div class="ep11-flight"><div class="ep11-flight-check">${ep11MailIcon('check')}</div>
+      <h2>${save.flags.ep12Checkin?'Boarding Pass Ready':'Your E-ticket is issued'}</h2>
+      <p><b>Booking reference:</b> KACM26</p><p><b>ผู้โดยสาร:</b> Karan</p>
+      <p><b>เที่ยวบิน:</b> SA 2212 · 22 ธันวาคม 2026</p><p><b>ต้นทาง:</b> Bangkok (BKK) · 09:20</p>
+      <p><b>ปลายทาง:</b> Nakhon Si Thammarat (NST) · 10:40</p>
+      <p><b>Cabin:</b> Business Class · <b>Seat:</b> 2A</p>
+      <p><b>สัมภาระ:</b> Cabin 7 kg / Checked 30 kg</p>
+      <p><b>สถานะ:</b> ${save.flags.ep12Checkin?'Checked in':'Ticketed / Confirmed'}</p>
+      ${save.flags.ep12Checkin?'<p><b>Boarding group:</b> Priority · แสดงบัตรขึ้นเครื่องพร้อมบัตรประชาชนที่สนามบิน</p>':'<p>โปรดตรวจสอบชื่อผู้โดยสารและเอกสารเดินทางก่อนเช็คอิน</p>'}
+      <small>ข้อมูลเที่ยวบินสมมติสำหรับเรื่องราว ไม่ใช่บัตรโดยสารจริง</small></div>
+      ${!save.flags.ep12Checkin?'<button class="ep11-primary" data-ep11-checkin="1">เช็คอินออนไลน์</button>':'<div class="ep11-mail-success">เช็คอินเรียบร้อยแล้ว</div>'}`;
   }
 
   return `
@@ -14614,6 +14623,17 @@ function ep12CardText(label,field){
     </label>`;
 }
 
+function renderEp12Shop(){
+  return `<div class="line-chatpage"><div class="line-chathead"><button data-go="LINE">‹</button><b>Ever After Wedding Studio</b></div>
+    <div class="line-chatbody"><div class="day">22 ธ.ค.</div>
+      <div class="line-message received"><div class="bubble incoming">สวัสดีค่ะคุณการันต์ ทางร้านอยากสอบถามว่าอยากได้การ์ดแต่งงานแบบไหนคะ</div></div>
+      <div class="line-message sent"><div class="bubble outgoing">เดี๋ยวผมส่งไฟล์ให้ครับ</div></div>
+      ${save.flags.ep12CardSent?'<div class="line-message sent"><div class="bubble outgoing">ส่งไฟล์ Wedding Invitation.svg แล้วครับ</div></div><div class="line-message received"><div class="bubble incoming">ได้รับไฟล์แล้วค่ะ ขอบคุณมากนะคะ 💐 อย่าลืมเอาการ์ดของคุณมาอวดนะคะ</div></div>':''}
+    </div>${!save.flags.ep12CardSent?'<div class="line-replies"><button class="choice" data-ep12-files="1">เปิด My Files เพื่อออกแบบการ์ด</button></div>':'<div class="line-replies"><button class="choice" data-ep12-end="1">ดูข้อความส่งท้ายเกม</button></div>'}</div>`;
+}
+function renderEp12End(){
+ return `<div class="ep12-end-screen"><div class="ep12-end-ornament">✿ ♡ ✿</div><h1>Thank you for playing!</h1><h2>ขอบคุณที่มาเล่นเกมจำลองโทรศัพท์ของการันต์ค่ะ</h2><p>ขอให้ความรักของการันต์และอชิสดใสในทุก ๆ วัน</p><div class="ep12-end-ornament">💍 ✨ 🌸</div><button data-ep12-download="png">บันทึกการ์ด PNG</button><button data-ep12-download="svg">บันทึกการ์ด SVG</button><button data-ep12-explore="1">ออกไปสำรวจโทรศัพท์เพิ่มเติม</button></div>`;
+}
 function renderEp12Files(){
   if(ep12FileScreen==='folders'){
     return `
@@ -14772,7 +14792,7 @@ function renderEp12Files(){
             </button>
             <button class="ep12-finish"
               data-ep12-finish="1">
-              ยืนยันการ์ดแต่งงาน
+              ส่งการ์ดให้ร้านจัดงาน
             </button>
           </div>
         </div>
@@ -15086,6 +15106,10 @@ else if(page==='Spotify'){
 else if(page==='Gmail'){
   html=renderEp11Gmail();
 }
+else if(page==='ep12Call'){html=renderEp12Call();}
+else if(page==='ep12Shop'){html=renderEp12Shop();}
+else if(page==='ep12End'){html=renderEp12End();}
+
 else if(page==='เบราว์เซอร์'){
   html=renderEp10Internet();
 }
@@ -16184,7 +16208,7 @@ if(chat==='achi' && !save.flags.achiThanked){
 }
 
 if(chat==='duj' && save.flags.ep11LeaveApproved){
-  b+='<div class="day">20 พ.ย.</div>';
+  b+='<div class="day">23 ธ.ค.</div>';
   b+=bubble('พี่อนุมัติวันลาให้แล้วนะการันต์');
   b+=bubble('ขอบคุณที่ทำงานหนัก');
   b+=bubble('ไปเที่ยวกับอชิให้สนุกนะ');
@@ -17516,332 +17540,31 @@ if(chat==='achi' && save.flags.ep11Started){
     );
     b+=bubble('ผมคิดถึง',true);
   }
-
-  if(save.flags.ep11Completed){
-
-    b+='<div class="day">หลังยืนยันตั๋วเครื่องบิน</div>';
-
-    b+=bubble(
-      'วันนี้เราได้กินข้าวกับเพื่อนร่วมงานแล้วนะ'
-    );
-
-    b+=bubble(
-      'ดีใจด้วยนะครับอชิ',
-      true
-    );
-
-    b+=bubble(
-      'แล้วเมื่อไหร่เราจะได้เจอกันอีกเหรอ'
-    );
-
-    b+=bubble(
-      'อีกไม่นานหรอกครับ',
-      true
-    );
-  }
 }
-/* ===== EP.12 ACHI & KARAN STORY ===== */
 
-if(chat==='achi' && save.flags.ep12Stage>=1){
-
-  b+='<div class="day">1 มกราคม · วันปีใหม่</div>';
-
-  b+=bubble(
-    'การันต์ ถึงกรุงเทพฯ แล้วใช่ไหม'
-  );
-
-  b+=bubble(
-    'ถึงแล้วครับ แต่ผมยังคิดถึงอชิอยู่เลย',
-    true
-  );
-
-  b+=bubble(
-    'เพิ่งแยกกันเองนะครับ'
-  );
-
-  b+=bubble(
-    'สำหรับผม แค่ไม่ได้เห็นหน้าอชิก็คิดถึงแล้วครับ',
-    true
-  );
-
-  b+=bubble(
-    'พูดแบบนี้อีกแล้วนะ'
-  );
-
-  b+=bubble(
-    'ว่าแต่พรุ่งนี้การันต์ว่างไหม'
-  );
-
-  b+=bubble(
-    'ว่างครับ อชิมีอะไรหรือเปล่า',
-    true
-  );
-
-  b+=bubble(
-    'พ่อกับแม่อยากเจอการันต์น่ะ'
-  );
-
-  b+=bubble(
-    'ผมอยากพาการันต์ไปกินข้าวที่บ้าน'
-  );
-
-  b+=bubble(
-    'ได้สิครับ ผมเองก็อยากเจอครอบครัวของอชิเหมือนกัน',
-    true
-  );
-
-  if(save.flags.ep12Stage===1){
-    choices=`
-      <button class="choice" data-ep12-next="2">
-        ไปพบพ่อแม่อชิ
-      </button>
-    `;
+/* ===== EP.12 · 22 DECEMBER · ACHI & KARAN ===== */
+if(chat==='achi' && save.flags.ep12Checkin){
+  b+='<div class="day">22 ธ.ค.</div>';
+  b+=bubble('สาขาที่นี่ตกแต่งเสร็จแล้วล่ะ');
+  b+=bubble('ผมอยากให้การันต์เห็นจัง');
+  b+=bubble('การันทำอะไรอยู่ครับทำไมเงียบไป');
+  b+=bubble('ผมเพิ่งแยกกับลูกค้าครับ',true);
+  if(save.flags.ep12CallDone){
+    b+='<div class="day">22 ธ.ค. · หลังวิดีโอคอล</div>';
+    b+=bubble('วิดีโอคอล · '+(save.flags.ep12CallDuration||'00:00'));
   }
-
-  if(save.flags.ep12Stage>=2){
-
-    b+='<div class="day">2 มกราคม · หลังพบครอบครัวอชิ</div>';
-
-    b+=bubble(
-      'วันนี้ขอบคุณมากนะครับที่มาหาพ่อกับแม่'
-    );
-
-    b+=bubble(
-      'พ่อกับแม่บอกว่าการันต์ดูแลผมดีมาก'
-    );
-
-    b+=bubble(
-      'ผมดีใจที่ได้เจอทุกคนครับ',
-      true
-    );
-
-    b+=bubble(
-      'ตอนแรกผมแอบกังวลเหมือนกัน',
-      true
-    );
-
-    b+=bubble(
-      'กังวลอะไรเหรอ'
-    );
-
-    b+=bubble(
-      'กลัวว่าพ่อกับแม่อชิจะไม่ไว้ใจให้ผมดูแลอชิ',
-      true
-    );
-
-    b+=bubble(
-      'แต่ตอนนี้ผมรู้แล้วว่าทุกคนรักอชิมากแค่ไหน',
-      true
-    );
-
-    b+=bubble(
-      'ผมก็รักครอบครัวของการันต์เหมือนกันนะ'
-    );
-
-    b+=bubble(
-      'งั้นพรุ่งนี้ไปหาพ่อกับแม่ผมกันไหมครับ',
-      true
-    );
-
-    b+=bubble(
-      'จริงเหรอครับ'
-    );
-
-    b+=bubble(
-      'จริงสิครับ ผมอยากให้ทุกคนรู้จักคนที่ผมรัก',
-      true
-    );
-
-    if(save.flags.ep12Stage===2){
-      choices=`
-        <button class="choice" data-ep12-next="3">
-          พาอชิไปพบครอบครัวการันต์
-        </button>
-      `;
-    }
-  }
-
-  if(save.flags.ep12Stage>=3){
-
-    b+='<div class="day">3 มกราคม · หลังพบครอบครัวการันต์</div>';
-
-    b+=bubble(
-      'วันนี้สนุกมากเลยครับ'
-    );
-
-    b+=bubble(
-      'ตอนแรกผมตื่นเต้นจนไม่รู้จะพูดอะไร'
-    );
-
-    b+=bubble(
-      'แต่คุณพ่อคุณแม่การันต์ใจดีมากเลย'
-    );
-
-    b+=bubble(
-      'ทุกคนชอบอชิมากครับ',
-      true
-    );
-
-    b+=bubble(
-      'โดยเฉพาะตอนที่อชิช่วยแม่ผมจัดโต๊ะอาหาร',
-      true
-    );
-
-    b+=bubble(
-      'ก็ผมอยากช่วยนี่ครับ'
-    );
-
-    b+=bubble(
-      'อชิครับ',
-      true
-    );
-
-    b+=bubble(
-      'ครับ?'
-    );
-
-    b+=bubble(
-      'ตลอดเวลาที่เราอยู่ด้วยกัน ผมมีความสุขมากจริง ๆ',
-      true
-    );
-
-    b+=bubble(
-      'ตอนที่อชิไปนคร ผมถึงได้รู้ว่าผมอยากใช้ทุกวันต่อจากนี้กับอชิ',
-      true
-    );
-
-    b+=bubble(
-      'ไม่ว่าจะอยู่ใกล้กันหรือไกลกัน ผมก็อยากเป็นคนที่อชิกลับมาหาเสมอ',
-      true
-    );
-
-    b+=bubble(
-      'การันต์...'
-    );
-
-    b+=bubble(
-      'ผมมีเรื่องสำคัญอยากถามครับ',
-      true
-    );
-
-    if(save.flags.ep12Stage===3){
-      choices=`
-        <button class="choice" data-ep12-next="4">
-          ขออชิแต่งงาน
-        </button>
-      `;
-    }
-  }
-
-  if(save.flags.ep12Stage>=4){
-
+  if(save.flags.ep12Proposal){
     b+='<div class="day">คำขอแต่งงาน</div>';
-
-    b+=bubble(
-      'อชิครับ แต่งงานกับผมนะครับ',
-      true
-    );
-
-    b+=bubble(
-      'ผมอยากตื่นมาเจออชิทุกเช้า อยากกินข้าวด้วยกัน และอยากอยู่ข้าง ๆ อชิในทุกวันที่มีทั้งเรื่องดีและเรื่องไม่ดี',
-      true
-    );
-
-    b+=bubble(
-      'การันต์...'
-    );
-
-    b+=bubble(
-      'ผมไม่คิดเลยว่าจะมีใครรักผมได้มากขนาดนี้'
-    );
-
-    b+=bubble(
-      'ผมเองก็อยากใช้ชีวิตกับการันต์เหมือนกันครับ'
-    );
-
-    b+=bubble(
-      'ตกลงครับ ผมจะแต่งงานกับการันต์'
-    );
-
-    b+=bubble(
-      'ขอบคุณนะครับอชิ ผมรักอชินะครับ',
-      true
-    );
-
-    b+=bubble(
-      'ผมก็รักการันต์ครับ'
-    );
-
-    b+='<div class="day">หลังตกลงแต่งงาน</div>';
-
-    b+=bubble(
-      'การันต์ เรามีเรื่องต้องเตรียมอีกเยอะเลยนะ'
-    );
-
-    b+=bubble(
-      'ทั้งสถานที่ แขก แล้วก็การ์ดแต่งงาน'
-    );
-
-    b+=bubble(
-      'เรื่องการ์ดให้ผมจัดการเองนะครับ',
-      true
-    );
-
-    b+=bubble(
-      'ผมอยากทำการ์ดที่เป็นของเราสองคนจริง ๆ',
-      true
-    );
-
-    b+=bubble(
-      'งั้นผมฝากด้วยนะครับ'
-    );
-
-    b+=bubble(
-      'ผมรอดูการ์ดของเราอยู่นะ'
-    );
-
-    if(!save.flags.ep12Completed){
-      choices=`
-        <button class="choice" data-ep12-files="1">
-          เปิด My Files เพื่อออกแบบการ์ดแต่งงาน
-        </button>
-      `;
-    }
+    b+=bubble(save.flags.ep12ProposalText||'อชิครับ แต่งงานกับผมนะครับ',true);
+    b+=bubble('การันต์... ผมดีใจมากเลยครับ');
+    b+=bubble('ตกลงครับ ผมจะแต่งงานกับการันต์');
+    b+=bubble('ผมรักการันต์นะครับ');
   }
-
-  if(save.flags.ep12Completed){
-
-    b+='<div class="day">หลังออกแบบการ์ดแต่งงาน</div>';
-
-    b+=bubble(
-      'การันต์ ผมเห็นการ์ดแล้วนะ'
-    );
-
-    b+=bubble(
-      'สวยมากเลยครับ'
-    );
-
-    b+=bubble(
-      'ผมชอบมากจริง ๆ'
-    );
-
-    b+=bubble(
-      'ดีใจที่อชิชอบครับ',
-      true
-    );
-
-    b+=bubble(
-      'วันที่ 19 มิถุนายน ผมจะรออชิอยู่ตรงนั้นนะครับ',
-      true
-    );
-
-    b+=bubble(
-      'ผมจะไปหาการันต์แน่นอนครับ'
-    );
-
-    b+=bubble(
-      'แล้วเจอกันในวันแต่งงานของเรานะ'
-    );
+  if(save.flags.ep12CallDone && !save.flags.ep12Proposal){
+    choices=`<div style="padding:5px 7px;font-size:13px;font-weight:700">การันต์จะขออชิแต่งงานอย่างไร?</div>
+    <button class="choice" data-ep12-propose="fireworks">อชิครับ ผมอยากใช้ทุกวันต่อจากนี้กับอชิ แต่งงานกับผมนะครับ</button>
+    <button class="choice" data-ep12-propose="hearts">ผมรักอชิมากกว่าคำไหนจะบอกได้ เป็นครอบครัวเดียวกันกับผมนะครับ</button>
+    <button class="choice" data-ep12-propose="flowers">ไม่ว่าโลกจะเปลี่ยนไปแค่ไหน ผมอยากจับมืออชิไว้ตลอดชีวิต แต่งงานกันนะครับ</button>`;
   }
 }
   // EP.01 — ก่อนสั่งเค้ก ซ่อนประวัติแชทส่วนตัวทุกคน
@@ -18138,7 +17861,7 @@ if(ep12Reset && page==='ไฟล์'){
 
 const ep12Download=e.target.closest('[data-ep12-download]');
 
-if(ep12Download && page==='ไฟล์'){
+if(ep12Download && (page==='ไฟล์'||page==='ep12End')){
   ep12SaveCard();
 
   if(ep12Download.dataset.ep12Download==='svg'){
@@ -18153,26 +17876,34 @@ const ep12Finish=e.target.closest('[data-ep12-finish]');
 
 if(ep12Finish && page==='ไฟล์'){
   ep12SaveCard();
-
   save.flags.ep12Completed=true;
+  save.flags.ep12CardSent=true;
   persist();
-
-  popup(
-    'EP.12 COMPLETE',
-    'การ์ดแต่งงานของการันต์และอชิพร้อมแล้ว วันที่ 19 มิถุนายน'
-  );
-
+  page='ep12Shop';render();
   return;
 }
 
 /* ===== EP.12 INTERACTIONS ===== */
 
-const ep12Next=e.target.closest('[data-ep12-next]');
-
-if(ep12Next){
-  ep12Advance(Number(ep12Next.dataset.ep12Next));
+const ep12Propose=e.target.closest('[data-ep12-propose]');
+if(ep12Propose){
+  const kind=ep12Propose.dataset.ep12Propose;
+  const lines={fireworks:'อชิครับ ผมอยากใช้ทุกวันต่อจากนี้กับอชิ แต่งงานกับผมนะครับ',hearts:'ผมรักอชิมากกว่าคำไหนจะบอกได้ เป็นครอบครัวเดียวกันกับผมนะครับ',flowers:'ไม่ว่าโลกจะเปลี่ยนไปแค่ไหน ผมอยากจับมืออชิไว้ตลอดชีวิต แต่งงานกันนะครับ'};
+  save.flags.ep12Proposal=kind;save.flags.ep12ProposalText=lines[kind];
+  lineMarkChatActivity('achi');persist();render();ep12Celebration(kind);
+  setTimeout(()=>{if(!save.flags.ep12ShopNotified){save.flags.ep12ShopNotified=true;persist();ep8Banner('Ever After Wedding Studio','อยากได้การ์ดแต่งงานแบบไหนคะ','ep12Shop');}},5500);
   return;
 }
+const ep12Answer=e.target.closest('[data-ep12-answer]');
+if(ep12Answer){ep12CallState='connected';ep12CallStart=Date.now();render();const v=document.getElementById('ep12Video');if(v)v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});return;}
+const ep12Reject=e.target.closest('[data-ep12-reject]');
+if(ep12Reject){page='chat';chat='achi';render();return;}
+const ep12Hangup=e.target.closest('[data-ep12-hangup]');
+if(ep12Hangup){save.flags.ep12CallDone=true;const sec=Math.max(1,Math.floor((Date.now()-ep12CallStart)/1000));save.flags.ep12CallDuration=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');lineMarkChatActivity('achi');persist();page='chat';chat='achi';render();return;}
+const ep12End=e.target.closest('[data-ep12-end]');
+if(ep12End){page='ep12End';render();return;}
+const ep12Explore=e.target.closest('[data-ep12-explore]');
+if(ep12Explore){page='home';render();return;}
 
 const ep12Files=e.target.closest('[data-ep12-files]');
 
@@ -18300,16 +18031,19 @@ if(ep11Book && page==='Gmail'){
 }
 
 const ep11Finish=e.target.closest(
-  '[data-ep11-finish]'
+  '[data-ep11-checkin]'
 );
 
 if(ep11Finish && page==='Gmail'){
   if(!save.flags.ep11FlightBooked)return;
 
   save.flags.ep11Completed=true;
+  save.flags.ep12Checkin=true;
+  save.flags.ep12Stage=1;
+  lineMarkChatActivity('achi');
   persist();
-
   ep11MailScreen='inbox';render();
+  ep8Banner('Achirawit','สาขาที่นี่ตกแต่งเสร็จแล้วล่ะการันต์','achi');
 
   return;
 }
@@ -18649,6 +18383,8 @@ if(ep8Notice){
     goApp('โทรศัพท์');
     return;
   }
+  if(target==='gmail'){page='Gmail';ep11MailScreen='inbox';render();return;}
+  if(target==='ep12Shop'){page='ep12Shop';render();return;}
   chat=target;
   page='chat';
 
@@ -20115,6 +19851,7 @@ if(lg && page==='LINE'){
 }
 
 if(lc && page==='LINE'){
+  if(lc.dataset.lineChat==='ep12Shop'){page='ep12Shop';render();return;}
   chat=lc.dataset.lineChat;
 
   // EP.04 — เข้าจากรายการ LINE หลังพบบ้านอชิ
@@ -20725,6 +20462,7 @@ const ep10LeavingRock=
   save.flags.ep10FinalMessage &&
   !save.flags.ep11Started;
     
+  const ep12AchiLeave=page==='chat' && chat==='achi' && btn.dataset.go==='LINE' && save.flags.ep12Checkin && !save.flags.ep12AchiExit;
   page=btn.dataset.go;
 
   if(page==='LINE'){
@@ -20765,7 +20503,10 @@ if(ep7LeavingDateChat){
 }
 
 // อัปเดตหน้าจอหลังเปลี่ยนหน้า
-render();
+if(ep12AchiLeave){
+  save.flags.ep12AchiExit=true;persist();
+  ep12CallState='incoming';page='ep12Call';render();
+}else render();
 
 if(ep7LeavingDateChat){
   ep7Banner(
@@ -20930,7 +20671,7 @@ if(ep10LeavingRock){
 }
 /* ===== START EP.11 ===== */
 
-if(ep11DujExit){save.flags.ep11DujRead=true;persist();render();ep8Banner('Gmail','มีอีเมลจองตั๋วเครื่องบินรอยืนยัน','gmail');}
+if(ep11DujExit){save.flags.ep11DujRead=true;persist();render();ep8Banner('Gmail','รายละเอียดเที่ยวบิน Business Class พร้อมให้ตรวจสอบ','gmail');}
 if(ep11GmailAfterPai){save.flags.ep11GmailNotified=true;persist();render();ep8Banner('Gmail','มีอีเมลคำถามจาก Cherry Magic รอให้ตอบ','gmail');}
 if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('Pai','พี่การันต์คะปายส่งข้อมูลปากกาตัวใหม่ให้ในอีเมลแล้วนะคะ','pai');}
 if(ep11StartAfterAchi){

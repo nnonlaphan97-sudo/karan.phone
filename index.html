@@ -16660,7 +16660,7 @@ if(chat==='karin' && save.flags.ep4KarinShown){
     b+=bubble('พี่เอากระเป๋ามาให้แล้ว',false,'','17:10');
     b+=bubble('ทะเลาะกันแล้วลำบากน้อง',true,'','17:11');
     b+=bubble('แต่แกก็ชอบไม่ใช่เหรอ',false,'','17:12');
-    b+=bubble('อย่ามาทำเป็นรู้ดีสิครับ',true,'','17:13');
+    b+=bubble('พูดมาก',true,'','17:13');
 
   }
 }
@@ -17471,6 +17471,45 @@ if(chat==='pai' && save.flags.ep10Started){
     }
   }
 }
+/* ===== EP.09 ROCK PROMOTION ===== */
+if(
+  chat==='rock' &&
+  save.flags.ep9Started
+){
+  /* Removed old promotion chat; Rock's history begins on 20 Nov. */
+  /* b+='<div class="day">20 เม.ย. · ข่าวดีของร็อค</div>';
+
+  b+=bubble(
+    'พี่การันต์ครับ ผมมีข่าวดีจะบอกครับ'
+  );
+
+  b+=bubble(
+    'ผมได้เลื่อนตำแหน่งแล้วนะครับ!'
+  );
+
+  b+=bubble(
+    'จริงเหรอร็อค ยินดีด้วยนะครับ',
+    true
+  );
+
+  b+=bubble(
+    'ขอบคุณครับพี่การันต์'
+  );
+
+  b+=bubble(
+    'ตอนแรกผมไม่คิดว่าจะได้รับโอกาสนี้เลยครับ'
+  );
+
+  b+=bubble(
+    'ร็อคทำงานหนักมาตลอด สมควรได้รับแล้วครับ',
+    true
+  );
+
+  b+=bubble(
+    'ผมจะตั้งใจทำงานให้มากขึ้นครับ'
+  ); */
+}
+
 // EP.10 · ประวัติแชทร็อค — ไม่ต้องเลือกคำตอบ
 if(chat==='rock' && save.flags.ep10CallDone){
   b+='<div class="day">20 พ.ย.</div>';
@@ -18271,7 +18310,7 @@ if(ep11Send && page==='Gmail'){
   render();
   if(save.flags.ep11EmailsDone.length===EP11_EMAILS.length && !save.flags.ep11LeaveApproved){
     save.flags.ep11LeaveApproved=true;lineMarkChatActivity('duj');persist();render();
-    ep8Banner('พี่ดุจดาว','พี่อนุมัติวันลาให้แล้วนะการันต์','duj');
+    ep8Banner('พี่ดุจ','พี่อนุมัติวันลาให้แล้วนะการันต์','duj');
   }
   return;
 }

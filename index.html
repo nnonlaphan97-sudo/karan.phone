@@ -7766,6 +7766,9 @@ save.flags.ep10Started ??= false;
 save.flags.ep10Krathong ??= '';
 save.flags.ep10PaiNewsRead ??= false;
 save.flags.ep10CallDone ??= false;
+save.flags.ep10RockNotified ??= false;
+save.flags.ep10CallDuration ??= 0;
+save.flags.ep11CallDuration ??= 0;
 save.flags.ep10RockReplied ??= false;
 save.flags.ep10FinalMessage ??= false;
 /* ===== EP.11 GMAIL ===== */
@@ -9175,7 +9178,8 @@ if(save.flags.ep10Started){
     displayTime='09:09';
   }
 }
-if(c.id==='rock' && save.flags.ep10CallDone){
+if(c.id==='achi' && save.flags.ep10CallDone){displayDate=save.flags.ep10FinalMessage?'20 พ.ย.':'16 พ.ย.';displayTime=save.flags.ep10FinalMessage?'18:10':'20:46';preview=save.flags.ep10FinalMessage?'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์':'แล้วเจอกันนะ';}
+if(c.id==='rock' && save.flags.ep10RockNotified){
   displayDate='20 พ.ย.';
   displayTime='17:35';
   preview='พี่การันต์อยู่ไหนครับ';
@@ -9322,7 +9326,7 @@ if(
       </button>
     `
     : '';
-if(save.flags.ep10CallDone && !save.flags.ep10FinalMessage){const i=results.findIndex(c=>c.id==='rock');if(i>0)results.unshift(results.splice(i,1)[0]);}
+if(save.flags.ep10RockNotified && !save.flags.ep10FinalMessage){const i=results.findIndex(c=>c.id==='rock');if(i>0)results.unshift(results.splice(i,1)[0]);}
 if(save.flags.ep10PaiTop && !save.flags.ep10PaiNewsRead){const i=results.findIndex(c=>c.id==='pai');if(i>0)results.unshift(results.splice(i,1)[0]);}
 // ให้อชิขึ้นอันดับแรกเฉพาะช่วงที่ส่งรายชื่อลูกค้า
 if(
@@ -9388,6 +9392,8 @@ if(
     const paiIndex=results.findIndex(c=>c.id==='pai');
     if(paiIndex>0)results.unshift(results.splice(paiIndex,1)[0]);
   }
+  if(save.flags.ep10RockNotified && !save.flags.ep10FinalMessage){const idx=results.findIndex(c=>c.id==='rock');if(idx>0)results.unshift(results.splice(idx,1)[0]);}
+  if(save.flags.ep10FinalMessage && !save.flags.ep11Started){const idx=results.findIndex(c=>c.id==='achi');if(idx>0)results.unshift(results.splice(idx,1)[0]);}
   const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
@@ -14278,10 +14284,10 @@ function renderEp11Call(){
   return `
     <div class="ep10-call">
 
-      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px;background:#66758a;"><img src="${lineProfilePhotos.achi}" alt="Achirawit" style="width:100%;height:100%;display:block;object-fit:cover;border-radius:50%"></div>
+      ${connected?`<div class="ep11-video-frame" style="position:relative;width:min(100%,350px);height:55vh;max-height:470px;margin:0 auto 14px;background:#10131c;border-radius:22px;overflow:hidden"><video id="ep11VideoCall" src="videos/snaptik_7418148493077892360_v3.mp4" autoplay playsinline loop style="width:100%;height:100%;object-fit:cover"></video><span style="position:absolute;top:12px;left:12px;color:white;background:#0008;border-radius:12px;padding:5px 10px;font-size:12px">วิดีโอคอล</span></div>`:`<div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px;background:#66758a;"><img src="${lineProfilePhotos.achi}" alt="Achirawit" style="width:100%;height:100%;display:block;object-fit:cover;border-radius:50%"></div>`}
 
       <h2>Achirawit</h2>
-      <p>${connected?'กำลังสนทนา · <span class="karan-call-timer">00:00</span>':'สายเรียกเข้า'}</p>
+      <p>${connected?'วิดีโอคอล · <span class="karan-call-timer">00:00</span>':'สายเรียกเข้า'}</p>
 
       <div class="ep10-call-actions">
         ${!connected?`<button class="ep10-hangup" data-ep11-call-action="hangup"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg><span>ปฏิเสธ</span></button>`:''}
@@ -17397,7 +17403,10 @@ if(chat==='achi' && save.flags.ep10Started){
 
   if(save.flags.ep10CallDone){
 
-    b+='<div class="day">หลังวางสาย</div>';
+    b+='<div class="day">16 พ.ย.</div>';
+    const duration=Number(save.flags.ep10CallDuration)||0;
+    const durationLabel=String(Math.floor(duration/60)).padStart(2,'0')+':'+String(duration%60).padStart(2,'0');
+    b+='<div class="line-call-history" style="text-align:center;margin:12px auto;color:#57657a;font-size:12px;background:#ffffffa8;border-radius:16px;padding:11px 16px;max-width:250px">☎ โทรด้วยเสียง · '+durationLabel+'</div>';
 
     b+=bubble(
       'พรุ่งนี้ไปกินข้าวด้วยกันนะ'
@@ -17467,7 +17476,8 @@ if(
   chat==='rock' &&
   save.flags.ep9Started
 ){
-  b+='<div class="day">20 เม.ย. · ข่าวดีของร็อค</div>';
+  /* Removed old promotion chat; Rock's history begins on 20 Nov. */
+  /* b+='<div class="day">20 เม.ย. · ข่าวดีของร็อค</div>';
 
   b+=bubble(
     'พี่การันต์ครับ ผมมีข่าวดีจะบอกครับ'
@@ -17497,18 +17507,18 @@ if(
 
   b+=bubble(
     'ผมจะตั้งใจทำงานให้มากขึ้นครับ'
-  );
+  ); */
 }
 
 // EP.10 · ประวัติแชทร็อค — ไม่ต้องเลือกคำตอบ
 if(chat==='rock' && save.flags.ep10CallDone){
   b+='<div class="day">20 พ.ย.</div>';
-  b+=bubble('พี่การันต์อยู่ไหนครับ');
-  b+=bubble('มาประชุมกับลูกค้าข้างนอกครับ',true);
-  b+=bubble('กลับกี่โมงครับ');
-  b+=bubble('กำลังครับ',true);
-  b+=bubble('เดี๋ยวเจอกันครับ');
-  b+=bubble('มีอะไรรึเปล่าครับร็อค',true);
+  b+=bubble('พี่การันต์อยู่ไหนครับ',false,'','17:35');
+  b+=bubble('มาประชุมกับลูกค้าข้างนอกครับ',true,'','17:36');
+  b+=bubble('กลับกี่โมงครับ',false,'','17:37');
+  b+=bubble('กำลังครับ',true,'','17:38');
+  b+=bubble('เดี๋ยวเจอกันครับ',false,'','17:39');
+  b+=bubble('มีอะไรรึเปล่าครับร็อค',true,'','17:40');
 }
 /* ===== EP.11 ACHI IN NAKHON ===== */
 
@@ -17532,7 +17542,9 @@ if(chat==='achi' && save.flags.ep11Started){
 
   if(save.flags.ep11CallDone){
 
-    b+='<div class="day">หลังคุยโทรศัพท์</div>';
+    b+='<div class="day">01 ธ.ค.</div>';
+    const sec=Number(save.flags.ep11CallDuration)||0;
+    b+='<div class="line-call-history" style="text-align:center;margin:12px auto;color:#57657a;font-size:12px;background:#ffffffa8;border-radius:16px;padding:11px 16px;max-width:250px">▣ วิดีโอคอล · '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')+'</div>';
 
     b+=bubble(
       'ขอบคุณที่ให้คำปรึกษาเมื่อกี้นะ'
@@ -18387,14 +18399,16 @@ const ep11CallAction=e.target.closest(
 if(ep11CallAction && page==='ep11Call'){
 
   if(ep11CallAction.dataset.ep11CallAction==='answer'){
-    ep11CallState='connected';karanCallStartedAt=Date.now();playAchiCallAudio();
+    ep11CallState='connected';karanCallStartedAt=Date.now();
     render();
+    const video=document.getElementById('ep11VideoCall');if(video){video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});}
     return;
   }
 
   if(ep11CallAction.dataset.ep11CallAction==='hangup' && ep11CallState!=='connected'){stopAchiCallAudio();page='LINE';lineTab='chats';lineSubtab='chats';render();return;}
   stopAchiCallAudio();
   save.flags.ep11CallDone=true;
+  save.flags.ep11CallDuration=karanCallStartedAt?Math.max(1,Math.floor((Date.now()-karanCallStartedAt)/1000)):0;
   persist();
 
   chat='achi';
@@ -18504,20 +18518,11 @@ const ep10Hangup=e.target.closest(
 if(ep10Hangup && page==='ep10Call'){
   stopAchiCallAudio();
   save.flags.ep10CallDone=true;
-  lineMarkChatActivity('rock');
+  save.flags.ep10CallDuration=karanCallStartedAt?Math.max(1,Math.floor((Date.now()-karanCallStartedAt)/1000)):0;
   persist();
-
-  page='LINE';
-  lineTab='chats';
-  lineSubtab='chats';
-
+  chat='achi';
+  page='chat';
   render();
-
-  ep8Banner(
-    'ร็อค',
-    'พี่การันต์อยู่ไหนครับ',
-    'rock'
-  );
 
   return;
 }
@@ -20770,6 +20775,8 @@ const ep10LeavingPai=
   !!save.flags.ep10Krathong &&
   !save.flags.ep10PaiNewsRead;
 
+const ep10LeavingAchiAfterCall=page==='chat' && chat==='achi' && btn.dataset.go==='LINE' && save.flags.ep10CallDone && !save.flags.ep10RockNotified;
+
 const ep10LeavingRock=
   page==='chat' &&
   chat==='rock' &&
@@ -20967,6 +20974,14 @@ if(ep10LeavingPai){
   ep10CallScreen='incoming';
   page='ep10Call';
   render();
+}
+
+if(ep10LeavingAchiAfterCall){
+  save.flags.ep10RockNotified=true;
+  lineMarkChatActivity('rock');
+  persist();
+  render();
+  ep8Banner('Rock','พี่การันต์อยู่ไหนครับ','rock');
 }
 
 if(ep10LeavingRock){

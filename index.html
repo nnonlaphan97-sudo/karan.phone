@@ -4566,6 +4566,10 @@ button{
 
 .ep10-call-actions{
   margin-top:auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:42px;
 }
 
 .ep10-call-actions button{
@@ -7882,26 +7886,29 @@ setInterval(()=>{if(page!=='ep10Call'&&page!=='ep11Call')return;const e=document
 const EP10_KRATHONGS=[
   {
     id:'lotus',
-    name:'กระทงดอกบัว',
-    price:189,
-    color:'#E9A4BC',
-    desc:'ดอกบัวสีชมพู ตกแต่งด้วยใบตอง'
+    name:'กระทงน้ำแข็ง แบบที่ 1',
+    price:0,
+    image:'videos/กระทงน้ำแข็ง 1.jpg',
+    color:'#A4D7E9',
+    desc:'กระทงน้ำแข็งแบบที่ 1'
   },
   {
     id:'orchid',
-    name:'กระทงกล้วยไม้',
-    price:229,
-    color:'#AE90D8',
-    desc:'กล้วยไม้สีม่วง ตกแต่งอย่างประณีต'
+    name:'กระทงน้ำแข็ง แบบที่ 2',
+    price:0,
+    image:'videos/กระทงน้ำแข็ง.jpg',
+    color:'#A9D8EE',
+    desc:'กระทงน้ำแข็งแบบที่ 2'
   },
   {
     id:'banana',
-    name:'กระทงใบตอง',
-    price:129,
-    color:'#7AAE7B',
-    desc:'กระทงวัสดุธรรมชาติ เรียบง่าย'
+    name:'กระทงขนมปัง แบบที่ 1',
+    price:0,
+    image:'videos/กระทงขนมปัง1.jpg',
+    color:'#D7BA8C',
+    desc:'กระทงขนมปังแบบที่ 1'
   },
-  {id:'bread',name:'กระทงขนมปัง',price:99,color:'#D8B57A',desc:'กระทงขนมปังย่อยสลายได้ เหมาะกับพื้นที่ที่อนุญาต'}
+  {id:'bread',name:'กระทงขนมปัง แบบที่ 2',price:0,image:'videos/กระทงขนมปัง.jpg',color:'#D8B57A',desc:'กระทงขนมปังแบบที่ 2'}
 ];
 
 
@@ -7909,15 +7916,11 @@ function ep10Start(){
   if(save.flags.ep10Started)return;
 
   save.flags.ep10Started=true;
+  // เมื่อออกจากแชทอชิหลังวันที่ 14 พ.ย. ให้ปายส่งข้อความใหม่
+  lineMarkChatActivity('pai');
   persist();
-
   render();
-
-  ep8Banner(
-    'อชิ',
-    'ถึงบ้านแล้วนะการันต์',
-    'achi'
-  );
+  ep8Banner('ปาย','พี่การันต์คะ ช่วยดูเรื่องกระทงหน่อยได้ไหมคะ','pai');
 }
 
 let ep9SpotifyScreen='home';
@@ -8149,8 +8152,8 @@ function ep10IncomingCallBanner(){
 
       <span class="game-banner-text">
         <small>โทรศัพท์ · สายเรียกเข้า</small>
-        <strong>อชิ</strong>
-        <span>แตะเพื่อรับสาย</span>
+        <strong>Achirawit</strong>
+        <span>แตะเพื่อเปิดสายเรียกเข้า</span>
       </span>
 
     </button>
@@ -9137,6 +9140,25 @@ if(c.id==='achi' && save.flags.ep9TanakaRead){
   displayTime='09:10';
   preview='การันต์ ว่างคุยกันหน่อยไหม';
 }
+    // EP.10 — วันที่ 14/16 พ.ย. ใช้วันจริงในรายการแชท
+if(save.flags.ep10Started){
+  if(c.id==='achi'){
+    displayDate='14 พ.ย.';
+    displayTime='20:45';
+    preview='เมื่อกี้เราเพิ่งวิดีโอคอลกันเองนะ';
+  }
+  if(c.id==='pai'){
+    displayDate='16 พ.ย.';
+    displayTime='10:12';
+    preview=save.flags.ep10Krathong
+      ? 'เมื่อไหร่ปายจะเจอคนแบบพี่การันบ้างคะ'
+      : 'ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ';
+  }
+  if(c.id==='tanaka'){
+    displayDate='11 พ.ย.';
+    displayTime='09:09';
+  }
+}
     // EP.04 — อชิส่งข้อความหลังพบบ้าน
 if(
   c.id==='achi' &&
@@ -9170,7 +9192,7 @@ if(
     );
   });
   // EP.08 — ทานากะส่งข้อความหลังอชิตอบตกลงเป็นแฟน
-if(save.flags.ep8Started){
+if(save.flags.ep8Started && !save.flags.ep10Started){
   const tanakaIndex=results.findIndex(c=>c.id==='tanaka');
 
   if(tanakaIndex>0){
@@ -9235,6 +9257,15 @@ if(
   }
 }
 
+  // EP.10 — เรียงแชทล่าสุด ปาย / อชิ / ทานากะ
+  if(save.flags.ep10Started && !save.flags.ep10CallDone){
+    const priority=['pai','achi','tanaka'];
+    results.sort((a,b)=>{
+      const ai=priority.indexOf(a.id), bi=priority.indexOf(b.id);
+      if(ai>=0 || bi>=0)return (ai<0?999:ai)-(bi<0?999:bi);
+      return b.sortTime-a.sortTime;
+    });
+  }
   // EP.01 — แสดง LINE GIFT Notice หลังสั่งเค้กสำเร็จ
  const giftChatVisible =
   !!save.flags.cakeOrdered &&
@@ -13842,13 +13873,12 @@ function renderEp10Internet(){
                 ${selected?.id===k.id?'selected':''}"
               data-ep10-krathong="${k.id}">
 
-              <div class="ep10-web-art">
-                ${ep10KrathongArt(k.color)}
+              <div class="ep10-web-art" style="overflow:hidden">
+                <img src="${k.image}" alt="${k.name}" style="display:block;width:100%;height:100%;object-fit:cover;border-radius:12px" loading="lazy">
               </div>
 
               <strong>${k.name}</strong>
               <small>${k.desc}</small>
-              <b>฿${k.price}</b>
 
               <span>
                 ${selected?.id===k.id
@@ -13908,9 +13938,9 @@ function renderEp10Call(){
   return `
     <div class="ep10-call">
 
-      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:118px;height:118px;margin:0 auto 20px;">${lineAvatar('achi')}</div>
+      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px;background:#66758a;"><img src="${lineProfilePhotos.achi}" alt="Achirawit" style="width:100%;height:100%;display:block;object-fit:cover;border-radius:50%"></div>
 
-      <h2>อชิ</h2>
+      <h2>Achirawit</h2>
 
       <p>
         ${connected
@@ -13930,10 +13960,11 @@ function renderEp10Call(){
       <div class="ep10-call-actions">
 
         ${!connected?`
-          <button class="ep10-answer"
-            data-ep10-answer="1">
-            ${icon('phone')}
-            <span>รับสาย</span>
+          <button class="ep10-hangup" data-ep10-decline="1">
+            ${icon('phone')}<span>ปฏิเสธ</span>
+          </button>
+          <button class="ep10-answer" data-ep10-answer="1">
+            ${icon('phone')}<span>รับสาย</span>
           </button>
         `:`
           <button class="ep10-hangup"
@@ -14225,9 +14256,9 @@ function renderEp11Call(){
   return `
     <div class="ep10-call">
 
-      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:118px;height:118px;margin:0 auto 20px;">${lineAvatar('achi')}</div>
+      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px;background:#66758a;"><img src="${lineProfilePhotos.achi}" alt="Achirawit" style="width:100%;height:100%;display:block;object-fit:cover;border-radius:50%"></div>
 
-      <h2>อชิ</h2>
+      <h2>Achirawit</h2>
       <p>${connected?'กำลังสนทนา · <span class="karan-call-timer">00:00</span>':'สายเรียกเข้า'}</p>
 
       ${connected?`
@@ -14247,6 +14278,7 @@ function renderEp11Call(){
       `:''}
 
       <div class="ep10-call-actions">
+        ${!connected?`<button class="ep10-hangup" data-ep11-call-action="hangup">${icon('phone')}<span>ปฏิเสธ</span></button>`:''}
         <button
           class="${connected?'ep10-hangup':'ep10-answer'}"
           data-ep11-call-action="${connected?'hangup':'answer'}">
@@ -17401,7 +17433,7 @@ if(chat==='pai' && save.flags.ep6Stage>=4){
 // ประวัติแชตอชิหลังกลับไปอยู่บ้านตัวเอง
 if(chat==='achi' && save.flags.ep10Started){
 
-  b+='<div class="day">หลังอชิกลับบ้าน</div>';
+  b+='<div class="day">14 พ.ย.</div>';
 
   b+=bubble('ถึงบ้านแล้วนะการันต์');
 
@@ -17470,7 +17502,7 @@ if(chat==='pai' && save.flags.ep10Started){
   b+='<div class="day">16 พ.ย.</div>';
   b+=bubble('ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ',true);
   b+=bubble('ผมเจอบทความกระทงรักษ์โลก ลองดู 4 แบบนี้นะครับ',true);
-  b+=`<button class="ep10-line-link" data-ep10-open-web="1"><strong>กระทงรักษ์โลก · 4 แบบ</strong><span>บทความและตัวเลือกกระทงใน Samsung Internet</span><small>แตะเพื่อเปิดเว็บไซต์</small></button>`;
+  b+=`<button class="ep10-line-link" data-ep10-open-web="1"><strong>https://karan-phone.pages.dev/krathong</strong><span>บทความกระทงรักษ์โลก · เลือกกระทง 4 แบบ</span><small>แตะลิงก์เพื่อเปิด Samsung Internet</small></button>`;
   if(save.flags.ep10Krathong){
     const k=EP10_KRATHONGS.find(item=>item.id===save.flags.ep10Krathong);
     if(k){
@@ -18419,6 +18451,7 @@ if(ep11CallAction && page==='ep11Call'){
     return;
   }
 
+  if(ep11CallAction.dataset.ep11CallAction==='hangup' && ep11CallState!=='connected'){page='LINE';lineTab='chats';lineSubtab='chats';render();return;}
   save.flags.ep11CallDone=true;
   persist();
 
@@ -18513,6 +18546,13 @@ if(ep10Answer && page==='ep10Call'){
   return;
 }
 
+// ปฏิเสธสาย: ยังไม่ข้ามเนื้อเรื่อง ให้กลับไป LINE และโทรเข้าใหม่เมื่อออกจากปาย
+const ep10Decline=e.target.closest('[data-ep10-decline]');
+if(ep10Decline && page==='ep10Call'){
+  save.flags.ep10PaiNewsRead=false;
+  page='LINE';lineTab='chats';lineSubtab='chats';
+  persist();render();return;
+}
 // วางสายอชิ
 const ep10Hangup=e.target.closest(
   '[data-ep10-hangup]'
@@ -21048,8 +21088,9 @@ if(ep10StartFromAchi && !save.flags.ep10Started){
 if(ep10LeavingPai){
   save.flags.ep10PaiNewsRead=true;
   persist();
-
-  ep10IncomingCallBanner();
+  ep10CallScreen='incoming';
+  page='ep10Call';
+  render();
 }
 
 if(ep10LeavingRock){

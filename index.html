@@ -20730,9 +20730,12 @@ if(
   page==='chat' &&
   chat==='achi' &&
   btn.dataset.go==='LINE' &&
-  save.flags.ep4AchiCancelledRead &&
-  !save.flags.ep4DujBannerShown
+  save.flags.ep3SickShown &&
+  !save.flags.ep4DujBannerShown &&
+  !save.flags.ep4Day14Started
 ){
+  save.flags.ep3SickBannerSeen=true;
+  save.flags.ep4AchiCancelledRead=true;
   save.flags.ep4DujBannerShown=true;
   lineMarkChatActivity('duj');
   persist();

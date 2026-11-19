@@ -9122,6 +9122,16 @@ if(c.id==='achi' && save.flags.ep9TanakaRead){
   displayTime='09:10';
   preview='การันต์ ว่างคุยกันหน่อยไหม';
 }
+    // EP.04 — อชิส่งข้อความหลังพบบ้าน
+if(
+  c.id==='achi' &&
+  save.flags.ep4HomeBannerShown &&
+  !save.flags.ep4Day14Started
+){
+  displayDate='13 เม.ย.';
+  displayTime='09:15';
+  preview='การันต์ถึงบ้านแล้วใช่ไหมครับ';
+}
     const sortTime =
   (dateValue(displayDate) ?? 0) * 10000 +
   Number(displayTime.replace(':',''));
@@ -9173,10 +9183,13 @@ if(
 ){
   let priority = null;
 
-  if(save.flags.ep4DujBannerShown){
-    // พี่ดุจส่งที่อยู่แล้ว
-    priority = 'duj';
-  }else if(save.flags.ep3SickBannerSeen){
+  if(save.flags.ep4HomeBannerShown){
+  // พบบ้านอชิแล้ว อชิส่งข้อความล่าสุด
+  priority = 'achi';
+}else if(save.flags.ep4DujBannerShown){
+  // พี่ดุจส่งที่อยู่แล้ว
+  priority = 'duj';
+}else if(save.flags.ep3SickBannerSeen){
     // อชิส่งข้อความว่าป่วยแล้ว
     priority = 'achi';
   }else{
@@ -10666,19 +10679,22 @@ function selectMapPoint(id){
   save.flags.ep4MapComplete=true;
   mapFeedback='พบบ้านอชิแล้ว';
 
-  if(!save.flags.ep4HomeBannerShown){
-    save.flags.ep4HomeBannerShown=true;
+ if(!save.flags.ep4HomeBannerShown){
+  save.flags.ep4HomeBannerShown=true;
 
-    persist();
-    render();
+  // อชิส่งข้อความใหม่หลังพบบ้าน
+  lineMarkChatActivity('achi');
 
-    showGameBanner(
-      'achi',
-      'การันต์ถึงบ้านแล้วใช่ไหมครับ'
-    );
+  persist();
+  render();
 
-    return;
-  }
+  showGameBanner(
+    'achi',
+    'การันต์ถึงบ้านแล้วใช่ไหมครับ'
+  );
+
+  return;
+}
 }
 
   // สถานี BTS ไม่ใช่จุดที่ต้องเลือก

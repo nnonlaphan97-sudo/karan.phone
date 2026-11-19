@@ -6986,6 +6986,7 @@ button{
   margin-top:6px;
   color:#65758e;
 }
+.ig-explore-real{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;padding:2px}.ig-explore-real .ig-explore-item{border:0;padding:0;aspect-ratio:1;background:#eee;overflow:hidden}.ig-explore-real .ig-explore-item img{width:100%;height:100%;object-fit:cover;display:block}.ig-notification-list{padding:15px;color:#222}.ig-notification-list h3{font-size:17px}.ig-notification-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee;font-size:13px}.ig-notification-row>div{flex:1}.ig-notification-row small{display:block;color:#999;margin-top:5px}.ig-notification-symbol svg{width:23px;height:23px}.ig-follow-btn{background:#0095f6;color:white;border:0;border-radius:8px;padding:8px 10px;font-size:12px}.ig-follow-btn:disabled{background:#ddd;color:#555}
 </style>
 </head>
 <body>
@@ -11200,6 +11201,7 @@ ${igPersonAvatar('pa',40)}
   `;
 }
 
+let igExploreSeed=0;
 let igTab = 'home';
 let igScreen = 'main';
 
@@ -11497,6 +11499,21 @@ function renderIGStoryViewer() {
   `;
 }
 
+function renderIGNotifications(){
+  const events=[
+    ['achi','ถูกใจรูปภาพของคุณ','heart'],
+    ['pai','แสดงความคิดเห็นในโพสต์ของคุณ','comment'],
+    ['rock','เริ่มติดตามคุณ','follow'],
+    ['jinta','ถูกใจรูปภาพของคุณ','heart'],
+    ['achi','แสดงความคิดเห็นในโพสต์ของคุณ','comment'],
+    ['pai','เริ่มติดตามคุณ','follow']
+  ];
+  return `<div class="ig-notification-list"><h3>กิจกรรม</h3>${events.map(([id,description,type],i)=>`
+    <div class="ig-notification-row">${igPersonAvatar(id,43)}
+      <div><strong>${igPeople[id]?.username||id}</strong> ${description}<small>${i<2?'วันนี้':'เมื่อเร็ว ๆ นี้'}</small></div>
+      ${type==='follow'?'<button class="ig-follow-btn" data-ig-follow="'+id+'">ติดตามกลับ</button>':`<span class="ig-notification-symbol">${igIcon(type==='heart'?'heart':'message')}</span>`}
+    </div>`).join('')}</div>`;
+}
 function renderInstagram() {
    if(
     igScreen==='ep7shop' ||
@@ -11581,16 +11598,15 @@ ${igFeedPost('rock', 0)}
 }
 
   if (igTab === 'search') {
-    content = `
-      <div class="ig-search">ค้นหา</div>
-      <div class="ig-explore-grid">
-        ${Array.from({length:12}, (_,i) =>
-          `<div class="ig-explore-item"> ${i+1} </div>`
-        ).join('')}
-      </div>`;
+    const gallery=samsungAllPhotos();
+    const feed=Object.values(igFeedPhotos).flat();
+    const karan=['IMG_3258.jpeg','IMG_4063.jpeg','IMG_4401.jpeg','IMG_4404.jpeg','IMG_4405.jpeg','IMG_4851.jpeg','IMG_4850.jpeg','IMG_4857.jpeg','IMG_4858.jpeg','IMG_5292.jpeg'].map(x=>'videos/'+x);
+    const pool=[...new Set([...feed,...karan,...gallery])];
+    const selected=pool.map((photo,i)=>({photo,rank:((i+1)*1664525+(igExploreSeed+1)*1013904223)>>>0})).sort((a,b)=>a.rank-b.rank).slice(0,36);
+    content = `<div class="ig-explore-grid ig-explore-real">
+      ${selected.map(({photo},i)=>`<button class="ig-explore-item" type="button" data-ig-explore-photo="${i}" aria-label="ดูรูปสำรวจ ${i+1}"><img src="${photo}" loading="lazy" alt="ภาพสำรวจ"></button>`).join('')}
+    </div>`;
   }
-
- 
 if (igTab === 'reels') {
   content = `
     <div class="ig-reels-viewer">
@@ -11741,7 +11757,7 @@ if (igTab === 'profile') {
       </header>
       <div class="ig-scroll">
         ${igTab === 'notifications'
-          ? `<div class="ig-placeholder">ยังไม่มีการแจ้งเตือนใหม่</div>`
+          ? renderIGNotifications()
           : content}
       </div>
       ${igNavigation()}
@@ -16150,7 +16166,7 @@ function renderChat(){
   sales:'ทีมฝ่ายขาย'
 };
 
-  let b = chat==='karin'
+  let b = (chat==='karin' || chat==='tanaka')
   ? ''
   : '<div class="day">30 ม.ค.</div>';
   let choices='';
@@ -18090,6 +18106,11 @@ popup('ยังไม่สามารถเปิดได้','สำรว�
 return;
 }
 page=name;
+if(name==='LINE'){
+  lineTab='chats';
+  lineSubtab='chats';
+  lineSearch='';
+}
 if(name==='Instagram'){
   igScreen='main';
   igTab='home';
@@ -19589,6 +19610,18 @@ if(igCloseStory && page==='Instagram'){
   return;
 }
 
+const igFollowButton=e.target.closest('[data-ig-follow]');
+if(igFollowButton && page==='Instagram'){
+  igFollowButton.textContent='กำลังติดตาม';
+  igFollowButton.disabled=true;
+  return;
+}
+const igExplorePhoto=e.target.closest('[data-ig-explore-photo]');
+if(igExplorePhoto && page==='Instagram'){
+  const image=igExplorePhoto.querySelector('img');
+  if(image)popup('รูปภาพ', 'ภาพจากโพสต์ Instagram และแกลเลอรี่');
+  return;
+}
 const igLikeButton=e.target.closest('[data-ig-like]');
 
 if(igLikeButton && page==='Instagram'){
@@ -19598,7 +19631,8 @@ if(igLikeButton && page==='Instagram'){
     !save.flags.igLikedPosts[id];
 
   persist();
-  render();
+  igLikeButton.classList.toggle('liked',!!save.flags.igLikedPosts[id]);
+  igLikeButton.setAttribute('aria-pressed',String(!!save.flags.igLikedPosts[id]));
   return;
 }
 
@@ -19626,6 +19660,7 @@ const igTabButton=e.target.closest('[data-ig-tab]');
 
 if(igTabButton && page==='Instagram'){
   igTab=igTabButton.dataset.igTab;
+  if(igTab==='search')igExploreSeed++;
   igScreen='main';
   render();
   return;
@@ -20906,16 +20941,11 @@ if(ep6LeavingTanaka){
 }
 
 if(ep6LeavingAchiConfession){
-
-  setTimeout(()=>{
-    if(save.flags.ep6Stage!==2)return;
-
-    ep6Notify(
-      'Tanaka San',
-      'พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย',
-      'tanaka'
-    );
-  },3000);
+  if(save.flags.ep6Stage===2){
+    lineMarkChatActivity('tanaka');
+    persist();
+    ep6Notify('Tanaka San','พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย','tanaka');
+  }
 }
 
 if(ep7LeavingAchi){
@@ -20932,8 +20962,10 @@ if(ep7LeavingAchi){
 
   // อชิส่งข้อความล่าสุดหลังออกจากแชททานากะ
   lineMarkChatActivity('achi');
-
+  lineTab='chats';
+  lineSubtab='chats';
   persist();
+  render();
 
   ep8Banner(
     'อชิ',

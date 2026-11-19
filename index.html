@@ -8957,7 +8957,9 @@ if(latestSender==='me'){
   latestSender!=='cancelled' &&
   latestSender
 ){
-  preview=latestSender+': '+latestText;
+  preview=c.id==='office'
+  ? latestText
+  : latestSender+': '+latestText;
 }
 const initialChatTimes = {
   office: {date:'29 ม.ค.', time:'09:12'},

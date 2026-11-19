@@ -7059,6 +7059,52 @@ button{
 .ep12-email-hint{background:#eef6ff;color:#22517b;border-radius:10px;padding:13px;font-size:12px;line-height:1.6;margin:15px 0}
 .ep12-email-disclaimer{display:block;color:#9198a3;font-size:10px;margin-top:22px}.ep12-mail-date{font-size:10px;color:#9ca3ad;align-self:flex-start;white-space:nowrap}
 .ep12-gmail-banner-logo{width:40px;height:40px;display:grid;place-items:center;background:#fff;border-radius:12px}
+
+/* EP12 — One UI My Files + interactive wedding design studio */
+.ep12-files,.ep12-editor{background:#f7f8fb;color:#20232b}
+.ep12-files-head{height:62px;border:0;background:#f7f8fb;padding:0 17px;gap:14px}
+.ep12-files-head button{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:25px}
+.ep12-files-head strong{flex:1;font-size:20px;font-weight:750}
+.ep12-files-content{height:calc(100% - 62px);overflow:auto;padding:14px 18px 70px}
+.ep12-files-content h2{font-size:22px;margin:12px 0 17px}
+.ep12-file-search{background:#e9ebf1;border-radius:24px;padding:13px 17px;color:#858995;font-size:14px;margin:4px 0 20px}
+.ep12-storage{display:flex;align-items:center;gap:13px;padding:17px;border-radius:20px;background:white;margin:16px 0 24px}
+.ep12-storage svg{width:42px;height:42px;color:#6578d7}
+.ep12-storage div{flex:1}.ep12-storage b{font-size:14px}.ep12-storage small{display:block;color:#898e9c;font-size:12px;margin-top:5px}
+.ep12-storage-track{height:5px;background:#e7e9f0;border-radius:5px;margin-top:9px;overflow:hidden}.ep12-storage-track i{display:block;width:39%;height:100%;background:#7283dd;border-radius:5px}
+.ep12-section-label{font-size:14px;font-weight:700;margin:18px 0 12px}
+.ep12-categories{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.ep12-category{background:#fff;border-radius:18px;padding:15px 8px;text-align:center;font-size:12px;color:#505563}
+.ep12-category svg{width:30px;height:30px;display:block;margin:0 auto 10px;color:#7583d4}
+.ep12-folder{border:0;padding:15px 13px;border-radius:16px;margin:0 0 9px;box-shadow:0 1px 3px #15203409}
+.ep12-folder-icon{background:#fff1d7;color:#e7a63b;width:48px;height:48px}
+.ep12-folder-icon svg{width:30px;height:30px}
+.ep12-folder small{color:#858b99}
+.ep12-editor-scroll{height:calc(100% - 62px);background:#f7f8fb}
+.ep12-preview{background:radial-gradient(circle at 50% 30%,#fff 0%,#e9e5f0 100%);padding:24px 20px 27px}
+.ep12-preview svg{width:min(100%,270px);filter:drop-shadow(0 13px 16px #30284027);box-shadow:none;border-radius:2px}
+.ep12-editor-controls{padding:17px 17px 38px;gap:16px}
+.ep12-panel{background:#fff;padding:16px;border-radius:20px;box-shadow:0 2px 12px #22223808;display:grid;gap:12px}
+.ep12-panel-title{font-size:15px;font-weight:750;display:flex;justify-content:space-between;align-items:center}
+.ep12-panel-hint{font-size:12px;color:#89909c;font-weight:400}
+.ep12-style-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.ep12-style-btn{border:1.5px solid #e7e8ed;background:#fff;border-radius:14px;padding:12px 9px;color:#414554;text-align:center;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:7px}
+.ep12-style-btn.active{border-color:#8b70c6;background:#f7f1ff;color:#67469c;font-weight:750}
+.ep12-style-btn svg{width:64px;height:68px}
+.ep12-decor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ep12-decor-btn{border:1.5px solid #e8e8ef;border-radius:13px;background:white;color:#545365;padding:9px 3px;font-size:11px;display:grid;place-items:center;gap:5px}
+.ep12-decor-btn.active{border-color:#9672bc;background:#f7f0fc;color:#744d9b;font-weight:700}
+.ep12-decor-btn svg{width:46px;height:46px}
+.ep12-editor .ep12-control{font-size:12px;color:#4c5160}
+.ep12-editor .ep12-control input,.ep12-editor .ep12-control select{border-radius:13px;background:#f9f9fc}
+.ep12-editor-actions{margin-top:4px}
+.ep12-editor-actions button{border-radius:14px}
+.ep12-editor-actions .ep12-finish{background:#7557a4}
+.ep12-palette{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.ep12-palette button{height:39px;border-radius:13px;border:2px solid white;box-shadow:0 0 0 1px #e4e3ea}
+.ep12-palette button.active{box-shadow:0 0 0 2px #8b6ab7}
+.ep12-section-note{font-size:12px;color:#858b98;line-height:1.6}
+
 </style>
 </head>
 <body>
@@ -14484,60 +14530,20 @@ function ep12SaveCard(){
 }
 
 function ep12Decorations(){
-  const c=ep12Card;
-  const s=Number(c.ornamentSize)||1;
-
-  const art={
-    flowers:`
-      <g fill="none" stroke="${c.textColor}"
-         stroke-width="2.5" opacity=".65">
-        <path d="M15 160 Q65 85 130 55"/>
-        <path d="M345 380 Q290 470 220 490"/>
-        <path d="M40 125 Q5 95 32 72 Q62 65 65 100"/>
-        <path d="M315 420 Q345 395 355 425 Q350 455 325 445"/>
-      </g>
-      <g fill="#e9a9b8" opacity=".8">
-        <circle cx="125" cy="58" r="12"/>
-        <circle cx="112" cy="45" r="10"/>
-        <circle cx="140" cy="45" r="10"/>
-        <circle cx="126" cy="31" r="10"/>
-        <circle cx="225" cy="485" r="12"/>
-        <circle cx="210" cy="470" r="10"/>
-        <circle cx="240" cy="470" r="10"/>
-      </g>`,
-    stars:`
-      <g fill="${c.textColor}" opacity=".45">
-        <path d="M55 80 l8 24 24 8-24 8-8 24-8-24-24-8 24-8z"/>
-        <path d="M320 420 l7 20 20 7-20 7-7 20-7-20-20-7 20-7z"/>
-        <circle cx="300" cy="85" r="4"/>
-        <circle cx="65" cy="410" r="4"/>
-      </g>`,
-    hearts:`
-      <g fill="#d992a6" opacity=".65">
-        <path d="M70 110 C35 75 10 115 70 165 C130 115 105 75 70 110Z"/>
-        <path d="M290 405 C255 370 230 410 290 460 C350 410 325 370 290 405Z"/>
-      </g>`,
-    leaves:`
-      <g fill="none" stroke="#75947b" stroke-width="3">
-        <path d="M25 185 Q75 85 155 40"/>
-        <path d="M335 335 Q295 430 215 485"/>
-        <path d="M65 115 Q20 80 30 55 Q65 60 65 115"/>
-        <path d="M90 88 Q85 45 120 35 Q125 70 90 88"/>
-        <path d="M295 400 Q340 390 350 360 Q310 355 295 400"/>
-      </g>`,
-    ribbons:`
-      <g fill="none" stroke="${c.textColor}"
-         stroke-width="3" opacity=".55">
-        <path d="M25 95 Q100 20 175 90 Q220 130 260 65"/>
-        <path d="M335 420 Q260 495 185 420 Q140 380 100 450"/>
-        <path d="M260 65 l-8 28 27-12"/>
-      </g>`,
-    minimal:''
-  };
-
-  return `<g transform="translate(180 260) scale(${s}) translate(-180 -260)">
-    ${art[c.decoration]||''}
-  </g>`;
+  const c=ep12Card, s=Number(c.ornamentSize)||1;
+  const ink=c.textColor;
+  const leaf=(x,y,r=0)=>`<g transform="translate(${x} ${y}) rotate(${r})"><path d="M0 0 C-28 -19 -31 -52 0 -73 C26 -50 23 -20 0 0Z" fill="#83a18b" opacity=".84"/><path d="M0 0 Q-2 -35 0 -67" fill="none" stroke="#52775d" stroke-width="1.5"/></g>`;
+  const bloom=(x,y,k=1,col='#e8a5b4')=>`<g transform="translate(${x} ${y}) scale(${k})"><g fill="${col}" stroke="#fff9" stroke-width="1.2">${Array.from({length:6},(_,i)=>`<ellipse cx="0" cy="-13" rx="9" ry="15" transform="rotate(${i*60})"/>`).join('')}</g><circle r="7" fill="#f8d9a1"/><circle r="2" fill="#fff5db"/></g>`;
+  const flowerCorner=`<path d="M-12 182 C42 132 30 82 122 30 M374 338 C320 390 334 445 237 498" stroke="#7d9b84" stroke-width="2.3" fill="none"/>${leaf(34,121,-37)}${leaf(71,72,32)}${leaf(327,405,142)}${leaf(290,451,-147)}${bloom(56,87,1.5)}${bloom(99,44,.9,'#f2c7a8')}${bloom(303,434,1.45)}${bloom(267,481,.85,'#f2c7a8')}`;
+  const rose=`<g fill="none" stroke="#c78395" stroke-width="2"><path d="M-5 173 Q60 90 130 42 M367 348 Q294 439 224 484"/></g>${bloom(55,104,2,'#e9a0b4')}${bloom(104,54,1.1,'#f1c7cb')}${bloom(307,419,2,'#e9a0b4')}${bloom(255,474,1.1,'#f1c7cb')}${leaf(25,143,-30)}${leaf(332,378,140)}`;
+  const gold=`<g stroke="#bd9755" fill="none" stroke-width="1.5"><path d="M25 150 V26 H150 M210 26 H334 V150 M25 370 V494 H150 M210 494 H334 V370"/><path d="M45 90 Q80 45 125 62 M235 458 Q280 475 315 430"/></g><g fill="#cda866">${Array.from({length:8},(_,i)=>`<circle cx="${48+i*9}" cy="${69-i*2}" r="2.1"/>`).join('')}</g>`;
+  const lace=`<g fill="none" stroke="${ink}" stroke-opacity=".32" stroke-width="1.3"><rect x="22" y="22" width="316" height="476" rx="110"/>${Array.from({length:17},(_,i)=>`<circle cx="${34+i*18.3}" cy="30" r="5"/>`).join('')}${Array.from({length:17},(_,i)=>`<circle cx="${34+i*18.3}" cy="490" r="5"/>`).join('')}</g>`;
+  const petals=`${Array.from({length:27},(_,i)=>{let x=(i*97+31)%350,y=(i*139+47)%500;return `<ellipse cx="${x}" cy="${y}" rx="${3+i%4}" ry="${6+i%5}" fill="${i%2?'#dba4b8':'#f0c2a4'}" opacity=".44" transform="rotate(${i*31} ${x} ${y})"/>`}).join('')}`;
+  const stars=`<g fill="#c5a46c">${Array.from({length:22},(_,i)=>{let x=(i*83+28)%330+15,y=(i*113+35)%460+30;return `<path d="M${x} ${y-5} l2 3 4 2 -4 2 -2 4 -2 -4 -4 -2 4 -2Z" opacity="${.35+(i%4)*.14}"/>`}).join('')}</g>`;
+  const hearts=`<g fill="#dc91a8" opacity=".65">${[[54,97,1.2],[304,419,1.4],[90,58,.6],[275,458,.65]].map(([x,y,k])=>`<path transform="translate(${x} ${y}) scale(${k})" d="M0 8 C-25 -12 -29 -30 -12 -34 C-4 -36 0 -30 0 -25 C7 -39 29 -36 28 -20 C27 -9 12 2 0 8Z"/>`).join('')}</g>`;
+  const ribbon=`<g fill="none" stroke="#c29aaf" stroke-width="5" stroke-linecap="round"><path d="M-5 125 C45 36 88 35 140 54 M365 396 C312 484 270 484 220 467"/></g><g fill="#e8bacb"><path d="M91 67 Q55 20 48 62 Q55 92 91 67 Q131 27 134 64 Q122 91 91 67Z"/><path d="M269 453 Q229 415 225 457 Q232 479 269 453 Q303 414 311 452 Q301 482 269 453Z"/></g>`;
+  const art={flowers:flowerCorner,roses:rose,botanical:flowerCorner,stars,hearts,leaves:`${leaf(48,150,-20)}${leaf(90,85,30)}${leaf(309,370,160)}${leaf(264,452,-130)}`,ribbons:ribbon,petals,luxe:gold,lace,minimal:''};
+  return `<g transform="translate(180 260) scale(${s}) translate(-180 -260)">${art[c.decoration]||''}</g>`;
 }
 
 function ep12CardSVG(){
@@ -14660,170 +14666,21 @@ function renderEp12Shop(){
 function renderEp12End(){
  return `<div class="ep12-end-screen"><div class="ep12-end-ornament">✿ ♡ ✿</div><h1>Thank you for playing!</h1><h2>ขอบคุณที่มาเล่นเกมจำลองโทรศัพท์ของการันต์ค่ะ</h2><p>ขอให้ความรักของการันต์และอชิสดใสในทุก ๆ วัน</p><div class="ep12-end-ornament">💍 ✨ 🌸</div><button data-ep12-download="png">บันทึกการ์ด PNG</button><button data-ep12-download="svg">บันทึกการ์ด SVG</button><button data-ep12-explore="1">ออกไปสำรวจโทรศัพท์เพิ่มเติม</button></div>`;
 }
+function ep12Icon(kind){
+ const paths={folder:'<path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',image:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="9" r="2"/><path d="m4 18 5-5 4 4 3-3 5 5"/>',doc:'<path d="M6 2h8l5 5v15H6z M14 2v5h5 M9 12h7 M9 16h7"/>',download:'<path d="M12 3v12 m-5-5 5 5 5-5 M4 18v3h16v-3"/>',music:'<path d="M9 18V5l12-2v13 M9 9l12-2"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',storage:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 14h18 M7 17h1"/>',card:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8 M8 11h8 M9 16h6"/>'};
+ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[kind]||paths.folder}</svg>`;
+}
+function ep12DecorThumb(type){
+ const art={flowers:'<circle cx="25" cy="20" r="10" fill="#edb0be"/><circle cx="37" cy="31" r="9" fill="#f1d1a6"/><path d="M10 44Q18 25 34 15" stroke="#7c9e82" stroke-width="3" fill="none"/>',roses:'<circle cx="26" cy="26" r="15" fill="#e9a1b6"/><path d="M18 28q10-20 20-2q-5 15-18 5" fill="none" stroke="#b76585" stroke-width="2"/>',botanical:'<path d="M10 45Q18 20 45 8" stroke="#6d977a" stroke-width="3" fill="none"/><ellipse cx="22" cy="28" rx="7" ry="13" fill="#8caf90" transform="rotate(-30 22 28)"/><ellipse cx="37" cy="16" rx="7" ry="13" fill="#8caf90" transform="rotate(30 37 16)"/>',stars:'<path d="m27 6 5 15 15 5-15 5-5 15-5-15-15-5 15-5z" fill="#d9b16a"/>',hearts:'<path d="M27 43C-5 21 13 2 27 17C41 2 59 21 27 43" fill="#df9aaf"/>',leaves:'<path d="M10 46Q30 25 42 6" stroke="#719780" stroke-width="3" fill="none"/><ellipse cx="22" cy="30" rx="7" ry="14" fill="#9abb9c"/>',ribbons:'<path d="M27 26Q4 3 5 23Q9 37 27 26Q48 3 50 23Q47 37 27 26M27 26l-9 22m9-22 9 22" fill="none" stroke="#d9a5bd" stroke-width="4"/>',petals:'<ellipse cx="15" cy="15" rx="6" ry="11" fill="#e7b2c5" transform="rotate(35 15 15)"/><ellipse cx="37" cy="35" rx="7" ry="12" fill="#f0c6a9" transform="rotate(-30 37 35)"/>',luxe:'<path d="M8 22V8h14M32 8h14v14M8 32v14h14M32 46h14V32" stroke="#b99b60" stroke-width="3" fill="none"/>',lace:'<rect x="9" y="5" width="36" height="44" rx="16" fill="none" stroke="#c4a8bc" stroke-width="2"/>',minimal:'<path d="M12 27h30" stroke="#999" stroke-width="2"/>'};
+ return `<svg viewBox="0 0 54 54" aria-hidden="true">${art[type]||''}</svg>`;
+}
+function ep12StyleButtons(field,items){return items.map(([value,label])=>`<button class="${field==='decoration'?'ep12-decor-btn':'ep12-style-btn'} ${ep12Card[field]===value?'active':''}" data-ep12-style="${field}" data-ep12-value="${value}">${field==='decoration'?ep12DecorThumb(value):`<svg viewBox="0 0 64 68"><rect x="9" y="3" width="46" height="62" rx="${value==='modern'?1:5}" fill="${value==='royal'?'#fff4de':value==='minimal'?'#f5f5f5':'#fbe9ed'}" stroke="#b9a7b6"/><path d="M20 19h24 M25 28h14 M19 42h26 M24 49h16" stroke="#a88d9e" stroke-width="1.5"/><circle cx="32" cy="35" r="4" fill="#d7a7ba"/></svg>`}<span>${label}</span></button>`).join('')}
 function renderEp12Files(){
-  if(ep12FileScreen==='folders'){
-    return `
-      <div class="ep12-files">
-        <header class="ep12-files-head">
-          <button data-go="home">‹</button>
-          <strong>ไฟล์ของฉัน</strong>
-        </header>
-        <div class="ep12-files-content">
-          <h2>ที่เก็บข้อมูลภายใน</h2>
-          <button class="ep12-folder"
-            data-ep12-folder="wedding">
-            <span class="ep12-folder-icon">▱</span>
-            <span>
-              <b>Wedding</b>
-              <small>โฟลเดอร์งานแต่งงาน</small>
-            </span>
-          </button>
-          <button class="ep12-folder"
-            data-ep12-folder="documents">
-            <span class="ep12-folder-icon">▱</span>
-            <span>
-              <b>Documents</b>
-              <small>เอกสารส่วนตัว</small>
-            </span>
-          </button>
-        </div>
-      </div>`;
-  }
-
-  if(ep12FileScreen==='documents'){
-    return `
-      <div class="ep12-files">
-        <header class="ep12-files-head">
-          <button data-ep12-back="folders">‹</button>
-          <strong>Documents</strong>
-        </header>
-        <div class="ep12-files-content">
-          <p>ไม่มีเอกสารที่ต้องใช้สำหรับภารกิจนี้</p>
-        </div>
-      </div>`;
-  }
-
-  if(ep12FileScreen==='wedding'){
-    return `
-      <div class="ep12-files">
-        <header class="ep12-files-head">
-          <button data-ep12-back="folders">‹</button>
-          <strong>Wedding</strong>
-        </header>
-        <div class="ep12-files-content">
-          <h2>ไฟล์งานแต่งงาน</h2>
-          <button class="ep12-folder"
-            data-ep12-open-editor="1">
-            <span class="ep12-folder-icon">▤</span>
-            <span>
-              <b>Wedding Invitation</b>
-              <small>ออกแบบการ์ดแต่งงาน · 19 มิถุนายน</small>
-            </span>
-          </button>
-        </div>
-      </div>`;
-  }
-
-  return `
-    <div class="ep12-editor">
-      <header class="ep12-files-head">
-        <button data-ep12-back="wedding">‹</button>
-        <strong>Wedding Card Studio</strong>
-      </header>
-
-      <div class="ep12-editor-scroll">
-        <div class="ep12-preview">
-          ${ep12CardSVG()}
-        </div>
-
-        <div class="ep12-editor-controls">
-          ${ep12CardControl('รูปแบบการ์ด','template',[
-            ['classic','Classic'],
-            ['modern','Modern'],
-            ['royal','Royal'],
-            ['minimal','Minimal']
-          ])}
-
-          ${ep12CardControl('พื้นหลัง','background',[
-            ['gradient','ไล่สี'],
-            ['classic','ครีม'],
-            ['blush','ชมพู'],
-            ['sage','เขียวเซจ'],
-            ['blue','ฟ้า'],
-            ['lavender','ม่วงลาเวนเดอร์'],
-            ['peach','พีช']
-          ])}
-
-          <div class="ep12-color-row">
-            <label>สีพื้นหลัง 1
-              <input type="color"
-                data-ep12-field="color1"
-                value="${ep12Card.color1}">
-            </label>
-            <label>สีพื้นหลัง 2
-              <input type="color"
-                data-ep12-field="color2"
-                value="${ep12Card.color2}">
-            </label>
-            <label>สีตัวอักษร
-              <input type="color"
-                data-ep12-field="textColor"
-                value="${ep12Card.textColor}">
-            </label>
-          </div>
-
-          ${ep12CardControl('ฟอนต์','font',
-            Object.keys(ep12Fonts).map(f=>[f,f]))}
-
-          ${ep12CardControl('ของตกแต่ง','decoration',[
-            ['flowers','ดอกไม้'],
-            ['stars','ดวงดาว'],
-            ['hearts','หัวใจ'],
-            ['leaves','ใบไม้'],
-            ['ribbons','ริบบิ้น'],
-            ['minimal','ไม่มี']
-          ])}
-
-          <label class="ep12-control">
-            <span>ขนาดชื่อคู่แต่งงาน</span>
-            <input type="range" min="22" max="48"
-              data-ep12-field="size"
-              value="${ep12Card.size}">
-          </label>
-
-          <label class="ep12-control">
-            <span>ขนาดของตกแต่ง</span>
-            <input type="range" min=".5" max="1.5"
-              step=".1"
-              data-ep12-field="ornamentSize"
-              value="${ep12Card.ornamentSize}">
-          </label>
-
-          ${ep12CardText('ข้อความด้านบน','title')}
-          ${ep12CardText('ชื่อคนที่ 1','name1')}
-          ${ep12CardText('ชื่อคนที่ 2','name2')}
-          ${ep12CardText('วันแต่งงาน','date')}
-          ${ep12CardText('ปี','year')}
-          ${ep12CardText('ข้อความด้านล่าง','message')}
-
-          <div class="ep12-editor-actions">
-            <button data-ep12-download="png">
-              บันทึก PNG
-            </button>
-            <button data-ep12-download="svg">
-              บันทึก SVG
-            </button>
-            <button data-ep12-reset="1">
-              เริ่มออกแบบใหม่
-            </button>
-            <button class="ep12-finish"
-              data-ep12-finish="1">
-              ส่งการ์ดให้ร้านจัดงาน
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>`;
+ const back=(target,title)=>`<header class="ep12-files-head"><button data-ep12-back="${target}" aria-label="ย้อนกลับ">‹</button><strong>${title}</strong><span style="font-size:23px;color:#636976">⋮</span></header>`;
+ if(ep12FileScreen==='folders')return `<div class="ep12-files"> <header class="ep12-files-head"><button data-go="home">‹</button><strong>ไฟล์ของฉัน</strong><span style="font-size:24px;color:#626776">⌕ &nbsp;⋮</span></header><div class="ep12-files-content"><h2>ไฟล์ของฉัน</h2><div class="ep12-file-search">⌕ &nbsp; ค้นหาไฟล์</div><div class="ep12-categories"><div class="ep12-category">${ep12Icon('image')}รูปภาพ</div><div class="ep12-category">${ep12Icon('doc')}เอกสาร</div><div class="ep12-category">${ep12Icon('download')}ดาวน์โหลด</div><div class="ep12-category">${ep12Icon('music')}เสียง</div><div class="ep12-category">${ep12Icon('card')}ไฟล์ล่าสุด</div><div class="ep12-category">${ep12Icon('folder')}โฟลเดอร์</div></div><div class="ep12-section-label">ที่เก็บข้อมูล</div><div class="ep12-storage">${ep12Icon('storage')}<div><b>ที่เก็บข้อมูลภายใน</b><small>ใช้งาน 49.8 GB จาก 128 GB</small><div class="ep12-storage-track"><i></i></div></div></div><div class="ep12-section-label">โฟลเดอร์ล่าสุด</div><button class="ep12-folder" data-ep12-folder="wedding"><span class="ep12-folder-icon">${ep12Icon('folder')}</span><span><b>Wedding</b><small>ไฟล์ออกแบบการ์ด · 1 รายการ</small></span></button><button class="ep12-folder" data-ep12-folder="documents"><span class="ep12-folder-icon">${ep12Icon('folder')}</span><span><b>Documents</b><small>เอกสารส่วนตัว</small></span></button></div></div>`;
+ if(ep12FileScreen==='documents')return `<div class="ep12-files">${back('folders','Documents')}<div class="ep12-files-content"><div class="ep12-section-note">ยังไม่มีเอกสารสำหรับภารกิจนี้</div></div></div>`;
+ if(ep12FileScreen==='wedding')return `<div class="ep12-files">${back('folders','Wedding')}<div class="ep12-files-content"><div class="ep12-section-label">1 ไฟล์</div><button class="ep12-folder" data-ep12-open-editor="1"><span class="ep12-folder-icon" style="background:#eee5f7;color:#8668b5">${ep12Icon('card')}</span><span><b>Wedding Invitation.svg</b><small>ไฟล์ออกแบบ · 19 มิถุนายน · SVG</small></span></button><div class="ep12-section-note" style="margin-top:15px">แตะไฟล์เพื่อเปิดสตูดิโอออกแบบการ์ด</div></div></div>`;
+ return `<div class="ep12-editor">${back('wedding','Wedding Card Studio')}<div class="ep12-editor-scroll"><div class="ep12-preview">${ep12CardSVG()}</div><div class="ep12-editor-controls"><div class="ep12-panel"><div class="ep12-panel-title">รูปแบบการ์ด <span class="ep12-panel-hint">เลือกสไตล์ที่ชอบ</span></div><div class="ep12-style-grid">${ep12StyleButtons('template',[['classic','Romantic'],['modern','Contemporary'],['royal','Royal Gold'],['minimal','Minimal']])}</div></div><div class="ep12-panel"><div class="ep12-panel-title">โทนสี <span class="ep12-panel-hint">แตะเพื่อเปลี่ยนทันที</span></div><div class="ep12-palette">${[['gradient','#edcbd8'],['classic','#fff9f2'],['blush','#fce9ed'],['sage','#e9f2e9'],['blue','#e9efff'],['lavender','#f0e8ff'],['peach','#ffeadb']].map(([v,color])=>`<button aria-label="${v}" title="${v}" class="${ep12Card.background===v?'active':''}" data-ep12-style="background" data-ep12-value="${v}" style="background:${color}"></button>`).join('')}</div><div class="ep12-color-row"><label>สีพื้นหลัง 1<input type="color" data-ep12-field="color1" value="${ep12Card.color1}"></label><label>สีพื้นหลัง 2<input type="color" data-ep12-field="color2" value="${ep12Card.color2}"></label><label>สีข้อความ<input type="color" data-ep12-field="textColor" value="${ep12Card.textColor}"></label></div></div><div class="ep12-panel"><div class="ep12-panel-title">ของตกแต่ง SVG <span class="ep12-panel-hint">11 แบบ</span></div><div class="ep12-decor-grid">${ep12StyleButtons('decoration',[['flowers','ดอกไม้'],['roses','กุหลาบ'],['botanical','สวนดอกไม้'],['stars','ประกายดาว'],['hearts','หัวใจ'],['leaves','ใบไม้'],['ribbons','ริบบิ้น'],['petals','กลีบดอก'],['luxe','กรอบทอง'],['lace','ลูกไม้'],['minimal','เรียบง่าย']])}</div><label class="ep12-control">ขนาดลวดลาย<input type="range" min=".5" max="1.5" step=".1" data-ep12-field="ornamentSize" value="${ep12Card.ornamentSize}"></label></div><div class="ep12-panel"><div class="ep12-panel-title">ตัวอักษรและข้อความ</div>${ep12CardControl('รูปแบบฟอนต์','font',Object.keys(ep12Fonts).map(f=>[f,f]))}<label class="ep12-control">ขนาดชื่อ<input type="range" min="22" max="48" data-ep12-field="size" value="${ep12Card.size}"></label>${ep12CardText('ข้อความด้านบน','title')}${ep12CardText('ชื่อคนที่ 1','name1')}${ep12CardText('ชื่อคนที่ 2','name2')}${ep12CardText('วันแต่งงาน','date')}${ep12CardText('ปี','year')}${ep12CardText('ข้อความด้านล่าง','message')}</div><div class="ep12-editor-actions"><button data-ep12-download="png">บันทึก PNG</button><button data-ep12-download="svg">บันทึก SVG</button><button data-ep12-reset="1">เริ่มออกแบบใหม่</button><button class="ep12-finish" data-ep12-finish="1">ส่งการ์ดให้ร้านจัดงาน</button></div></div></div></div>`;
 }
 
 function ep12DownloadFile(blob,filename){
@@ -17869,6 +17726,11 @@ if(ep12Back && page==='ไฟล์'){
   return;
 }
 
+const ep12Style=e.target.closest('[data-ep12-style]');
+if(ep12Style){
+  ep12Card[ep12Style.dataset.ep12Style]=ep12Style.dataset.ep12Value;
+  ep12SaveCard();render();return;
+}
 const ep12Editor=e.target.closest('[data-ep12-open-editor]');
 
 if(ep12Editor && page==='ไฟล์'){

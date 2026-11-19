@@ -21144,11 +21144,24 @@ if(ep11StartAfterAchi){
 else if(btn.dataset.app){
 goApp(btn.dataset.app);
 }
+
 else if(btn.dataset.chat){
-chat=btn.dataset.chat;
-page='chat';
-render();
+  chat=btn.dataset.chat;
+  page='chat';
+
+  // EP.04 — อ่านข้อความอชิหลังพบบ้าน
+  if(
+    chat==='achi' &&
+    save.flags.ep4MapComplete &&
+    save.flags.ep4HomeBannerShown
+  ){
+    save.flags.ep4HomeBannerRead=true;
+    persist();
+  }
+
+  render();
 }
+
 else if(btn.dataset.reply){
 
   const who=btn.dataset.reply;

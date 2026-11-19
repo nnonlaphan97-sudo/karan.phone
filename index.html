@@ -7027,10 +7027,12 @@ button{
 .line-message .line-message-avatar .line-avatar{overflow:hidden}
 
 /* EP12 video call, finale and celebrations */
+#phone:has(.ep12-video-call) > .nav{display:none!important}
+#phone:has(.ep12-video-call) > .status,#phone:has(.ep12-video-call) > .camera{visibility:hidden}
 .ep12-video-call{position:absolute;inset:0;z-index:55;background:#080a12;overflow:hidden}
-.ep12-video-call video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ep12-video-call .ep11-video-top{position:absolute;top:48px;left:15px;right:15px;z-index:2;display:flex;justify-content:space-between;color:#fff;text-shadow:0 2px 7px #000}
-.ep12-video-call .ep11-video-controls{position:absolute;bottom:65px;left:0;right:0;z-index:2;display:flex;align-items:center;flex-direction:column;gap:9px;color:#fff}
+.ep12-video-call video{position:absolute;top:28px;left:0;width:100%;height:calc(100% - 28px);object-fit:cover}
+.ep12-video-call .ep11-video-top{position:absolute;top:72px;left:15px;right:15px;z-index:2;display:flex;justify-content:space-between;color:#fff;text-shadow:0 2px 7px #000}
+.ep12-video-call .ep11-video-controls{position:absolute;bottom:32px;left:0;right:0;z-index:2;display:flex;align-items:center;flex-direction:column;gap:9px;color:#fff}
 .ep12-celebration{position:absolute;inset:0;z-index:100;overflow:hidden;pointer-events:none;background:radial-gradient(circle at center,rgba(255,198,226,.25),rgba(10,4,36,.2))}
 .ep12-celebration span{position:absolute;animation:ep12Fall 4s ease-in infinite;text-shadow:0 1px 12px #fff9}
 @keyframes ep12Fall{0%{opacity:0;transform:translateY(-100px) rotate(0) scale(.3)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(105vh) rotate(650deg) scale(1.3)}}
@@ -7039,6 +7041,24 @@ button{
 .ep12-end-screen{height:100%;padding:100px 25px 60px;background:linear-gradient(160deg,#fff3f9,#e9d9fc,#fff4d7);color:#61374d;text-align:center;overflow-y:auto}
 .ep12-end-screen h1{font-family:Georgia,serif;font-size:28px}.ep12-end-screen h2{font-size:20px;line-height:1.7}.ep12-end-screen p{line-height:1.8}
 .ep12-end-ornament{font-size:40px;margin:30px 0}.ep12-end-screen button{display:block;width:100%;margin:12px 0;padding:15px;border:0;border-radius:16px;background:#774c73;color:white;font-weight:700}
+
+/* EP12: realistic email correspondence and flight ticket */
+.ep12-email-document{background:#fff;color:#202124;padding:4px 0 25px}
+.ep12-email-subject{font-size:22px;font-weight:650;line-height:1.35;margin:8px 0 20px}
+.ep12-email-from{display:flex;gap:11px;align-items:center;padding:0 0 17px;border-bottom:1px solid #eef0f2}
+.ep12-email-from strong,.ep12-email-from small{display:block}.ep12-email-from strong{font-size:13px}.ep12-email-from small{font-size:11px;color:#7b8089;margin-top:4px}
+.ep12-airline-avatar{width:40px;height:40px;border-radius:50%;background:#193c68;color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px;flex-shrink:0}
+.ep12-email-copy{font-size:13px;line-height:1.75;color:#404650;margin:17px 0}.ep12-email-copy p{margin:0 0 13px}
+.ep12-ticket{border:1px solid #d8e0eb;border-radius:15px;overflow:hidden;margin:20px 0;background:#fff;box-shadow:0 3px 14px #20365610}
+.ep12-ticket-header{background:#183a62;color:#fff;padding:16px;display:flex;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.5px}
+.ep12-ticket-header b{font-size:10px;border:1px solid #ffffff80;padding:5px;border-radius:4px}
+.ep12-ticket-route{display:flex;justify-content:space-between;align-items:center;text-align:center;padding:24px 13px 19px;border-bottom:1px dashed #cbd4df}
+.ep12-ticket-route strong{font-size:30px;letter-spacing:1px;color:#193c68;display:block}.ep12-ticket-route small,.ep12-ticket-route span{display:block;color:#777;font-size:11px;margin-top:4px}.ep12-ticket-route span{color:#222;font-size:15px;font-weight:700}
+.ep12-ticket-line{flex:1;color:#6683a7;font-size:21px;position:relative}.ep12-ticket-line:before{content:'';height:1px;background:#b9c8d9;position:absolute;left:8px;right:8px;top:13px;z-index:0}.ep12-ticket-line small{font-size:10px;margin-top:8px}
+.ep12-ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px 10px;padding:20px 16px}.ep12-ticket-grid small,.ep12-ticket-grid strong{display:block}.ep12-ticket-grid small{color:#7c8692;font-size:11px}.ep12-ticket-grid strong{color:#25354a;font-size:13px;margin-top:4px}
+.ep12-email-hint{background:#eef6ff;color:#22517b;border-radius:10px;padding:13px;font-size:12px;line-height:1.6;margin:15px 0}
+.ep12-email-disclaimer{display:block;color:#9198a3;font-size:10px;margin-top:22px}.ep12-mail-date{font-size:10px;color:#9ca3ad;align-self:flex-start;white-space:nowrap}
+.ep12-gmail-banner-logo{width:40px;height:40px;display:grid;place-items:center;background:#fff;border-radius:12px}
 </style>
 </head>
 <body>
@@ -8177,7 +8197,7 @@ function ep8Banner(name,message,target){
       data-ep8-banner="${target}">
    <span class="game-banner-icon"
   style="background:transparent;padding:0;overflow:hidden;">
-  ${target==='phone'?phoneBannerIcon():target==='gmail'?'<span style="background:#fff;color:#e84838;font-size:25px;font-weight:800;padding:5px 9px;border-radius:9px">M</span>':lineBannerAvatar(target)}
+  ${target==='phone'?phoneBannerIcon():target==='gmail'?'<span class="ep12-gmail-banner-logo"><svg viewBox="0 0 48 48" width="37" height="37" aria-label="Gmail"><path fill="#4285F4" d="M5 14h7v26H5z"/><path fill="#34A853" d="M36 14h7v26h-7z"/><path fill="#EA4335" d="M5 11l5-4 14 11L38 7l5 4v8L24 33 5 19z"/><path fill="#C5221F" d="M5 11l7 5v8l-7-5z"/><path fill="#FBBC04" d="M36 16l7-5v8l-7 5z"/></svg></span>':lineBannerAvatar(target)}
 </span>
       <span class="game-banner-text">
         <small>${target==='phone'?'Phone':target==='gmail'?'Gmail':'LINE'} · ${target==='gmail'?'อีเมลใหม่':'ข้อความใหม่'}</small>
@@ -8835,7 +8855,8 @@ if(save.flags.ep6Stage >= 2){
   if(
     save.flags.deliveryStatus==='delivered' ||
     save.flags.ep3DujQuestionShown ||
-    save.flags.ep4DujBannerShown
+    save.flags.ep4DujBannerShown ||
+    save.flags.ep11LeaveApproved
   ){
     availableChats.push({
       id:'duj',
@@ -9402,9 +9423,14 @@ if(
     const achi=results.find(c=>c.id==='achi');if(achi){achi.date='01 ธ.ค.';achi.preview='อย่าทำงานหนักเกินไปนะการันต์';achi.sortTime=12011830;}
   }
   if(save.flags.ep11PaiNotified){const pai=results.find(c=>c.id==='pai');if(pai){pai.date='01 ธ.ค.';pai.preview='น่ารักมากกกกกก';pai.sortTime=12011900;}}
-  if(save.flags.ep11LeaveApproved){results.sort((a,b)=>b.sortTime-a.sortTime || a.originalIndex-b.originalIndex);}
-  // In EP12 the newest Achi message should be first after online check-in.
-  if(save.flags.ep12Checkin){const i=results.findIndex(c=>c.id==='achi');if(i>0)results.unshift(results.splice(i,1)[0]);}
+  // After EP11, sort every visible chat by the actual latest story date.
+  if(save.flags.ep11LeaveApproved){
+    const duj=results.find(c=>c.id==='duj');
+    if(duj){duj.date='23 ธ.ค.';duj.preview='ขอบคุณครับ';duj.sortTime=12231035;}
+    const rock=results.find(c=>c.id==='rock');
+    if(rock){rock.date='20 พ.ย.';rock.preview='มีอะไรรึเปล่าครับร็อค';rock.sortTime=11201740;}
+    results.sort((a,b)=>b.sortTime-a.sortTime || a.originalIndex-b.originalIndex);
+  }
   const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
@@ -14080,14 +14106,13 @@ function ep11MailList(){
           กล่องจดหมาย · งานฝ่ายขาย
         </div>
 
-        ${rows}
-
         ${save.flags.ep11FlightBooked?`
-          <button class="ep11-mail-row" data-ep11-open="confirmed"><div class="ep11-mail-avatar">${ep11MailIcon('check')}</div><div class="ep11-mail-row-text"><strong>Skyline Air · E-ticket</strong><b>${save.flags.ep12Checkin?'เช็คอินออนไลน์สำเร็จ · Boarding Pass':'E-ticket issued · Business Class'}</b><span>Booking KACM26 · Bangkok → Nakhon Si Thammarat</span></div></button>
+          <button class="ep11-mail-row" data-ep11-open="confirmed"><div class="ep11-mail-avatar" style="background:#e8f3ff;color:#1b6fd1">${ep11MailIcon('check')}</div><div class="ep11-mail-row-text"><strong>Skyline Air · Online Check-in</strong><b>${save.flags.ep12Checkin?'เช็คอินสำเร็จ · บัตรขึ้นเครื่องพร้อมใช้งาน':'E-ticket พร้อมเช็คอินออนไลน์'}</b><span>รหัสจอง KACM26 · Business Class · 22 ธ.ค.</span></div><span class="ep12-mail-date">${save.flags.ep12Checkin?'22 ธ.ค.':'21 ธ.ค.'}</span></button>
         `:''}
         ${save.flags.ep11LeaveApproved && save.flags.ep11DujRead?`
-          <button class="ep11-mail-row" data-ep11-open="booking"><div class="ep11-mail-avatar">${ep11MailIcon('plane')}</div><div class="ep11-mail-row-text"><strong>Skyline Air · Reservations</strong><b>รายละเอียดการจอง · Business Class</b><span>กรุงเทพฯ → นครศรีธรรมราช · 22 ธ.ค.</span></div></button>
+          <button class="ep11-mail-row" data-ep11-open="booking"><div class="ep11-mail-avatar" style="background:#eef2f9;color:#274c7d">${ep11MailIcon('plane')}</div><div class="ep11-mail-row-text"><strong>Skyline Air · Reservations</strong><b>ใบยืนยันการจองเที่ยวบิน · Business Class</b><span>รายละเอียดเที่ยวบิน สัมภาระ และเงื่อนไขการเดินทาง</span></div><span class="ep12-mail-date">23 ธ.ค.</span></button>
         `:''}
+        ${rows}
       </div>
 
       <div class="ep11-mail-nav">
@@ -14214,29 +14239,30 @@ function renderEp11Gmail(){
   }
 
   if(ep11MailOpen==='booking'){
-    content=`<h2>Flight Reservation · Business Class</h2><p>จาก: Skyline Air Reservations</p>
-      <div class="ep11-flight"><small>ITINERARY / BOOKING REQUEST</small><h2>Bangkok → Nakhon Si Thammarat</h2>
-      <p><b>ผู้โดยสาร:</b> Karan · Adult (1)</p><p><b>วันที่เดินทาง:</b> 22 ธันวาคม 2026</p>
-      <p><b>เส้นทาง:</b> BKK → NST · เที่ยวบินจำลอง SA 2212</p><p><b>เวลา:</b> 09:20 – 10:40 (เวลาท้องถิ่น)</p>
-      <p><b>ชั้นโดยสาร:</b> Business Class · ที่นั่ง 2A</p>
-      <p><b>บริการ:</b> Lounge access · Priority boarding · อาหารบนเครื่อง</p>
-      <p><b>สัมภาระ:</b> ถือขึ้นเครื่อง 7 กก. · โหลดใต้เครื่อง 30 กก.</p>
-      <p><b>รหัสอ้างอิง:</b> KACM26</p><small>ข้อมูลสายการบินและเที่ยวบินเป็นข้อมูลสมมติสำหรับเกม</small></div>
-      ${save.flags.ep11FlightBooked?'<p>ออกบัตรโดยสารแล้ว · ดูอีเมล E-ticket ด้านบน</p>':'<button class="ep11-primary" data-ep11-book-flight="1">ออกตั๋ว Business Class</button>'}`;
+    content=`<div class="ep12-email-document">
+      <div class="ep12-email-subject">รายละเอียดการจองเที่ยวบินของคุณ</div>
+      <div class="ep12-email-from"><span class="ep12-airline-avatar">S</span><div><strong>Skyline Air Reservations</strong><small>reservations@skyline-air.example · ถึง Karan</small></div></div>
+      <div class="ep12-email-copy"><p>เรียน คุณการันต์</p><p>ขอบคุณที่เลือกเดินทางกับ Skyline Air การจองของคุณได้รับการบันทึกเรียบร้อยแล้ว กรุณาตรวจสอบรายละเอียดด้านล่าง</p></div>
+      <div class="ep12-ticket"><div class="ep12-ticket-header"><span>SKYLINE AIR</span><b>BUSINESS CLASS</b></div>
+        <div class="ep12-ticket-route"><div><strong>BKK</strong><small>Bangkok</small><span>09:20</span></div><div class="ep12-ticket-line">✈<small>SA 2212</small></div><div><strong>NST</strong><small>Nakhon Si Thammarat</small><span>10:40</span></div></div>
+        <div class="ep12-ticket-grid"><div><small>วันที่เดินทาง</small><strong>22 ธ.ค. 2026</strong></div><div><small>ผู้โดยสาร</small><strong>Karan</strong></div><div><small>หมายเลขการจอง</small><strong>KACM26</strong></div><div><small>ที่นั่ง</small><strong>2A</strong></div><div><small>ชั้นโดยสาร</small><strong>Business</strong></div><div><small>สัมภาระโหลด</small><strong>30 กก.</strong></div></div>
+      </div><div class="ep12-email-copy"><p><b>สิทธิประโยชน์:</b> Priority check-in, Priority boarding, Lounge access และอาหารบนเครื่อง</p><p>เมื่อออกตั๋วแล้ว คุณจะได้รับอีเมล E-ticket อีกฉบับ พร้อมขั้นตอนเช็คอินออนไลน์</p><p>ขอแสดงความนับถือ<br>Skyline Air Reservations</p></div>
+      ${save.flags.ep11FlightBooked?'<div class="ep12-email-hint">ออกตั๋วแล้ว · กรุณาเปิดอีเมล E-ticket ฉบับล่าสุดเพื่อเช็คอิน</div>':'<button class="ep11-primary" data-ep11-book-flight="1">ยืนยันและออกตั๋ว Business Class</button>'}
+      <small class="ep12-email-disclaimer">* สายการบินและหมายเลขเที่ยวบินเป็นข้อมูลสมมติสำหรับเกม</small>
+    </div>`;
   }
   if(ep11MailOpen==='confirmed'){
-    content=`<h2>${save.flags.ep12Checkin?'Online Check-in Completed':'E-ticket · Booking Confirmed'}</h2><p>จาก: Skyline Air · Electronic Ticket</p>
-      <div class="ep11-flight"><div class="ep11-flight-check">${ep11MailIcon('check')}</div>
-      <h2>${save.flags.ep12Checkin?'Boarding Pass Ready':'Your E-ticket is issued'}</h2>
-      <p><b>Booking reference:</b> KACM26</p><p><b>ผู้โดยสาร:</b> Karan</p>
-      <p><b>เที่ยวบิน:</b> SA 2212 · 22 ธันวาคม 2026</p><p><b>ต้นทาง:</b> Bangkok (BKK) · 09:20</p>
-      <p><b>ปลายทาง:</b> Nakhon Si Thammarat (NST) · 10:40</p>
-      <p><b>Cabin:</b> Business Class · <b>Seat:</b> 2A</p>
-      <p><b>สัมภาระ:</b> Cabin 7 kg / Checked 30 kg</p>
-      <p><b>สถานะ:</b> ${save.flags.ep12Checkin?'Checked in':'Ticketed / Confirmed'}</p>
-      ${save.flags.ep12Checkin?'<p><b>Boarding group:</b> Priority · แสดงบัตรขึ้นเครื่องพร้อมบัตรประชาชนที่สนามบิน</p>':'<p>โปรดตรวจสอบชื่อผู้โดยสารและเอกสารเดินทางก่อนเช็คอิน</p>'}
-      <small>ข้อมูลเที่ยวบินสมมติสำหรับเรื่องราว ไม่ใช่บัตรโดยสารจริง</small></div>
-      ${!save.flags.ep12Checkin?'<button class="ep11-primary" data-ep11-checkin="1">เช็คอินออนไลน์</button>':'<div class="ep11-mail-success">เช็คอินเรียบร้อยแล้ว</div>'}`;
+    content=`<div class="ep12-email-document">
+      <div class="ep12-email-subject">${save.flags.ep12Checkin?'เช็คอินออนไลน์สำเร็จ · Boarding Pass':'E-ticket issued · เช็คอินออนไลน์'}</div>
+      <div class="ep12-email-from"><span class="ep12-airline-avatar">S</span><div><strong>Skyline Air · E-ticket</strong><small>eticket@skyline-air.example · ถึง Karan</small></div></div>
+      <div class="ep12-email-copy"><p>เรียน คุณการันต์</p><p>${save.flags.ep12Checkin?'การเช็คอินออนไลน์ของคุณสำเร็จแล้ว รายละเอียดบัตรขึ้นเครื่องอยู่ด้านล่าง':'บัตรโดยสารอิเล็กทรอนิกส์ของคุณออกเรียบร้อยแล้ว คุณสามารถเช็คอินออนไลน์ได้จากอีเมลฉบับนี้'}</p><p>รายละเอียดการจองฉบับเต็ม รวมถึงเงื่อนไขสัมภาระและบริการ Business Class อยู่ในอีเมล <b>“รายละเอียดการจองเที่ยวบินของคุณ”</b> ที่ส่งไปก่อนหน้านี้</p></div>
+      <div class="ep12-ticket"><div class="ep12-ticket-header"><span>SKYLINE AIR</span><b>${save.flags.ep12Checkin?'BOARDING PASS':'E-TICKET'}</b></div>
+      <div class="ep12-ticket-route"><div><strong>BKK</strong><small>Bangkok</small><span>09:20</span></div><div class="ep12-ticket-line">✈<small>SA 2212</small></div><div><strong>NST</strong><small>Nakhon Si Thammarat</small><span>10:40</span></div></div>
+      <div class="ep12-ticket-grid"><div><small>ผู้โดยสาร</small><strong>Karan</strong></div><div><small>Booking reference</small><strong>KACM26</strong></div><div><small>วันที่</small><strong>22 ธ.ค. 2026</strong></div><div><small>Seat</small><strong>2A</strong></div><div><small>Cabin</small><strong>Business</strong></div><div><small>Status</small><strong>${save.flags.ep12Checkin?'Checked in':'Ticketed'}</strong></div></div>
+      </div>${save.flags.ep12Checkin?'<div class="ep12-email-hint">✓ เช็คอินเรียบร้อยแล้ว · โปรดเตรียมเอกสารยืนยันตัวตนก่อนขึ้นเครื่อง</div>':'<button class="ep11-primary" data-ep11-checkin="1">เช็คอินออนไลน์</button>'}
+      <div class="ep12-email-copy"><p>หากต้องการตรวจสอบข้อมูลสัมภาระหรือเปลี่ยนแปลงการเดินทาง โปรดอ้างอิงรหัสการจอง KACM26</p><p>ขอให้เดินทางโดยสวัสดิภาพ<br>Skyline Air Customer Service</p></div>
+      <small class="ep12-email-disclaimer">* เอกสารสมมติสำหรับเกม ไม่ใช่บัตรโดยสารจริง</small>
+    </div>`;
   }
 
   return `

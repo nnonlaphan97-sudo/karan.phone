@@ -9523,13 +9523,19 @@ if(
       '</button>'
     ).join('');
 
-  const weddingShopRow=save.flags.ep12ShopNotified && 'Ever After Wedding Studio'.toLowerCase().includes(q) ? '<button class="line-row" data-line-chat="ep12Shop"><span class="line-avatar line-photo">
-  <img
-    src="videos/Elegant Wedding Inspiration _ ไอเดียงานแต่ง แบบ Timeless Wedding.jfif"
-    alt="Ever After Wedding Studio"
-    style="width:100%;height:100%;object-fit:cover;border-radius:50%;"
-  >
-</span><div class="line-row-body"><div class="line-name">Ever After Wedding Studio</div><div class="line-preview">'+(save.flags.ep12CardSent?'อย่าลืมเอาการ์ดของคุณมาอวดนะคะ':'อยากได้การ์ดแต่งงานแบบไหนคะ')+'</div></div><div class="line-time">22 ธ.ค.</div></button>' : '';
+  const weddingShopRow=save.flags.ep12ShopNotified && 'Ever After Wedding Studio'.toLowerCase().includes(q)
+    ? `<button class="line-row" data-line-chat="ep12Shop">
+        <span class="line-avatar line-photo">
+          <img src="videos/Elegant Wedding Inspiration _ ไอเดียงานแต่ง แบบ Timeless Wedding.jfif"
+               alt="Ever After Wedding Studio"
+               style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+        </span>
+        <div class="line-row-body">
+          <div class="line-name">Ever After Wedding Studio</div>
+          <div class="line-preview">${save.flags.ep12CardSent?'อย่าลืมเอาการ์ดของคุณมาอวดนะคะ':'อยากได้การ์ดแต่งงานแบบไหนคะ'}</div>
+        </div>
+        <div class="line-time">22 ธ.ค.</div>
+      </button>` : '';
   return weddingShopRow + giftChat + normalChats ||
     '<div class="line-empty">ไม่พบแชต</div>';
 }

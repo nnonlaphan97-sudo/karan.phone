@@ -7889,7 +7889,7 @@ function ep11Start(){
   render();
 
   ep8Banner(
-    'อชิ',
+    'Achirawit',
     'การันต์ ว่างคุยกันไหม',
     'achi'
   );
@@ -7938,7 +7938,7 @@ function ep10Start(){
   lineMarkChatActivity('pai');
   persist();
   render();
-  ep8Banner('ปาย','พี่การันต์คะ ช่วยดูเรื่องกระทงหน่อยได้ไหมคะ','pai');
+  ep8Banner('Pai','พี่การันต์คะ ช่วยดูเรื่องกระทงหน่อยได้ไหมคะ','pai');
 }
 
 let ep9SpotifyScreen='home';
@@ -8374,7 +8374,7 @@ const linePeople = [
   },
   {
     id:'achi',
-    name:'อชิ',
+    name:'Achirawit',
     status:'คนพิเศษที่ไม่วิเศษ'
   },
   {
@@ -8499,7 +8499,7 @@ const lineProfileImages={
 
 const lineProfileNames={
   me:'karan',
-  achi:'อชิ',
+  achi:'Achirawit',
   pai:'Pai',
   duj:'พี่ดุจดาว',
   tanaka:'Tanaka san',
@@ -8822,7 +8822,7 @@ function lineChatsHTML(){
 if(save.flags.ep6Stage >= 2){
   availableChats.push({
     id:'tanaka',
-    name:'ทานากะซัง'
+    name:'Tanaka San'
   });
 }
   if(save.flags.ep4KarinShown || save.flags.ep3KarinMessageShown){
@@ -8856,7 +8856,7 @@ if(save.flags.ep6Stage >= 2){
   ){
     availableChats.push({
       id:'achi',
-      name:'อชิ'
+      name:'Achirawit'
     });
   }
 
@@ -9496,7 +9496,7 @@ const mosaic=(ids)=>{
 
 directoryRow(
   'รายการโปรด',
-  'อชิ',
+  'Achirawit',
   '1',
   ['achi'],
   'favorites'
@@ -11027,7 +11027,7 @@ const photo=photos[samsungGalleryIndex];
         
 ${[
   {id:'karin',name:'Karin'},
-  {id:'achi',name:'อชิ'},
+  {id:'achi',name:'Achirawit'},
   {id:'duj',name:'พี่ดุจดาว'},
   {id:'pai',name:'Pai'},
   {id:'rock',name:'Rock'},
@@ -11336,7 +11336,7 @@ const igPeople = {
     caption: ''
   },
   achi: {
-    name: 'อชิ',
+    name: 'Achirawit',
     username: 'achirawittee',
     initial: 'อ',
     color: '#d9c8c1',
@@ -15453,7 +15453,7 @@ const senderMap={
   'พี่ดุจดาว':'duj',
   'ปาย':'pai',
   'ร็อค':'rock',
-  'อชิ':'achi',
+  'Achirawit':'achi',
   'การันต์':'me',
   'ทานากะซัง':'tanaka',
   'ทีมฝ่ายขาย':'sales',
@@ -15678,7 +15678,7 @@ const senderMap={
   'พี่ดุจดาว':'duj',
   'ปาย':'pai',
   'ร็อค':'rock',
-  'อชิ':'achi',
+  'Achirawit':'achi',
   'การันต์':'me',
   'ทานากะซัง':'tanaka',
   'ทีมฝ่ายขาย':'sales',
@@ -15693,7 +15693,7 @@ const senderMap={
   'พี่ดุจดาว':'พี่ดุจดาว',
   'ร็อค':'Rock',
   'ปาย':'Pai',
-  'อชิ':'อชิ',
+  'อชิ':'Achirawit',
   'ทานากะซัง':'Tanaka san'
 };
 
@@ -16177,7 +16177,7 @@ function renderChat(){
   pai:'Pai',
   rock:'Rock',
   duj:'พี่ดุจดาว',
-  achi:'อชิ',
+  achi:'Achirawit',
   karin:'Karin',
   tanaka:'Tanaka san',
   flowerShop:'Bloom & Beyond',
@@ -16665,8 +16665,8 @@ if(chat==='office'){
     'สวัสดีครับทุกคน ฝากเนื้อฝากตัวด้วยนะครับ'
   );
 
-  b+=groupBubble('ปาย','ยินดีต้อนรับจ้า');
-  b+=groupBubble('อชิ','ยินดีต้อนรับครับ');
+  b+=groupBubble('Pai','ยินดีต้อนรับจ้า');
+  b+=groupBubble('Achirawit','ยินดีต้อนรับครับ');
 
   // ข้อความของการันต์
   b+=bubble('ยินดีต้อนรับครับ',true);
@@ -16715,9 +16715,9 @@ const outingPhotos = [
   });
 
 
-  b+=groupBubble('ปาย','รูปเริ่ดมากเลยค่ะพี่ดุจ');
-  b+=groupBubble('ร็อค','สนุกมากเลยครับ');
-  b+=groupBubble('อชิ','ขอบคุณครับ');
+  b+=groupBubble('Pai','รูปเริ่ดมากเลยค่ะพี่ดุจ');
+  b+=groupBubble('Rock','สนุกมากเลยครับ');
+  b+=groupBubble('Achirawit','ขอบคุณครับ');
 }
 }
   if(chat==='sales'){
@@ -17957,8 +17957,8 @@ function showEp5InstagramBanner(){
 
 function lineBannerAvatar(id){
   const names={
-    'อชิ':'achi',
-    'อชิ':'achi',
+    'Achirawit':'achi',
+    'Achirawit':'achi',
     'ปาย':'pai',
     'Pai':'pai',
     'ร็อค':'rock',
@@ -17988,7 +17988,7 @@ function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
   if(!banner)return;
   clearTimeout(gameBannerHideTimer);
-  const names={office:'TOYOKAWA',sales:'ทีมฝ่ายขาย',achi:'อชิ',pai:'ปาย',rock:'ร็อค',duj:'พี่ดุจดาว',karin:'การิน',tanaka:'ทานากะซัง'};
+  const names={office:'TOYOKAWA',sales:'ทีมฝ่ายขาย',achi:'Achirawit',pai:'Pai',rock:'Rock',duj:'พี่ดุจดาว',karin:'Karin',tanaka:'Tanaka San'};
   const sender=who==='lineGiftNotice'?'LINE GIFT Notice':who==='line-official'?'LINE':(names[who]||who);
   const avatar=who==='lineGiftNotice'?ep1GiftIcon():who==='line-official'?'<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800">LINE</span>':lineBannerAvatar(who);
   banner.innerHTML=`<button class="game-banner" data-banner-chat="${who}"><span class="game-banner-icon" style="background:transparent;overflow:hidden">${avatar}</span><span class="game-banner-text"><small>LINE · ตอนนี้</small><strong>${sender}</strong><span>${message}</span></span></button>`;
@@ -18831,7 +18831,7 @@ if(
     persist();
 
     ep8Banner(
-      'อชิ',
+      'Achirawit',
       'การันต์เก่งมากเลย',
       'achi'
     );
@@ -19494,7 +19494,7 @@ setTimeout(()=>{
   ep6Advance(1);
 
   ep6Notify(
-    'อชิ',
+    'Achirawit',
     'ขอโทษ?',
     'achi'
   );
@@ -20817,13 +20817,13 @@ if(ep6LeavingTanaka){
 }
 
 if(ep6LeavingPai){
-  ep6Notify('อชิ','ผมอยากคุยกับการันต์เรื่องคืนก่อน','achi');
+  ep6Notify('Achirawit','ผมอยากคุยกับการันต์เรื่องคืนก่อน','achi');
 }
 if(ep6LeavingAchiConfession){
   if(save.flags.ep6Stage===2){
     lineMarkChatActivity('tanaka');
     persist();
-    ep6Notify('ทานากะซัง','พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย','tanaka');
+    ep6Notify('Tanaka San','พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย','tanaka');
   }
 }
 
@@ -20843,7 +20843,7 @@ if(ep6LeavingAchiConfession){
   render();
 
   ep8Banner(
-    'อชิ',
+    'Achirawit',
     'ผมแชร์รายชื่อลูกค้าใน Samsung Notes ให้แล้วนะ',
     'achi'
   );
@@ -20859,7 +20859,7 @@ if(ep8LeavingSales){
   render();
 
   ep8Banner(
-    'อชิ',
+    'Achirawit',
     'การันต์เก่งมากเลย',
     'achi'
   );
@@ -20903,7 +20903,7 @@ if(ep9LeavingTanaka){
   render();
 
   ep8Banner(
-    'อชิ',
+    'Achirawit',
     'การันต์ ว่างคุยกันหน่อยไหม',
     'achi'
   );
@@ -20935,7 +20935,7 @@ if(ep10LeavingRock){
   render();
 
   ep8Banner(
-    'อชิ',
+    'Achirawit',
     'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์',
     'achi'
   );
@@ -20943,7 +20943,7 @@ if(ep10LeavingRock){
 /* ===== START EP.11 ===== */
 
 if(ep11DujExit){save.flags.ep11DujRead=true;persist();render();ep8Banner('Gmail','มีอีเมลจองตั๋วเครื่องบินรอยืนยัน','gmail');}
-if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('ปาย','พี่การันต์คะ มีเรื่องจะบอก','pai');}
+if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('Pai','พี่การันต์คะ มีเรื่องจะบอก','pai');}
 if(ep11StartAfterAchi){
 
   save.flags.ep11Started=true;

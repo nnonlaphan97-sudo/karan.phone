@@ -7132,6 +7132,28 @@ button{
 .ep12-final-message h2{font-family:Georgia,serif;font-size:24px;font-weight:500;margin:6px 0 12px;color:#92687a}
 .ep12-final-message p{font-size:13px;line-height:1.8;margin:8px 0}
 .ep12-final-flourish{color:#bd9a65;letter-spacing:12px}
+
+/* Creator dashboard: isolated from game navigation */
+.camera{pointer-events:auto!important;cursor:pointer;touch-action:none;user-select:none}
+#creatorOverlay{position:absolute;inset:0;z-index:9999;background:linear-gradient(155deg,#121a30,#232b46 60%,#473750);color:#fff;display:none;flex-direction:column;overflow:auto;padding:56px 20px 30px;font-family:Arial,'Noto Sans Thai',sans-serif}
+#creatorOverlay.open{display:flex}
+.creator-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.creator-close{border:1px solid #ffffff38;border-radius:50%;background:#ffffff15;color:white;width:38px;height:38px;font-size:22px}
+.creator-kicker{font-size:10px;letter-spacing:2.2px;color:#bdc7ed;font-weight:700}
+.creator-title{font-size:28px;font-weight:750;margin:8px 0 7px;letter-spacing:-.6px}
+.creator-sub{font-size:12px;color:#b9c2d7;line-height:1.7}
+.creator-card{background:#ffffff12;border:1px solid #ffffff20;border-radius:22px;padding:19px;margin-top:18px;box-shadow:0 12px 35px #0002}
+.creator-input{width:100%;padding:16px;border-radius:13px;border:1px solid #ffffff35;background:#111a31;color:#fff;letter-spacing:5px;text-align:center;font-size:21px;margin:17px 0 12px}
+.creator-primary{width:100%;padding:14px;border:0;border-radius:13px;background:#c5caff;color:#18203b;font-weight:700;font-size:14px}
+.creator-error{font-size:12px;color:#ffc2c2;line-height:1.6;margin-top:10px;min-height:18px}
+.creator-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:20px}
+.creator-metric{padding:18px 14px;border:1px solid #ffffff20;border-radius:19px;background:#ffffff10}
+.creator-metric strong{display:block;font-size:29px;line-height:1.4;letter-spacing:-1px}
+.creator-metric span{font-size:11px;color:#bac5e0}
+.creator-chart{display:flex;align-items:flex-end;gap:9px;height:115px;margin-top:20px}
+.creator-bar{flex:1;min-width:0;border-radius:8px 8px 3px 3px;background:linear-gradient(#c9d1ff,#798de0);position:relative}
+.creator-bar span{position:absolute;bottom:-21px;left:50%;transform:translateX(-50%);font-size:10px;color:#aeb9d5;white-space:nowrap}
+.creator-note{font-size:11px;color:#bac5e0;line-height:1.8;margin-top:23px}
 </style>
 </head>
 <body>
@@ -20922,6 +20944,45 @@ document.addEventListener('change',function(e){
   }
 });
 
+})();
+</script>
+<script>
+/* Separate analytics module: failures here cannot block the phone PIN or apps. */
+(function(){
+  'use strict';
+  var camera=document.querySelector('#phone > .camera');
+  var phone=document.getElementById('phone');
+  if(!camera||!phone)return;
+  var visitorKey='karan_stats_visitor_v1',visitor='';
+  try{visitor=localStorage.getItem(visitorKey)||'';if(!visitor){visitor=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random());localStorage.setItem(visitorKey,visitor)}}catch(e){visitor='guest-'+Math.random()}
+  function sendEvent(type){
+    fetch('/api/game-stats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:type,visitor:visitor}),keepalive:true}).catch(function(){});
+  }
+  sendEvent('visit');
+  var overlay=document.createElement('div');overlay.id='creatorOverlay';
+  overlay.innerHTML='<div class="creator-top"><span class="creator-kicker">KARAN’S PHONE / PRIVATE</span><button class="creator-close" type="button" aria-label="ปิด">×</button></div><div id="creatorBody"></div>';
+  phone.appendChild(overlay);
+  var body=overlay.querySelector('#creatorBody');
+  var timer=null,opened=false;
+  function open(){opened=true;overlay.classList.add('open');showLogin()}
+  function close(){overlay.classList.remove('open');opened=false}
+  function showLogin(){body.innerHTML='<div style="font-size:40px;margin-bottom:12px">✦</div><div class="creator-title">Creator Access</div><div class="creator-sub">แดชบอร์ดลับสำหรับเจ้าของ KARAN’S PHONE</div><div class="creator-card"><div style="font-size:14px;font-weight:700">รหัสเจ้าของเกม</div><input class="creator-input" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="off"><button class="creator-primary" type="button">เข้าสู่แดชบอร์ด</button><div class="creator-error"></div></div><div class="creator-note">สถิติออนไลน์ต้องเชื่อม Cloudflare Pages Function และ KV ก่อนใช้งาน</div>';
+    var inp=body.querySelector('input'),btn=body.querySelector('button.creator-primary');
+    function login(){var pin=inp.value.trim();if(!/^\d{6}$/.test(pin)){body.querySelector('.creator-error').textContent='กรอกรหัส 6 หลัก';return}btn.disabled=true;btn.textContent='กำลังโหลดสถิติ…';fetch('/api/game-stats',{headers:{'X-Owner-Pin':pin}}).then(async function(r){var data=await r.json().catch(function(){return {}});if(!r.ok)throw Error(data.error||'ไม่สามารถเข้าถึงสถิติได้');showStats(data)}).catch(function(e){body.querySelector('.creator-error').textContent=e.message;btn.disabled=false;btn.textContent='เข้าสู่แดชบอร์ด'})}
+    btn.addEventListener('click',login);inp.addEventListener('keydown',function(e){if(e.key==='Enter')login()});inp.focus();
+  }
+  function showStats(d){var days=Array.isArray(d.days)?d.days:[],max=Math.max(1,...days.map(function(x){return x.count||0}));
+    body.innerHTML='<div class="creator-title">Game Analytics ✦</div><div class="creator-sub">ภาพรวมผู้เล่นจริงจากทุกเครื่องที่เปิดเว็บไซต์</div><div class="creator-grid"><div class="creator-metric"><strong>'+Number(d.unique||0).toLocaleString()+'</strong><span>ผู้เล่นทั้งหมด (โดยประมาณ)</span></div><div class="creator-metric"><strong>'+Number(d.today||0).toLocaleString()+'</strong><span>ผู้เล่นวันนี้</span></div><div class="creator-metric"><strong>'+Number(d.visits||0).toLocaleString()+'</strong><span>จำนวนครั้งที่เปิดเกม</span></div><div class="creator-metric"><strong>'+Number(d.completed||0).toLocaleString()+'</strong><span>เล่นจนจบเกม</span></div></div><div class="creator-card"><div style="font-weight:700;font-size:15px">ผู้เล่นย้อนหลัง 7 วัน</div><div class="creator-chart">'+days.map(function(x){return '<div class="creator-bar" title="'+x.date+': '+x.count+'" style="height:'+Math.max(5,Math.round(100*(x.count||0)/max))+'%"><span>'+String(x.date||'').slice(5)+'</span></div>'}).join('')+'</div></div><div class="creator-note">นับผู้เล่นจากรหัสสุ่มที่บันทึกในเบราว์เซอร์ อาจนับซ้ำเมื่อเปลี่ยนเครื่องหรือล้างข้อมูล ไม่เก็บชื่อหรือข้อมูลส่วนตัว</div>';
+  }
+  overlay.querySelector('.creator-close').addEventListener('click',close);
+  function start(e){if(e.type==='mousedown'&&e.button!==0)return;clearTimeout(timer);timer=setTimeout(open,3000)}
+  function cancel(){clearTimeout(timer);timer=null}
+  camera.addEventListener('pointerdown',start);['pointerup','pointercancel','pointerleave'].forEach(function(t){camera.addEventListener(t,cancel)});
+  camera.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&opened)close()});
+  var completed=false;
+  var observer=new MutationObserver(function(){if(completed)return;var el=document.querySelector('.ep12-final-message');if(el){completed=true;sendEvent('complete')}});
+  observer.observe(phone,{childList:true,subtree:true});
 })();
 </script>
 </body>

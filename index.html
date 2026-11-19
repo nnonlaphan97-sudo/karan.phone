@@ -9383,6 +9383,11 @@ if(
     results.unshift(achiChat);
   }
 }
+  // EP.10: the newest Pai notification must win over older episode ordering rules.
+  if(save.flags.ep10Started && !save.flags.ep10PaiNewsRead){
+    const paiIndex=results.findIndex(c=>c.id==='pai');
+    if(paiIndex>0)results.unshift(results.splice(paiIndex,1)[0]);
+  }
   const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
@@ -16884,7 +16889,7 @@ if(
         </div>
 
         <button class="choice" data-ep7-love="rainbow">
-          อชิ เป็นแฟนกับผมนะ
+          อชิ เป็นแฟนกับนะ
         </button>
 
         <button class="choice" data-ep7-love="flowers">
@@ -18884,7 +18889,7 @@ if(
 ){
   const loveMessages={
     rainbow:
-      'อชิ เป็นแฟนกับผมนะ',
+      'อชิ เป็นแฟนกันนะ',
 
     flowers:
       'ต่อจากนี้ ให้ผมได้อยู่ข้าง ๆ อชิในฐานะแฟนได้ไหมครับ',

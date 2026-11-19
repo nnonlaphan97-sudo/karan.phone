@@ -19937,21 +19937,6 @@ if(chat==='achi'){
 }
   persist();
   render();
-  // EP.03 — หลังอ่านรูป Outing การินส่ง LINE มา
-if(
-  targetChat==='office' &&
-  save.flags.ep3OfficePosterRead &&
-  !save.flags.ep3KarinBannerSeen
-){
-  save.flags.ep3KarinBannerSeen=true;
-  persist();
-
-  showGameBanner(
-    'karin',
-    'ลงมาเจอชั้นหน่อย'
-  );
-  return;
-}
 
   return;
 }
@@ -20765,7 +20750,34 @@ if(
   showGameBanner('duj','นี่จ๊ะ ที่อยู่บ้านของอชิ');
   return;
 }
+// EP.03 — ออกจากแชท Outing แล้วการินส่งข้อความ
+if(
+  page==='chat' &&
+  chat==='office' &&
+  btn.dataset.go==='LINE' &&
+  save.flags.ep3OfficePosterRead &&
+  !save.flags.ep3KarinBannerSeen
+){
+  save.flags.ep3KarinBannerSeen=true;
+  save.flags.ep3KarinMessageShown=true;
 
+  // การินเป็นแชทล่าสุด
+  lineMarkChatActivity('karin');
+
+  page='LINE';
+  lineTab='chats';
+  lineSubtab='chats';
+
+  persist();
+  render();
+
+  showGameBanner(
+    'karin',
+    'ลงมาเจอชั้นหน่อย'
+  );
+
+  return;
+}
 // EP.03 — กลับจากแชทการิน แล้วอชิส่งข้อความ
 if(
   page === 'chat' &&

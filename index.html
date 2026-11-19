@@ -17396,16 +17396,6 @@ if(chat==='achi' && save.flags.ep10Started){
   }
 }
 
-// EP.11 · ปายแจ้งเรื่องข้อมูลปากกาหลังวิดีโอคอล
-if(chat==='pai' && save.flags.ep11PaiNotified){
-  b+='<div class="day">01 ธ.ค.</div>';
-  b+=bubble('พี่การันต์คะปายส่งข้อมูลปากกาตัวใหม่ให้ในอีเมลแล้วนะคะ');
-  b+=bubble('ขอบคุณครับ',true);
-  b+=bubble('ช่วงนี้พี่การันต์ดูทำงานหนักจังค่ะ');
-  b+=bubble('ผมจะรีบปิดยอดเพื่อใช้วันลาไปหาอชิครับ',true);
-  b+=bubble('น่ารักมากกกกกก');
-}
-
 // EP.10 · 16 พฤศจิกายน — การันต์ปรึกษาปายเรื่องกระทงรักษ์โลก
 if(chat==='pai' && save.flags.ep10Started){
 
@@ -17447,6 +17437,16 @@ if(chat==='pai' && save.flags.ep10Started){
     }
   }
 }
+// EP.11 · ปายแจ้งเรื่องข้อมูลปากกาหลังวิดีโอคอล
+if(chat==='pai' && save.flags.ep11PaiNotified){
+  b+='<div class="day">01 ธ.ค.</div>';
+  b+=bubble('พี่การันต์คะปายส่งข้อมูลปากกาตัวใหม่ให้ในอีเมลแล้วนะคะ');
+  b+=bubble('ขอบคุณครับ',true);
+  b+=bubble('ช่วงนี้พี่การันต์ดูทำงานหนักจังค่ะ');
+  b+=bubble('ผมจะรีบปิดยอดเพื่อใช้วันลาไปหาอชิครับ',true);
+  b+=bubble('น่ารักมากกกกกก');
+}
+
 // EP.10 · ประวัติแชทร็อค — ไม่ต้องเลือกคำตอบ
 if(chat==='rock' && save.flags.ep10CallDone){
   b+='<div class="day">20 พ.ย.</div>';
@@ -17461,7 +17461,7 @@ if(chat==='rock' && save.flags.ep10CallDone){
 
 if(chat==='achi' && save.flags.ep11Started){
 
-  b+='<div class="day">15 พ.ย. · นครศรีธรรมราช</div>';
+  b+='<div class="day">25 พ.ย.</div>';
 
   b+=bubble('ถึงนครแล้วนะการันต์');
 

@@ -7751,6 +7751,8 @@ save.flags.ep11CallDone ??= false;
 save.flags.ep11EmailsDone ??= [];
 save.flags.ep11LeaveSent ??= false;
 save.flags.ep11LeaveApproved ??= false;
+save.flags.ep11DujRead ??= false;
+save.flags.ep11PaiNotified ??= false;
 save.flags.ep11FlightBooked ??= false;
 save.flags.ep11Completed ??= false;
 
@@ -7873,6 +7875,8 @@ function ep11Start(){
 
 let ep10WebPage='shop';
 let ep10CallScreen='incoming';
+let karanCallStartedAt=0;
+setInterval(()=>{if(page!=='ep10Call'&&page!=='ep11Call')return;const e=document.querySelector('.karan-call-timer');if(e&&karanCallStartedAt){const n=Math.floor((Date.now()-karanCallStartedAt)/1000);e.textContent=String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}},1000);
 
 const EP10_KRATHONGS=[
   {
@@ -7895,7 +7899,8 @@ const EP10_KRATHONGS=[
     price:129,
     color:'#7AAE7B',
     desc:'กระทงวัสดุธรรมชาติ เรียบง่าย'
-  }
+  },
+  {id:'bread',name:'กระทงขนมปัง',price:99,color:'#D8B57A',desc:'กระทงขนมปังย่อยสลายได้ เหมาะกับพื้นที่ที่อนุญาต'}
 ];
 
 
@@ -13706,6 +13711,8 @@ function ep9MusicSVG(type){
       <ellipse cx="6" cy="18" rx="3" ry="2"/>
       <ellipse cx="18" cy="16" rx="3" ry="2"/>
     `,
+    prev:`<path d="M5 5V19M19 5L8 12L19 19Z" fill="currentColor" stroke="none"/>`,
+    next:`<path d="M19 5V19M5 5L16 12L5 19Z" fill="currentColor" stroke="none"/>`,
     play:`
       <path d="M8 5L20 12L8 19Z"
         fill="currentColor" stroke="none"/>
@@ -13800,16 +13807,16 @@ function renderEp10Internet(){
     <div class="ep10-browser">
 
       <div class="ep10-web-toolbar">
-        <strong>ร้านกระทงดอกไม้</strong>
-        <span>Samsung Internet</span>
+        <strong>กระทงรักษ์โลก</strong>
+        <span>Samsung Internet · บทความ</span>
       </div>
 
       <div class="ep10-web-scroll">
 
         <div class="ep10-web-hero">
           <small>LOY KRATHONG COLLECTION</small>
-          <h2>กระทงสำหรับคนพิเศษ</h2>
-          <p>เลือกแบบที่เหมาะกับค่ำคืนของคุณ</p>
+          <h2>4 ไอเดียกระทงรักษ์โลก</h2>
+          <p>เลือกวัสดุธรรมชาติและเก็บขยะหลังลอย เพื่อช่วยลดผลกระทบต่อแหล่งน้ำ</p>
         </div>
 
         <div class="ep10-web-grid">
@@ -13838,11 +13845,11 @@ function renderEp10Internet(){
 
         ${selected?`
           <div class="ep10-web-selected">
-            <strong>กระทงที่ปายเลือก</strong>
+            <strong>กระทงที่การันต์เลือก</strong>
             <p>${selected.name}</p>
 
             <button data-ep10-confirm="1">
-              ส่งคำแนะนำให้การันต์
+              ส่งลิงก์กระทงให้ปาย
             </button>
           </div>
         `:''}
@@ -13885,23 +13892,13 @@ function renderEp10Call(){
   return `
     <div class="ep10-call">
 
-      <div class="ep10-call-avatar">
-        <svg viewBox="0 0 24 24"
-  width="48" height="48"
-  fill="none"
-  stroke="white"
-  stroke-width="1.6"
-  stroke-linecap="round">
-  <circle cx="12" cy="8" r="4"/>
-  <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
-</svg>
-      </div>
+      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:118px;height:118px;margin:0 auto 20px;">${lineAvatar('achi')}</div>
 
       <h2>อชิ</h2>
 
       <p>
         ${connected
-          ? 'กำลังสนทนา'
+          ? 'กำลังสนทนา · <span class="karan-call-timer">00:00</span>'
           : 'สายเรียกเข้า'}
       </p>
 
@@ -13998,29 +13995,7 @@ function ep11MailList(){
 
         ${rows}
 
-        ${allDone?`
-          <button class="ep11-mail-special"
-            data-ep11-open="leave">
-            <strong>ส่งคำขอลา</strong>
-            <span>
-              งานลูกค้าครบแล้ว สามารถส่งคำขอลาได้
-            </span>
-          </button>
-        `:''}
-
-        ${save.flags.ep11LeaveSent?`
-          <button class="ep11-mail-row"
-            data-ep11-open="approved">
-            <div class="ep11-mail-avatar">HR</div>
-            <div class="ep11-mail-row-text">
-              <strong>ฝ่ายบุคคล</strong>
-              <b>ผลการพิจารณาคำขอลา</b>
-              <span>คำขอลาของคุณได้รับการอนุมัติแล้ว</span>
-            </div>
-          </button>
-        `:''}
-
-        ${save.flags.ep11LeaveApproved?`
+        ${save.flags.ep11LeaveApproved && save.flags.ep11DujRead?`
           <button class="ep11-mail-row"
             data-ep11-open="booking">
             <div class="ep11-mail-avatar">
@@ -14083,13 +14058,6 @@ function renderEp11Gmail(){
               </div>
             `:'';
           }).join('')}
-          ${save.flags.ep11LeaveSent?`
-            <div class="ep11-sent-item">
-              <strong>ถึง: ฝ่ายบุคคล</strong>
-              <p>คำขอลาพักร้อน</p>
-              <small>ส่งแล้ว</small>
-            </div>
-          `:''}
         </div>
       </div>
     `;
@@ -14241,19 +14209,10 @@ function renderEp11Call(){
   return `
     <div class="ep10-call">
 
-      <div class="ep10-call-avatar">
-        <svg viewBox="0 0 24 24"
-          width="48" height="48"
-          fill="none" stroke="white"
-          stroke-width="1.6"
-          stroke-linecap="round">
-          <circle cx="12" cy="8" r="4"/>
-          <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
-        </svg>
-      </div>
+      <div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:118px;height:118px;margin:0 auto 20px;">${lineAvatar('achi')}</div>
 
       <h2>อชิ</h2>
-      <p>${connected?'กำลังสนทนา':'สายเรียกเข้า'}</p>
+      <p>${connected?'กำลังสนทนา · <span class="karan-call-timer">00:00</span>':'สายเรียกเข้า'}</p>
 
       ${connected?`
         <div class="ep10-call-dialogue">
@@ -14340,7 +14299,7 @@ function renderSpotify(){
   <button data-ep9-prev="1"
     aria-label="เพลงก่อนหน้า"
     style="background:none;border:0;color:inherit;font-size:30px;">
-    &#9198;
+    ${ep9MusicSVG('prev')}
   </button>
 
   <button class="ep9-player-play"
@@ -14352,7 +14311,7 @@ function renderSpotify(){
   <button data-ep9-next="1"
     aria-label="เพลงถัดไป"
     style="background:none;border:0;color:inherit;font-size:30px;">
-    &#9197;
+    ${ep9MusicSVG('next')}
   </button>
 </div>
 
@@ -14959,8 +14918,8 @@ function ep7CoffeeSetup(){
    const btn=document.getElementById(id);if(!btn)continue;let interval=null;
    const change=()=>{c.water=Math.max(0,Math.min(400,c.water+dir*5));document.getElementById('ep7WaterLabel').textContent=`กดค้างเพื่อปรับน้ำ · ${c.water} / 400 ml`;const start=document.querySelector('[data-coffee-start]');if(start)start.disabled=c.water===0||c.temp===0;const h=150*c.water/400;document.getElementById('ep7TankWater').setAttribute('y',234-h);document.getElementById('ep7TankWater').setAttribute('height',h);document.getElementById('ep7TankNum').textContent=c.water;};
    const stop=()=>{if(interval){clearInterval(interval);interval=null}};
-   btn.addEventListener('pointerdown',e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);change();interval=setInterval(change,75)});
-   btn.addEventListener('pointerup',stop);btn.addEventListener('pointercancel',stop);btn.addEventListener('lostpointercapture',stop);
+   btn.addEventListener('pointerdown',e=>{e.preventDefault();stop();change();interval=setInterval(change,90)});
+   btn.addEventListener('pointerup',stop);btn.addEventListener('pointercancel',stop);btn.addEventListener('pointerleave',stop);btn.addEventListener('blur',stop);window.addEventListener('pointerup',stop);window.addEventListener('pointercancel',stop);
   }
  }
 }
@@ -16201,6 +16160,13 @@ if(chat==='achi' && !save.flags.achiThanked){
   b='<div class="line-empty-chat" style="flex:1;min-height:240px;background:#d3d9e6"></div>';
 }
 
+if(chat==='duj' && save.flags.ep11LeaveApproved){
+  b+='<div class="day">20 พ.ย.</div>';
+  b+=bubble('พี่อนุมัติวันลาให้แล้วนะการันต์');
+  b+=bubble('ขอบคุณที่ทำงานหนัก');
+  b+=bubble('ไปเที่ยวกับอชิให้สนุกนะ');
+  b+=bubble('ขอบคุณครับ',true);
+}
 /* ===== EP.06 TANAKA CHAT ===== */
 
 if(chat==='tanaka' && save.flags.ep6Stage>=2){
@@ -16579,7 +16545,7 @@ if(save.flags.ep4Day14Started){
   b+=bubble(
     'การันต์ครับ ผมถึงที่ทำงานแล้วนะครับ',
     false,
-    true
+    'achi'
   );
 
     const breakfastOptions=[
@@ -17475,7 +17441,7 @@ if(chat==='achi' && save.flags.ep10Started){
 
   if(save.flags.ep10FinalMessage){
 
-    b+='<div class="day">ข้อความล่าสุด</div>';
+    b+='<div class="day">20 พ.ย.</div>';
 
     b+=bubble(
       'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์'
@@ -17483,90 +17449,30 @@ if(chat==='achi' && save.flags.ep10Started){
   }
 }
 
-// การันต์ปรึกษาปาย
+// EP.10 · 16 พฤศจิกายน — การันต์ปรึกษาปายเรื่องกระทงรักษ์โลก
 if(chat==='pai' && save.flags.ep10Started){
-
-  b+='<div class="day">EP.10 · ลอยกระทง</div>';
-
-  b+=bubble(
-    'ปาย ช่วยผมเลือกกระทงหน่อยได้ไหมครับ',
-    true
-  );
-
-  b+=bubble(
-    'จะเอาไปลอยกับพี่อชิเหรอครับ'
-  );
-
-  b+=bubble(
-    'ใช่ครับ ผมอยากเตรียมไว้ก่อน',
-    true
-  );
-
-  b+=bubble(
-    'งั้นส่งแบบมาเลยครับ'
-  );
-
-  if(!save.flags.ep10Krathong){
-
-    b+=`
-      <button class="ep10-line-link"
-        data-ep10-open-web="1">
-
-        <strong>ร้านกระทงดอกไม้</strong>
-
-        <span>
-          ดูกระทง 3 แบบผ่าน Samsung Internet
-        </span>
-
-        <small>แตะเพื่อเปิดเว็บไซต์</small>
-
-      </button>
-    `;
-
-  }else{
-
-    const k=EP10_KRATHONGS.find(
-      item=>item.id===save.flags.ep10Krathong
-    );
-
-    b+=bubble(
-      'ผมเลือก'+k.name+'ครับพี่',
-    );
-
-    b+=bubble(
-      'ขอบคุณนะปาย แบบนี้สวยดี',
-      true
-    );
-
-    b+=bubble(
-      'แต่พี่การันต์ครับ พี่อชิจะได้ไปลอยกระทงด้วยเหรอครับ'
-    );
-
-    b+=bubble(
-      'ทำไมถามแบบนั้นล่ะ',
-      true
-    );
-
-    b+=bubble(
-      'เห็นว่ากำหนดเดินทางไปนครศรีธรรมราชถูกเลื่อนให้เร็วขึ้น'
-    );
-
-    b+=bubble(
-      'เลื่อนเหรอครับ?',
-      true
-    );
-
-    b+=bubble(
-      'ครับ ผมนึกว่าพี่อชิบอกพี่แล้ว'
-    );
-
-    b+=bubble(
-      'อชิยังไม่ได้บอกผมเลย',
-      true
-    );
+  b+='<div class="day">16 พ.ย.</div>';
+  b+=bubble('ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ',true);
+  b+=bubble('ผมเจอบทความกระทงรักษ์โลก ลองดู 4 แบบนี้นะครับ',true);
+  b+=`<button class="ep10-line-link" data-ep10-open-web="1"><strong>กระทงรักษ์โลก · 4 แบบ</strong><span>บทความและตัวเลือกกระทงใน Samsung Internet</span><small>แตะเพื่อเปิดเว็บไซต์</small></button>`;
+  if(save.flags.ep10Krathong){
+    const k=EP10_KRATHONGS.find(item=>item.id===save.flags.ep10Krathong);
+    if(k){
+      b+=bubble('กระทง'+k.name.replace(/^กระทง/,'')+'สวยดีค่ะพี่การันต์');
+      b+=bubble('แต่พี่การันต์');
+      b+=bubble('พี่อชิจะได้ไปลอยกระทงด้วยเหรอ');
+      b+=bubble('ทำไมถามแบบนั้นล่ะ',true);
+      b+=bubble('เห็นว่ากำหนดเดินทางไปนครศรีถูกเลื่อนนะคะ');
+      b+=bubble('เลื่อนไปวันไหนครับ',true);
+      b+=bubble('ไม่แน่ใจเลยค่ะ');
+      b+=bubble('งั้นไม่เป็นไรหรอก',true);
+      b+=bubble('พี่การันต์ไม่เสียดายเหรอคะ');
+      b+=bubble('ลอยกระทงลอยปีไหนก็ได้ครับ',true);
+      b+=bubble('แต่โอกาสที่อชิจะได้ลองไม่ได้มีบ่อยๆ',true);
+      b+=bubble('เมื่อไหร่ปายจะเจอคนแบบพี่การันต์บ้างคะ');
+    }
   }
 }
-
 /* ===== EP.09 ROCK PROMOTION ===== */
 if(
   chat==='rock' &&
@@ -17605,53 +17511,21 @@ if(
   );
 }
 
-// ร็อคถามการันต์
-if(
-  chat==='rock' &&
-  save.flags.ep10CallDone
-){
-
-  b+='<div class="day">EP.10 · ตอนเย็น</div>';
-
-  b+=bubble(
-    'พี่การันต์ครับ ตอนนี้พี่อยู่ไหนครับ'
-  );
-
-  if(!save.flags.ep10RockReplied){
-
-    choices=`
-      <button class="choice"
-        data-ep10-rock-reply="1">
-        ผมอยู่ข้างนอกครับ มีอะไรหรือเปล่า
-      </button>
-    `;
-
-  }else{
-
-    b+=bubble(
-      'ผมอยู่ข้างนอกครับ มีอะไรหรือเปล่า',
-      true
-    );
-
-    b+=bubble(
-      'ไม่มีอะไรครับ ผมจะถามเรื่องงานนิดหน่อย'
-    );
-
-    b+=bubble(
-      'พรุ่งนี้ค่อยคุยก็ได้ครับ'
-    );
-
-    b+=bubble(
-      'ได้ครับ พรุ่งนี้ค่อยคุยกัน',
-      true
-    );
-  }
+// EP.10 · ประวัติแชทร็อค — ไม่ต้องเลือกคำตอบ
+if(chat==='rock' && save.flags.ep10CallDone){
+  b+='<div class="day">20 พ.ย.</div>';
+  b+=bubble('พี่การันต์อยู่ไหนครับ');
+  b+=bubble('มาประชุมกับลูกค้าข้างนอกครับ',true);
+  b+=bubble('กลับกี่โมงครับ');
+  b+=bubble('กำลังครับ',true);
+  b+=bubble('เดี๋ยวเจอกันครับ');
+  b+=bubble('มีอะไรรึเปล่าครับร็อค',true);
 }
 /* ===== EP.11 ACHI IN NAKHON ===== */
 
 if(chat==='achi' && save.flags.ep11Started){
 
-  b+='<div class="day">EP.11 · นครศรีธรรมราช</div>';
+  b+='<div class="day">15 พ.ย. · นครศรีธรรมราช</div>';
 
   b+=bubble('ถึงนครแล้วนะการันต์');
 
@@ -17702,6 +17576,7 @@ if(chat==='achi' && save.flags.ep11Started){
       'อชิก็ดูแลตัวเองด้วยนะครับ',
       true
     );
+    b+=bubble('ผมคิดถึง',true);
   }
 
   if(save.flags.ep11Completed){
@@ -18427,6 +18302,10 @@ if(ep11Send && page==='Gmail'){
   ep11MailScreen='inbox';
   ep11MailAnswer='';
   render();
+  if(save.flags.ep11EmailsDone.length===EP11_EMAILS.length && !save.flags.ep11LeaveApproved){
+    save.flags.ep11LeaveApproved=true;lineMarkChatActivity('duj');persist();render();
+    ep8Banner('พี่ดุจ','พี่อนุมัติวันลาให้แล้วนะการันต์','duj');
+  }
   return;
 }
 
@@ -18466,13 +18345,14 @@ const ep11Book=e.target.closest(
 );
 
 if(ep11Book && page==='Gmail'){
-  if(!save.flags.ep11LeaveApproved)return;
+  if(!save.flags.ep11LeaveApproved || !save.flags.ep11DujRead)return;
 
   save.flags.ep11FlightBooked=true;
   persist();
 
   ep11MailScreen='inbox';
   render();
+  ep8Banner('Gmail','ยืนยันการจองตั๋วเครื่องบินสำเร็จ','gmail');
   return;
 }
 
@@ -18486,10 +18366,7 @@ if(ep11Finish && page==='Gmail'){
   save.flags.ep11Completed=true;
   persist();
 
-  popup(
-    'EP.11 COMPLETE',
-    'ยืนยันตั๋วเครื่องบินสำเร็จ การันต์กำลังจะเดินทางไปหาอชิที่นครศรีธรรมราช'
-  );
+  ep11MailScreen='inbox';render();
 
   return;
 }
@@ -18516,7 +18393,7 @@ const ep11CallAction=e.target.closest(
 if(ep11CallAction && page==='ep11Call'){
 
   if(ep11CallAction.dataset.ep11CallAction==='answer'){
-    ep11CallState='connected';
+    ep11CallState='connected';karanCallStartedAt=Date.now();
     render();
     return;
   }
@@ -18610,7 +18487,7 @@ const ep10Answer=e.target.closest(
 );
 
 if(ep10Answer && page==='ep10Call'){
-  ep10CallScreen='connected';
+  ep10CallScreen='connected';karanCallStartedAt=Date.now();
   render();
   return;
 }
@@ -18622,6 +18499,7 @@ const ep10Hangup=e.target.closest(
 
 if(ep10Hangup && page==='ep10Call'){
   save.flags.ep10CallDone=true;
+  lineMarkChatActivity('rock');
   persist();
 
   page='LINE';
@@ -18632,7 +18510,7 @@ if(ep10Hangup && page==='ep10Call'){
 
   ep8Banner(
     'ร็อค',
-    'พี่การันต์ครับ ตอนนี้พี่อยู่ไหนครับ',
+    'พี่การันต์อยู่ไหนครับ',
     'rock'
   );
 
@@ -18863,7 +18741,7 @@ if(
 
   ep8Banner(
     'Phone',
-    'เพิ่มรายชื่อลูกค้า 7 รายเรียบร้อยแล้ว',
+    'เพิ่มรายชื่อลูกค้า 8 รายเรียบร้อยแล้ว',
     'phone'
   );
 
@@ -18968,8 +18846,9 @@ if(
    if(ep8Total()>=EP8_TARGET){
   save.flags.ep8Completed=true;
 
-  // ยอดครบ 3 ล้านบาท ทีมฝ่ายขายส่งข้อความล่าสุด
-  lineMarkChatActivity('sales');
+  // ยอดครบ 3 ล้านบาท อชิส่งข้อความล่าสุด
+  save.flags.ep8AchiSalesNotified=true;
+  lineMarkChatActivity('achi');
 }
   }
 
@@ -20904,15 +20783,13 @@ const ep8LeavingAchiSales=
   chat==='achi' &&
   btn.dataset.go==='LINE' &&
   save.flags.ep8Completed &&
-  save.flags.ep8AchiSalesNotified &&
   !save.flags.ep8TanakaFinalRead;
   
   const ep8LeavingSales=
   page==='chat' &&
   chat==='sales' &&
   btn.dataset.go==='LINE' &&
-  save.flags.ep8Completed &&
-  !save.flags.ep8AchiSalesNotified;
+  false; // ไม่ต้องผ่านแชทฝ่ายขายอีกแล้ว
       /* ===== EP.09 TRANSITIONS ===== */
 
   const ep9StartAfterTanaka=
@@ -20958,9 +20835,11 @@ const ep10LeavingRock=
   page==='chat' &&
   chat==='rock' &&
   btn.dataset.go==='LINE' &&
-  save.flags.ep10RockReplied &&
+  save.flags.ep10CallDone &&
   !save.flags.ep10FinalMessage;
     
+  const ep11DujExit=page==='chat' && chat==='duj' && btn.dataset.go==='LINE' && save.flags.ep11LeaveApproved && !save.flags.ep11DujRead;
+  const ep11PaiAfterAchi=page==='chat' && chat==='achi' && btn.dataset.go==='LINE' && save.flags.ep11CallDone && !save.flags.ep11PaiNotified;
   const ep11StartAfterAchi=
   page==='chat' &&
   chat==='achi' &&
@@ -21143,7 +21022,9 @@ if(ep10LeavingPai){
 
 if(ep10LeavingRock){
   save.flags.ep10FinalMessage=true;
+  lineMarkChatActivity('achi');
   persist();
+  render();
 
   ep8Banner(
     'อชิ',
@@ -21153,6 +21034,8 @@ if(ep10LeavingRock){
 }
 /* ===== START EP.11 ===== */
 
+if(ep11DujExit){save.flags.ep11DujRead=true;persist();render();ep8Banner('Gmail','มีอีเมลจองตั๋วเครื่องบินรอยืนยัน','gmail');}
+if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('ปาย','พี่การันต์คะ มีเรื่องจะบอก','pai');}
 if(ep11StartAfterAchi){
 
   save.flags.ep11Started=true;

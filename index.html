@@ -7154,6 +7154,30 @@ button{
 .creator-bar{flex:1;min-width:0;border-radius:8px 8px 3px 3px;background:linear-gradient(#c9d1ff,#798de0);position:relative}
 .creator-bar span{position:absolute;bottom:-21px;left:50%;transform:translateX(-50%);font-size:10px;color:#aeb9d5;white-space:nowrap}
 .creator-note{font-size:11px;color:#bac5e0;line-height:1.8;margin-top:23px}
+
+/* Lock-screen notification bubble — swipe gestures pass through */
+.karan-welcome-note{
+ position:absolute;left:5%;right:5%;top:43%;z-index:3;
+ pointer-events:none;transform:none;text-align:left;
+ background:rgba(250,250,255,.93);color:#242635;
+ border:1px solid rgba(255,255,255,.75);
+ border-radius:26px;padding:14px 16px 15px;
+ box-shadow:0 12px 30px rgba(20,26,52,.19);
+ backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.karan-welcome-note:before{display:none}
+.karan-welcome-note .welcome-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.karan-welcome-note .welcome-appicon{
+ width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;
+ border-radius:13px;background:linear-gradient(145deg,#8b93dc,#656cbb);color:#fff;
+ box-shadow:0 3px 9px #6570b53b
+}
+.karan-welcome-note .welcome-eyebrow{font-size:13px;font-weight:750;color:#242635;letter-spacing:0;margin:0}
+.karan-welcome-note .welcome-time{margin-left:auto;font-size:11px;color:#858b9c}
+.karan-welcome-note .welcome-heading{font-size:14px;font-weight:750;line-height:1.4;color:#242635;margin:0 0 6px}
+.karan-welcome-note p{font-size:12.5px;line-height:1.6;margin:0;color:#4b5263}
+.karan-welcome-note .welcome-signature{margin-top:9px;color:#6e74a5;font-size:12px;font-weight:650}
+@media(max-height:700px){.karan-welcome-note{top:40%;padding:12px 14px}.karan-welcome-note p{font-size:12px}}
 </style>
 </head>
 <body>
@@ -14928,6 +14952,22 @@ html=`
 
   <div class="date">วันพุธที่ 11 พฤศจิกายน</div>
   <div class="clock">21:36</div>
+
+  <section class="karan-welcome-note" aria-label="แจ้งเตือนคำแนะนำการเล่น">
+    <div class="welcome-top">
+      <span class="welcome-appicon">
+        <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="2.5" width="12" height="19" rx="3"/>
+          <path d="M10 18.5h4M9 6.5h6M9 10h6M9 13.5h4"/>
+        </svg>
+      </span>
+      <span class="welcome-eyebrow">KARAN'S PHONE</span>
+      <span class="welcome-time">ตอนนี้</span>
+    </div>
+    <div class="welcome-heading">เคล็ดลับก่อนเริ่มเล่น ♡</div>
+    <p>หมั่นอ่าน LINE และสังเกตเบาะแส เพื่อปลดล็อกแอปแต่ละแอปนะคะ</p>
+    <div class="welcome-signature">ขอให้คุณสนุกกับการส่องโทรศัพท์การันต์นะ ♡</div>
+  </section>
   
 </div>
 `;

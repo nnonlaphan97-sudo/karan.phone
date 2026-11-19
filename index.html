@@ -7001,6 +7001,13 @@ button{
   color:#65758e;
 }
 .ig-explore-real{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;padding:2px}.ig-explore-real .ig-explore-item{border:0;padding:0;aspect-ratio:1;background:#eee;overflow:hidden}.ig-explore-real .ig-explore-item img{width:100%;height:100%;object-fit:cover;display:block}.ig-notification-list{padding:15px;color:#222}.ig-notification-list h3{font-size:17px}.ig-notification-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee;font-size:13px}.ig-notification-row>div{flex:1}.ig-notification-row small{display:block;color:#999;margin-top:5px}.ig-notification-symbol svg{width:23px;height:23px}.ig-follow-btn{background:#0095f6;color:white;border:0;border-radius:8px;padding:8px 10px;font-size:12px}.ig-follow-btn:disabled{background:#ddd;color:#555}
+
+.ep9-spotify.player .ep9-player-cover{padding-top:26px;transform:translateY(12px)}
+.ep9-spotify.player .ep9-player-info{padding-top:32px}
+.ep9-spotify.player .ep9-player-info h2{font-size:18px;line-height:1.4}
+.ep9-spotify.player .ep9-player-progress{margin-top:32px}
+.ep10-call-avatar{border-radius:50%!important;aspect-ratio:1;flex-shrink:0}
+.ep10-call-actions button svg{flex-shrink:0;stroke:none}
 </style>
 </head>
 <body>
@@ -7900,7 +7907,7 @@ const EP10_KRATHONGS=[
     price:0,
     image:'videos/กระทงน้ำแข็ง 1.jpg',
     color:'#A4D7E9',
-    desc:'กระทงน้ำแข็งแบบที่ 1'
+    desc:'น้ำแข็งใสตกแต่งดอกไม้ สีสันละมุน ค่อย ๆ ละลายในน้ำ ไม่เหลือฐานโฟม'
   },
   {
     id:'orchid',
@@ -7908,7 +7915,7 @@ const EP10_KRATHONGS=[
     price:0,
     image:'videos/กระทงน้ำแข็ง.jpg',
     color:'#A9D8EE',
-    desc:'กระทงน้ำแข็งแบบที่ 2'
+    desc:'กระทงน้ำแข็งประดับดอกไม้ ลดการใช้วัสดุสังเคราะห์และย่อยสลายโดยการละลาย'
   },
   {
     id:'banana',
@@ -7916,9 +7923,9 @@ const EP10_KRATHONGS=[
     price:0,
     image:'videos/กระทงขนมปัง1.jpg',
     color:'#D7BA8C',
-    desc:'กระทงขนมปังแบบที่ 1'
+    desc:'กระทงขนมปังรูปทรงดอกไม้ ทำจากวัสดุอาหาร ย่อยสลายได้ ไม่ใช้โฟม'
   },
-  {id:'bread',name:'กระทงขนมปัง แบบที่ 2',price:0,image:'videos/กระทงขนมปัง.jpg',color:'#D8B57A',desc:'กระทงขนมปังแบบที่ 2'}
+  {id:'bread',name:'กระทงขนมปัง แบบที่ 2',price:0,image:'videos/กระทงขนมปัง.jpg',color:'#D8B57A',desc:'กระทงขนมปังตกแต่งเรียบง่าย ย่อยสลายได้ ควรลอยในพื้นที่ที่จัดเก็บเศษได้'}
 ];
 
 
@@ -7926,6 +7933,7 @@ function ep10Start(){
   if(save.flags.ep10Started)return;
 
   save.flags.ep10Started=true;
+  save.flags.ep10PaiTop=true;
   // เมื่อออกจากแชทอชิหลังวันที่ 14 พ.ย. ให้ปายส่งข้อความใหม่
   lineMarkChatActivity('pai');
   persist();
@@ -8366,7 +8374,7 @@ const linePeople = [
   },
   {
     id:'achi',
-    name:'Achirawit',
+    name:'อชิ',
     status:'คนพิเศษที่ไม่วิเศษ'
   },
   {
@@ -8491,7 +8499,7 @@ const lineProfileImages={
 
 const lineProfileNames={
   me:'karan',
-  achi:'Achirawit',
+  achi:'อชิ',
   pai:'Pai',
   duj:'พี่ดุจดาว',
   tanaka:'Tanaka san',
@@ -8814,7 +8822,7 @@ function lineChatsHTML(){
 if(save.flags.ep6Stage >= 2){
   availableChats.push({
     id:'tanaka',
-    name:'Tanaka San'
+    name:'ทานากะซัง'
   });
 }
   if(save.flags.ep4KarinShown || save.flags.ep3KarinMessageShown){
@@ -8848,7 +8856,7 @@ if(save.flags.ep6Stage >= 2){
   ){
     availableChats.push({
       id:'achi',
-      name:'Achirawit'
+      name:'อชิ'
     });
   }
 
@@ -9303,6 +9311,7 @@ if(
       </button>
     `
     : '';
+if(save.flags.ep10PaiTop && !save.flags.ep10PaiNewsRead){const i=results.findIndex(c=>c.id==='pai');if(i>0)results.unshift(results.splice(i,1)[0]);}
 // ให้อชิขึ้นอันดับแรกเฉพาะช่วงที่ส่งรายชื่อลูกค้า
 if(
   save.flags.ep8TanakaRead &&
@@ -9487,7 +9496,7 @@ const mosaic=(ids)=>{
 
 directoryRow(
   'รายการโปรด',
-  'Achirawit',
+  'อชิ',
   '1',
   ['achi'],
   'favorites'
@@ -11018,7 +11027,7 @@ const photo=photos[samsungGalleryIndex];
         
 ${[
   {id:'karin',name:'Karin'},
-  {id:'achi',name:'Achirawit'},
+  {id:'achi',name:'อชิ'},
   {id:'duj',name:'พี่ดุจดาว'},
   {id:'pai',name:'Pai'},
   {id:'rock',name:'Rock'},
@@ -13889,11 +13898,11 @@ function renderEp10Internet(){
 
         ${selected?`
           <div class="ep10-web-selected">
-            <strong>กระทงที่การันต์เลือก</strong>
+            <strong>กระทงที่ปายเลือก</strong>
             <p>${selected.name}</p>
 
             <button data-ep10-confirm="1">
-              ส่งลิงก์กระทงให้ปาย
+              ส่งลิงก์กระทงให้การันต์
             </button>
           </div>
         `:''}
@@ -13930,6 +13939,9 @@ function renderEp10Internet(){
 }
 /* ===== EP.10 ACHI CALL ===== */
 
+let achiCallAudio=null;
+function playAchiCallAudio(){stopAchiCallAudio();achiCallAudio=new Audio('videos/v09044g40000cmhcrefog65t2tiqhuqg 2.mp3');achiCallAudio.play().catch(()=>{});}
+function stopAchiCallAudio(){if(achiCallAudio){achiCallAudio.pause();achiCallAudio.currentTime=0;achiCallAudio=null;}}
 function renderEp10Call(){
   const connected=ep10CallScreen==='connected';
 
@@ -13947,27 +13959,22 @@ function renderEp10Call(){
       </p>
 
       ${connected?`
-        <div class="ep10-call-dialogue">
-          <p>อชิ: การันต์ พรุ่งนี้ว่างไหม</p>
-          <p>การันต์: ว่างครับ</p>
-          <p>อชิ: พรุ่งนี้ไปกินข้าวกันนะ</p>
-          <p>การันต์: ได้ครับ ผมไปรับนะ</p>
-        </div>
+        
       `:''}
 
       <div class="ep10-call-actions">
 
         ${!connected?`
           <button class="ep10-hangup" data-ep10-decline="1">
-            ${icon('phone')}<span>ปฏิเสธ</span>
+            <svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg><span>ปฏิเสธ</span>
           </button>
           <button class="ep10-answer" data-ep10-answer="1">
-            ${icon('phone')}<span>รับสาย</span>
+            <svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg><span>รับสาย</span>
           </button>
         `:`
           <button class="ep10-hangup"
             data-ep10-hangup="1">
-            ${icon('phone')}
+            <span style="transform:rotate(135deg)"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg></span>
             <span>วางสาย</span>
           </button>
         `}
@@ -14259,38 +14266,13 @@ function renderEp11Call(){
       <h2>Achirawit</h2>
       <p>${connected?'กำลังสนทนา · <span class="karan-call-timer">00:00</span>':'สายเรียกเข้า'}</p>
 
-      ${connected?`
-        <div class="ep10-call-dialogue">
-          <p>อชิ: การันต์ เรามีเรื่องอยากปรึกษา</p>
-          <p>การันต์: ว่าไงครับ</p>
-          <p>อชิ: เราไม่รู้จะเข้ากับคนที่นี่ได้ยังไง</p>
-          <p>อชิ: ทุกคนดูสนิทกันหมดแล้ว</p>
-          <p>การันต์: ไม่ต้องรีบหรอกครับอชิ</p>
-          <p>การันต์: ลองเริ่มจากทักทายคนที่ทำงานด้วยก่อนก็ได้</p>
-          <p>อชิ: กลัวเขาจะไม่อยากคุยด้วยน่ะ</p>
-          <p>การันต์: อชิเป็นคนที่ใส่ใจคนอื่น ผมเชื่อว่าทุกคนจะเห็นครับ</p>
-          <p>อชิ: ขอบคุณนะการันต์</p>
-          <p>อชิ: แล้วก็...คิดถึงนะ</p>
-          <p>การันต์: ผมก็คิดถึงอชิครับ</p>
-        </div>
-      `:''}
-
       <div class="ep10-call-actions">
-        ${!connected?`<button class="ep10-hangup" data-ep11-call-action="hangup">${icon('phone')}<span>ปฏิเสธ</span></button>`:''}
+        ${!connected?`<button class="ep10-hangup" data-ep11-call-action="hangup"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg><span>ปฏิเสธ</span></button>`:''}
         <button
           class="${connected?'ep10-hangup':'ep10-answer'}"
           data-ep11-call-action="${connected?'hangup':'answer'}">
 
-          <svg viewBox="0 0 24 24"
-            width="28" height="28"
-            fill="none" stroke="white"
-            stroke-width="2"
-            stroke-linecap="round">
-            <path d="M6 3L9 7L7 10
-              Q10 15 14 17
-              L17 15L21 18L19 22
-              Q8 21 3 8Z"/>
-          </svg>
+${connected?`<span style="transform:rotate(135deg)"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg></span>`:`<svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg>`}
 
           <span>${connected?'วางสาย':'รับสาย'}</span>
         </button>
@@ -14924,7 +14906,14 @@ function ep7CoffeePage(){
  .ep7-coffee .machine{background:#eeece7;border-radius:14px;padding:8px;margin:12px 0}
  .ep7-coffee .machine svg{display:block;width:100%;max-height:320px}
  .ep7-coffee .hold{touch-action:none;user-select:none}.ep7-coffee input[type=range]{width:100%;accent-color:#8b6747}
- </style>`;
+ 
+.ep9-spotify.player .ep9-player-cover{padding-top:26px;transform:translateY(12px)}
+.ep9-spotify.player .ep9-player-info{padding-top:32px}
+.ep9-spotify.player .ep9-player-info h2{font-size:18px;line-height:1.4}
+.ep9-spotify.player .ep9-player-progress{margin-top:32px}
+.ep10-call-avatar{border-radius:50%!important;aspect-ratio:1;flex-shrink:0}
+.ep10-call-actions button svg{flex-shrink:0;stroke:none}
+</style>`;
  let content='';
  if(c.step===1){content=`<h2>เลือกเมล็ดกาแฟ</h2><p>เลือกเมล็ดกาแฟคอนเซปต์จากลำพูน 3 คาแรกเตอร์</p>
  <div class="opts">${ep7CoffeeFarms.map((a,i)=>`<button class="opt ${c.farm===i?'on':''}" data-coffee-farm="${i}">${ep7CoffeeBag(a)}<b>${a.name}</b><small>${a.subtitle}</small></button>`).join('')}</div>
@@ -15704,7 +15693,7 @@ const senderMap={
   'พี่ดุจดาว':'พี่ดุจดาว',
   'ร็อค':'Rock',
   'ปาย':'Pai',
-  'อชิ':'Achirawit',
+  'อชิ':'อชิ',
   'ทานากะซัง':'Tanaka san'
 };
 
@@ -16188,7 +16177,7 @@ function renderChat(){
   pai:'Pai',
   rock:'Rock',
   duj:'พี่ดุจดาว',
-  achi:'Achirawit',
+  achi:'อชิ',
   karin:'Karin',
   tanaka:'Tanaka san',
   flowerShop:'Bloom & Beyond',
@@ -17413,12 +17402,14 @@ if(chat==='achi' && save.flags.ep10Started){
 if(chat==='pai' && save.flags.ep10Started){
   b+='<div class="day">16 พ.ย.</div>';
   b+=bubble('ปายช่วยผมเลือกกระทงหน่อยได้ไหมครับ',true);
-  b+=bubble('ผมเจอบทความกระทงรักษ์โลก ลองดู 4 แบบนี้นะครับ',true);
-  b+=`<button class="ep10-line-link" data-ep10-open-web="1"><strong>https://karan-phone.pages.dev/krathong</strong><span>บทความกระทงรักษ์โลก · เลือกกระทง 4 แบบ</span><small>แตะลิงก์เพื่อเปิด Samsung Internet</small></button>`;
+  b+=bubble('ปายว่าแบบไหนดีกว่าครับ',true);
+  b+=`<div class="line-message sent"><div class="line-message-content"><div class="bubble outgoing"><a href="#" data-ep10-open-web="1" style="color:#1269b1;text-decoration:underline;overflow-wrap:anywhere">https://karan-phone.pages.dev/krathong</a></div></div></div>`;
   if(save.flags.ep10Krathong){
     const k=EP10_KRATHONGS.find(item=>item.id===save.flags.ep10Krathong);
     if(k){
-      b+=bubble('กระทง'+k.name.replace(/^กระทง/,'')+'สวยดีค่ะพี่การันต์');
+      b+=bubble('ปายเลือก'+k.name+'ค่ะพี่การันต์');
+      b+=bubble(k.desc+' เหมาะกับการลดขยะจากกระทงแบบเดิมค่ะ');
+      b+=bubble('https://karan-phone.pages.dev/krathong/'+k.id);
       b+=bubble('แต่พี่การันต์');
       b+=bubble('พี่อชิจะได้ไปลอยกระทงด้วยเหรอ');
       b+=bubble('ทำไมถามแบบนั้นล่ะ',true);
@@ -17967,7 +17958,7 @@ function showEp5InstagramBanner(){
 function lineBannerAvatar(id){
   const names={
     'อชิ':'achi',
-    'Achirawit':'achi',
+    'อชิ':'achi',
     'ปาย':'pai',
     'Pai':'pai',
     'ร็อค':'rock',
@@ -17997,7 +17988,7 @@ function showGameBanner(who,message){
   const banner=document.getElementById('gameBanner');
   if(!banner)return;
   clearTimeout(gameBannerHideTimer);
-  const names={office:'TOYOKAWA',sales:'ทีมฝ่ายขาย',achi:'Achirawit',pai:'Pai',rock:'Rock',duj:'พี่ดุจดาว',karin:'Karin',tanaka:'Tanaka San'};
+  const names={office:'TOYOKAWA',sales:'ทีมฝ่ายขาย',achi:'อชิ',pai:'ปาย',rock:'ร็อค',duj:'พี่ดุจดาว',karin:'การิน',tanaka:'ทานากะซัง'};
   const sender=who==='lineGiftNotice'?'LINE GIFT Notice':who==='line-official'?'LINE':(names[who]||who);
   const avatar=who==='lineGiftNotice'?ep1GiftIcon():who==='line-official'?'<span style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#06c755;color:white;font-size:11px;font-weight:800">LINE</span>':lineBannerAvatar(who);
   banner.innerHTML=`<button class="game-banner" data-banner-chat="${who}"><span class="game-banner-icon" style="background:transparent;overflow:hidden">${avatar}</span><span class="game-banner-text"><small>LINE · ตอนนี้</small><strong>${sender}</strong><span>${message}</span></span></button>`;
@@ -18358,12 +18349,13 @@ const ep11CallAction=e.target.closest(
 if(ep11CallAction && page==='ep11Call'){
 
   if(ep11CallAction.dataset.ep11CallAction==='answer'){
-    ep11CallState='connected';karanCallStartedAt=Date.now();
+    ep11CallState='connected';karanCallStartedAt=Date.now();playAchiCallAudio();
     render();
     return;
   }
 
-  if(ep11CallAction.dataset.ep11CallAction==='hangup' && ep11CallState!=='connected'){page='LINE';lineTab='chats';lineSubtab='chats';render();return;}
+  if(ep11CallAction.dataset.ep11CallAction==='hangup' && ep11CallState!=='connected'){stopAchiCallAudio();page='LINE';lineTab='chats';lineSubtab='chats';render();return;}
+  stopAchiCallAudio();
   save.flags.ep11CallDone=true;
   persist();
 
@@ -18453,7 +18445,7 @@ const ep10Answer=e.target.closest(
 );
 
 if(ep10Answer && page==='ep10Call'){
-  ep10CallScreen='connected';karanCallStartedAt=Date.now();
+  ep10CallScreen='connected';karanCallStartedAt=Date.now();playAchiCallAudio();
   render();
   return;
 }
@@ -18461,6 +18453,7 @@ if(ep10Answer && page==='ep10Call'){
 // ปฏิเสธสาย: ยังไม่ข้ามเนื้อเรื่อง ให้กลับไป LINE และโทรเข้าใหม่เมื่อออกจากปาย
 const ep10Decline=e.target.closest('[data-ep10-decline]');
 if(ep10Decline && page==='ep10Call'){
+  stopAchiCallAudio();
   save.flags.ep10PaiNewsRead=false;
   page='LINE';lineTab='chats';lineSubtab='chats';
   persist();render();return;
@@ -18471,6 +18464,7 @@ const ep10Hangup=e.target.closest(
 );
 
 if(ep10Hangup && page==='ep10Call'){
+  stopAchiCallAudio();
   save.flags.ep10CallDone=true;
   lineMarkChatActivity('rock');
   persist();
@@ -18633,11 +18627,7 @@ if(
   chat='achi';
   page='chat';
 
-  if(!save.flags.ep10Started){
-    ep10Start();
-  }else{
-    render();
-  }
+  render();
   return;
 }
 
@@ -19504,7 +19494,7 @@ setTimeout(()=>{
   ep6Advance(1);
 
   ep6Notify(
-    'Achirawit',
+    'อชิ',
     'ขอโทษ?',
     'achi'
   );
@@ -20632,19 +20622,6 @@ if(
   save.flags.ep3SickBannerSeen = true;
   save.flags.ep3AchiAfterKarinNotified = true;
 
-  page = 'LINE';
-  lineTab = 'chats';
-  lineSubtab = 'chats';
-
-  persist();
-  render();
-
-  setTimeout(() => {
-    showGameBanner(
-      'achi',
-      'การันต์ครับ วันนี้ผมไม่สบาย อาจจะไปทำงานไม่ไหวครับ'
-    );
-  }, 200);
 
   return;
 }
@@ -20840,13 +20817,13 @@ if(ep6LeavingTanaka){
 }
 
 if(ep6LeavingPai){
-  ep6Notify('Achirawit','ผมอยากคุยกับการันต์เรื่องคืนก่อน','achi');
+  ep6Notify('อชิ','ผมอยากคุยกับการันต์เรื่องคืนก่อน','achi');
 }
 if(ep6LeavingAchiConfession){
   if(save.flags.ep6Stage===2){
     lineMarkChatActivity('tanaka');
     persist();
-    ep6Notify('Tanaka San','พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย','tanaka');
+    ep6Notify('ทานากะซัง','พรุ่งนี้จะไปดูงานที่เชียงใหม่ ฝากคุณการันต์คุยงานให้ด้วย','tanaka');
   }
 }
 

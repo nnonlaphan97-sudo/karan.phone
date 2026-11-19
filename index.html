@@ -7010,6 +7010,21 @@ button{
 .ep9-spotify.player .ep9-player-progress{margin-top:22px}
 .ep10-call-avatar{border-radius:50%!important;aspect-ratio:1;flex-shrink:0}
 .ep10-call-actions button svg{flex-shrink:0;stroke:none}
+
+/* EP.11 full-screen video call and LINE call bubbles */
+.ep11-full-video-call{position:absolute;inset:0;z-index:35;background:#07090e;color:#fff;overflow:hidden}
+.ep11-full-video-call video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ep11-video-top{position:absolute;top:52px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;text-shadow:0 1px 8px #000}
+.ep11-video-type{font-size:13px;background:#0007;padding:7px 10px;border-radius:16px}
+.ep11-video-name{font-size:13px;font-weight:600;text-align:right;background:#0007;padding:7px 10px;border-radius:16px}
+.ep11-video-controls{position:absolute;bottom:65px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:7px}
+.ep11-video-end{width:66px;height:66px;border-radius:50%;border:0;background:#e33a45;color:#fff;display:grid;place-items:center}
+.ep11-video-controls small{font-size:12px;color:#fff;text-shadow:0 1px 6px #000}
+.line-chatpage .ep11-call-bubble{display:flex;align-items:center;gap:10px;padding:12px 15px;min-width:190px}
+.ep11-call-bubble span{display:flex;flex-direction:column;gap:3px}
+.ep11-call-bubble strong{font-size:13px;font-weight:600}
+.ep11-call-bubble small{font-size:11px;color:#69727b}
+.line-message .line-message-avatar .line-avatar{overflow:hidden}
 </style>
 </head>
 <body>
@@ -7780,6 +7795,7 @@ save.flags.ep11LeaveSent ??= false;
 save.flags.ep11LeaveApproved ??= false;
 save.flags.ep11DujRead ??= false;
 save.flags.ep11PaiNotified ??= false;
+save.flags.ep11GmailNotified ??= false;
 save.flags.ep11FlightBooked ??= false;
 save.flags.ep11Completed ??= false;
 
@@ -7818,71 +7834,11 @@ function ep12Start(){
 }
 
 const EP11_EMAILS=[
-  {
-    id:'quotation',
-    from:'บริษัท นากามูระ',
-    address:'purchasing@nakamura.example',
-    subject:'ขอใบเสนอราคาฉบับปรับปรุง',
-    body:'รบกวนส่งใบเสนอราคาที่ปรับเงื่อนไขตามที่ตกลงกันไว้ด้วยค่ะ',
-    options:[
-      'ส่งใบเสนอราคาฉบับปรับปรุงพร้อมรายละเอียดเงื่อนไข',
-      'แจ้งให้ลูกค้ารอโดยไม่ระบุกำหนด',
-      'ส่งใบเสนอราคาฉบับเก่าอีกครั้ง'
-    ],
-    correct:0
-  },
-  {
-    id:'delivery',
-    from:'บริษัท ทีเอ็น ซัพพลาย',
-    address:'orders@tnsupply.example',
-    subject:'ยืนยันกำหนดส่งสินค้า',
-    body:'ขอทราบวันจัดส่งสินค้าตามคำสั่งซื้อที่ยืนยันแล้วค่ะ',
-    options:[
-      'แจ้งว่าส่งได้ทันทีโดยไม่ตรวจสอบ',
-      'ตรวจสอบตารางจัดส่งและตอบกลับพร้อมวันที่ยืนยัน',
-      'ขอให้ลูกค้าติดต่อแผนกอื่นเอง'
-    ],
-    correct:1
-  },
-  {
-    id:'purchase',
-    from:'บริษัท เอสพี เทรดดิ้ง',
-    address:'sales@sptrading.example',
-    subject:'ติดตามคำสั่งซื้อ',
-    body:'ขอสอบถามสถานะคำสั่งซื้อที่ส่งมาเมื่อสัปดาห์ก่อนค่ะ',
-    options:[
-      'ตอบว่ากำลังดำเนินการโดยไม่ตรวจสอบ',
-      'แจ้งให้ลูกค้าสั่งซื้อใหม่',
-      'ตรวจสอบสถานะและแจ้งความคืบหน้าตามข้อมูลจริง'
-    ],
-    correct:2
-  },
-  {
-    id:'contract',
-    from:'บริษัท โฮชิโนะ',
-    address:'procurement@hoshino.example',
-    subject:'เอกสารต่อสัญญาจัดซื้อ',
-    body:'รบกวนตรวจสอบเอกสารต่อสัญญาและส่งฉบับที่ถูกต้องกลับมาค่ะ',
-    options:[
-      'ตรวจสอบรายละเอียดและส่งเอกสารฉบับที่ถูกต้อง',
-      'ส่งเอกสารโดยไม่ตรวจสอบ',
-      'แจ้งว่าบริษัทไม่รับต่อสัญญา'
-    ],
-    correct:0
-  },
-  {
-    id:'report',
-    from:'ทีมฝ่ายขาย',
-    address:'sales-team@company.example',
-    subject:'รายงานยอดขายประจำสัปดาห์',
-    body:'รบกวนสรุปยอดขายและสถานะลูกค้าก่อนสิ้นสัปดาห์',
-    options:[
-      'ส่งเฉพาะยอดขายโดยไม่ตรวจสอบ',
-      'สรุปยอดขายพร้อมสถานะลูกค้าและรายการค้าง',
-      'แจ้งว่าไม่สามารถส่งรายงานได้'
-    ],
-    correct:1
-  }
+  {id:'quotation',from:'บริษัท นากามูระ',address:'purchasing@nakamura.example',subject:'คำถามจาก Cherry Magic',body:'อชิเป็นคนจังหวัดอะไร',options:['ลำพูน','ลำปาง','ลำตะคอง'],correct:0},
+  {id:'delivery',from:'บริษัท ทีเอ็น ซัพพลาย',address:'orders@tnsupply.example',subject:'คำถามจาก Cherry Magic',body:'นายจากญี่ปุ่นที่มอบรางวัลให้การันต์มีชื่อว่าอะไร',options:['อาเคดะซัง','อะเดคิซัง','อิเคดะซัง'],correct:2},
+  {id:'purchase',from:'บริษัท เอสพี เทรดดิ้ง',address:'sales@sptrading.example',subject:'คำถามจาก Cherry Magic',body:'อชิไปหาการันต์ที่สนามบิน gate ไหน',options:['9','10','11'],correct:1},
+  {id:'contract',from:'บริษัท โฮชิโนะ',address:'procurement@hoshino.example',subject:'คำถามจาก Cherry Magic',body:'วันลอยกระทงที่การันต์ชวนอชิไปตรงกับวันที่เท่าไหร่',options:['23 พ.ย.','24 พ.ย.','25 พ.ย.'],correct:0},
+  {id:'report',from:'จีเอ็มเอ็ม ทีวี',address:'sales-team@company.example',subject:'คำถามจาก Cherry Magic',body:'ทะเบียนรถการันต์คือเลขอะไร',options:['กร 2026','กร 2027','กร 2028'],correct:1}
 ];
 
 function ep11Start(){
@@ -9394,6 +9350,18 @@ if(
   }
   if(save.flags.ep10RockNotified && !save.flags.ep10FinalMessage){const idx=results.findIndex(c=>c.id==='rock');if(idx>0)results.unshift(results.splice(idx,1)[0]);}
   if(save.flags.ep10FinalMessage && !save.flags.ep11Started){const idx=results.findIndex(c=>c.id==='achi');if(idx>0)results.unshift(results.splice(idx,1)[0]);}
+  if(save.flags.ep11PaiNotified){
+    const pai=results.find(c=>c.id==='pai');
+    if(pai){pai.date='01 ธ.ค.';pai.preview='น่ารักมากกกกกก';}
+    if(!save.flags.ep11GmailNotified){
+      const i=results.findIndex(c=>c.id==='pai');
+      if(i>0)results.unshift(results.splice(i,1)[0]);
+    }
+  }
+  if(save.flags.ep10FinalMessage){
+    const achi=results.find(c=>c.id==='achi');
+    if(achi && !save.flags.ep11CallDone){achi.date='20 พ.ย.';achi.preview='ผมล้อเล่นน่ะ';}
+  }
   const normalChats = results
     .filter(c=>c.name.toLowerCase().includes(q))
     .map(c=>
@@ -14280,30 +14248,17 @@ function renderEp11Gmail(){
 
 function renderEp11Call(){
   const connected=ep11CallState==='connected';
-
-  return `
-    <div class="ep10-call">
-
-      ${connected?`<div class="ep11-video-frame" style="position:relative;width:min(100%,350px);height:55vh;max-height:470px;margin:0 auto 14px;background:#10131c;border-radius:22px;overflow:hidden"><video id="ep11VideoCall" src="videos/snaptik_7418148493077892360_v3.mp4" autoplay playsinline loop style="width:100%;height:100%;object-fit:cover"></video><span style="position:absolute;top:12px;left:12px;color:white;background:#0008;border-radius:12px;padding:5px 10px;font-size:12px">วิดีโอคอล</span></div>`:`<div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px;background:#66758a;"><img src="${lineProfilePhotos.achi}" alt="Achirawit" style="width:100%;height:100%;display:block;object-fit:cover;border-radius:50%"></div>`}
-
-      <h2>Achirawit</h2>
-      <p>${connected?'วิดีโอคอล · <span class="karan-call-timer">00:00</span>':'สายเรียกเข้า'}</p>
-
-      <div class="ep10-call-actions">
-        ${!connected?`<button class="ep10-hangup" data-ep11-call-action="hangup"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg><span>ปฏิเสธ</span></button>`:''}
-        <button
-          class="${connected?'ep10-hangup':'ep10-answer'}"
-          data-ep11-call-action="${connected?'hangup':'answer'}">
-
-${connected?`<span style="transform:rotate(135deg)"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg></span>`:`<svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg>`}
-
-          <span>${connected?'วางสาย':'รับสาย'}</span>
-        </button>
-      </div>
-
-    </div>
-  `;
+  const handset='<svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="white" d="M6.8 3.1c-.6-.4-1.4-.3-1.9.2L2.6 5.6c-.7.7-.9 1.7-.6 2.6 2.2 6.5 7.3 11.6 13.8 13.8.9.3 1.9.1 2.6-.6l2.3-2.3c.5-.5.6-1.3.2-1.9l-2.6-3.7c-.4-.6-1.2-.8-1.8-.5l-2.7 1.1a15.1 15.1 0 0 1-4-4l1.1-2.7c.3-.7.1-1.4-.5-1.8L6.8 3.1Z"/></svg>';
+  if(connected){
+    return `<div class="ep11-full-video-call">
+      <video id="ep11VideoCall" src="videos/snaptik_7418148493077892360_v3.mp4" autoplay playsinline loop></video>
+      <div class="ep11-video-top"><div class="ep11-video-type">วิดีโอคอล · <span class="karan-call-timer">00:00</span></div><div class="ep11-video-name">Achirawit</div></div>
+      <div class="ep11-video-controls"><button class="ep11-video-end" data-ep11-call-action="hangup" aria-label="วางสาย"><span style="display:inline-flex;transform:rotate(135deg)">${handset}</span></button><small>วางสาย</small></div>
+    </div>`;
+  }
+  return `<div class="ep10-call"><div class="ep10-call-avatar" style="overflow:hidden;border-radius:50%;width:130px;height:130px;margin:0 auto 20px;background:#66758a"><img src="${lineProfilePhotos.achi}" alt="Achirawit" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div><h2>Achirawit</h2><p>สายวิดีโอเรียกเข้า</p><div class="ep10-call-actions"><button class="ep10-hangup" data-ep11-call-action="hangup">${handset}<span>ปฏิเสธ</span></button><button class="ep10-answer" data-ep11-call-action="answer">${handset}<span>รับสาย</span></button></div></div>`;
 }
+
 function renderSpotify(){
   const selected=EP9_SONGS.find(
     s=>s.id===ep9SelectedSong
@@ -15461,6 +15416,14 @@ if(
 }
 
 let lastBubbleSender = null;
+function callHistoryBubble(kind,duration){
+  const isVideo=kind==='วิดีโอคอล';
+  const symbol=isVideo
+    ? '<rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-4v12l-6-4"/>'
+    : '<path d="M5 4c0 9 6 15 15 15l2-4-5-3-3 3c-3-1-5-3-6-6l3-3-3-5z"/>';
+  return '<div class="line-message received"><div class="line-message-avatar">'+lineAvatar('achi')+'</div><div class="line-message-content"><div class="bubble incoming ep11-call-bubble"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">'+symbol+'</svg><span><strong>'+kind+'</strong><small>สิ้นสุดการโทร · '+duration+'</small></span></div></div></div>';
+}
+
 function bubble(text,out=false,senderId='',customTime=''){  const isGroup = chat==='office' || chat==='sales';
 
   let senderName='';
@@ -16660,7 +16623,7 @@ if(chat==='karin' && save.flags.ep4KarinShown){
     b+=bubble('พี่เอากระเป๋ามาให้แล้ว',false,'','17:10');
     b+=bubble('ทะเลาะกันแล้วลำบากน้อง',true,'','17:11');
     b+=bubble('แต่แกก็ชอบไม่ใช่เหรอ',false,'','17:12');
-    b+=bubble('พูดมาก',true,'','17:13');
+    b+=bubble('อย่ามาทำเป็นรู้ดีสิครับ',true,'','17:13');
 
   }
 }
@@ -17406,7 +17369,7 @@ if(chat==='achi' && save.flags.ep10Started){
     b+='<div class="day">16 พ.ย.</div>';
     const duration=Number(save.flags.ep10CallDuration)||0;
     const durationLabel=String(Math.floor(duration/60)).padStart(2,'0')+':'+String(duration%60).padStart(2,'0');
-    b+='<div class="line-call-history" style="text-align:center;margin:12px auto;color:#57657a;font-size:12px;background:#ffffffa8;border-radius:16px;padding:11px 16px;max-width:250px">☎ โทรด้วยเสียง · '+durationLabel+'</div>';
+    b+=callHistoryBubble('โทรด้วยเสียง',durationLabel);
 
     b+=bubble(
       'พรุ่งนี้ไปกินข้าวด้วยกันนะ'
@@ -17424,10 +17387,23 @@ if(chat==='achi' && save.flags.ep10Started){
 
     b+='<div class="day">20 พ.ย.</div>';
 
-    b+=bubble(
-      'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์'
-    );
+    b+=bubble('เดินทางปลอดภัยนะครับอชิ',true);
+    b+=bubble('ต่อจากนี้เราต้องห่างกันจริงๆ แล้วนะการันต์');
+    b+=bubble('การันต์จะมาหาผมทุกวันไม่ได้แล้ว');
+    b+=bubble('ผมคงทนไม่ได้แน่ๆ',true);
+    b+=bubble('การันต์');
+    b+=bubble('ผมล้อเล่นน่ะ',true);
   }
+}
+
+// EP.11 · ปายแจ้งเรื่องข้อมูลปากกาหลังวิดีโอคอล
+if(chat==='pai' && save.flags.ep11PaiNotified){
+  b+='<div class="day">01 ธ.ค.</div>';
+  b+=bubble('พี่การันต์คะปายส่งข้อมูลปากกาตัวใหม่ให้ในอีเมลแล้วนะคะ');
+  b+=bubble('ขอบคุณครับ',true);
+  b+=bubble('ช่วงนี้พี่การันต์ดูทำงานหนักจังค่ะ');
+  b+=bubble('ผมจะรีบปิดยอดเพื่อใช้วันลาไปหาอชิครับ',true);
+  b+=bubble('น่ารักมากกกกกก');
 }
 
 // EP.10 · 16 พฤศจิกายน — การันต์ปรึกษาปายเรื่องกระทงรักษ์โลก
@@ -17471,45 +17447,6 @@ if(chat==='pai' && save.flags.ep10Started){
     }
   }
 }
-/* ===== EP.09 ROCK PROMOTION ===== */
-if(
-  chat==='rock' &&
-  save.flags.ep9Started
-){
-  /* Removed old promotion chat; Rock's history begins on 20 Nov. */
-  /* b+='<div class="day">20 เม.ย. · ข่าวดีของร็อค</div>';
-
-  b+=bubble(
-    'พี่การันต์ครับ ผมมีข่าวดีจะบอกครับ'
-  );
-
-  b+=bubble(
-    'ผมได้เลื่อนตำแหน่งแล้วนะครับ!'
-  );
-
-  b+=bubble(
-    'จริงเหรอร็อค ยินดีด้วยนะครับ',
-    true
-  );
-
-  b+=bubble(
-    'ขอบคุณครับพี่การันต์'
-  );
-
-  b+=bubble(
-    'ตอนแรกผมไม่คิดว่าจะได้รับโอกาสนี้เลยครับ'
-  );
-
-  b+=bubble(
-    'ร็อคทำงานหนักมาตลอด สมควรได้รับแล้วครับ',
-    true
-  );
-
-  b+=bubble(
-    'ผมจะตั้งใจทำงานให้มากขึ้นครับ'
-  ); */
-}
-
 // EP.10 · ประวัติแชทร็อค — ไม่ต้องเลือกคำตอบ
 if(chat==='rock' && save.flags.ep10CallDone){
   b+='<div class="day">20 พ.ย.</div>';
@@ -17544,7 +17481,7 @@ if(chat==='achi' && save.flags.ep11Started){
 
     b+='<div class="day">01 ธ.ค.</div>';
     const sec=Number(save.flags.ep11CallDuration)||0;
-    b+='<div class="line-call-history" style="text-align:center;margin:12px auto;color:#57657a;font-size:12px;background:#ffffffa8;border-radius:16px;padding:11px 16px;max-width:250px">▣ วิดีโอคอล · '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')+'</div>';
+    b+=callHistoryBubble('วิดีโอคอล',String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0'));
 
     b+=bubble(
       'ขอบคุณที่ให้คำปรึกษาเมื่อกี้นะ'
@@ -18310,7 +18247,7 @@ if(ep11Send && page==='Gmail'){
   render();
   if(save.flags.ep11EmailsDone.length===EP11_EMAILS.length && !save.flags.ep11LeaveApproved){
     save.flags.ep11LeaveApproved=true;lineMarkChatActivity('duj');persist();render();
-    ep8Banner('พี่ดุจ','พี่อนุมัติวันลาให้แล้วนะการันต์','duj');
+    ep8Banner('พี่ดุจดาว','พี่อนุมัติวันลาให้แล้วนะการันต์','duj');
   }
   return;
 }
@@ -18414,12 +18351,6 @@ if(ep11CallAction && page==='ep11Call'){
   chat='achi';
   page='chat';
   render();
-
-  ep8Banner(
-    'Gmail',
-    'มีอีเมลงานฝ่ายขายรอดำเนินการ',
-    'gmail'
-  );
 
   return;
 }
@@ -20785,6 +20716,7 @@ const ep10LeavingRock=
   !save.flags.ep10FinalMessage;
     
   const ep11DujExit=page==='chat' && chat==='duj' && btn.dataset.go==='LINE' && save.flags.ep11LeaveApproved && !save.flags.ep11DujRead;
+  const ep11GmailAfterPai=page==='chat' && chat==='pai' && btn.dataset.go==='LINE' && save.flags.ep11PaiNotified && !save.flags.ep11GmailNotified;
   const ep11PaiAfterAchi=page==='chat' && chat==='achi' && btn.dataset.go==='LINE' && save.flags.ep11CallDone && !save.flags.ep11PaiNotified;
   const ep11StartAfterAchi=
   page==='chat' &&
@@ -20992,14 +20924,15 @@ if(ep10LeavingRock){
 
   ep8Banner(
     'Achirawit',
-    'ต่อไปเราต้องห่างกันจริง ๆ แล้วนะการันต์',
+    'ต่อจากนี้เราต้องห่างกันจริงๆ แล้วนะการันต์',
     'achi'
   );
 }
 /* ===== START EP.11 ===== */
 
 if(ep11DujExit){save.flags.ep11DujRead=true;persist();render();ep8Banner('Gmail','มีอีเมลจองตั๋วเครื่องบินรอยืนยัน','gmail');}
-if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('Pai','พี่การันต์คะ มีเรื่องจะบอก','pai');}
+if(ep11GmailAfterPai){save.flags.ep11GmailNotified=true;persist();render();ep8Banner('Gmail','มีอีเมลคำถามจาก Cherry Magic รอให้ตอบ','gmail');}
+if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('Pai','พี่การันต์คะปายส่งข้อมูลปากกาตัวใหม่ให้ในอีเมลแล้วนะคะ','pai');}
 if(ep11StartAfterAchi){
 
   save.flags.ep11Started=true;

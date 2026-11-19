@@ -20299,13 +20299,20 @@ if(lc && page==='LINE'){
     }
 
   }
-    if(chat==='office' && save.flags.ep2Completed){
-    save.flags.ep3OutingRead=true;
-    unlock('ปฏิทิน');
-    persist();
+   if(chat==='office' && save.flags.ep2Completed){
 
-    document.getElementById('gameBanner').innerHTML='';
+  save.flags.ep3OutingRead=true;
+
+  // บันทึกว่าเปิดดูรูป Outing แล้ว
+  if(save.flags.ep3OfficePosterShown){
+    save.flags.ep3OfficePosterRead=true;
   }
+
+  unlock('ปฏิทิน');
+  persist();
+
+  document.getElementById('gameBanner').innerHTML='';
+}
   if(chat==='pai' && save.flags.ep2Started){
     ep2OpenPai();
   }

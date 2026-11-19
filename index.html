@@ -7105,6 +7105,27 @@ button{
 .ep12-palette button.active{box-shadow:0 0 0 2px #8b6ab7}
 .ep12-section-note{font-size:12px;color:#858b98;line-height:1.6}
 
+
+/* EP12 refined wedding motifs and confirmation */
+.ep12-decor-btn{border:1px solid #e9e2e4;border-radius:16px;background:#fffdfc;padding:11px 4px;transition:transform .15s,border-color .15s,background .15s}
+.ep12-decor-btn.active{border:2px solid #bb8c9d;background:#fff0f4;color:#805064}
+.ep12-decor-btn:active{transform:scale(.96)}
+.ep12-decor-btn svg{width:53px;height:53px}
+.ep12-thanks{height:100%;min-height:100%;overflow-y:auto;position:relative;background:linear-gradient(160deg,#f9f1eb 0%,#fffaf7 48%,#f5e8ec 100%);color:#4f4144;padding:65px 20px 45px;text-align:center;scrollbar-width:none}
+.ep12-thanks-glow{position:absolute;top:30px;left:12%;width:76%;height:250px;background:radial-gradient(ellipse,#f5d8c7a8,transparent 70%);pointer-events:none}
+.ep12-thanks-content{position:relative;max-width:340px;margin:auto}
+.ep12-thanks-seal{display:grid;place-items:center;margin:0 auto 14px;width:100px;height:100px;background:#fffaf4;border-radius:50%;box-shadow:0 8px 35px #ab7f6d24}
+.ep12-thanks-eyebrow{font-family:Georgia,serif;letter-spacing:3px;font-size:10px;color:#b28b6a;margin-bottom:13px}
+.ep12-thanks h1{font-size:26px;line-height:1.4;font-weight:650;margin:0;color:#694d55}
+.ep12-thanks-line{height:1px;width:70px;background:#c5a077;margin:17px auto}
+.ep12-thanks-message{font-size:13px;line-height:1.95;color:#7a6669;margin:0 0 17px}
+.ep12-thanks-mini{width:140px;height:202px;margin:14px auto 16px;overflow:hidden;box-shadow:0 8px 25px #7658612b;background:#fff}
+.ep12-thanks-mini svg{width:140px;height:202px;display:block}
+.ep12-thanks-note{font-family:Georgia,serif;font-size:15px;color:#966c7a;margin:17px 0 23px;line-height:1.6}
+.ep12-thanks-actions{display:grid;gap:9px}
+.ep12-thanks-actions button{width:100%;padding:13px;border:1px solid #d9c5c8;border-radius:13px;background:#fffaf8;color:#745965;font-weight:600;font-size:13px}
+.ep12-thanks-actions .ep12-thanks-next{background:#8c6475;color:#fff;border-color:#8c6475}
+.ep12-thanks-actions .ep12-thanks-explore{background:transparent;border-color:transparent;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -14530,22 +14551,24 @@ function ep12SaveCard(){
 }
 
 function ep12Decorations(){
-  const c=ep12Card, s=Number(c.ornamentSize)||1;
-  const ink=c.textColor;
-  const leaf=(x,y,r=0)=>`<g transform="translate(${x} ${y}) rotate(${r})"><path d="M0 0 C-28 -19 -31 -52 0 -73 C26 -50 23 -20 0 0Z" fill="#83a18b" opacity=".84"/><path d="M0 0 Q-2 -35 0 -67" fill="none" stroke="#52775d" stroke-width="1.5"/></g>`;
-  const bloom=(x,y,k=1,col='#e8a5b4')=>`<g transform="translate(${x} ${y}) scale(${k})"><g fill="${col}" stroke="#fff9" stroke-width="1.2">${Array.from({length:6},(_,i)=>`<ellipse cx="0" cy="-13" rx="9" ry="15" transform="rotate(${i*60})"/>`).join('')}</g><circle r="7" fill="#f8d9a1"/><circle r="2" fill="#fff5db"/></g>`;
-  const flowerCorner=`<path d="M-12 182 C42 132 30 82 122 30 M374 338 C320 390 334 445 237 498" stroke="#7d9b84" stroke-width="2.3" fill="none"/>${leaf(34,121,-37)}${leaf(71,72,32)}${leaf(327,405,142)}${leaf(290,451,-147)}${bloom(56,87,1.5)}${bloom(99,44,.9,'#f2c7a8')}${bloom(303,434,1.45)}${bloom(267,481,.85,'#f2c7a8')}`;
-  const rose=`<g fill="none" stroke="#c78395" stroke-width="2"><path d="M-5 173 Q60 90 130 42 M367 348 Q294 439 224 484"/></g>${bloom(55,104,2,'#e9a0b4')}${bloom(104,54,1.1,'#f1c7cb')}${bloom(307,419,2,'#e9a0b4')}${bloom(255,474,1.1,'#f1c7cb')}${leaf(25,143,-30)}${leaf(332,378,140)}`;
-  const gold=`<g stroke="#bd9755" fill="none" stroke-width="1.5"><path d="M25 150 V26 H150 M210 26 H334 V150 M25 370 V494 H150 M210 494 H334 V370"/><path d="M45 90 Q80 45 125 62 M235 458 Q280 475 315 430"/></g><g fill="#cda866">${Array.from({length:8},(_,i)=>`<circle cx="${48+i*9}" cy="${69-i*2}" r="2.1"/>`).join('')}</g>`;
-  const lace=`<g fill="none" stroke="${ink}" stroke-opacity=".32" stroke-width="1.3"><rect x="22" y="22" width="316" height="476" rx="110"/>${Array.from({length:17},(_,i)=>`<circle cx="${34+i*18.3}" cy="30" r="5"/>`).join('')}${Array.from({length:17},(_,i)=>`<circle cx="${34+i*18.3}" cy="490" r="5"/>`).join('')}</g>`;
-  const petals=`${Array.from({length:27},(_,i)=>{let x=(i*97+31)%350,y=(i*139+47)%500;return `<ellipse cx="${x}" cy="${y}" rx="${3+i%4}" ry="${6+i%5}" fill="${i%2?'#dba4b8':'#f0c2a4'}" opacity=".44" transform="rotate(${i*31} ${x} ${y})"/>`}).join('')}`;
-  const stars=`<g fill="#c5a46c">${Array.from({length:22},(_,i)=>{let x=(i*83+28)%330+15,y=(i*113+35)%460+30;return `<path d="M${x} ${y-5} l2 3 4 2 -4 2 -2 4 -2 -4 -4 -2 4 -2Z" opacity="${.35+(i%4)*.14}"/>`}).join('')}</g>`;
-  const hearts=`<g fill="#dc91a8" opacity=".65">${[[54,97,1.2],[304,419,1.4],[90,58,.6],[275,458,.65]].map(([x,y,k])=>`<path transform="translate(${x} ${y}) scale(${k})" d="M0 8 C-25 -12 -29 -30 -12 -34 C-4 -36 0 -30 0 -25 C7 -39 29 -36 28 -20 C27 -9 12 2 0 8Z"/>`).join('')}</g>`;
-  const ribbon=`<g fill="none" stroke="#c29aaf" stroke-width="5" stroke-linecap="round"><path d="M-5 125 C45 36 88 35 140 54 M365 396 C312 484 270 484 220 467"/></g><g fill="#e8bacb"><path d="M91 67 Q55 20 48 62 Q55 92 91 67 Q131 27 134 64 Q122 91 91 67Z"/><path d="M269 453 Q229 415 225 457 Q232 479 269 453 Q303 414 311 452 Q301 482 269 453Z"/></g>`;
-  const art={flowers:flowerCorner,roses:rose,botanical:flowerCorner,stars,hearts,leaves:`${leaf(48,150,-20)}${leaf(90,85,30)}${leaf(309,370,160)}${leaf(264,452,-130)}`,ribbons:ribbon,petals,luxe:gold,lace,minimal:''};
-  return `<g transform="translate(180 260) scale(${s}) translate(-180 -260)">${art[c.decoration]||''}</g>`;
+  const c=ep12Card, scale=Number(c.ornamentSize)||1;
+  const petal=(x,y,r=0,color='#e8a9b9',size=1)=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${size})"><path d="M0 0 C-15 -17 -16 -36 0 -46 C16 -36 15 -17 0 0Z" fill="${color}" stroke="#fff8" stroke-width=".8"/><path d="M0 -4 Q0 -20 0 -37" fill="none" stroke="#fff9" stroke-width=".7"/></g>`;
+  const rose=(x,y,size=1)=>`<g transform="translate(${x} ${y}) scale(${size})"><path d="M-22 1C-30-19-11-34 0-24C15-40 36-19 22 3C10 22-15 20-22 1Z" fill="#e9a6b4"/><path d="M-18-4C-12-19 3-18 10-9C20-1 8 13-4 11C-14 8-10-4 0-5C8-6 11 2 5 5" fill="none" stroke="#bd738d" stroke-width="2" stroke-linecap="round"/><path d="M-25 12Q-41 6-36-9Q-17-5-18 9M22 14Q40 10 37-7Q21-2 16 10" fill="#89a88d"/></g>`;
+  const stem=(x,y,flip=1)=>`<g transform="translate(${x} ${y}) scale(${flip} 1)"><path d="M0 0Q48-62 99-115" fill="none" stroke="#73967f" stroke-width="2.4" stroke-linecap="round"/><path d="M29-35Q4-51 11-74Q42-62 38-43M57-69Q70-97 97-94Q85-66 59-63M75-90Q47-112 56-132Q81-117 84-96" fill="#91b19a" stroke="#73967f" stroke-width="1"/></g>`;
+  const flower=(x,y,k=1)=>`<g transform="translate(${x} ${y}) scale(${k})">${Array.from({length:5},(_,i)=>petal(0,0,i*72,'#f3c6ce',.72)).join('')}<circle r="7" fill="#e6bd74"/><circle r="3" fill="#fff5d9"/></g>`;
+  const botanical=`${stem(0,178)}${stem(360,342,-1)}${flower(70,78,1.25)}${flower(292,446,1.1)}${rose(36,128,.8)}${rose(323,386,.75)}`;
+  const roses=`${stem(0,174)}${stem(360,346,-1)}${rose(65,82,1.55)}${rose(292,435,1.5)}${rose(114,45,.65)}${rose(245,478,.7)}`;
+  const flowers=`${stem(0,177)}${stem(360,343,-1)}${flower(63,91,1.55)}${flower(110,44,.8)}${flower(296,427,1.45)}${flower(251,479,.8)}`;
+  const leaves=`${stem(0,183)}${stem(360,337,-1)}<path d="M43 24Q180 1 317 24M43 496Q180 519 317 496" stroke="#93aa96" stroke-width="1" fill="none" opacity=".7"/>`;
+  const stars=`<g fill="#c8a66b">${[[53,73,9],[310,83,7],[48,425,6],[303,443,10],[91,47,4],[270,475,4]].map(([x,y,r])=>`<path d="M${x} ${y-r}Q${x+2} ${y-2} ${x+r} ${y}Q${x+2} ${y+2} ${x} ${y+r}Q${x-2} ${y+2} ${x-r} ${y}Q${x-2} ${y-2} ${x} ${y-r}Z"/>`).join('')}</g>`;
+  const hearts=`<g fill="#d99aab" opacity=".78">${[[64,88,1],[292,431,1.1],[105,58,.45],[254,465,.45]].map(([x,y,k])=>`<path transform="translate(${x} ${y}) scale(${k})" d="M0 20C-48-10-24-36 0-15C24-36 48-10 0 20Z"/>`).join('')}</g>`;
+  const petals=`<g opacity=".75">${[[43,72,-30],[97,40,24],[313,100,50],[281,453,-28],[48,407,45],[323,470,10]].map(([x,y,r],i)=>petal(x,y,r,i%2?'#efc9ab':'#e9b5c7',.55)).join('')}</g>`;
+  const ribbons=`<g fill="none" stroke="#c994ab" stroke-linecap="round"><path d="M0 110Q58 27 127 53" stroke-width="4"/><path d="M360 410Q302 493 233 467" stroke-width="4"/></g><g fill="#eac0d0" stroke="#c994ab" stroke-width="1.4"><path d="M94 59Q53 17 49 62Q58 82 94 59Q133 18 138 61Q129 82 94 59Z"/><path d="M266 461Q225 419 221 464Q230 484 266 461Q305 420 310 463Q301 484 266 461Z"/></g>`;
+  const luxe=`<g fill="none" stroke="#bc985c"><rect x="26" y="26" width="308" height="468" rx="2" stroke-width="1.2"/><rect x="34" y="34" width="292" height="452" rx="2" stroke-width=".5"/><path d="M142 26q38 35 76 0M142 494q38-35 76 0" stroke-width="1.6"/></g>${stars}`;
+  const lace=`<g fill="none" stroke="#c8adbc" stroke-width="1"><rect x="25" y="25" width="310" height="470" rx="8"/>${Array.from({length:19},(_,i)=>`<path d="M${36+i*16} 25q8 18 16 0M${36+i*16} 495q8-18 16 0"/>`).join('')}</g>`;
+  const art={flowers,roses,botanical,stars,hearts,leaves,ribbons,petals,luxe,lace,minimal:''};
+  return `<g transform="translate(180 260) scale(${scale}) translate(-180 -260)">${art[c.decoration]||''}</g>`;
 }
-
 function ep12CardSVG(){
   const c=ep12Card;
   const safe=ep12Escape;
@@ -14663,6 +14686,9 @@ function renderEp12Shop(){
       ${save.flags.ep12CardSent?'<div class="line-message sent"><div class="bubble outgoing">ส่งไฟล์ Wedding Invitation.svg แล้วครับ</div></div><div class="line-message received"><div class="bubble incoming">ได้รับไฟล์แล้วค่ะ ขอบคุณมากนะคะ 💐 อย่าลืมเอาการ์ดของคุณมาอวดนะคะ</div></div>':''}
     </div>${!save.flags.ep12CardSent?'<div class="line-replies"><button class="choice" data-ep12-files="1">เปิด My Files เพื่อออกแบบการ์ด</button></div>':'<div class="line-replies"><button class="choice" data-ep12-end="1">ดูข้อความส่งท้ายเกม</button></div>'}</div>`;
 }
+function renderEp12Thanks(){
+ return `<div class="ep12-thanks"><div class="ep12-thanks-glow"></div><div class="ep12-thanks-content"><div class="ep12-thanks-seal"><svg viewBox="0 0 100 100" width="86" height="86" fill="none"><circle cx="50" cy="50" r="46" stroke="#d9b77b" stroke-width="1.5"/><circle cx="50" cy="50" r="39" stroke="#d9b77b" stroke-width=".7" stroke-dasharray="2 5"/><path d="M31 51l13 13 26-30" stroke="#b99a67" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ep12-thanks-eyebrow">EVER AFTER WEDDING STUDIO</div><h1>ส่งการ์ดเรียบร้อยแล้ว</h1><div class="ep12-thanks-line"></div><p class="ep12-thanks-message">ได้รับไฟล์การ์ดแต่งงานของคุณการันต์แล้วค่ะ<br>ขอบคุณที่ไว้วางใจให้เราเป็นส่วนหนึ่งของวันสำคัญนะคะ</p><div class="ep12-thanks-mini">${ep12CardSVG()}</div><div class="ep12-thanks-note">“อย่าลืมเอาการ์ดของคุณมาอวดนะคะ”</div><div class="ep12-thanks-actions"><button data-ep12-download="png">บันทึกการ์ดเป็น PNG</button><button data-ep12-download="svg">บันทึกเป็น SVG</button><button class="ep12-thanks-next" data-ep12-end="1">อ่านข้อความส่งท้ายเกม</button><button class="ep12-thanks-explore" data-ep12-explore="1">กลับไปสำรวจโทรศัพท์</button></div></div></div>`;
+}
 function renderEp12End(){
  return `<div class="ep12-end-screen"><div class="ep12-end-ornament">✿ ♡ ✿</div><h1>Thank you for playing!</h1><h2>ขอบคุณที่มาเล่นเกมจำลองโทรศัพท์ของการันต์ค่ะ</h2><p>ขอให้ความรักของการันต์และอชิสดใสในทุก ๆ วัน</p><div class="ep12-end-ornament">💍 ✨ 🌸</div><button data-ep12-download="png">บันทึกการ์ด PNG</button><button data-ep12-download="svg">บันทึกการ์ด SVG</button><button data-ep12-explore="1">ออกไปสำรวจโทรศัพท์เพิ่มเติม</button></div>`;
 }
@@ -14671,8 +14697,9 @@ function ep12Icon(kind){
  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[kind]||paths.folder}</svg>`;
 }
 function ep12DecorThumb(type){
- const art={flowers:'<circle cx="25" cy="20" r="10" fill="#edb0be"/><circle cx="37" cy="31" r="9" fill="#f1d1a6"/><path d="M10 44Q18 25 34 15" stroke="#7c9e82" stroke-width="3" fill="none"/>',roses:'<circle cx="26" cy="26" r="15" fill="#e9a1b6"/><path d="M18 28q10-20 20-2q-5 15-18 5" fill="none" stroke="#b76585" stroke-width="2"/>',botanical:'<path d="M10 45Q18 20 45 8" stroke="#6d977a" stroke-width="3" fill="none"/><ellipse cx="22" cy="28" rx="7" ry="13" fill="#8caf90" transform="rotate(-30 22 28)"/><ellipse cx="37" cy="16" rx="7" ry="13" fill="#8caf90" transform="rotate(30 37 16)"/>',stars:'<path d="m27 6 5 15 15 5-15 5-5 15-5-15-15-5 15-5z" fill="#d9b16a"/>',hearts:'<path d="M27 43C-5 21 13 2 27 17C41 2 59 21 27 43" fill="#df9aaf"/>',leaves:'<path d="M10 46Q30 25 42 6" stroke="#719780" stroke-width="3" fill="none"/><ellipse cx="22" cy="30" rx="7" ry="14" fill="#9abb9c"/>',ribbons:'<path d="M27 26Q4 3 5 23Q9 37 27 26Q48 3 50 23Q47 37 27 26M27 26l-9 22m9-22 9 22" fill="none" stroke="#d9a5bd" stroke-width="4"/>',petals:'<ellipse cx="15" cy="15" rx="6" ry="11" fill="#e7b2c5" transform="rotate(35 15 15)"/><ellipse cx="37" cy="35" rx="7" ry="12" fill="#f0c6a9" transform="rotate(-30 37 35)"/>',luxe:'<path d="M8 22V8h14M32 8h14v14M8 32v14h14M32 46h14V32" stroke="#b99b60" stroke-width="3" fill="none"/>',lace:'<rect x="9" y="5" width="36" height="44" rx="16" fill="none" stroke="#c4a8bc" stroke-width="2"/>',minimal:'<path d="M12 27h30" stroke="#999" stroke-width="2"/>'};
- return `<svg viewBox="0 0 54 54" aria-hidden="true">${art[type]||''}</svg>`;
+ const symbols={flowers:'✿',roses:'❀',botanical:'❧',stars:'✧',hearts:'♡',leaves:'❦',ribbons:'⌁',petals:'❁',luxe:'◇',lace:'◌',minimal:'—'};
+ const colors={flowers:'#d98da8',roses:'#bb718c',botanical:'#759e80',stars:'#b9965b',hearts:'#d98da8',leaves:'#7da486',ribbons:'#bc8da9',petals:'#e6b0b7',luxe:'#bd985b',lace:'#b9a3b4',minimal:'#9b9b9b'};
+ return `<svg viewBox="0 0 54 54" aria-hidden="true"><rect x="3" y="3" width="48" height="48" rx="12" fill="#faf7f5"/><text x="27" y="36" text-anchor="middle" font-size="33" font-family="Georgia,serif" fill="${colors[type]||'#999'}">${symbols[type]||'✿'}</text></svg>`;
 }
 function ep12StyleButtons(field,items){return items.map(([value,label])=>`<button class="${field==='decoration'?'ep12-decor-btn':'ep12-style-btn'} ${ep12Card[field]===value?'active':''}" data-ep12-style="${field}" data-ep12-value="${value}">${field==='decoration'?ep12DecorThumb(value):`<svg viewBox="0 0 64 68"><rect x="9" y="3" width="46" height="62" rx="${value==='modern'?1:5}" fill="${value==='royal'?'#fff4de':value==='minimal'?'#f5f5f5':'#fbe9ed'}" stroke="#b9a7b6"/><path d="M20 19h24 M25 28h14 M19 42h26 M24 49h16" stroke="#a88d9e" stroke-width="1.5"/><circle cx="32" cy="35" r="4" fill="#d7a7ba"/></svg>`}<span>${label}</span></button>`).join('')}
 function renderEp12Files(){
@@ -14991,6 +15018,7 @@ else if(page==='Gmail'){
 }
 else if(page==='ep12Call'){html=renderEp12Call();}
 else if(page==='ep12Shop'){html=renderEp12Shop();}
+else if(page==='ep12Thanks'){html=renderEp12Thanks();}
 else if(page==='ep12End'){html=renderEp12End();}
 
 else if(page==='เบราว์เซอร์'){
@@ -17752,7 +17780,7 @@ if(ep12Reset && page==='ไฟล์'){
 
 const ep12Download=e.target.closest('[data-ep12-download]');
 
-if(ep12Download && (page==='ไฟล์'||page==='ep12End')){
+if(ep12Download && (page==='ไฟล์'||page==='ep12End'||page==='ep12Thanks')){
   ep12SaveCard();
 
   if(ep12Download.dataset.ep12Download==='svg'){
@@ -17770,7 +17798,7 @@ if(ep12Finish && page==='ไฟล์'){
   save.flags.ep12Completed=true;
   save.flags.ep12CardSent=true;
   persist();
-  page='ep12Shop';render();
+  page='ep12Thanks';render();
   return;
 }
 

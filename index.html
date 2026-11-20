@@ -7979,6 +7979,22 @@ save.flags.ep12ShopNotified ??= false;
 save.flags.ep12CardSent ??= false;
 let ep12CallState='incoming';
 let ep12CallStart=0;
+// Incoming calls repeat until answered. Timer is cancelled on answer/hangup.
+let achiRetryTimer=null;
+function stopAchiRetry(){if(achiRetryTimer!==null){clearTimeout(achiRetryTimer);achiRetryTimer=null;}}
+function retryAchiVideoCall(which){
+  stopAchiRetry();
+  achiRetryTimer=setTimeout(()=>{
+    achiRetryTimer=null;
+    if(which===11 && !save.flags.ep11CallDone && ep11CallState!=='connected'){
+      ep11CallState='incoming';page='ep11Call';render();
+    }
+    if(which===12 && !save.flags.ep12CallDone && ep12CallState!=='connected'){
+      stopAchiRetry();ep12CallState='incoming';page='ep12Call';render();
+    }
+  },1800);
+}
+
 
 
 function ep12Advance(stage){
@@ -17949,11 +17965,11 @@ if(ep12Propose){
   return;
 }
 const ep12Answer=e.target.closest('[data-ep12-answer]');
-if(ep12Answer){ep12CallState='connected';ep12CallStart=Date.now();render();const v=document.getElementById('ep12Video');if(v)v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});return;}
+if(ep12Answer){stopAchiRetry();ep12CallState='connected';ep12CallStart=Date.now();render();const v=document.getElementById('ep12Video');if(v)v.play().catch(()=>{v.muted=true;v.play().catch(()=>{});});return;}
 const ep12Reject=e.target.closest('[data-ep12-reject]');
-if(ep12Reject){page='chat';chat='achi';render();return;}
+if(ep12Reject){ep12CallState='incoming';page='chat';chat='achi';render();retryAchiVideoCall(12);return;}
 const ep12Hangup=e.target.closest('[data-ep12-hangup]');
-if(ep12Hangup){save.flags.ep12CallDone=true;const sec=Math.max(1,Math.floor((Date.now()-ep12CallStart)/1000));save.flags.ep12CallDuration=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');lineMarkChatActivity('achi');persist();page='chat';chat='achi';render();return;}
+if(ep12Hangup){stopAchiRetry();save.flags.ep12CallDone=true;const sec=Math.max(1,Math.floor((Date.now()-ep12CallStart)/1000));save.flags.ep12CallDuration=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');lineMarkChatActivity('achi');persist();page='chat';chat='achi';render();return;}
 const ep12End=e.target.closest('[data-ep12-end]');
 if(ep12End){page='ep12End';render();return;}
 const ep12Explore=e.target.closest('[data-ep12-explore]');
@@ -18108,6 +18124,7 @@ const ep11CallOpen=e.target.closest(
 );
 
 if(ep11CallOpen){
+  stopAchiRetry();
   const host=document.getElementById('gameBanner');
   if(host)host.innerHTML='';
 
@@ -18124,13 +18141,15 @@ const ep11CallAction=e.target.closest(
 if(ep11CallAction && page==='ep11Call'){
 
   if(ep11CallAction.dataset.ep11CallAction==='answer'){
+    stopAchiRetry();
     ep11CallState='connected';karanCallStartedAt=Date.now();
     render();
     const video=document.getElementById('ep11VideoCall');if(video){video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});}
     return;
   }
 
-  if(ep11CallAction.dataset.ep11CallAction==='hangup' && ep11CallState!=='connected'){stopAchiCallAudio();page='LINE';lineTab='chats';lineSubtab='chats';render();return;}
+  if(ep11CallAction.dataset.ep11CallAction==='hangup' && ep11CallState!=='connected'){stopAchiCallAudio();page='LINE';lineTab='chats';lineSubtab='chats';render();retryAchiVideoCall(11);return;}
+  stopAchiRetry();
   stopAchiCallAudio();
   save.flags.ep11CallDone=true;
   save.flags.ep11CallDuration=karanCallStartedAt?Math.max(1,Math.floor((Date.now()-karanCallStartedAt)/1000)):0;

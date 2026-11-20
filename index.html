@@ -7178,6 +7178,12 @@ button{
 .karan-welcome-note p{font-size:12.5px;line-height:1.6;margin:0;color:#4b5263}
 .karan-welcome-note .welcome-signature{margin-top:9px;color:#6e74a5;font-size:12px;font-weight:650}
 @media(max-height:700px){.karan-welcome-note{top:40%;padding:12px 14px}.karan-welcome-note p{font-size:12px}}
+ 
+/* Gameplay interaction fixes */
+#ep7Plus,#ep7Minus{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important;touch-action:none!important}
+.ig-reels-stack video{pointer-events:none!important;user-select:none;-webkit-user-select:none}
+#phone:has(.ep11-full-video-call) .nav{display:none!important}
+.ep11-full-video-call:not(.ep12-video-call) .ep11-video-controls{bottom:23px!important}
 </style>
 </head>
 <body>
@@ -11849,7 +11855,7 @@ if (igTab === 'reels') {
   ];
   content = `<div class="ig-reels-stack">
     ${reelVideos.map((src,i)=>`<section class="ig-reel-slide">
-      <video src="${src}" muted loop playsinline controls preload="metadata" data-reel-video="${i}"></video>
+      <video src="${src}" muted loop autoplay playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload noplaybackrate nofullscreen" data-reel-video="${i}"></video>
     </section>`).join('')}
   </div>`;
 }
@@ -14045,6 +14051,22 @@ function ep10KrathongArt(color){
 }
 
 function renderEp10Internet(){
+  if(save.flags.ep10KrathongConfirmed){
+    const searches=['พลังวิเศษมีจริงๆใช่ไหม','เช่าเฮลิคอปเตอร์ 1 วัน','ที่เที่ยวนครศรีธรรมราช','แหวนแต่งงาน'];
+    return `<div class="ep10-browser" style="background:#fff;color:#222">
+      <div style="padding:54px 20px 18px;text-align:center;background:linear-gradient(180deg,#edf3ff,#fff)">
+        <div style="font-size:29px;font-weight:750;letter-spacing:-1px">Samsung Internet</div>
+        <div style="margin-top:18px;padding:15px;border-radius:28px;background:#f1f3f7;text-align:left;color:#6d7687">⌕ &nbsp;ค้นหาหรือป้อน URL</div>
+      </div>
+      <div class="ep10-web-scroll" style="padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px"><strong style="font-size:19px">การค้นหาล่าสุด</strong><span style="color:#8b94a3;font-size:12px">ประวัติ</span></div>
+        ${searches.map((q,i)=>`<div style="display:flex;align-items:center;gap:14px;padding:17px 4px;border-bottom:1px solid #eef0f3">
+          <span style="width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#f1f4f9;color:#65748d;font-size:21px">⌕</span>
+          <span style="flex:1;font-size:14px">${q}</span><span style="color:#a0a6af">↗</span></div>`).join('')}
+      </div>
+      <div class="ep10-browser-bottom"><button data-ep10-web-back="1" aria-label="ย้อนกลับ">${icon('back')}</button><div class="ep10-address">หน้าหลัก · Samsung Internet</div><button data-ep10-web-home="1" aria-label="หน้าหลัก">⌂</button></div>
+    </div>`;
+  }
   const selected=EP10_KRATHONGS.find(
     k=>k.id===save.flags.ep10Krathong
   );
@@ -14927,6 +14949,8 @@ function ep7CoffeeSetup(){
    const btn=document.getElementById(id);if(!btn)continue;let interval=null;
    const change=()=>{c.water=Math.max(0,Math.min(400,c.water+dir*5));document.getElementById('ep7WaterLabel').textContent=`กดค้างเพื่อปรับน้ำ · ${c.water} / 400 ml`;const start=document.querySelector('[data-coffee-start]');if(start)start.disabled=c.water===0||c.temp===0;const h=150*c.water/400;document.getElementById('ep7TankWater').setAttribute('y',234-h);document.getElementById('ep7TankWater').setAttribute('height',h);document.getElementById('ep7TankNum').textContent=c.water;};
    const stop=()=>{if(interval){clearInterval(interval);interval=null}};
+   btn.addEventListener('contextmenu',e=>e.preventDefault());
+   btn.addEventListener('selectstart',e=>e.preventDefault());
    btn.addEventListener('pointerdown',e=>{e.preventDefault();stop();change();interval=setInterval(change,90)});
    btn.addEventListener('pointerup',stop);btn.addEventListener('pointercancel',stop);btn.addEventListener('pointerleave',stop);btn.addEventListener('blur',stop);window.addEventListener('pointerup',stop);window.addEventListener('pointercancel',stop);
   }
@@ -15386,6 +15410,20 @@ html=appwrap(page,'<div class="content"><div class="entry">ข้อมูลส
 
 
 screen.innerHTML=html;
+  if(page==='Instagram' && igTab==='reels'){
+    const reels=[...screen.querySelectorAll('[data-reel-video]')];
+    reels.forEach((v,i)=>{v.controls=false;v.autoplay=true;v.muted=true;v.loop=true;
+      if(i===0)v.play().catch(()=>{});
+    });
+    const stack=screen.querySelector('.ig-reels-stack');
+    if(stack){
+      stack.addEventListener('scroll',()=>{
+        const idx=Math.round(stack.scrollTop/Math.max(1,stack.clientHeight));
+        reels.forEach((v,i)=>{if(i===idx){if(v.paused)v.play().catch(()=>{});}else v.pause();});
+      },{passive:true});
+      stack.addEventListener('click',e=>{if(e.target.closest('video'))e.preventDefault();},true);
+    }
+  }
 if(page==='LINE' && lineTab==='profile' && lineProfile==='achi' && !save.flags.cakeOrdered){
   const profile=screen.querySelector('.line-full-profile');
   if(profile) requestAnimationFrame(()=>{
@@ -15455,7 +15493,9 @@ const senderMap={
   'พี่ดุจ':'duj',
   'พี่ดุจดาว':'duj',
   'ปาย':'pai',
+  'Pai':'pai',
   'ร็อค':'rock',
+  'Rock':'rock',
   'Achirawit':'achi',
   'การันต์':'me',
   'ทานากะซัง':'tanaka',
@@ -18136,6 +18176,8 @@ if(
   page==='เบราว์เซอร์' &&
   save.flags.ep10Krathong
 ){
+  save.flags.ep10KrathongConfirmed=true;
+  persist();
   chat='pai';
   page='chat';
   render();
@@ -20344,8 +20386,13 @@ if(
   save.flags.ep3SickShown = true;
   save.flags.ep3SickBannerSeen = true;
   save.flags.ep3AchiAfterKarinNotified = true;
-
-
+  lineMarkChatActivity('achi');
+  page='LINE';
+  lineTab='chats';
+  lineSubtab='chats';
+  persist();
+  render();
+  showGameBanner('achi','ขอโทษนะการันต์ วันนี้ผมป่วยไปทำงานไม่ไหวจริง ๆ');
   return;
 }
   
@@ -20684,34 +20731,14 @@ if(ep11DujExit){save.flags.ep11DujRead=true;persist();render();ep8Banner('Gmail'
 if(ep11GmailAfterPai){save.flags.ep11GmailNotified=true;persist();render();ep8Banner('Gmail','มีอีเมลคำถามจาก Cherry Magic รอให้ตอบ','gmail');}
 if(ep11PaiAfterAchi){save.flags.ep11PaiNotified=true;lineMarkChatActivity('pai');persist();render();ep8Banner('Pai','พี่การันต์คะปายส่งข้อมูลปากกาตัวใหม่ให้ในอีเมลแล้วนะคะ','pai');}
 if(ep11StartAfterAchi){
-
   save.flags.ep11Started=true;
   unlock('Gmail');
+  ep11CallState='incoming';
+  page='ep11Call';
   persist();
-
-  render();
-
   const host=document.getElementById('gameBanner');
-
-  if(host){
-    host.innerHTML=`
-      <button class="game-banner"
-        data-ep11-call-open="1">
-
-       <span class="game-banner-icon"
-  style="background:transparent;padding:0;overflow:hidden;">
-  ${phoneBannerIcon()}
-</span>
-
-        <span class="game-banner-text">
-          <small>โทรศัพท์ · สายเรียกเข้า</small>
-          <strong>Achirawit</strong>
-          <span>แตะเพื่อรับสาย</span>
-        </span>
-
-      </button>
-    `;
-  }
+  if(host)host.innerHTML='';
+  render();
 }
 }
 else if(btn.dataset.app){

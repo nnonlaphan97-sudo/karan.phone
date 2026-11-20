@@ -66,14 +66,15 @@ button{
 .camera{
   position:absolute;
   z-index:30;
-  top:12px;
-  left:calc(50% - 6px);
-  width:12px;
-  height:12px;
-  background:#081322;
-  border:2px solid #23374e;
+  top:-2px;
+  left:calc(50% - 20px);
+  width:40px;
+  height:40px;
+  background:radial-gradient(circle at center,#081322 0 5px,#23374e 5px 7px,transparent 7px);
+  border:0;
   border-radius:50%;
-  pointer-events:none;
+  pointer-events:auto;
+  touch-action:none;
 }
 
 .status .right{

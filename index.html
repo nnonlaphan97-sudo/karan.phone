@@ -14978,8 +14978,8 @@ html=`
      src="https://i.ibb.co/5WfPWvbp/IMG-4436.jpg"
      alt="">
 
-  <div class="date">วันพุธที่ 11 พฤศจิกายน</div>
-  <div class="clock">21:36</div>
+  <div class="date" id="karanLockDate"></div>
+  <div class="clock" id="karanLockTime"></div>
 
   <section class="karan-welcome-note" aria-label="แจ้งเตือนคำแนะนำการเล่น">
     <div class="welcome-top">
@@ -21018,6 +21018,21 @@ document.addEventListener('change',function(e){
 })();
 </script>
 <script>
+/* Real device-local lock-screen clock; independent from story dates and game rendering. */
+(function(){
+  function updateLockClock(){
+    var time=document.getElementById('karanLockTime');
+    var date=document.getElementById('karanLockDate');
+    if(!time && !date)return;
+    var now=new Date();
+    if(time)time.textContent=now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',hour12:false});
+    if(date)date.textContent=now.toLocaleDateString('th-TH',{weekday:'long',day:'numeric',month:'long'});
+  }
+  updateLockClock();
+  setInterval(updateLockClock,1000);
+  document.addEventListener('visibilitychange',updateLockClock);
+  new MutationObserver(updateLockClock).observe(document.getElementById('phone'),{childList:true,subtree:false});
+})();
 /* Separate analytics module: failures here cannot block the phone PIN or apps. */
 (function(){
   'use strict';
